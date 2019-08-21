@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Faible</masterLabel>
+        <translation>zwak</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Haute</masterLabel>
+        <translation>hoog</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Normale</masterLabel>
+        <translation>normaal</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

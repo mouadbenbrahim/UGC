@@ -1,0 +1,577 @@
+<apex:page controller="TelephonyBoardController" action="{!authorization}" showHeader="false" sideBar="false"
+           docType="html-5.0">
+    <apex:slds />
+
+    <script src="/soap/ajax/40.0/connection.js" type="text/javascript"/>
+  <!--   <script src="/support/api/40.0/interaction.js" type="text/javascript"/> -->
+
+      <script src="/support/api/41.0/lightning/opencti_min.js" type="text/javascript"/>
+	
+    <script src="/support/console/42.0/integration.js" type="text/javascript"/>
+        
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"/>
+
+
+
+    <head>
+        <script type="text/javascript">     
+
+            var listener = function (payload) {
+                console.log('############## FLE');
+                //console.log('############## payload.returnValue.number : ' + payload.returnValue.number);
+                //if (response.result) {
+                    console.log(JSON.stringify(payload));
+                    console.log('##################' + payload.number);
+                    makeOutboundCall(JSON.stringify(payload));
+                    var objectId = payload.recordId;
+                    if (pageNavigator != null) {
+                        if (isCons === true) {
+                            pageNavigator.openContact(objectId);
+                        }
+                    }
+                //}
+            };
+            console.log('################ Before click to dial listener');
+            sforce.opencti.onClickToDial({listener: listener});
+            console.log('################ After click to dial listener');
+            	
+    </script>
+
+
+    </head>
+
+    <style>
+        @media screen and (max-width: 240px) {
+            .board-background {
+                min-height: 620px;
+            }
+
+            .movingToCentr {
+                padding-bottom: 180px;
+            }
+        }
+
+        @media screen and (min-width: 241px) {
+            .board-background {
+                min-height: 300px;
+            }
+        }
+
+        .board-background {
+            background-color: rgb(245, 245, 245);
+
+            height: 100%;
+        }
+
+        .vd-label {
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+    </style>
+
+    <apex:form >
+        <apex:actionFunction name="showComponentsForAvailable" action="{!showComponentsForAvailable}"
+                             rerender=""/>
+        <!--<apex:actionFunction name="getStatusPolling" action="{!getStatusPolling}" reRender="afterPolling"/>-->
+        <apex:actionFunction name="rerenderAfterPolling" rerender="main"/>
+        <apex:actionFunction name="authorization" action="{!authorization}" rerender="main"/>
+        <apex:actionFunction name="makeOutboundCall" action="{!makeOutboundCall}" rerender="main">
+            <apex:param name="phoneNumber" assignTo="{!clickToDailResponse}" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="checkIsConsole" action="{!fillIsConsole}" rerender="">
+            <apex:param name="isCons" assignTo="{!isConsole}" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="getStatusPolling" action="{!getStatusPolling}" rerender="afterPolling"/>
+
+        <apex:outputPanel id="main">
+            <apex:outputPanel layout="block" id="error" rendered="{!showMainErrorMessage}">
+                <apex:pageMessages />
+            </apex:outputPanel>
+            <!--<apex:actionPoller action="{!getStatusPolling}" reRender="afterPolling" interval="5" enabled="{!isSuccessAuthorization}"/>-->
+            <div class="slds-grid slds-wrap board-background">
+                <div class="slds-size--1-of-1">
+                    <apex:outputPanel layout="block" rendered="{!showBaner}">
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <div class="slds-size--1-of-1 slds-small-size--1-of-3">
+                                <c:Brand />
+                            </div>
+                            <div class="slds-show--small slds-size--1-of-1 slds-small-size--2-of-3">
+                                <div class="slds-grid slds-grid_align-end">
+                                    <c:OpenBanner styleClass="slds-show_inline-block"
+                                                  styleClassForText="slds-m-around_x-small label"/>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+                <div class="slds-size--1-of-1">
+                    <apex:outputPanel layout="block" rendered="{!showCallInfo}">
+                        <c:CallInfo infoCallForPage="{!infoCallForPage}"/>
+                    </apex:outputPanel>
+
+                </div>
+                <div class="slds-size--1-of-1">
+                    <apex:outputPanel layout="block" rendered="{!showCallInfoAvailable}">
+                        <c:CallInfoAvailable infoCallForPage="{!infoCallForPage}"/>
+                    </apex:outputPanel>
+                </div>
+                <apex:outputPanel rendered="{!isContactListVisible}">
+                    <apex:outputPanel rendered="{!showContactList}" id="contacts" layout="block"
+                                      styleClass="slds-hide--small slds-size--1-of-1 slds-small-size--1-of-3 slds-truncate">
+                        <apex:outputPanel layout="block" rendered="{!isContactListVisible}">
+                            <c:ContactList incomeContacts="{!contacts}" logEvent="{!callEvent}"
+                                           telephonyBoardC="{!telephonyBoardCntr}" infoCallForPage="{!infoCallForPage}"/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+
+                    <div class="slds-grid slds-grid_align-spread slds-show--small">
+                        <div>
+                            <apex:outputPanel rendered="{!showContactList}" id="contacts1" layout="block">
+                                <apex:outputPanel layout="block" rendered="{!isContactListVisible}">
+                                    <c:ContactListConsole incomeContacts="{!contacts}" logEvent="{!callEvent}"
+                                                          telephonyBoardC="{!telephonyBoardCntr}" infoCallForPage="{!infoCallForPage}" />
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <div class="slds-show--small slds-size--1-of-1 slds-text-align_right">
+                    <apex:outputPanel layout="block" rendered="{!showCallInfoAvailable}">
+                        <c:ResetCreds telephonyBoardC="{!telephonyBoardCntr}"/>
+                    </apex:outputPanel>
+                </div>
+                <div class="slds-hide--small slds-size--1-of-1">
+                    <apex:outputPanel id="openBanner" layout="block" rendered="{!showOpenBanner}">
+                        <c:OpenBanner urlBanner="{!urlForBanner}"
+                                      styleClassForText="vd-label slds-m-top_large slds-m-bottom_small"/>
+                    </apex:outputPanel>
+                </div>
+                <div class="slds-hide--small slds-size--1-of-1 slds-text-align_right">
+                    <apex:outputPanel layout="block" rendered="{!showCallInfoAvailable}">
+                        <c:ResetCreds telephonyBoardC="{!telephonyBoardCntr}"/>
+                    </apex:outputPanel>
+                </div>
+                <div class=" slds-size--1-of-1 ">
+                    <apex:outputPanel id="loginPage" layout="block" rendered="{!showLoginPageBanner}">
+                        <div class="movingToCentr">
+                            <c:LoginPageBanner telephonyB="{!telephonyBoardCntr}"/>
+                            <div class="slds-text-align_right">
+                                <apex:outputPanel layout="block" rendered="{!isAdmPermissionSet}">
+                                    <c:ResetCreds admin="true" telephonyBoardC="{!telephonyBoardCntr}"/>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel id="loginPage2" layout="block" rendered="{!showLoginPagePolling}">
+                        <div class="movingToCentr">
+                            <c:LoginPagePolling telephonyB="{!telephonyBoardCntr}"/>
+                        </div>
+                    </apex:outputPanel>
+                    <!--<apex:outputPanel id="loginPage2" layout="block" rendered="{!showLoginPagePolling}">-->
+                    <!--<c:LoginPageVaidialog telephonyB="{!telephonyBoardCntr}"/>-->
+                    <!--</apex:outputPanel>-->
+                </div>
+            </div>
+
+        </apex:outputPanel>
+    </apex:form>
+
+    <apex:outputPanel id="auth">
+        <div>
+            <script>
+                authorization();
+
+            </script>
+        </div>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="polling">
+        <div>
+            <script>
+                var isSucc = "{!isSuccessAuthorization}";
+                var lastStatus = "{!statusContext.lastStatus}";
+                if (isSucc == 'true' && !lastStatus) {
+//                  var time = performance.now();
+                    getStatusPolling();
+                    setInterval(function () {
+                        console.log('############ Polling getStatusPolling - ' + "{!statusContext.lastStatus}");
+                        getStatusPolling();
+                        console.log('############ Polling getStatusPolling done -  ' + "{!statusContext.lastStatus}");
+                    }, 2000);
+//                  time = performance.now() - time;
+//                  console.log('Время выполнения = ', time);
+                }
+            </script>
+        </div>
+    </apex:outputPanel>
+
+
+    <apex:outputPanel id="afterPolling">
+        <div>
+            <script>
+                function isRender() {
+                    console.log('############# Render after polling');
+                    rerenderAfterPolling();
+                }
+                if ("{!changeStatus}" == 'true') {
+                    console.log('############# Change status');
+                     
+                    console.log('#### isIntrusive : ' + '{!isIntrusive}');
+			        isCons = ('{!isIntrusive}' == 'true') ? true : false;
+                    console.log('#### isCons : ' + isCons);
+                    var needOpenContact = (isCons === true) && ("{!infoCallForPage.sf != null
+                                    && infoCallForPage.sf.contacts != null
+                                    && infoCallForPage.sf.contacts.size == 1}");                              
+                    if (needOpenContact == 'true') {
+                        //pageNavigator.openContact("{!infoCallForPage.sf.contacts[0].Id}");
+                        sforce.opencti.screenPop({
+		                     type: sforce.opencti.SCREENPOP_TYPE.SOBJECT,
+		                     params: { recordId: "{!infoCallForPage.sf.contacts[0].Id}" }
+		                });
+                    }
+                    isRender();
+                }
+            </script>
+        </div>
+    </apex:outputPanel>
+
+    <script>
+        var pageNavigator;
+        var isCons = false;
+
+        $().ready(function () {
+            console.log('################### Ready!!!!!');
+            console.log('sforce.console.isInConsole() : ' + sforce.console.isInConsole());
+            softphone.init();
+            /*openCTI.isInConsole(
+                    function () {
+                        console.log('################### Process in console');
+                        pageNavigator = PageNavigation(sfConsole);
+                        openCTI.setSoftphoneSize();
+                    },
+                    function () {
+                        console.log('################### Process in out of console');
+                        pageNavigator = PageNavigation(openCTI);
+                        openCTI.setSoftphoneSizeClassic();
+                    });*/
+            if(sforce.console.isInConsole()){
+                console.log('################### Process in console');
+                pageNavigator = PageNavigation(sfConsole);
+                openCTI.setSoftphoneSize();
+            }
+            else{
+                console.log('################### Process in out of console');
+                pageNavigator = PageNavigation(openCTI);
+                openCTI.setSoftphoneSizeClassic();
+            }
+        });
+
+        var PageNavigation = function (context) {
+            let _context = context;
+
+            function _openContact(WhoId) {
+                _context.openDetailPage(WhoId);
+            }
+
+            function _createContact(id) {
+                _context.openDetailPage(id + '/e');
+            }
+
+            function _openErrorPage() {
+
+            }
+
+            function _isConsole() {
+                _context.isConsole();
+            }
+
+            return {
+                openContact: _openContact,
+                createContact: _createContact,
+                openErrorPage: _openErrorPage
+            }
+        }
+
+        var openCTI = (function () {
+
+            function _isInConsole(inConsole, outOfConsole) {
+            	
+            	sforce.interaction.isInConsole(function (response) {
+                    if (response.error) {
+                        console.log(response.error);
+                        checkIsConsole(false);
+                        return;
+                    }
+
+                    console.log('Is in console: ' + response.result);
+                    if (response.result) {
+                        isCons = true;
+                        checkIsConsole(true);
+                        inConsole();
+                        return;
+                    }
+
+                    outOfConsole();
+                });
+            }
+
+            function _openDetailPage(id) {
+                //sforce.interaction.screenPop('/' + id, true);
+                console.log('#### TelephonyBoard / _openDetailPage / id : ' + id);
+                /*
+                sforce.opencti.screenPop({
+                     type: sforce.opencti.SCREENPOP_TYPE.URL, //Review the arguments section.
+                     params: { url: '/' + id } //Depends on the SCREENPOP_TYPE. Review the arguments section.
+                });
+                */
+                sforce.opencti.screenPop({
+                     type: sforce.opencti.SCREENPOP_TYPE.SOBJECT,
+                     params: { recordId: id }
+                });
+            }
+
+            function _openVFPage(name) {
+                //sforce.interaction.screenPop('/apex/' + name, true);
+                sforce.opencti.screenPop({
+                     type: sforce.opencti.SCREENPOP_TYPE.URL, //Review the arguments section.
+                     params: { url: '/apex/' + name } //Depends on the SCREENPOP_TYPE. Review the arguments section.
+                });
+
+            }
+
+            function _getPageInfo(callback) {
+                /*sforce.interaction.getPageInfo(function (response) {
+                    if (response.error) {
+                        console.log(response.error);
+                        return;
+                    }
+                    console.log('status : ' + response.result.status);
+                    callback(JSON.parse(response.result));
+
+                });*/
+
+                var callback = function (response) {
+                    if (response.error) {
+                        console.log(response.error);
+                        return;
+                    }
+                    console.log('status : ' + response.returnValue.status);
+                    callback(JSON.parse(response.returnValue.toString()));
+                };
+                sforce.opencti.getAppViewInfo({callback : callback});
+
+                /*sforce.opencti.getAppViewInfo(function (response) {
+                    if (response.error) {
+                        console.log(response.error);
+                        return;
+                    }
+                    console.log('status : ' + response.returnValue.status);
+                    callback(JSON.parse(response.returnValue.toString()));
+
+                });*/
+            }
+            
+            function _setSoftphoneSize() {
+                var callbackSPW = function (result) {                    
+                    console.log(result);
+                };                
+                sforce.opencti.setSoftphonePanelWidth({
+                    widthPX:600,
+                       callback:callbackSPW 
+                });
+                sforce.opencti.setSoftphonePanelHeight({
+                    heightPX:340,  
+                       callback:callbackSPW 
+                });
+            }
+
+            function _setSoftphoneSizeClassic() {
+                var callbackSPW = function (result) {                    
+                    console.log(result);
+                };                
+                sforce.opencti.setSoftphonePanelWidth({
+                    widthPX:340,  
+                       callback:callbackSPW 
+                });
+                sforce.opencti.setSoftphonePanelHeight({
+                    heightPX:620, 
+                       callback:callbackSPW 
+                });
+            }
+
+            return {
+                isInConsole: _isInConsole,
+                openDetailPage: _openDetailPage,
+                openVFPage: _openVFPage,
+                getPageInfo: _getPageInfo,
+                setSoftphoneSize: _setSoftphoneSize,
+                setSoftphoneSizeClassic: _setSoftphoneSizeClassic
+            }
+
+        })();
+
+        var sfConsole = (function () {
+
+            function _getPrimaryTabIds() {
+                return new Promise(function (resolve, reject) {
+                    sforce.console.getPrimaryTabIds(function (result) {
+                        if (result.success) {
+                            resolve(result.ids);
+                        }
+                    });
+                });
+            }
+
+            function _getSubtabIds(primaryTabId) {
+                return new Promise(function (resolve, reject) {
+                    sforce.console.getSubtabIds(primaryTabId, function (result) {
+                        if (result.success) {
+                            resolve(result.ids);
+                        }
+                    });
+                });
+            }
+
+            function _getPrimaryTabPageInfo(tabIdsResult) {
+                let promises = [];
+                for (let i = 0; i < tabIdsResult.length; i++) {
+                    promises.push(
+                            _getPageInfo(tabIdsResult[i], true)
+                    );
+                }
+
+                return Promise.all(promises);
+            }
+
+            function _getSubtabPageInfo(tabIdsResult) {
+                let promises = [];
+                for (let i = 0; i < tabIdsResult.length; i++) {
+                    promises.push(
+                            _getPageInfo(tabIdsResult[i], false)
+                    );
+                }
+
+                return Promise.all(promises);
+            }
+
+            function _getPageInfo(tabId, isPrimary) {
+                return new Promise(function (resolve, reject) {
+                    sforce.console.getPageInfo(tabId, function (result) {
+                        if (result.success) {
+                            console.log('status : ' + response.result.status);
+                            resolve(_wrapPageInfoResult(result.pageInfo, tabId, isPrimary));
+                        }
+                    });
+                })
+            }
+
+            function _wrapPageInfoResult(pageInfo, tabId, isPrimary) {
+                let aggregatedResult = {};
+
+                aggregatedResult.pageInfo = pageInfo;
+                aggregatedResult.tabId = tabId;
+                aggregatedResult.isPrimary = isPrimary;
+
+                return aggregatedResult;
+            }
+
+            function _objectIdEquals(pageInfoResult, objectId) {
+                return JSON.parse(pageInfoResult).objectId === objectId;
+            }
+
+            function _openPrimaryTab(id) {
+                sforce.console.openPrimaryTab(undefined,
+                        '/' + id, true);
+            }
+
+            function _focusPrimaryTabById(primaryTabId) {
+                sforce.console.focusPrimaryTabById(primaryTabId);
+            }
+
+            function _focusSubtabById(subtabId) {
+                sforce.console.focusSubtabById(subtabId);
+            }
+
+            function _openDetailPage(id) {
+                _getPrimaryTabIds().then(function (primaryTabIds) {
+                    let validTabIds = [];
+                    for (let i = 0; i < primaryTabIds.length; i++) {
+                        if (!primaryTabIds[i]) {
+                            continue;
+                        }
+
+                        validTabIds.push(primaryTabIds[i]);
+                    }
+
+                    let promises = [];
+                    promises.push(Promise.resolve(validTabIds));
+
+                    for (let i = 0; i < validTabIds.length; i++) {
+                        promises.push(_getSubtabIds(validTabIds[i]));
+                    }
+
+                    return Promise.all(promises);
+                }).then(function (listOfGetIdsResults) {
+                    if (listOfGetIdsResults.length === 0) {
+                        _openPrimaryTab(id);
+                    }
+
+                    let promises = [];
+
+                    if (listOfGetIdsResults.length > 0) {
+                        promises.push(_getPrimaryTabPageInfo(listOfGetIdsResults[0]));
+                    }
+
+                    for (let i = 1; i < listOfGetIdsResults.length; i++) {
+                        promises.push(_getSubtabPageInfo(listOfGetIdsResults[i]));
+                    }
+
+                    return Promise.all(promises);
+                }).then(function (aggregatedResultsLists) {
+                    for (let aggregatedResultsList of aggregatedResultsLists) {
+                        for (let aggregatedResult of aggregatedResultsList) {
+                            if (aggregatedResult.pageInfo && _objectIdEquals(aggregatedResult.pageInfo, id)) {
+                                aggregatedResult.isPrimary ? _focusPrimaryTabById(aggregatedResult.tabId) : _focusSubtabById(aggregatedResult.tabId);
+                                return;
+                            }
+                        }
+                    }
+
+                    _openPrimaryTab(id);
+                });
+            }
+
+            function _openVFPage(name) {
+                sforce.console.openPrimaryTab(undefined,
+                        '/apex/' + name, true);
+            }
+
+            return {
+                openDetailPage: _openDetailPage,
+                openVFPage: _openVFPage
+            };
+
+        })();
+
+        var softphone = (function () {
+            function _init() {
+                sforce.connection.sessionId = '{!GETSESSIONID()}';
+            }
+
+            function _getToken() {
+                return sessionStorage.getItem('token');
+            }
+
+            function _setToken(token) {
+                sessionStorage.setItem('token', token);
+            }
+
+            return {
+                init: _init
+            };
+
+        })();
+    </script>
+
+
+</apex:page>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Appel entrant</masterLabel>
+        <translation>Inkomende oproep</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Appel sortant</masterLabel>
+        <translation>Uitgaande oproep</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Courrier Entrant</masterLabel>
+        <translation>Inkomende brieven</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Courrier Sortant</masterLabel>
+        <translation>Uitkomende brieven</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Email Entrant</masterLabel>
+        <translation>Inkomende e-mail</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Email Sortant</masterLabel>
+        <translation>Uitgaande e-mail</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

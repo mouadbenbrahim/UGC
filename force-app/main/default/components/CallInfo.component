@@ -1,0 +1,103 @@
+<apex:component id="CallInfo" controller="TelephonyBoardController">
+    <apex:attribute name="infoCallForPage" type="CaseIncomingCall" description="event" required="true"/>
+    <script>
+        //sforce.interaction.setVisible(true);
+        sforce.opencti.setSoftphonePanelVisibility({
+           visible:true, 
+        });
+
+    </script>
+    <style>
+        .showMessageForFinish {
+            color: black !important;
+        }
+
+        .vd-call-info {
+            color: white;
+            box-shadow: 0 0 5px rgb(144, 154, 164);
+        }
+
+        .vd-call-info span {
+            font-size: 0.61rem;
+        }
+
+        .vd-call-info span:nth-child(2) {
+            font-weight: bold;
+        }
+
+        .vd-call-number-line {
+            font-weight: bold;
+        }
+
+        .incoming-call {
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#243973+0,398da9+100 */
+            background: #243973; /* Old browsers */
+            background: -moz-linear-gradient(left, #243973 0%, #398da9 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #243973 0%, #398da9 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #243973 0%, #398da9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#243973', endColorstr='#398da9', GradientType=1); /* IE6-9 */
+        }
+
+        .outgoing-call {
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d78e55+0,d0b575+100 */
+            background: #d78e55; /* Old browsers */
+            background: -moz-linear-gradient(left, #d78e55 0%, #d0b575 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #d78e55 0%, #d0b575 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #d78e55 0%, #d0b575 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d78e55', endColorstr='#d0b575', GradientType=1); /* IE6-9 */
+        }
+
+        .webcallback-call {
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4abdb8+0,5bcbaf+100 */
+            background: #4abdb8; /* Old browsers */
+            background: -moz-linear-gradient(left, #4abdb8 0%, #5bcbaf 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #4abdb8 0%, #5bcbaf 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #4abdb8 0%, #5bcbaf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4abdb8', endColorstr='#5bcbaf', GradientType=1); /* IE6-9 */
+        }
+    </style>
+    <!--<apex:pageMessages/>-->
+    <div id="infCl"
+         class="slds-box slds-m-around_x-small slds-text-body--small slds-text vd-call-info {!infoCallForPage.agent.statusColor}">
+        <div class="showCall">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col">
+                    <div class="slds-size--3-of-0 slds-m-horizontal--xxx-small"  >
+                        <apex:outputPanel rendered="{!IF(infoCallForPage.call.product_uid == '1','true','none') }">
+                            <span class="vd-phone">{!$Label.Appel_entrant_du} &nbsp;{!infoCallForPage.call.sda}</span>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!IF(infoCallForPage.call.product_uid == '2','true','none') }">
+                            <span class="vd-phone">{!$Label.Appel_sortant_vers} &nbsp;{!infoCallForPage.call.sda}</span>
+                        </apex:outputPanel>
+                    </div>
+                    <div class="slds-size--1-of-1  slds-p-around--xxx-small">
+                        <span class="vd-service">{!$Label.Service}&nbsp;{!infoCallForPage.call.service_label}&nbsp;(№&nbsp;:&nbsp;{!infoCallForPage.call.service_uid}
+                            )</span>
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <div class="slds-size--1-of-1  slds-p-around--xxx-small">
+                        <span class="vd-group">{!$Label.Groupe}&nbsp;{!infoCallForPage.call.group_uid}</span>
+                    </div>
+                    <div class="slds-size--1-of-1  slds-p-around--xxx-small">
+                        <span class="vd-callid">{!$Label.Call_Id} &nbsp;{!infoCallForPage.call.callid}</span>
+                    </div>
+                </div>
+                <div class="slds-size--1-of-1  slds-p-around--xxx-small">
+                    <span class="vd-ref">{!$Label.Ref}&nbsp;{!infoCallForPage.call.ref}</span>
+                </div>
+            </div>
+        </div>
+        <div class="showMessageForFinish slds-align_absolute-center slds-m-top_large slds-m-bottom_large slds-text-heading_small label"
+             style="display: none">
+                {!$Label[infoCallForPage.agent.statusValue]}
+        </div>
+    </div>
+    <script>
+        //        document.getElementsByClassName('x-window sd_widget_window x-resizable-pinned cti_widget_window sd_widget_window_fixedwidth')[0].style.left = "148px"
+        if ("{!infoCallForPage.agent.statusColor}" == '') {
+            document.getElementsByClassName('showCall')[0].style.display = "none";
+            document.getElementsByClassName('showMessageForFinish')[0].style.display = "";
+        }
+    </script>
+</apex:component>

@@ -1,0 +1,3 @@
+<apex:page >
+    <apex:image id="Knowledge" value="/resource/1498493780000/Knowledge" width="300" height="450"/>
+</apex:page>

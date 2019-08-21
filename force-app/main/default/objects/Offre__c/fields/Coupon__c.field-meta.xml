@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coupon__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Coupon</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Coupon__c.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>BtoC generique, BtoC multiples, BtoB, BtoC Nominatif Client, BtoC Nominatif Agent</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Coupon__c</referenceTo>
+    <relationshipLabel>Offres</relationshipLabel>
+    <relationshipName>Offres</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

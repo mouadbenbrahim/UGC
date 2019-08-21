@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Charge__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Charge de Remise</label>
+    <lookupFilter>
+        <active>true</active>
+        <booleanFilter>(1 AND 2) OR (3 AND 4) OR (5 AND 6) OR (7 AND 8)</booleanFilter>
+        <filterItems>
+            <field>ProdRatePlanCharge__c.EligibleOffre__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Promo des offres</value>
+        </filterItems>
+        <filterItems>
+            <field>ProdRatePlanCharge__c.FamilleRPC__c</field>
+            <operation>equals</operation>
+            <value>FRAIDOSS</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Charge de base</value>
+        </filterItems>
+        <filterItems>
+            <field>ProdRatePlanCharge__c.FamilleRPC__c</field>
+            <operation>equals</operation>
+            <value>ABO</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Abonnement de base</value>
+        </filterItems>
+        <filterItems>
+            <field>ProdRatePlanCharge__c.FamilleRPC__c</field>
+            <operation>equals</operation>
+            <value>ABOREM</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Remise de base</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>ProdRatePlanCharge__c</referenceTo>
+    <relationshipLabel>Remises de promo</relationshipLabel>
+    <relationshipName>ChargeRemise</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

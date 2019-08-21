@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Achevée</masterLabel>
+        <translation>Voltooid</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Attente tierce personne</masterLabel>
+        <translation>In afwachting derde partij</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En cours</masterLabel>
+        <translation>In uitvoering</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Non démarrée</masterLabel>
+        <translation>Niet begonnen</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Reportée</masterLabel>
+        <translation>Uitgesteld</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

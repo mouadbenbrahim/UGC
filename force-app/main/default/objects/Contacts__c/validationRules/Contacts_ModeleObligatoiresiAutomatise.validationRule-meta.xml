@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contacts_ModeleObligatoiresiAutomatise</fullName>
+    <active>true</active>
+    <description>Si le contact génère une réponse automatique ou semi automatique alors le nom du modèle est obligatoire</description>
+    <errorConditionFormula>AND(
+NOT($User.ByPassValidationRule__c),
+ISBLANK(NomModeleEmailHTML__c),
+ISBLANK(NomModeleCourrierEmail__c),
+OR(ISPICKVAL (Reponse__c,&quot;Automatique&quot;),ISPICKVAL(Reponse__c,&quot;Semi-automatique&quot;))
+)</errorConditionFormula>
+    <errorMessage>Si le statut génère une réponse automatique, merci d&#39;indiquer le nom du modèle Sdocs.</errorMessage>
+</ValidationRule>

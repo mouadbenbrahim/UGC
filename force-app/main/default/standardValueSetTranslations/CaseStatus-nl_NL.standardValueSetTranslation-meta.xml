@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Abandonnée</masterLabel>
+        <translation><!-- Abandonnée --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Désabo Annulé</masterLabel>
+        <translation><!-- Désabo Annulé --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En attente remboursement</masterLabel>
+        <translation>Terugbetaling in afwachting</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En attente retour client</masterLabel>
+        <translation>In afwachting van terugkeer klant</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En attente retour interne</masterLabel>
+        <translation><!-- En attente retour interne --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En attente retour salle</masterLabel>
+        <translation>In afwahcting van terugkeer zaal</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>En cours</masterLabel>
+        <translation>In uitvoering</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Fermee</masterLabel>
+        <translation>Gesloten</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>à traiter</masterLabel>
+        <translation>Te behandelen</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

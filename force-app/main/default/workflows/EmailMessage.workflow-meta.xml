@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>MAJNb_mailsentrants</fullName>
+        <description>Dès q&#39;un email/formulaire est reçu &gt; MAJ du champ &quot;Nb Emails Entrant&quot; +1</description>
+        <field>NbEmailsEntrants__c</field>
+        <formula>IF(ISBLANK(Parent.NbEmailsEntrants__c ), 1, Parent.NbEmailsEntrants__c+1)</formula>
+        <name>MAJ Nb emails entrants</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>MAJNbemailsSortant</fullName>
+        <description>Incrémente le champ &quot;Nb emails sortants&quot;</description>
+        <field>NbEmailsSortants__c</field>
+        <formula>IF ( ISBLANK(Parent.NbEmailsSortants__c), 1, Parent.NbEmailsSortants__c+1)</formula>
+        <name>MAJ Nb emails Sortant</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <targetObject>ParentId</targetObject>
+    </fieldUpdates>
+    <rules>
+        <fullName>EMAIL_WF01_Calcul nb emails sortant</fullName>
+        <actions>
+            <name>MAJNbemailsSortant</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.Status</field>
+            <operation>equals</operation>
+            <value>Envoyé</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.ByPassWorkflow__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>WF calculant le nombre d&#39;emails sortant sur chaque ticket</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>EMAIL_WF02_Calcul nb emails entrants</fullName>
+        <actions>
+            <name>MAJNb_mailsentrants</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>EmailMessage.Incoming</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.ByPassWorkflow__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>WF mettant à jour le champ de case &quot;Nb Emails entrants&quot; dès qu&#39;un email est reçu (email + formulaire)</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

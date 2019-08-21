@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MobileSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <dashboardMobile>
+        <enableDashboardIPadApp>true</enableDashboardIPadApp>
+    </dashboardMobile>
+    <touchMobile>
+        <enableTouchAppIPad>true</enableTouchAppIPad>
+        <enableTouchAppIPhone>true</enableTouchAppIPhone>
+        <enableTouchBrowserIPad>true</enableTouchBrowserIPad>
+        <enableVisualforceInTouch>true</enableVisualforceInTouch>
+    </touchMobile>
+</MobileSettings>

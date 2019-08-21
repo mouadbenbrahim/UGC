@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PresentationCompacteComplexe</fullName>
+    <fields>Name</fields>
+    <fields>CodeComplexe__c</fields>
+    <fields>NbrSalles__c</fields>
+    <fields>Ville__c</fields>
+    <fields>Departement__c</fields>
+    <fields>Accessibilite__c</fields>
+    <label>Présentation Compacte Complexe</label>
+</CompactLayout>

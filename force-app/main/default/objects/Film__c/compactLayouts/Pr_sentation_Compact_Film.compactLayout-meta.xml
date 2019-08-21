@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pr_sentation_Compact_Film</fullName>
+    <fields>Name</fields>
+    <fields>TitreFilm2__c</fields>
+    <fields>Genre__c</fields>
+    <fields>DateSortie__c</fields>
+    <fields>Avertissement__c</fields>
+    <fields>NombreCopiesVF__c</fields>
+    <fields>NombreCopiesVO__c</fields>
+    <fields>DureeFilm__c</fields>
+    <label>Présentation Compact Film</label>
+</CompactLayout>

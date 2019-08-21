@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>Charge_bis</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Charge bis</label>
+        <sharedTo>
+            <role>ChargeClienteleFR</role>
+        </sharedTo>
+        <sharedFrom>
+            <allCustomerPortalUsers/>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Ouverture_charge</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Ouverture chargé</label>
+        <sharedTo>
+            <role>ChargeClienteleFR</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers/>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Supervieurs</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Supervieurs</label>
+        <sharedTo>
+            <role>SVP_Customer_Experience</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers/>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

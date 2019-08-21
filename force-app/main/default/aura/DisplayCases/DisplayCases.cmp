@@ -1,0 +1,230 @@
+<aura:component controller="DisplayCases_CC" implements="flexipage:availableForAllPageTypes,force:hasRecordId" >
+    
+    <aura:attribute name="recordId" type="Id" />
+    
+ 
+    <aura:attribute name="CaseRecords" type="Case[]"/>
+    <aura:attribute name="fieldLabels" type="List"/>
+    <aura:attribute name="numberPages" type="Integer[]"/>
+    <aura:attribute name="activitiesRecord" type="Task[]"/>
+<aura:attribute name="CommentairesInternesLabel" type="string"/>   
+    <aura:attribute name="page" type="integer" description="using for store page Number"/>
+    <aura:attribute name="pages" type="integer" description="using for store All Pages page Number"/>
+    <aura:attribute name="total" type="integer" description="total records count store "/>
+    <aura:attribute name="arrowDirection" type="string" default="arrowdown" description="Use for change arrow sign direction on header based on click"/>
+    <aura:attribute name="isAsc" type="boolean" default="false" description="boolean flag for pass sorting condition to apex class"/> 
+   
+    <aura:attribute name="selectedTabsoft" type="string" default="CaseNumber" description="Use for show/hide arraow sign on header based on conditions"/>
+    
+    <aura:attribute name="searchField" type="String" default="CaseNumber" />
+    <aura:attribute name="keyword" type="string"/>
+    <aura:attribute name="dateSearch" type="string"/>
+    
+    <aura:attribute name="lastCaseNumber" type="String" default="none" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{! v.dateSearch }" action="{! c.dateSearchChange }"/>
+    	
+    <div class="slds-clearfix">
+        <div class="slds-float--right">           
+            <!--<ui:button label="{! $Label.c.CL02_NOUVELLE_DEMANDE }" press="{!c.createRecord}"/>-->
+        </div>
+    </div>
+    <br/>
+    
+    
+    <div class="slds-float_left slds-form--inline slds-form_compound">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="recordSize">{! $Label.c.CL01_ENREGISTREMENT_PAR_PAGE } </label>
+            <div class="slds-form-element__control">  
+	            <ui:inputSelect aura:id="recordSize"  change="{!c.onSelectChange}" class="inputSelect">
+	                <ui:inputSelectOption text="5" label="5" value="true"/>
+	                <ui:inputSelectOption text="10" label="10"/>
+	                <ui:inputSelectOption text="25" label="25"/>
+	            </ui:inputSelect>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="slds-float_right slds-form--inline slds-form_compound" >
+        <div class="slds-clearfix">
+            <div class="slds-float--right">
+
+                <label class="slds-form-element__label" for="SearchFields">{! $Label.c.CL03_Rechercher_par_colonnes }</label>
+                <div class="slds-form-element__control">
+                    <ui:inputSelect aura:id="SearchFields" change="{! c.onFieldChange }" class="slds-select"  >
+                        <aura:iteration items="{! v.fieldLabels }" var="field" indexVar="key">
+                            <ui:inputSelectOption text="{! field.key }" label="{! field.value }" value="{! v.searchField == field.key }" />
+                        </aura:iteration>
+                        <ui:inputSelectOption text="Owner.Name" label="{! $Label.c.CL04_Charg_de_client_le }" value="{! v.searchField == 'Owner.Name' }" />
+                    </ui:inputSelect>
+                </div>
+                <div class="slds-form-element__control">
+                	<aura:if isTrue="{! v.searchField != 'CreatedDate' }" >
+                		<input type="text" value="{! v.keyword }"  class="slds-input slds-combobox__input" placeholder="Search" onkeyup="{! c.searchKeyChange }" />
+                    	<aura:set attribute="else" >
+                    		<lightning:input type="date" aura:id="openDate"  value="{! v.dateSearch }"   />
+                    	</aura:set>
+                	</aura:if>
+                    
+                </div>
+            </div>
+        </div>    
+    </div>
+    
+    
+    <br/>
+    <table class="slds-table slds-cell-wrap slds-table_bordered slds-table_fixed-layout slds-max-medium-table--stacked-horizontal " id ="tooltip">
+        <thead>
+            <tr>
+                <th scope="col" id="CaseNumber" style="width: 80px;" class="slds-cell-buffer_left" />
+                <th scope="col" id="Origin" style="width: 60%;" class="slds-cell-buffer_left" />  
+                <th scope="col" id="Date_de_creation__c" style="width: 80%;" class="slds-cell-buffer_left" /> 
+                <th scope="col" id="Famille__c" style="width: 90%;" class="slds-cell-buffer_left" />
+                <th scope="col" id="Motif__c" style="width:70%;" class="slds-cell-buffer_left" />         
+                <th scope="col" id="SousMotif__c" style="width: 80%;" class="slds-cell-buffer_left" />
+                <th scope="col" id="CommentairesInternes__c" style="width: 100%;" class="slds-cell-buffer_left" />
+                <th scope="col" id="Owner.Name" style="width: 100%;" class="slds-cell-buffer_left" />
+            </tr>          
+            <tr class="slds-text-title_caps">
+                <aura:iteration items="{!v.fieldLabels}" var="field" indexVar="key">
+                    <th class="slds-table th slds-cell-buffer_left" id="{!field.key}" onclick="{!c.Sort}">                     
+                        <ui:outputText value="{!field.value}"/>                     
+                        <aura:if isTrue="{! and( v.arrowDirection != 'arrowdown', v.selectedTabsoft == field.key) }"> &nbsp; &#9650; </aura:if>  
+                        <aura:if isTrue="{! and( v.arrowDirection == 'arrowdown', v.selectedTabsoft == field.key) }"> &nbsp; &#9660; </aura:if>    
+                    </th>                  
+                </aura:iteration>              
+
+                
+                
+ <th class="slds-cell-buffer_left">
+                    <ui:outputText value="{!v.CommentairesInternesLabel}"/>                   
+                </th>
+                
+                
+                
+                <th class="slds-cell-buffer_left" onclick="{!c.SortOwnerName}">
+                        <ui:outputText value="{! $Label.c.CL04_Charg_de_client_le }"/>
+                    <aura:if isTrue="{! and(v.arrowDirection != 'arrowdown', v.selectedTabsoft == 'Owner.Name') }"> &nbsp; &#9650; </aura:if>  
+                    <aura:if isTrue="{! and(v.arrowDirection == 'arrowdown', v.selectedTabsoft == 'Owner.Name') }"> &nbsp; &#9660; </aura:if>     
+                </th>
+            </tr>     
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.CaseRecords}" var="cr" indexVar="i">
+                <tr scope="row" class="slds-cell-buffer_left">
+                    <td class="slds-cell-buffer_left" >                       
+                        <a href="{!'/one/one.app?#/sObject/'+ cr.Id}" onclick="OpenSubtab();return false">
+                            <ui:outputText value="{!cr.CaseNumber}" mouseover="{! c.mouseover2 }" mouseout="{! c.mouseout }" />                      
+                        </a>   
+                        <c:DisplayCasesPopover caseId="{!cr.Id}" showable="{! v.lastCaseNumber == cr.CaseNumber}" />
+                    </td>
+                    <td class="slds-cell-buffer_left slds-grid">
+                        <!--<div class="slds-truncate" title="{!cr.Status}">
+                            <aura:if isTrue="{! cr.Status == 'ATraiter' }">
+                                <img src="{!$Resource.blank}" width="24" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Status == 'EnCours' }">
+                                <img src="{!$Resource.Unlocked}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{!cr.Status == 'Fermée' }">
+                                <img src="{!$Resource.Locked}" width="22" height="22"/> 
+                            </aura:if>                         
+                            <aura:if isTrue="{!cr.Status == 'EnAttenteRetourClient'}">
+                                <img src="{!$Resource.Unlocked}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{!cr.Status == 'EnAttenteRetourSalle' }">
+                                <img src="{!$Resource.Unlocked}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Status == 'EnAttenteRemboursement' }">
+                                <img src="{!$Resource.Unlocked}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Status == 'En attente retour interne' }">
+                                <img src="{!$Resource.Unlocked}" width="22" height="22"/> 
+                            </aura:if>
+                            
+                        </div>
+                        <div class="slds-truncate origin" title="{! cr.Origin }">
+                            <aura:if isTrue="{! cr.Origin == 'Courrier' }">
+                                <img src="{!$Resource.Courrier}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Téléphone' }">
+                                <img src="{! $Resource.Telephone }" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'E-mail' }">
+                                <img src="{!$Resource.Email}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Formulaire de contact' }">
+                                <img src="{!$Resource.Formulairedecontact}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Salle' }">
+                                <img src="{!$Resource.Salle}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Facebook' }">
+                                <img src="{!$Resource.Facebook}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Twitter' }">
+                                <img src="{!$Resource.Twitter}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Critizr'}">
+                                <img src="{!$Resource.Critizr}" width="22" height="22"/> 
+                            </aura:if>
+                            <aura:if isTrue="{! cr.Origin == 'Interne' }">
+                                <img src="{!$Resource.Interne}" width="22" height="22"/> 
+                            </aura:if>
+                        </div>-->
+                        <div class="slds-truncate" title="{!cr.Status}">
+                            <aura:unescapedHtml value="{!cr.ProvenanceDemande__c}" />
+                        </div>   
+                    </td>
+                    <td class="slds-cell-buffer_left">
+ 						<div class="slds-truncate" title="{!cr.Date_de_creation__c}"><ui:outputDate format="dd-MMM-YY HH:mm" value="{!cr.Date_de_creation__c}"/></div>                    </td>	
+                    
+                    <td class="slds-cell-buffer_left">
+                        
+                        <div class="slds-truncate" title="{!cr.Famille__c}">{!cr.Famille__c}</div>
+                    </td>
+                    
+                    <td class="slds-cell-buffer_left">
+                        <div class="slds-truncate" title="{!cr.Motif__c}">{!cr.Motif__c}</div>
+                    </td>
+                    <td class="slds-cell-buffer_left">
+                        <div class="slds-truncate" title="{!cr.SousMotif__c}">{!cr.SousMotif__c}</div>
+                    </td>
+                   
+                      <td class="slds-cell-buffer_left">
+                        <div class="slds-truncate" title="{!cr.CommentairesInternes__c}">{!cr.CommentairesInternes__c}</div>
+                    </td>
+                    
+                    
+                    
+                    <td class="slds-cell-buffer_left">
+                        <div class="slds-truncate" title="{!cr.Owner.Name}">{!cr.Owner.Name}</div>
+                    </td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    
+    
+    <div class="paginationDiv">
+        <p class="slds-p-top_large slds-align_absolute-center">{!v.total} Tickets - page {!v.page} / {!v.pages}</p>
+        <div class="container">
+            <ul class="pagination slds-align_absolute-center">           
+                <aura:iteration items="{!v.numberPages}" var="np">
+                    <li class="slds-list__item active">
+                        
+                        <ui:button class="btn-pageNumber" press="{!c.otherPage}" label="{!np}"/>
+                        
+                    </li>
+                </aura:iteration>
+            </ul>    
+        </div> 
+    </div>
+    
+    
+    
+    
+    
+</aura:component>

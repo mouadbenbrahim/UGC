@@ -1,0 +1,58 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" controller="LCC006_GesteCommercial">
+    
+    <aura:attribute name="caseRecord" type="Case" default="{ 'sobjectType' : 'Case' ,
+                         'MontantRemise__c': '',
+                         'Mois_de_d_but_remise__c': '',
+                         'NombreDeMoisRemise__c': '', 
+                         'Pallier__c': ''
+                       }" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:workspaceAPI aura:id="workspace" />
+    
+    <lightning:notificationsLibrary aura:id="message"/> 
+    
+    <div style="padding:35px;">    
+        <div class="slds-form slds-form_compound">
+            <fieldset class="slds-form-element">        
+                <div class="slds-form-element__group">
+                
+
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Montant remise<abbr class="slds-required" >*</abbr></label>
+                            <force:inputField value="{!v.caseRecord.MontantRemise__c}"/>
+                        </div>
+                    </div> 
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Mois de début remise<abbr class="slds-required" >*</abbr></label>
+                            <force:inputField value="{!v.caseRecord.Mois_de_d_but_remise__c}"/>
+                        </div>
+                    </div> 
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Nombre de mois remise<abbr class="slds-required" >*</abbr></label>
+                            <force:inputField value="{!v.caseRecord.NombreDeMoisRemise__c}"/>
+                        </div>
+                    </div> 
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Pallier<abbr class="slds-required" >*</abbr></label>
+                            <force:inputField value="{!v.caseRecord.Pallier__c}"/>
+                        </div>
+                    </div> 
+
+                    
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div class="slds-clearfix">
+        <div class="slds-float--right">           
+            <ui:button label="Valider" press="{!c.valider}"/>
+        </div>
+    </div>
+    <br/>
+	
+</aura:component>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://rest.sandbox.eu.zuora.com/oauth/token</authorizeUrl>
+    <consumerKey>feff2259-51cf-4805-b293-c61c675af605</consumerKey>
+    <consumerSecret>kXHm5d8H5j/R7ZzVlvSSIA33lCTYurtP</consumerSecret>
+    <friendlyName>ZuoraToken</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>OpenIdConnect</providerType>
+    <sendAccessTokenInHeader>true</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <tokenUrl>https://rest.sandbox.eu.zuora.com/oauth/token</tokenUrl>
+</AuthProvider>

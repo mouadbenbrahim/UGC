@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Champs_A_Vider_1</fullName>
+    <active>false</active>
+    <description>Des remise &lt;&gt; , ABOREM, REMMENS, REMMONT
+qu on ne peut pas surcharger, et qui viennent directement du catalogue</description>
+    <errorConditionFormula>AND 
+(
+AND(
+Charge__r.FamilleRPC__c &lt;&gt; &quot;ABOREM&quot;,
+Charge__r.FamilleRPC__c &lt;&gt; &quot;REMMENS&quot;,
+Charge__r.FamilleRPC__c &lt;&gt; &quot;REMMONT&quot;
+),
+OR(
+NOT(ISNULL(DebuteXmois__c)),
+NOT(ISNULL(NombreMensu__c)),
+NOT(ISNULL(Montant__c))
+)
+)</errorConditionFormula>
+    <errorMessage>Certains champs doivent etre vides</errorMessage>
+</ValidationRule>

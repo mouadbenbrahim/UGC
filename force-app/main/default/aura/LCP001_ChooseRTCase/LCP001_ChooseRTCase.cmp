@@ -1,0 +1,67 @@
+<aura:component controller="LCC001_ChooseRTCase" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+<!--<aura:component controller="LCC001_ChooseRTCase" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">-->
+
+    
+    <lightning:workspaceAPI aura:id="workspace" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="objInfo" type="string" default="Case" description="store object Info." />
+    <aura:attribute name="depnedentFieldMap" type="map" description="store controller(key)--> dependent(values) picklist value as a map." />
+    <aura:attribute name="isDependentDisable" type="boolean" default="true" description="use for, make disbale depandent field." />
+    <aura:attribute name="caseRecord" type="Case" default="{ 'sobjectType' : 'Case' }" />
+    
+    <!--<div class="slds-align_absolute-center">
+        <lightning:button variant="neutral" label="Valider" onclick="{!c.doValidate}"/>
+    </div>-->
+
+    
+    <div class="modal-header slds-modal__header">
+		<h2 class="title slds-text-heading--medium">Nouvelle Demande</h2>
+	</div>
+    
+	
+
+    <div style="padding:35px;">    
+        <div class="slds-form slds-form_compound">
+            <fieldset class="slds-form-element">        
+                <div class="slds-form-element__group">
+                
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Sélectionner la Famille <abbr class="slds-required" >*</abbr></label>
+                            <div class="slds-select_container">
+                                <ui:inputSelect aura:id="conCountry" class="slds-select" change="{!c.onControllerFieldChange}"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-form-element__row"> 
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Sélectionner le Motif <abbr class="slds-required" >*</abbr></label>
+                            <div class="slds-select_container">
+                                <ui:inputSelect aura:id="conState" disabled="{!v.isDependentDisable}" class="slds-select" change="{!c.onDependentFieldChange}"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br/>
+                    <div class="slds-form-element__row">
+                        <div class="slds-form-element slds-size_1-of-1">
+                            <label class="slds-form-element__label">Sélectionner l'Origine de la demande <abbr class="slds-required" >*</abbr></label>
+                            <force:inputField value="{!v.caseRecord.Origin}"/>
+                        </div>
+                    </div>
+                    
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+
+    <div class="slds-clearfix">
+        <div class="slds-float--right">           
+            <lightning:button variant="brand" label="Valider" onclick="{!c.doValidate}"/>
+        </div>
+    </div>
+
+</aura:component>

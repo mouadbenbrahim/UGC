@@ -1,0 +1,36 @@
+<aura:component description="LCP022_PromoRemise_ViewForm"
+                implements="force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes"
+                controller="LCC022_PromoRemise_ViewForm">
+
+    <!--
+        <div aura:id="editDialog" role="dd" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+    -->
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+    <aura:attribute name="operation" type="String" required="true" default="lireRecord"/>
+
+    <fieldset class="slds-box slds-theme--default slds-container--large">
+        <form class="slds-form--compound">
+            <h2 class="slds-text-heading--medium">View Record</h2>
+            <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="PromoRemise__c" onload="{!c.handleOnload}">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+
+                        <lightning:outputField fieldName="Name" aura:id="name"/>
+                        <lightning:outputField fieldName="Promo__c" aura:id="promo"/>
+                        <lightning:outputField fieldName="Charge__c" aura:id="chargeLkp"/>
+
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="Montant__c" aura:id="rMontant"/>
+                        <lightning:outputField fieldName="NombreMensu__c" aura:id="rNombremensu"/>
+                        <lightning:outputField fieldName="DebuteXmois__c" aura:id="rDebutexmois"/>
+                    </div>
+                </div>
+            </lightning:recordEditForm>
+
+
+        </form>
+    </fieldset>
+
+
+</aura:component>

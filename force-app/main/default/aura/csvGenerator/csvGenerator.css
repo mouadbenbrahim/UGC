@@ -1,0 +1,82 @@
+.THIS .slds-text-heading_small, .THIS.slds-text-heading--small{
+    font-size: 0.75rem;
+    line-height: 1.25;
+}
+
+.THIS .slds-notify_toast, .THIS .slds-notify--toast{
+justify-content: center;
+    min-width:19rem;
+}
+.THIS .slds-form-element__label {
+	color: rgb(3, 62, 100);
+}
+.THIS ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #667889;
+    font-style: italic;
+    font-weight: 300;
+}
+.THIS :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: #667889;
+    font-style: italic;
+    font-weight: 300;
+   opacity:  1;
+}
+.THIS ::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #667889;
+    font-style: italic;
+    font-weight: 300;
+   opacity:  1;
+}
+.THIS :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #667889;
+    font-style: italic;
+    font-weight: 300;
+}
+.THIS ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #667889;
+    font-style: italic;
+    font-weight: 300;
+}
+
+.THIS .mb-Label{
+     text-align:left;
+    float: left;
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+    position: relative;
+    top: .1875rem;
+    margin-right: 0;
+    margin-bottom: 0;
+}
+.THIS .uiInput--input.input {
+   
+    border: 2px solid rgb(250, 250, 250);
+    width: 90%;
+    line-height: 1.875rem;
+}
+.THIS .middle{
+    text-align: center;
+}
+.THIS .LoginForm{
+    background:white;
+    padding:1rem; 
+}
+.THIS .slds-theme_error,.THIS .slds-theme--error{
+background-color:rgb(162,49,65);
+    color:white
+}
+.THIS .slds-theme_info{
+    color:white;
+background-color:rgb(48,133,186);
+}
+.THIS .slds-theme_success{
+  color:white;  
+}
+.THIS .slds-button_brand{
+    color:white
+}
+
+.THIS select:disabled {
+    background: #dddddd;
+}

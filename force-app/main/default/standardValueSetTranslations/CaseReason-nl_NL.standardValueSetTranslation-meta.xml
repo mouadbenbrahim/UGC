@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Exemples</masterLabel>
+        <translation>Voorbeeld</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Fonctionnalité complexe</masterLabel>
+        <translation>complexe functionaliteit</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Formation non dispensée à l&#39;utilisateur</masterLabel>
+        <translation>Opleiding niet aan de gebruikers gegeven</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Instructions non explicites</masterLabel>
+        <translation>Niet gespecificeerde instructies</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Nouveau problème</masterLabel>
+        <translation>Nieuw probleem</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Problème existant</masterLabel>
+        <translation>Bestaand probleem</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

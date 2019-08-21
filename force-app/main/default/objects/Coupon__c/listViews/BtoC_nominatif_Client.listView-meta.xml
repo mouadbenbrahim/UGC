@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BtoC_nominatif_Client</fullName>
+    <columns>NAME</columns>
+    <columns>QuantiteItemUtilise__c</columns>
+    <columns>QuantiteItemDisponible__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Coupon__c.BtoCNominatifClient</value>
+    </filters>
+    <label>BtoC nominatif Client</label>
+</ListView>

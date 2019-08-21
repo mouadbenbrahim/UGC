@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TypePiece__c</fullName>
+    <externalId>false</externalId>
+    <label>Type Piece</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>SLINVM</fullName>
+                <default>false</default>
+                <label>SLINVM</label>
+            </value>
+            <value>
+                <fullName>SLREFDM</fullName>
+                <default>false</default>
+                <label>SLREFDM</label>
+            </value>
+            <value>
+                <fullName>SLJRNM</fullName>
+                <default>false</default>
+                <label>SLJRNM</label>
+            </value>
+            <value>
+                <fullName>SLCASHM</fullName>
+                <default>false</default>
+                <label>SLCASHM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

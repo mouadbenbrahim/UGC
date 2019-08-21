@@ -1,0 +1,16 @@
+<aura:component description="LCP019_QA_NewPromoRemise" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="LCC019_NewPromoRemise">
+    <aura:attribute name="champs" type="PromoRemise__c" />
+    <aura:attribute name="rec" type="PromoRemise__c" />
+    <aura:attribute name="myId" type="String" default="{!v.recordId}"/>
+
+    <force:recordData aura:id="RecordService"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.rec}"
+                      targetFields="{!v.champs}"
+                      fields="Name"
+                      layoutType="FULL"
+                      mode="EDIT"
+                      recordUpdated="{!c.doInit}"
+    />
+
+</aura:component>

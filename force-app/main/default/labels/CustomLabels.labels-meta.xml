@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Agent_incorrect</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent Id is null or incorrect</shortDescription>
+        <value>Agent Id is null or incorrect</value>
+    </labels>
+    <labels>
+        <fullName>Appel_entrant_du</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Appel entrant du</shortDescription>
+        <value>Appel entrant du :</value>
+    </labels>
+    <labels>
+        <fullName>Appel_sortant_vers</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Appel sortant vers</shortDescription>
+        <value>Appel sortant vers :</value>
+    </labels>
+    <labels>
+        <fullName>Batch_SubscriptionTarifUpdate_Date</fullName>
+        <categories>UGC_TODAY pour aujourdhui ou date au format YYYY-MM-DD</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Batch_SubscriptionTarifUpdate_Date</shortDescription>
+        <value>UGC_TODAY</value>
+    </labels>
+    <labels>
+        <fullName>CL01_ENREGISTREMENT_PAR_PAGE</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CL01_ENREGISTREMENT_PAR_PAGE</shortDescription>
+        <value>Enregistrement par page</value>
+    </labels>
+    <labels>
+        <fullName>CL02_NOUVELLE_DEMANDE</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>CL02_NOUVELLE_DEMANDE</shortDescription>
+        <value>Nouvelle demande</value>
+    </labels>
+    <labels>
+        <fullName>CL03_Rechercher_par_colonnes</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>CL03 Rechercher par colonnes</shortDescription>
+        <value>Rechercher par colonnes</value>
+    </labels>
+    <labels>
+        <fullName>CL04_Charg_de_client_le</fullName>
+        <language>fr</language>
+        <protected>false</protected>
+        <shortDescription>CL04 Chargé de clientèle</shortDescription>
+        <value>Chargé de clientèle</value>
+    </labels>
+    <labels>
+        <fullName>CL05_Nom_du_client</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CL05 Nom du client</shortDescription>
+        <value>Client&#39;s name</value>
+    </labels>
+    <labels>
+        <fullName>CL06_ERREUR_DOUBLON_SUR_COMPTE</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CL06_ERREUR_DOUBLON_SUR_COMPTE</shortDescription>
+        <value>Le compte que vous avez tenté de créer existe déjà.</value>
+    </labels>
+    <labels>
+        <fullName>CL07_EMAIL_OBLIGATOIRE</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CL07_EMAIL_OBLIGATOIRE</shortDescription>
+        <value>Adresse e-mail obligatoire.</value>
+    </labels>
+    <labels>
+        <fullName>Call_Id</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Deprecated</shortDescription>
+        <value>Call ID :</value>
+    </labels>
+    <labels>
+        <fullName>Code</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Code</shortDescription>
+        <value>Code</value>
+    </labels>
+    <labels>
+        <fullName>Create_Account</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Create Account</shortDescription>
+        <value>Create new Account</value>
+    </labels>
+    <labels>
+        <fullName>Create_Contact</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Create Contact</shortDescription>
+        <value>Create new contact</value>
+    </labels>
+    <labels>
+        <fullName>Create_Lead</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Create Lead</shortDescription>
+        <value>Create new lead</value>
+    </labels>
+    <labels>
+        <fullName>Droit_l_oubli</fullName>
+        <categories>alert</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Droit à l&#39;oubli</shortDescription>
+        <value>You are going to delete every informations about this client, would you still like to proceed?</value>
+    </labels>
+    <labels>
+        <fullName>EmptyCredsInCustomSetting</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Credentials in Custom Setting are empty</shortDescription>
+        <value>Credentials in Custom Setting are empty</value>
+    </labels>
+    <labels>
+        <fullName>Error_Agent_Id_Empty</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Agent Id Empty</shortDescription>
+        <value>Agent id on user is empty</value>
+    </labels>
+    <labels>
+        <fullName>Error_Authorization_Status</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Authorization Status</shortDescription>
+        <value>status is :</value>
+    </labels>
+    <labels>
+        <fullName>Error_Banner_Credentials_Api</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Banner Credentials Api</shortDescription>
+        <value>Empty credentials --&gt; credentials do not match with API user login and password</value>
+    </labels>
+    <labels>
+        <fullName>Error_Empty_Req_Fields</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Empty Req Fields</shortDescription>
+        <value>Some requred fields are empty</value>
+    </labels>
+    <labels>
+        <fullName>Error_Starus_Check_Credentials</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Starus Check Credentials</shortDescription>
+        <value>status code response is:</value>
+    </labels>
+    <labels>
+        <fullName>Error_Token_Empty</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Token Empty</shortDescription>
+        <value>Tokent is empty</value>
+    </labels>
+    <labels>
+        <fullName>Event_not_exist</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Event does not exist</shortDescription>
+        <value>Event does not exist</value>
+    </labels>
+    <labels>
+        <fullName>Groupe</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Groupe</shortDescription>
+        <value>Groupe :</value>
+    </labels>
+    <labels>
+        <fullName>Inbound</fullName>
+        <categories>Inbound</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Inbound</shortDescription>
+        <value>Inbound</value>
+    </labels>
+    <labels>
+        <fullName>Incoming_call_empty</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>incoming call is empty</shortDescription>
+        <value>Incoming call is empty</value>
+    </labels>
+    <labels>
+        <fullName>InvalidCreds</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>InvalidCreds</shortDescription>
+        <value>Invalid login or password</value>
+    </labels>
+    <labels>
+        <fullName>Log_out</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Log out</shortDescription>
+        <value>Log out</value>
+    </labels>
+    <labels>
+        <fullName>Login_Banner</fullName>
+        <categories>pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Login Banner</shortDescription>
+        <value>Login</value>
+    </labels>
+    <labels>
+        <fullName>MC_APICall_Password</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_APICall_Password</shortDescription>
+        <value>password1+</value>
+    </labels>
+    <labels>
+        <fullName>MC_APICall_Username</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_APICall_Username</shortDescription>
+        <value>Marketing Cloud Connect</value>
+    </labels>
+    <labels>
+        <fullName>MC_API_Endpoint</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_API_Endpoint</shortDescription>
+        <value>https://webservice.exacttarget.com/Service.asmx</value>
+    </labels>
+    <labels>
+        <fullName>MC_API_PostMethod</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_API_PostMethod</shortDescription>
+        <value>POST</value>
+    </labels>
+    <labels>
+        <fullName>MC_BatchSize</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_BatchSize</shortDescription>
+        <value>1500</value>
+    </labels>
+    <labels>
+        <fullName>MC_DataExtensionColumns</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_DataExtensionColumns</shortDescription>
+        <value>ExternalKey__c;Account__c;Contact__c;Is_Clicked__c;Is_Opened__c;Name;SendID__c;EmailAddress__c;Send_Date__c;Last_click_date__c;Last_opened_date__c</value>
+    </labels>
+    <labels>
+        <fullName>MC_DataExtensionName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_DataExtensionName</shortDescription>
+        <value>Tracking</value>
+    </labels>
+    <labels>
+        <fullName>MC_ReadSendLoggingDEResponse</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MC_ReadSendLoggingDEResponse</shortDescription>
+        <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:wsa=&quot;http://schemas.xmlsoap.org/ws/2004/08/addressing&quot; xmlns:wsse=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot; xmlns:wsu=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&quot;&gt;
+&lt;soap:Header&gt;&lt;wsa:Action&gt;RetrieveResponse&lt;/wsa:Action&gt;&lt;wsa:MessageID&gt;urn:uuid:6ac6b534-501b-409b-b078-2a535415e636&lt;/wsa:MessageID&gt;
+&lt;wsa:RelatesTo&gt;urn:uuid:a26baf92-10ad-4532-879f-75b21bea8190&lt;/wsa:RelatesTo&gt;
+&lt;wsa:To&gt;http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous&lt;/wsa:To&gt;&lt;wsse:Security&gt;&lt;wsu:Timestamp wsu:Id=&quot;Timestamp-f82fcaf0-e8c2-44a3-9e8b-a62b893b5833&quot;&gt;&lt;wsu:Created&gt;2017-07-25T07:40:03Z&lt;/wsu:Created&gt;&lt;wsu:Expires&gt;2017-07-25T07:45:03Z&lt;/wsu:Expires&gt;&lt;/wsu:Timestamp&gt;&lt;/wsse:Security&gt;
+&lt;/soap:Header&gt;</value>
+    </labels>
+    <labels>
+        <fullName>Ok</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Log in OK</shortDescription>
+        <value>OK</value>
+    </labels>
+    <labels>
+        <fullName>Open_Banner</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Open Banner</shortDescription>
+        <value>Ouvrіr le bandeau VіaDіalog:</value>
+    </labels>
+    <labels>
+        <fullName>Outbound</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Outbound</shortDescription>
+        <value>Outbound</value>
+    </labels>
+    <labels>
+        <fullName>Password_Banner</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Password Banner</shortDescription>
+        <value>Password</value>
+    </labels>
+    <labels>
+        <fullName>Permission_set_is_not_found</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Permission set is not found</shortDescription>
+        <value>Permission set is not found</value>
+    </labels>
+    <labels>
+        <fullName>PersonAccount</fullName>
+        <categories>Person Account</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>type of object Person Account</shortDescription>
+        <value>Person Account</value>
+    </labels>
+    <labels>
+        <fullName>Ref</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Ref</shortDescription>
+        <value>Ref :</value>
+    </labels>
+    <labels>
+        <fullName>Request_body_empty</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Request body is empty</shortDescription>
+        <value>Request body is empty</value>
+    </labels>
+    <labels>
+        <fullName>S_IDENTIFIER</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>S&#39;IDENTIFIER</shortDescription>
+        <value>S&#39;IDENTIFIER</value>
+    </labels>
+    <labels>
+        <fullName>Service</fullName>
+        <categories>Pages</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Service</shortDescription>
+        <value>Service :</value>
+    </labels>
+    <labels>
+        <fullName>Service_Error_Response</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Service Error Response</shortDescription>
+        <value>Server Error</value>
+    </labels>
+    <labels>
+        <fullName>Slimpay_REF</fullName>
+        <categories>Zuora</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Slimpay_REF</shortDescription>
+        <value>DV</value>
+    </labels>
+    <labels>
+        <fullName>Status</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status</shortDescription>
+        <value>Status</value>
+    </labels>
+    <labels>
+        <fullName>Status003</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status003</shortDescription>
+        <value>Undefine status</value>
+    </labels>
+    <labels>
+        <fullName>Status1</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Available</shortDescription>
+        <value>Disponible</value>
+    </labels>
+    <labels>
+        <fullName>Status10</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No Answer</shortDescription>
+        <value>Pas de réponse</value>
+    </labels>
+    <labels>
+        <fullName>Status11</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Server Problem</shortDescription>
+        <value>Arrêt du serveur</value>
+    </labels>
+    <labels>
+        <fullName>Status13</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Outgoing Call</shortDescription>
+        <value>Émission d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>Status14</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Ringing</shortDescription>
+        <value>Ringing</value>
+    </labels>
+    <labels>
+        <fullName>Status15</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Call Transfer</shortDescription>
+        <value>Transfert d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>Status16</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Incoming Internal Call</shortDescription>
+        <value>Présentation d&#39;appel interne</value>
+    </labels>
+    <labels>
+        <fullName>Status17</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>On Hold</shortDescription>
+        <value>Mise en attente</value>
+    </labels>
+    <labels>
+        <fullName>Status18</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Outgoing Internal Call</shortDescription>
+        <value>Émission d&#39;appel interne</value>
+    </labels>
+    <labels>
+        <fullName>Status19</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Internal Call</shortDescription>
+        <value>Communication interne</value>
+    </labels>
+    <labels>
+        <fullName>Status2</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent communication</shortDescription>
+        <value>Communication</value>
+    </labels>
+    <labels>
+        <fullName>Status20</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Internal Call</shortDescription>
+        <value>Communication interne</value>
+    </labels>
+    <labels>
+        <fullName>Status21</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Conf. Transfer</shortDescription>
+        <value>Transfert accompagné</value>
+    </labels>
+    <labels>
+        <fullName>Status25</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Call code</shortDescription>
+        <value>PostCode</value>
+    </labels>
+    <labels>
+        <fullName>Status3</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent paused</shortDescription>
+        <value>Pause</value>
+    </labels>
+    <labels>
+        <fullName>Status4</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No ongoing call</shortDescription>
+        <value>Déconnecté</value>
+    </labels>
+    <labels>
+        <fullName>Status6</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent backoffice</shortDescription>
+        <value>Back-Office</value>
+    </labels>
+    <labels>
+        <fullName>Status7</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Call wrap-up</shortDescription>
+        <value>Clôture d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>Status8</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Incoming call</shortDescription>
+        <value>Présentation d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>Status9</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Rejected Call</shortDescription>
+        <value>Appel rejeté</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent1</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent available</shortDescription>
+        <value>Disponible</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent10</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>No Answer</shortDescription>
+        <value>Pas de réponse</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent11</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Server Problem</shortDescription>
+        <value>Arrêt du serveur</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent13</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Outgoing Call</shortDescription>
+        <value>Émission d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent14</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Ringing</shortDescription>
+        <value>Ringing</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent15</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Call Transfer</shortDescription>
+        <value>Transfert d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent16</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Incoming Internal Call</shortDescription>
+        <value>Présentation d&#39;appel interne</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent17</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>On Hold</shortDescription>
+        <value>Mise en attente</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent18</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Outgoing Internal Call</shortDescription>
+        <value>Émission d&#39;appel interne</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent19</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Internal Call</shortDescription>
+        <value>Communication interne</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent2</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent communication</shortDescription>
+        <value>Communication</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent20</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Internal Call</shortDescription>
+        <value>Communication interne</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent21</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Conf. Transfer</shortDescription>
+        <value>Transfert accompagné</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent25</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Call code</shortDescription>
+        <value>PostCode</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent3</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent paused</shortDescription>
+        <value>Pause</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent4</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent disconnected</shortDescription>
+        <value>Déconnecté</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent6</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Agent backoffice</shortDescription>
+        <value>Back-Office</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent7</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Call wrap-up</shortDescription>
+        <value>Clôture d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>StatusAgent8</fullName>
+        <categories>Status</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Incoming call</shortDescription>
+        <value>Présentation d&#39;appel</value>
+    </labels>
+    <labels>
+        <fullName>Subject_Call</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Subject of Call</shortDescription>
+        <value>Call</value>
+    </labels>
+    <labels>
+        <fullName>ZuoraEntityId_Belgique</fullName>
+        <categories>Zuora</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Zuora-Entity-Id-Belgique</shortDescription>
+        <value>8adce421-63ec-c07b-0163-f457db12717e</value>
+    </labels>
+    <labels>
+        <fullName>ZuoraEntityId_France</fullName>
+        <categories>Zuora</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Zuora-Entity-Id-France</shortDescription>
+        <value>8adce421-63ec-c07b-0163-f45782667179</value>
+    </labels>
+    <labels>
+        <fullName>message_error</fullName>
+        <categories>Viadialog</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>message error</shortDescription>
+        <value>message error</value>
+    </labels>
+</CustomLabels>

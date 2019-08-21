@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Stocke la validite du token pour pouvoir la lire/raffraichir par script</description>
+    <enableFeeds>false</enableFeeds>
+    <label>Zuora_Token</label>
+    <visibility>Public</visibility>
+</CustomObject>

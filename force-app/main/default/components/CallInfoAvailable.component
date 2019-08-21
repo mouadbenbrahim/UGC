@@ -1,0 +1,119 @@
+<apex:component id="CallInfoAvailable">
+    <apex:attribute name="infoCallForPage" type="CaseIncomingCall" description="event" required="true"/>
+
+    <script src="/soap/ajax/40.0/connection.js" type="text/javascript"/>
+    <script src="/support/api/40.0/interaction.js" type="text/javascript"/>
+    <script src="/support/console/40.0/integration.js" type="text/javascript"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"/>
+    <script type="text/javascript" src="http://domain:port/support/api/25.0/interaction.js"></script>
+    <head>
+        <script type="text/javascript">
+            //sforce.interaction.cti.enableClickToDial();
+            var callbackECTD = function (response) {
+                console.log('####' + response);
+                console.log('####' + JSON.stringify(response));
+               if (response.result) {
+                  console.log('####' + 'Click to dial was enabled.');
+               } else { 
+                  console.log('####' + 'Click to dial was not enabled.');
+               } 
+            };
+            console.log('passe avant enableClickToDial');
+            sforce.opencti.enableClickToDial({callback: callbackECTD});
+        </script>
+    </head>
+    <style>
+        .vd-call-available {
+            max-height: 40px;
+            max-width: 40px;
+        }
+
+        .vd-call-available img {
+            max-height: 24px;
+            max-width: 24px;
+            cursor: pointer;
+        }
+        .vd-call-info {
+            color: white;
+            box-shadow: 0 0 5px rgb(144, 154, 164);
+        }
+
+        .vd-call-info span {
+            font-size: 0.61rem;
+        }
+
+        .vd-call-info span:nth-child(2) {
+            font-weight: bold;
+        }
+
+        .vd-call-number-line {
+            font-weight: bold;
+        }
+
+        .incoming-call {
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#243973+0,398da9+100 */
+            background: #243973; /* Old browsers */
+            background: -moz-linear-gradient(left, #243973 0%, #398da9 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #243973 0%, #398da9 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #243973 0%, #398da9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#243973', endColorstr='#398da9', GradientType=1); /* IE6-9 */
+        }
+
+        .outgoing-call {
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d78e55+0,d0b575+100 */
+            background: #d78e55; /* Old browsers */
+            background: -moz-linear-gradient(left, #d78e55 0%, #d0b575 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #d78e55 0%, #d0b575 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #d78e55 0%, #d0b575 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d78e55', endColorstr='#d0b575', GradientType=1); /* IE6-9 */
+        }
+
+        .webcallback-call {
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#4abdb8+0,5bcbaf+100 */
+            background: #4abdb8; /* Old browsers */
+            background: -moz-linear-gradient(left, #4abdb8 0%, #5bcbaf 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #4abdb8 0%, #5bcbaf 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #4abdb8 0%, #5bcbaf 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4abdb8', endColorstr='#5bcbaf', GradientType=1); /* IE6-9 */
+        }
+
+    </style>
+    <!--<apex:pageMessages/>-->
+    <div class="slds-hide--small slds-size--1-of-1">
+         <span class="vd-call-available ">
+                 <span  class="slds-align_absolute-center">
+                     <apex:outputPanel rendered="{!infoCallForPage.agent.name != null}">
+                          <img src="{!URLFOR($Resource.ViaDialog,'images/OK.png')}"/>
+                          {!infoCallForPage.agent.name} {!$Label[infoCallForPage.agent.statusValue]}
+                     </apex:outputPanel>
+                 </span>
+         </span>
+     </div>
+
+    <div>
+        <div class="slds-size--1-of-1 slds-hide--small ">
+            <div class="slds-align_absolute-center slds-m-top_large slds-m-bottom_large slds-text-heading_small label">
+                {!$Label[infoCallForPage.agent.statusValueAgent]}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="slds-size--1-of-1 slds-show--small">
+            <div class="slds-align_absolute-center slds-m-top_large slds-m-bottom_large slds-text-heading_small label " style="line-height: 8rem;">
+                {!$Label[infoCallForPage.agent.statusValue]}
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-show--small slds-size--1-of-1 slds-p-right--medium">
+         <span class="vd-call-available ">
+                 <span  class="slds-float--right">
+                     <apex:outputPanel rendered="{!infoCallForPage.agent.name != null}">
+                          <img src="{!URLFOR($Resource.ViaDialog,'images/OK.png')}"/>
+                          {!infoCallForPage.agent.name}  {!$Label[infoCallForPage.agent.statusValue]}
+                     </apex:outputPanel>
+                 </span>
+         </span>
+     </div>
+</apex:component>

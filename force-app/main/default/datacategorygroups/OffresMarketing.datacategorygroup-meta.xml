@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCategoryGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <dataCategory>
+        <dataCategory>
+            <dataCategory>
+                <label>UGC illimité</label>
+                <name>UGC_illimit</name>
+            </dataCategory>
+            <dataCategory>
+                <label>UGC illimité - 26 ans</label>
+                <name>UGC_illimit_26_ans</name>
+            </dataCategory>
+            <dataCategory>
+                <label>UGC illimité 2</label>
+                <name>UGC_illimit_2</name>
+            </dataCategory>
+            <label>Abonnement</label>
+            <name>Abonnement</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Fidélité</label>
+            <name>Fid_lit</name>
+        </dataCategory>
+        <label>Tout</label>
+        <name>Tout</name>
+    </dataCategory>
+    <label>Offres marketing</label>
+    <objectUsage>
+        <object>KnowledgeArticleVersion</object>
+    </objectUsage>
+</DataCategoryGroup>

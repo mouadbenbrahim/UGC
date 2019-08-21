@@ -1,0 +1,116 @@
+<aura:component controller="CsvGeneratorCtrl" implements="flexipage:availableForAllPageTypes" access="global"> 
+    
+    <!-- aura init handler , call js "loadCaseList" function on component load, and display contact data on table-->   
+    <!--<aura:handler name="init" value="{!this}" action="{!c.loadCaseList}"/> -->
+    
+    <!-- Déclaration des Attributes --> 
+    
+    <!-- Statut du téléchargement --> 
+    <aura:attribute name="isDownloaded" type="boolean" default="true" />
+    
+    <!-- Liste des cases  --> 
+    <aura:attribute name="ListOfCase" type="List"/>
+    
+    <!-- Déclaration des filtres --> 
+    <aura:attribute name="matriceContactStatut" type="String[]" 
+                    default=",Contacts entrants,Contacts sortants,Flux internes,Courriers automatiques sortants,Export"/>
+    
+    <aura:attribute name="openDate" type="Date" />
+    <aura:attribute name="closeDate" type="Date" />
+    <aura:attribute name="matrice" type="String" />
+    
+    <aura:attribute access="private" name="message" type="String" default=""/>
+    
+    
+    <div class="LoginForm" style="background: white;padding:1rem;border: 1px solid #2574a9;box-shadow: 10px 10px 5px #888888;border-radius: 10px;">
+        
+        <h5 class="middle">Téléchargement des données au format CSV
+        </h5><br/> 
+        <aura:if isTrue="{! !empty(v.message)}">
+            <ui:message severity="message" closable="true">
+                {! v.message }
+            </ui:message>
+        </aura:if>
+        <div class="slds-form slds-form_horizontal">  
+            <div class="slds-form-element" id="IdMatriceDiv" Title="Choisissez votre type de rapport.">
+                <label class="mb-Label " for="input-Id" >
+                    Matrice<abbr class="slds-required" >*</abbr>:
+                </label>
+                <div class="slds-form-element__control">
+                    <ui:inputSelect aura:id="matrice-Id" required="true" change="{! c.changeMatrice }">
+                    	<ui:inputSelectOption text="" label="" />
+                        <ui:inputSelectOption text="Contacts entrants" label="Contacts entrants" />
+                        <ui:inputSelectOption text="Contacts sortants" label="Contacts sortants" />
+                        <ui:inputSelectOption text="Flux internes" label="Flux internes" />
+                        <ui:inputSelectOption text="Courriers automatiques sortants" label="Courriers automatiques sortants" />
+                        <ui:inputSelectOption text="Export" label="Export" />
+                        <ui:inputSelectOption text="Calcul des primes" label="Calcul des primes" />    
+                    </ui:inputSelect>        
+                    <div class="slds-form-element__help" id="ErrorId"></div>
+                </div>
+            </div>
+            <div class="slds-form-element" id="IdDOuvertureDiv" Title="Date d'ouverture de la demande client">
+                <label class="mb-Label " for="input-Id" >
+                	<aura:if isTrue="{! v.matrice != 'Calcul des primes' }">
+	                    Date d'ouverture:
+                	</aura:if>
+                	<aura:if isTrue="{! v.matrice == 'Calcul des primes' }">
+                		Du<abbr class="slds-required" >*</abbr>:
+                	</aura:if>
+                </label>
+                <div class="slds-form-element__control">
+                    <ui:inputDate aura:id="openDate" displayDatePicker="true" value="{!v.openDate}"/>        
+                    <div class="slds-form-element__help" id="ErrorId"></div>
+                </div>
+            </div>
+            <div class="slds-form-element" id="IdDClotureDiv" Title="Date de clôture de la demande client">
+                <label class="mb-Label " for="input-Id" >
+                	<aura:if isTrue="{! v.matrice != 'Calcul des primes' }">
+	                    Date de clôture:
+                	</aura:if>
+                	<aura:if isTrue="{! v.matrice == 'Calcul des primes' }">
+                		Au<abbr class="slds-required" >*</abbr>:
+                	</aura:if>
+                </label>
+                <div class="slds-form-element__control">
+                    <ui:inputDate aura:id="closeDate" displayDatePicker="true" value="{!v.closeDate}"/>        
+                    <div class="slds-form-element__help" id="ErrorId"></div>
+                </div>
+            </div>
+            <div class="slds-form-element" id="IdAbonneeDiv" Title="Précisez si votre demande concerne les abonnées, les non abonnées ou tous">
+                <label class="mb-Label " for="input-Id" >
+                    Abonnée:
+                </label>
+                <div class="slds-form-element__control">
+                    <ui:inputSelect aura:id="abonnee-Id" disabled="{! v.matrice == 'Calcul des primes' }" >
+                    	<aura:if isTrue="{! v.matrice != 'Calcul des primes' }">
+	                    	<option value="">Tout</option>
+	                    	<option value="Oui">Oui</option>
+                    	</aura:if>
+                    	<option value="Non">Non</option>
+                    </ui:inputSelect>    
+                    <div class="slds-form-element__help" id="ErrorId"></div>
+                </div>
+            </div>
+            <div class="slds-form-element" id="IdProduitDiv" Title="Précisez votre produit">
+                <label class="mb-Label " for="input-Id" >
+                    Produit<aura:if isTrue="{! v.matrice == 'Calcul des primes' }"><abbr class="slds-required" >*</abbr></aura:if>:
+                </label>
+                <div class="slds-form-element__control">
+                    <ui:inputSelect aura:id="produit-Id">
+                    	<aura:if isTrue="{! v.matrice != 'Calcul des primes' }">
+                    		<option value="">Tout</option>
+                    	</aura:if>
+                    	<option value="Français">Français</option>
+                    	<option value="Belge">Belge</option>
+                    </ui:inputSelect>    
+                    <div class="slds-form-element__help" id="ErrorId"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <button class="slds-button slds-button_brand" id="createButton" onclick="{!c.downloadCsv}">Télécharger au format CSV</button>
+    </div>
+    
+</aura:component>

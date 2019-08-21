@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Cine_OffreManagers_BE</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cine OffreManagers BE</label>
+        <sharedTo>
+            <group>Offre_Managers_Belgique</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>equals</operation>
+            <value>032</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cine_OffreManagers_FR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cine OffreManagers FR</label>
+        <sharedTo>
+            <group>Offre_Managers_France</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>equals</operation>
+            <value>033</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Cine_Service_Client</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cine Service Client</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>SVP_Customer_Experience</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers/>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

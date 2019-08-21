@@ -1,0 +1,45 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader" access="global" controller="LCC003_Dispatcher">
+
+
+    <aura:attribute name="myRecordId" type="String" required="true" default="pardefaut_myRecordId"/>
+    <aura:attribute name="otherVar" type="String" required="true" default="pardefaut"/>
+    <aura:attribute name="bttnOperation" type="String" required="true" default="Desabonnement"/>
+
+    <aura:attribute name="isWarning" type="Boolean" />
+    <aura:attribute name="messageWarning" type="String" />
+    <aura:attribute name="isError" type="Boolean" />
+    <aura:attribute name="messageError" type="String" />
+    <aura:attribute name="isInfo" type="Boolean" />
+    <aura:attribute name="messageInfo" type="String" />
+
+    <aura:attribute name="firstName" type="String" default="world"/>
+    <!--<lightning:button label="Desabonnement" onclick="{!c.doInit}"/>-->
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.isError}">
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+            <span class="slds-assistive-text">Error</span>
+            <h2>{!v.messageError}</h2>
+        </div>
+        <br/><br/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isInfo}">
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_info" role="alert">
+            <span class="slds-assistive-text">Info</span>
+            <h2>{!v.messageInfo}</h2>
+        </div>
+        <br/><br/>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.isWarning}">
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+            <span class="slds-assistive-text">Warning</span>
+            <h2>{!v.messageWarning}</h2>
+        </div>
+        <br/><br/>
+    </aura:if>
+
+	
+</aura:component>

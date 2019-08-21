@@ -1,0 +1,28 @@
+<!--<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="LCC006_GesteCommercial">
+
+	<lightning:workspaceAPI aura:id="workspace" />
+    
+    <aura:attribute name="CaseRecord" type="Case" />     
+    <aura:attribute name="child" type="Case" />
+    <force:recordData aura:id="RecordService" 
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.CaseRecord}"
+                      recordUpdated="{!c.doInit}"
+                      targetFields="{!v.child}"
+                      fields="Mois_de_d_but_remise__c,MontantRemise__c,NombreDeMoisRemise__c,Pallier__c,DateDemande__c,AccountId"
+                      layoutType="FULL"
+                      mode="EDIT" />
+
+    <lightning:notificationsLibrary aura:id="message"/> 
+    
+</aura:component>
+-->
+
+
+
+
+
+
+<aura:component description="LCP006_GesteCommercial" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <c:LCP003_Dispatcher bttnOperation="GesteCommercial" myRecordId="{!v.recordId}" otherVar="pardefaut"/>
+</aura:component>

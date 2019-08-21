@@ -1,0 +1,13 @@
+<apex:component id="Brand">
+    <style>
+        .vd-brand-icon {
+            max-width: 236px;
+            max-height: 45px;
+        }
+    </style>
+
+    <div class="slds-m-around_x-small">
+        <img class="vd-brand-icon" src="{!URLFOR($Resource.ViaDialog,
+                'images/viadialog-brand.png')}"/>
+    </div>
+</apex:component>

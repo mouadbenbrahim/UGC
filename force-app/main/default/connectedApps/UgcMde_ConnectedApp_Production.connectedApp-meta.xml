@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>yboulenger@ugc.fr</contactEmail>
+    <label>UgcMde_ConnectedApp_Production</label>
+    <oauthConfig>
+        <callbackUrl>http://localhost</callbackUrl>
+        <consumerKey>3MVG9sSN_PMn8tjSodyD28jSJpxgzLIRKCguC8Oze8EafwI08BOm29vBmWARDrO0BqXRYAyg0IW2zOOZlaaEg</consumerKey>
+        <isAdminApproved>false</isAdminApproved>
+        <scopes>Full</scopes>
+    </oauthConfig>
+</ConnectedApp>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BtoCGenerique</fullName>
+    <active>true</active>
+    <label>BtoC generique</label>
+    <picklistValues>
+        <picklist>Categorie__c</picklist>
+        <values>
+            <fullName>BTOC</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type__c</picklist>
+        <values>
+            <fullName>Generique</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

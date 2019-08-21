@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <description>Usage unique
+Usage multiple
+Plusieurs usages uniques</description>
+    <externalId>false</externalId>
+    <label>Type</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Usage unique</fullName>
+                <default>false</default>
+                <label>Usage unique</label>
+            </value>
+            <value>
+                <fullName>Generique</fullName>
+                <default>false</default>
+                <label>Generique</label>
+            </value>
+            <value>
+                <fullName>Multiples</fullName>
+                <default>false</default>
+                <label>Multiples</label>
+            </value>
+            <value>
+                <fullName>BtoB</fullName>
+                <default>false</default>
+                <label>BtoB</label>
+            </value>
+            <value>
+                <fullName>NominatifClient</fullName>
+                <default>false</default>
+                <label>Nominatif Client</label>
+            </value>
+            <value>
+                <fullName>Nominatif Agent</fullName>
+                <default>false</default>
+                <label>Nominatif Agent</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

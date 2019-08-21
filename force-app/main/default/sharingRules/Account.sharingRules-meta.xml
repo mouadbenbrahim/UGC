@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>AccesComptesChargesClienteleBE</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>Edit</caseAccessLevel>
+            <contactAccessLevel>Edit</contactAccessLevel>
+            <opportunityAccessLevel>None</opportunityAccessLevel>
+        </accountSettings>
+        <label>Accès comptes chargés clientèle BE</label>
+        <sharedTo>
+            <role>ChargeClienteleBE</role>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>ProduitUGC__c</field>
+            <operation>equals</operation>
+            <value>belge</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>ProduitUGC__c</field>
+            <operation>notEqual</operation>
+            <value>français</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>AccesComptesChargesClienteleFR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>Edit</caseAccessLevel>
+            <contactAccessLevel>Edit</contactAccessLevel>
+            <opportunityAccessLevel>None</opportunityAccessLevel>
+        </accountSettings>
+        <label>Accès comptes chargés clientèle FR</label>
+        <sharedTo>
+            <role>ChargeClienteleFR</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>ProduitUGC__c</field>
+            <operation>equals</operation>
+            <value>français,belge</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

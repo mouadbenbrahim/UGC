@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCategoryGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <dataCategory>
+        <dataCategory>
+            <label>Fidélité</label>
+            <name>Fid_lit</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Abonnement</label>
+            <name>Abonnement</name>
+        </dataCategory>
+        <label>Tout</label>
+        <name>Tout</name>
+    </dataCategory>
+    <label>Procédures</label>
+    <objectUsage>
+        <object>KnowledgeArticleVersion</object>
+    </objectUsage>
+</DataCategoryGroup>

@@ -1,0 +1,42 @@
+.THIS {
+    position: relative;
+    left: 80px;
+    bottom: 44px;
+    height: 0px;
+}
+
+.THIS.toggle {
+   display: none;
+}
+
+
+.THIS .ActivitiesRecord {
+cursor: pointer;
+}
+
+.THIS .slds-popover__body>div {
+    padding: 3px;
+}
+.THIS tbody tr {
+    height: 36px;
+}
+
+
+
+.THIS .module {
+  width: 200px;
+  overflow: hidden;
+  margin: 0px;
+  white-space: normal;
+}
+
+.THIS .module p {
+	margin: 0px;
+}
+
+
+.THIS .line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+}

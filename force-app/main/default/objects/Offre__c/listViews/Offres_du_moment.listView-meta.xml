@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Offres_du_moment</fullName>
+    <columns>NAME</columns>
+    <columns>Promo__c</columns>
+    <columns>DateDebut__c</columns>
+    <columns>DateFin__c</columns>
+    <columns>Intitule__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>DateDebut__c</field>
+        <operation>lessThan</operation>
+        <value>TODAY</value>
+    </filters>
+    <filters>
+        <field>DateFin__c</field>
+        <operation>greaterThan</operation>
+        <value>TODAY</value>
+    </filters>
+    <label>Offres du moment</label>
+</ListView>

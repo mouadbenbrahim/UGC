@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>Offre_Belgique</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Offre Belgique</label>
+        <sharedTo>
+            <group>Offre_Managers_Belgique</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Offre_Managers_Belgique</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Offre_France</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Offre France</label>
+        <sharedTo>
+            <group>Offre_Managers_France</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Offre_Managers_France</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

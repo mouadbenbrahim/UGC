@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lunettes__c</fullName>
+    <externalId>false</externalId>
+    <label>Lunettes 3D</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Active Volfoni</fullName>
+                <default>false</default>
+                <label>Active Volfoni</label>
+            </value>
+            <value>
+                <fullName>Passive RealD</fullName>
+                <default>false</default>
+                <label>Passive RealD</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

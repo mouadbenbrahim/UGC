@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Courrier entrant</masterLabel>
+        <translation>post</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Courrier sortant</masterLabel>
+        <translation><!-- Courrier sortant --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>E-mail entrant</masterLabel>
+        <translation><!-- E-mail entrant --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>E-mail sortant</masterLabel>
+        <translation><!-- E-mail sortant --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Facebook</masterLabel>
+        <translation><!-- Facebook --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Formulaire de contact</masterLabel>
+        <translation>contactformulier</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Google</masterLabel>
+        <translation><!-- Google --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Interne</masterLabel>
+        <translation><!-- Interne --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Salle</masterLabel>
+        <translation>Zaal</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Selfcare</masterLabel>
+        <translation><!-- Selfcare --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Twitter</masterLabel>
+        <translation><!-- Twitter --></translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Téléphone entrant</masterLabel>
+        <translation>Telefoon</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Téléphone sortant</masterLabel>
+        <translation><!-- Téléphone sortant --></translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

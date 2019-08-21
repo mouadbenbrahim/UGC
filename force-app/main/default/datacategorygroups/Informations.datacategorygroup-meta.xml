@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCategoryGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <dataCategory>
+        <dataCategory>
+            <dataCategory>
+                <label>Programme films non sortis</label>
+                <name>ProgrammeFlmsNonSortis</name>
+            </dataCategory>
+            <dataCategory>
+                <label>opérations cinéma</label>
+                <name>OperationsCinemas</name>
+            </dataCategory>
+            <dataCategory>
+                <label>incidents techniques</label>
+                <name>IncidentsTechniques</name>
+            </dataCategory>
+            <label>Salle</label>
+            <name>salle</name>
+        </dataCategory>
+        <dataCategory>
+            <dataCategory>
+                <label>Connexion site</label>
+                <name>Connexion_site</name>
+            </dataCategory>
+            <dataCategory>
+                <label>Site réservation</label>
+                <name>Site_r_servation</name>
+            </dataCategory>
+            <label>Problèmes techniques</label>
+            <name>ProblemesTechniques</name>
+        </dataCategory>
+        <label>Toutes</label>
+        <name>All</name>
+    </dataCategory>
+    <description>TEST FBM 28 07 2017</description>
+    <label>Informations</label>
+    <objectUsage>
+        <object>Question</object>
+        <object>KnowledgeArticleVersion</object>
+    </objectUsage>
+</DataCategoryGroup>

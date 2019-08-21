@@ -1,0 +1,57 @@
+<apex:page showheader="false" sidebar="false" standardcontroller="Account" docType="html-5.0" standardStylesheets="true" >
+
+<!-- External Files (JQuery / BootStrap / Ajax / YammerSDK) -->
+<apex:includescript value="http://ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></apex:includescript>
+<apex:includescript value="http://code.jquery.com/jquery-1.11.0.min.js"></apex:includescript>
+<apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.5.0/bluebird.min.js"></apex:includescript>
+<apex:includescript value="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></apex:includescript>
+<apex:includeScript value="https://s365v1.blob.core.windows.net/ugc/v1.4/JS/jquery.mCustomScrollbar.concat.min.js"></apex:includescript>
+
+<!-- CSS -->
+<apex:stylesheet value="{!$Resource.Sales365jquery}"></apex:stylesheet>
+<apex:stylesheet value="//appsforoffice.microsoft.com/fabric/1.0/fabric.min.css"></apex:stylesheet>
+<apex:stylesheet value="//appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css"></apex:stylesheet>
+<apex:stylesheet value="{!$Resource.Sales365SP}"></apex:stylesheet>
+<apex:stylesheet value="{!$Resource.Sales365Boot}"></apex:stylesheet>
+
+<!-- Composants Sales365  -->
+
+<apex:includescript value="https://s365v1.blob.core.windows.net/ugc/v1.4/JS/Resources.min.js"></apex:includescript>
+<apex:includescript value="https://s365v1.blob.core.windows.net/ugc/v1.4/JS/Main.min.js"></apex:includescript>
+<apex:includescript value="https://s365v1.blob.core.windows.net/ugc/v1.4/JS/S365SharePoint.min.js"></apex:includescript>
+<apex:includescript value="https://s365v1.blob.core.windows.net/ugc/v1.4/JS/wptr.min.js"></apex:includescript>
+
+<script type="text/javascript">
+    var hostweburl = "https://groupeugc.sharepoint.com/sites/ugcmde-prod";
+    var appweburl = "https://groupeugc-1f482bd5ec6d7a.sharepoint.com/sites/ugcmde-prod/Sales365-prod"; 
+    var configItem = 0;
+    var version = "1.4";
+
+    Sales3651.GlobalParameters.SalesForceObject = new Sales3651.SalesForce("{!Account.Id}", "{!Account.Name}", "{!Account.Id}");
+    Sales3651.GlobalParameters.SalesForceObject.SavedProps = { "Name": "{!Account.Name}" , "ID": "{!Account.Id}"};
+    Sales3651.GlobalParameters.isInsightsActivated = true;
+    FolderByFirstLetter = true;
+
+    window.onload = function () {
+        var main = new Sales3651.Main(hostweburl, appweburl, version, configItem);
+        jQuery(document).ready(function () {main.start();});
+    }
+</script>
+
+<!-- HTML -->
+<!-- SharePoint-->
+<div id="sales365RootDiv" class="myBootstrapClass container-fluid" style="position:relative;">
+    <div id="allSHarePointContent" style="border:1px solid lightgray;min-height:200px; margin-top:8px;">
+        <div class="row" style="background-color: white; margin:0;">
+            <div class="col-md-12" style="background-color: white; min-height:200px;">
+                <div id="centerDiv">
+                    <div style="clear:both;"></div>
+                    <div id="displayResultsDiv">
+                        <div id="RefreshLinkDiv"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</apex:page>

@@ -1,0 +1,9 @@
+MBE.Notes.txt
+
+Retrieve DEVEFF ALL: 
+erreur a la fin:
+TODO
+=== WARNING: The following metadata isn’t in your org. If it’s not new, someone deleted it from the org.
+You do not have the proper permissions to access Layout.
+You do not have the proper permissions to access Layout.
+Metadata API received improper input. Please ensure file name and capitalization is correct. Load of metadata from db failed for metadata of type:NetworkBranding and file name:cbUGC.

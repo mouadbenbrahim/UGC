@@ -1,0 +1,6 @@
+<aura:component description="LCP021_PromoRemise_EditForm"
+                implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome">
+
+    <c:LCP023_PromoRemise_NewEditForm operation="modifRecord" promoId="{!v.recordId}" myRecordId="{!v.recordId}"/>
+
+</aura:component>

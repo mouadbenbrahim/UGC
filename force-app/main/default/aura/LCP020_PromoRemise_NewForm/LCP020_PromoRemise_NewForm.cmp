@@ -1,0 +1,76 @@
+<aura:component description="LCP020_PromoRemise_NewForm"
+                implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome" access="global">
+    <!--controller="LCC020_PromoRemise_NewForm"-->
+
+    <c:LCP023_PromoRemise_NewEditForm operation="nouveauRecord" promoId="{!v.recordId}" myRecordId=""/>
+<!--    <aura:attribute name="promo" type="Object"/>
+    <aura:attribute name="simplePromo" type="Object"/>
+    <aura:attribute name="promoError" type="String"/>
+    <aura:attribute name="promoRemiseRTid" type="String"/>
+    <aura:attribute name="charge" type="String"/> &lt;!&ndash;pasutilise&ndash;&gt;
+    <aura:attribute name="charge2" type="Object"/> &lt;!&ndash;pasutilise&ndash;&gt;
+    &lt;!&ndash;<aura:attribute name="toto" type="String" default="aaaa"/>&ndash;&gt;
+
+    <force:recordData aura:id="promoRecordLoader"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.promo}"
+                      targetFields="{!v.simplePromo}"
+                      fields="Name"
+                      targetError="{!v.promoError}"
+                      recordUpdated="{!c.doInit}"
+    />
+
+    <div class="slds-page-header" role="banner">
+        <p class="slds-text-heading&#45;&#45;label">{!v.simplePromo.Name} </p>
+        <h1 class="slds-page-header__title slds-m-right_small slds-truncate slds-align-left">
+            Nouveau Promo Remise
+        </h1>
+    </div>
+
+    <lightning:recordEditForm objectApiName="PromoRemise__c" aura:id="myForm"
+                              recordId=""
+                              recordTypeId="{!v.promoRemiseRTid}"
+                              onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccess}"
+                              onload="{!c.handleOnload}">
+        <lightning:messages/> &lt;!&ndash;Zone affiche les messages erreurs&ndash;&gt;
+        <lightning:inputField fieldName="Promo__c" value="{!v.promo.fields.Id.value}" class="slds-hide"/>
+        &lt;!&ndash;<lightning:inputField fieldName="Name"/>&ndash;&gt;
+        <lightning:inputField fieldName="Charge__c" aura:id="chargeLkp" onchange="{!c.handleChargeChange}"/>
+
+        <lightning:inputField fieldName="Montant__c" aura:id="rMontant"/>
+        <lightning:inputField fieldName="NombreMensu__c" aura:id="rNombremensu"/>
+        <lightning:inputField fieldName="DebuteXmois__c" aura:id="rDebutexmois"/>
+        &lt;!&ndash;<lightning:outputField fieldName="RecordTypeId" aura:id="rType"/>&ndash;&gt;
+                <lightning:button variant="brand" type="submit" label="Create Remise" class="slds-button slds-button&#45;&#45;neutral uiButton&#45;&#45;default uiButton&#45;&#45;brand uiButton"/>
+            <lightning:button variant="neutral" label="Cancel" onclick="{!c.handleCancel}"/>
+
+    </lightning:recordEditForm>-->
+
+    <!--<aura:attribute name="toto" type="String" default="{!v.promo.recordTypeInfo.name}"/>-->
+    <!--<aura:attribute name="promoRT" type="String" default="{!v.promo.recordTypeInfo.name}"/>-->
+
+    <!--    <aura:attribute name="newRemise" type="Object"/>
+        <aura:attribute name="simpleNewRemise" type="Object"/>
+        <aura:attribute name="newRemiseError" type="String"/>
+        <force:recordData aura:id="remiseCreator"
+                layoutType="FULL"
+                targetRecord="{!v.newRemise}"
+                targetFields="{!v.simpleNewRemise}"
+                targetError="{!v.newRemiseError}"
+        />-->
+
+    <!--<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>-->
+
+
+
+    <!--    <lightning:input aura:id="DebuteXmois" label="Debute dans x mois" name="DebuteXmois" value="{!v.newRemise.DebuteXmois__c}" required="FALSE" />
+        <lightning:input aura:id="Charge" label="La remise" name="Charge" value="{!v.simpleNewRemise.Charge__c}" required="FALSE"/>
+        <lightning:input aura:id="Name" label="Name" name="Name" value="{!v.simpleNewRemise.Name    }" required="FALSE"/>-->
+    <!--0120E000000oyZvQAI-->
+
+
+
+
+
+</aura:component>

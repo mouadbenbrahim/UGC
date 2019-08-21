@@ -1,0 +1,5 @@
+<apex:page >
+    <apex:iframe src="https://xmlresa.ugc.fr/webServicesui/Home/IndexBilendi/033/76030082802/prod" scrolling="true" id="theIframe"/>
+
+    
+</apex:page>

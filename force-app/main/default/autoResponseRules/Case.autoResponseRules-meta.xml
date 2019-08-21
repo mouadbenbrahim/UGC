@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <autoResponseRule>
+        <fullName>Réponse automatique requête</fullName>
+        <active>false</active>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Formulairedecontact</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <senderEmail>noreplytestugc@gmail.com</senderEmail>
+            <senderName>Service Client UGC</senderName>
+            <template>unfiled$public/R_ponse_automatique_requ_te_client_fid_lit</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Formulairedecontact</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <senderEmail>noreplytestugc@gmail.com</senderEmail>
+            <senderName>Service Client UGC</senderName>
+            <template>unfiled$public/ReponseAutomatiqueRequeteClientNonFidelite</template>
+        </ruleEntry>
+    </autoResponseRule>
+</AutoResponseRules>

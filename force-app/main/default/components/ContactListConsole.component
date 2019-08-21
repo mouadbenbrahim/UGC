@@ -1,0 +1,124 @@
+<apex:component controller="ContactListController" allowDML="true">
+    <style>
+        a.vd-contact-link, a.vd-contact-link:visited, a.vd-contact-link:active, a.vd-contact-link:link {
+            color: black;
+            text-decoration: underline;
+            font-size: 0.7rem;
+        }
+
+        a.vd-contact-link:hover {
+            color: #015ba7;
+            font-size: 0.7rem;
+        }
+    </style>
+
+    <apex:attribute name="incomeContacts" type="SObject[]" description="Contacts to represent" assignTo="{!contacts}"/>
+    <apex:attribute name="logEvent" type="Event" description="Log event" assignTo="{!evt}"/>
+    <apex:attribute name="telephonyBoardC" type="TelephonyBoardController" description="TelephonyBoardController"
+                    assignTo="{!telephonyBoardCntr}"/>
+    <apex:attribute name="infoCallForPage" type="CaseIncomingCall" description="event" required="true"/>
+
+
+    <!--<apex:form >-->
+    <!--TODO:test form-> -->
+    <!--
+    <apex:actionFunction name="createContact" action="{!createContact}" rerender="contacts"
+                         onComplete="pageNavigator.createContact('{!evt.whoId}')" reRender="listContacts,main"/>
+    <apex:actionFunction name="createLead" action="{!createLead}" rerender="contacts"
+                         onComplete="pageNavigator.createContact('{!evt.whoId}')" reRender="listContacts,main"/>
+    <apex:actionFunction name="createAccount" action="{!createAccount}" rerender="contacts"
+                         onComplete="pageNavigator.createContact('{!evt.WhatId}')" reRender="listContacts,main"/>
+    -->
+    <apex:actionFunction name="createContact" action="{!createContact}" rerender="contacts"
+                         onComplete="openCont('{!evt.whoId}')" reRender="listContacts,main"/>
+    <apex:actionFunction name="createLead" action="{!createLead}" rerender="contacts"
+                         onComplete="openCont('{!evt.whoId}')" reRender="listContacts,main"/>
+    <apex:actionFunction name="createAccount" action="{!createAccount}" rerender="contacts"
+                         onComplete="openCont('{!evt.WhatId}')" reRender="listContacts,main"/>
+    
+    <apex:actionFunction name="bindEventWithContact" action="{!bindEventWithContact}"
+                         onComplete="openCont('{!contactId}')" reRender="listContacts,main">
+        <!--<apex:actionFunction name="bindEventWithContact" action="{!bindEventWithContact}" onComplete= "pageNavigator.openContact('{!evt.whoId}', '{!evt.WhatId}')">-->
+        <apex:param name="contactId" assignTo="{!contactId}" value=""/>
+    </apex:actionFunction>
+
+    <apex:outputPanel id="listContacts" layout="block"
+                      styleClass="slds-m-around_x-small slds-truncate slds-has-flexi-truncate">
+        <apex:outputPanel rendered="{!IF(infoCallForPage.call.product_uid == '1','true','none') }">
+            <label class="vd-label slds-media__body" for="comments">Contact(s) reconnu(s) :</label>
+        </apex:outputPanel>
+        <apex:outputPanel id="contacts" styleClass="slds-m-around_small">
+            <div>
+                <apex:repeat value="{!infoForTableComponent}" var="key">
+                    <div style="float:left">
+                        <table>
+                            <div class="vd-label slds-media__body">
+                                <apex:outputPanel rendered="{!IF(infoCallForPage.call.product_uid == '1','true','none') }">
+                                    <p style="text-decoration: underline;" class="vd-label slds-media__body">
+                                            {!key}
+                                    </p>
+                                </apex:outputPanel>
+                            </div>
+
+                            <apex:repeat value="{!infoForTableComponent[key]}" var="item">
+                                <tr>
+                                    <td>
+			                    		<apex:outputLink style="text-decoration: none;" styleclass="vd-contact-link" value="" onclick="bindEventWithContact('{!item.obj.Id}');return false;">
+			                            	 {!item.name} 
+			                    		</apex:outputLink>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    </div>
+                </apex:repeat>
+            </div>
+            <apex:outputPanel styleClass="vd-creation-list" layout="block"
+                              rendered="{!contacts.size==0 || contacts==null}">
+                <div>
+                    <apex:outputLink styleClass="vd-contact-link" value="" onclick="createContact();return false;">
+                            {!$Label.Create_Contact}
+                    </apex:outputLink>
+                </div>
+                <div>
+                    <apex:outputLink styleClass="vd-contact-link" value="" onclick="createLead();return false;">
+                            {!$Label.Create_Lead}
+                    </apex:outputLink>
+                </div>
+                <div>
+                    <apex:outputLink styleClass="vd-contact-link" value="" onclick="createAccount();return false;">
+                            {!$Label.Create_Account}
+                    </apex:outputLink>
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:outputPanel>
+    <!--</apex:form>-->
+
+    <script>
+        function openCont(cId) {
+            if (cId.length > 10) {
+                //pageNavigator.openContact(cId);         
+                sforce.opencti.screenPop({
+                     type: sforce.opencti.SCREENPOP_TYPE.SOBJECT,
+                     params: { recordId: cId }
+                });
+            }
+
+        }
+        /*
+        function createCont(cId) {
+            if (cId.length > 10) {
+                //pageNavigator.openContact(cId);         
+                sforce.opencti.screenPop({
+                     type: sforce.opencti.SCREENPOP_TYPE.URL,
+                     params: { url : '/' + cId + '/e}
+                });
+            }
+
+        }
+		*/
+        
+    </script>
+
+</apex:component>

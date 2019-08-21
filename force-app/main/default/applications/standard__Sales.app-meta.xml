@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>standard-home</defaultLandingTab>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Lead</tabs>
+    <tabs>standard-Opportunity</tabs>
+    <tabs>standard-Forecasting3</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-Chatter</tabs>
+    <tabs>standard-File</tabs>
+    <tabs>standard-Product2</tabs>
+    <tabs>Evenement__c</tabs>
+    <tabs>Knowledge__kav</tabs>
+    <tabs>Complexe__c</tabs>
+    <tabs>Film__c</tabs>
+    <tabs>Programmation_Newsletter__c</tabs>
+    <tabs>Salle__c</tabs>
+    <tabs>Abonnement__c</tabs>
+    <tabs>Carte__c</tabs>
+    <tabs>ProdRatePlan__c</tabs>
+    <tabs>Promo__c</tabs>
+    <tabs>Offre__c</tabs>
+    <tabs>ProdRatePlanCharge__c</tabs>
+    <tabs>Coupon__c</tabs>
+    <tabs>Dette__c</tabs>
+    <tabs>RejetExterne__c</tabs>
+    <tabs>RejetExtItem__c</tabs>
+    <tabs>File_Impression__c</tabs>
+    <tabs>Zuora__ZInvoice__c</tabs>
+    <tabs>BilendiAccounting__c</tabs>
+</CustomApplication>
