@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Champs_Obligatoires</fullName>
+    <active>false</active>
+    <description>Les champs ci-dessous sont obligatoires</description>
+    <errorConditionFormula>OR(
+AND (Charge__r.FamilleRPC__c = &quot;REMMONT&quot;,  ISNULL(DebuteXmois__c)),
+AND (Charge__r.FamilleRPC__c = &quot;REMMONT&quot;,  ISNULL( Montant__c )),
+AND (Charge__r.FamilleRPC__c = &quot;REMMONT&quot;,  ISNULL( NombreMensu__c)),
+AND (Charge__r.FamilleRPC__c = &quot;ABOREM&quot;,  ISNULL( Montant__c )),
+AND (Charge__r.FamilleRPC__c = &quot;REMMENS&quot;,  ISNULL( Montant__c )),
+AND (Charge__r.FamilleRPC__c = &quot;REMMENS&quot;,  ISNULL( NombreMensu__c)),
+AND (Charge__r.FamilleRPC__c = &quot;REMMENS&quot;,  ISNULL( DebuteXmois__c))
+)</errorConditionFormula>
+    <errorMessage>champs manquant ou obligatoire</errorMessage>
+</ValidationRule>

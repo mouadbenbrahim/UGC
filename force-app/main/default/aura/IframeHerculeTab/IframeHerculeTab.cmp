@@ -1,0 +1,25 @@
+<aura:component >
+    <aura:attribute name="ifmsrc" type="String"/>
+    <aura:attribute name="label" type="String" />
+    <aura:attribute name="urlFragment" type="String" required="true" />
+    <aura:method name="reinit" action="{!c.reinit}">
+    	<aura:attribute name="baseUrl" type="String" required="true" />
+    	<aura:attribute name="codePays" type="String" required="true" />
+    	<aura:attribute name="idMonCompte" type="String" required="true" />
+    </aura:method>
+    <aura:method name="reinitVlo" action="{!c.reinitVlo}">
+    	<aura:attribute name="baseUrl" type="String" required="true" />
+    	<aura:attribute name="codePays" type="String" required="true" />
+    	<aura:attribute name="idMonCompte" type="String" required="true" />
+    </aura:method>
+    
+    <lightning:tab aura:id="{!v.urlFragment}" id="{!v.urlFragment}">
+        <aura:set attribute="label">
+            {!v.label}
+        </aura:set>
+        <aura:set attribute="body" >
+            <iframe width="100%" height="600px" src="{!v.ifmsrc}" aura:id="iframe" 
+            	sandbox="allow-same-origin allow-scripts allow-popups allow-forms" /> 
+        </aura:set>
+    </lightning:tab>
+</aura:component>

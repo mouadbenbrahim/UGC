@@ -1,0 +1,64 @@
+<aura:component controller="DisplayCases_CC" >
+    <aura:attribute name="caseId" type="Id" />
+    <aura:attribute name="activitiesRecord" type="Task[]"/>
+    <aura:attribute name="showable" type="Boolean" default="false" />
+    <aura:attribute name="show" type="Boolean" default="false" />
+    <aura:attribute name="willDisappear" type="Boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.showable}" action="{!c.showableChanged}"/>
+    <aura:handler name="change" value="{!v.show}" action="{!c.showChanged}"/>
+    
+    <aura:if isTrue="{! !empty(v.activitiesRecord) }" >
+        <div aura:id="tooltip"  class="{! v.show?'':'toggle'}">
+            <div class="tooltip slds-popover slds-popover_panel slds-nubbin_left-top slds-popover_medium" role="tooltip" 
+                 onmouseleave="{! c.mouseleave }" onmouseover="{! c.mouseover }"   >
+                <div class="slds-popover__body" >  
+                    <div>
+                        <aura:iteration items="{!v.activitiesRecord}" var="ar">           
+                            <div class="slds-timeline__item">
+                                <div class="slds-media">
+                                    <div class="slds-media__body">
+                                        <div class="slds-media slds-timeline__media">
+                                            <div class="slds-media__figure slds-timeline__icon" title="{!ar.TECH_Type__c}" >
+                                                <aura:unescapedHtml value="{! ar.IconeCanalOrigine__c }" />
+                                            </div>
+                                            <div class="slds-media__body ">
+                                                <h3 class="slds-truncate" title="{!ar.Subject}"><a href="{!'/one/one.app?#/sObject/'+ ar.Id + '/view'}" >{!ar.Subject}</a></h3>
+                                                
+                                                
+                                                <div class="module">
+													<p class="line-clamp" title="{!ar.Description}">{!ar.Description}</p>
+												</div>
+                                                
+                                                <ul class="slds-list_horizontal slds-wrap">
+                                                    <li class="slds-m-right_large">
+                                                        <span class="slds-text-title">{! $Label.c.CL05_Nom_du_client }:</span>
+                                                        <span class="slds-text-body_small"><a href="{!'/one/one.app?#/sObject/'+ ar.WhoId+ '/view'}" >{!ar.Who.Name}</a></span>
+                                                    </li>
+                                                    <li class="slds-m-right_large">
+                                                        <span class="slds-text-title">{! $Label.c.CL04_Charg_de_client_le }:</span>
+                                                        <span class="slds-text-body_small"><a href="{!'/one/one.app?#/sObject/'+ ar.OwnerId+ '/view'}" >{!ar.Owner.Name}</a></span>
+                                                    </li>
+                                                    <aura:iteration items="{!ar.Attachments}" var="att">
+			                                            <lightning:icon iconName="utility:attach" size="small"/>
+			                                            <span class="slds-text-body_small"><a href="{!'/servlet/servlet.FileDownload?file='+ att.Id}" >{!att.Name}</a></span>
+			                                        </aura:iteration>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-media__figure slds-media__figure_reverse">
+                                        <div class="slds-timeline__actions">
+                                            <p class="slds-timeline__date"><ui:outputDate value="{!ar.ActivityDate}"/></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

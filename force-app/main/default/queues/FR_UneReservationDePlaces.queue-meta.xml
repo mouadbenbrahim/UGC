@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>FR_Une réservation de places</name>
+    <queueMembers>
+        <users>
+            <user>adieme@ugc.fr</user>
+            <user>akouliho@ugc.fr</user>
+            <user>cmendy@ugc.fr</user>
+            <user>ewillemse@ugc.fr</user>
+            <user>gmeriaux@ugc.fr</user>
+            <user>jpoller@ugc.fr</user>
+            <user>lludot@ugc.fr</user>
+            <user>lgoncalves@ugc.fr</user>
+            <user>mroger@ugc.fr</user>
+            <user>pgasnot-vaquer@ugc.fr</user>
+            <user>smoussaoui@ugc.fr</user>
+            <user>tlambert@ugc.fr</user>
+            <user>tsamut@ugc.fr</user>
+            <user>wlachaux@ugc.fr</user>
+        </users>
+    </queueMembers>
+    <queueRoutingConfig>Unereservationdeplaces</queueRoutingConfig>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>

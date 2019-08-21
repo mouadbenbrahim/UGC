@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MotifMatrice__c</fullName>
+    <externalId>false</externalId>
+    <label>Motif</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>FamilleMatrice__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01- Info process abo</fullName>
+                <default>false</default>
+                <label>01- Info process abo</label>
+            </value>
+            <value>
+                <fullName>02- Erreur prise abo</fullName>
+                <default>false</default>
+                <label>02- Erreur prise abo</label>
+            </value>
+            <value>
+                <fullName>03- Click and collect</fullName>
+                <default>false</default>
+                <label>03- Click and collect</label>
+            </value>
+            <value>
+                <fullName>04- Démat</fullName>
+                <default>false</default>
+                <label>04- Démat</label>
+            </value>
+            <value>
+                <fullName>05- B2B</fullName>
+                <default>false</default>
+                <label>05- B2B</label>
+            </value>
+            <value>
+                <fullName>06- VPC</fullName>
+                <default>false</default>
+                <label>06- VPC</label>
+            </value>
+            <value>
+                <fullName>07- Creation Abonnement</fullName>
+                <default>false</default>
+                <label>07- Creation Abonnement</label>
+            </value>
+            <value>
+                <fullName>01- Reception carte</fullName>
+                <default>false</default>
+                <label>01- Réception carte</label>
+            </value>
+            <value>
+                <fullName>02- Reedition payante</fullName>
+                <default>false</default>
+                <label>02- Réédition payante</label>
+            </value>
+            <value>
+                <fullName>03- Reedition gratuite</fullName>
+                <default>false</default>
+                <label>03- Reedition gratuite</label>
+            </value>
+            <value>
+                <fullName>04- Desabonnement</fullName>
+                <default>false</default>
+                <label>04- Desabonnement</label>
+            </value>
+            <value>
+                <fullName>05- Resiliation</fullName>
+                <default>false</default>
+                <label>05- Resiliation</label>
+            </value>
+            <value>
+                <fullName>06- Migration UI 1/2/3</fullName>
+                <default>false</default>
+                <label>06- Migration UI 1/2/3</label>
+            </value>
+            <value>
+                <fullName>07- Reabonnement</fullName>
+                <default>false</default>
+                <label>07- Reabonnement</label>
+            </value>
+            <value>
+                <fullName>08- Retention</fullName>
+                <default>false</default>
+                <label>08- Retention</label>
+            </value>
+            <value>
+                <fullName>09- Retour Carte</fullName>
+                <default>false</default>
+                <label>09- Retour Carte</label>
+            </value>
+            <value>
+                <fullName>10- Retractation</fullName>
+                <default>false</default>
+                <label>10- Retractation</label>
+            </value>
+            <value>
+                <fullName>11- Avertissement</fullName>
+                <default>false</default>
+                <label>11- Avertissement</label>
+            </value>
+            <value>
+                <fullName>12- Annulation Migration</fullName>
+                <default>false</default>
+                <label>12- Annulation Migration</label>
+            </value>
+            <value>
+                <fullName>13- Annulation Contrat</fullName>
+                <default>false</default>
+                <label>13- Annulation Contrat</label>
+            </value>
+            <value>
+                <fullName>99- Autre</fullName>
+                <default>false</default>
+                <label>99- Autre</label>
+            </value>
+            <value>
+                <fullName>01- Inscription</fullName>
+                <default>false</default>
+                <label>01- Inscription</label>
+            </value>
+            <value>
+                <fullName>02- Solde de points</fullName>
+                <default>false</default>
+                <label>02- Solde de points</label>
+            </value>
+            <value>
+                <fullName>03- Echange de points</fullName>
+                <default>false</default>
+                <label>03- Echange de points</label>
+            </value>
+            <value>
+                <fullName>04- Fonctionnement Club</fullName>
+                <default>false</default>
+                <label>04- Fonctionnement Club</label>
+            </value>
+            <value>
+                <fullName>01- Offres UGC</fullName>
+                <default>false</default>
+                <label>01- Offres UGC</label>
+            </value>
+            <value>
+                <fullName>02- Formules UGC+</fullName>
+                <default>false</default>
+                <label>02- Formules UGC+</label>
+            </value>
+            <value>
+                <fullName>03- Solo</fullName>
+                <default>false</default>
+                <label>03- Solo</label>
+            </value>
+            <value>
+                <fullName>04- Blue</fullName>
+                <default>false</default>
+                <label>04- Blue</label>
+            </value>
+            <value>
+                <fullName>05- VLO</fullName>
+                <default>false</default>
+                <label>05- VLO</label>
+            </value>
+            <value>
+                <fullName>01- Modalités de réservation</fullName>
+                <default>false</default>
+                <label>01- Modalités de réservation</label>
+            </value>
+            <value>
+                <fullName>02- Annulation Réservation</fullName>
+                <default>false</default>
+                <label>02- Annulation Réservation</label>
+            </value>
+            <value>
+                <fullName>01- CNIL / Comité de la vie privée</fullName>
+                <default>false</default>
+                <label>01- CNIL / Comité de la vie privée</label>
+            </value>
+            <value>
+                <fullName>02- Droit à l&#39;oubli</fullName>
+                <default>false</default>
+                <label>02- Droit à l&#39;oubli</label>
+            </value>
+            <value>
+                <fullName>03- Fonctionnement Compte</fullName>
+                <default>false</default>
+                <label>03- Fonctionnement Compte</label>
+            </value>
+            <value>
+                <fullName>01- UGC Illimite</fullName>
+                <default>false</default>
+                <label>01- UGC Illimite</label>
+            </value>
+            <value>
+                <fullName>02- Club</fullName>
+                <default>false</default>
+                <label>02- Club</label>
+            </value>
+            <value>
+                <fullName>03- Autre</fullName>
+                <default>false</default>
+                <label>03- Autre</label>
+            </value>
+            <value>
+                <fullName>01- Changement tarifaire</fullName>
+                <default>false</default>
+                <label>01- Changement tarifaire</label>
+            </value>
+            <value>
+                <fullName>02- Impaye</fullName>
+                <default>false</default>
+                <label>02- Impaye</label>
+            </value>
+            <value>
+                <fullName>03- Facture / attestation de paiement</fullName>
+                <default>false</default>
+                <label>03- Facture / attestation de paiement</label>
+            </value>
+            <value>
+                <fullName>04- Remboursement</fullName>
+                <default>false</default>
+                <label>04- Remboursement</label>
+            </value>
+            <value>
+                <fullName>05- Changement coordonnees bancaires</fullName>
+                <default>false</default>
+                <label>05- Changement coordonnées bancaires</label>
+            </value>
+            <value>
+                <fullName>06- Gestes commerciaux</fullName>
+                <default>false</default>
+                <label>06- Gestes commerciaux</label>
+            </value>
+            <value>
+                <fullName>01- Accueil</fullName>
+                <default>false</default>
+                <label>01- Accueil</label>
+            </value>
+            <value>
+                <fullName>02- Confort Proprete</fullName>
+                <default>false</default>
+                <label>02- Confort Propreté</label>
+            </value>
+            <value>
+                <fullName>03- Objet Perdu</fullName>
+                <default>false</default>
+                <label>03- Objet Perdu</label>
+            </value>
+            <value>
+                <fullName>04- Information Film</fullName>
+                <default>false</default>
+                <label>04- Information Film</label>
+            </value>
+            <value>
+                <fullName>05- Programmation</fullName>
+                <default>false</default>
+                <label>05- Programmation</label>
+            </value>
+            <value>
+                <fullName>01- Digital</fullName>
+                <default>false</default>
+                <label>01- Digital</label>
+            </value>
+            <value>
+                <fullName>02- Autre</fullName>
+                <default>false</default>
+                <label>02- Autre</label>
+            </value>
+            <value>
+                <fullName>03- Commentaire</fullName>
+                <default>false</default>
+                <label>03- Commentaire</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>01- Info process abo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>02- Erreur prise abo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>03- Click and collect</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>04- Démat</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>05- B2B</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>06- VPC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>07- Creation Abonnement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>01- Reception carte</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>02- Reedition payante</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>03- Reedition gratuite</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>04- Desabonnement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>05- Resiliation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>06- Migration UI 1/2/3</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>07- Reabonnement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>08- Retention</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>09- Retour Carte</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>10- Retractation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>11- Avertissement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>12- Annulation Migration</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <valueName>13- Annulation Contrat</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>
+            <controllingFieldValue>2- Club UGC / fidelite</controllingFieldValue>
+            <controllingFieldValue>7- Finance</controllingFieldValue>
+            <valueName>99- Autre</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>2- Club UGC / fidelite</controllingFieldValue>
+            <valueName>01- Inscription</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>2- Club UGC / fidelite</controllingFieldValue>
+            <valueName>02- Solde de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>2- Club UGC / fidelite</controllingFieldValue>
+            <valueName>03- Echange de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>2- Club UGC / fidelite</controllingFieldValue>
+            <valueName>04- Fonctionnement Club</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>3- Autres Produits</controllingFieldValue>
+            <valueName>01- Offres UGC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>3- Autres Produits</controllingFieldValue>
+            <valueName>02- Formules UGC+</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>3- Autres Produits</controllingFieldValue>
+            <valueName>03- Solo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>3- Autres Produits</controllingFieldValue>
+            <valueName>04- Blue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>3- Autres Produits</controllingFieldValue>
+            <valueName>05- VLO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>4- Reservation</controllingFieldValue>
+            <valueName>01- Modalités de réservation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>4- Reservation</controllingFieldValue>
+            <valueName>02- Annulation Réservation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>5- Compte client</controllingFieldValue>
+            <valueName>01- CNIL / Comité de la vie privée</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>5- Compte client</controllingFieldValue>
+            <valueName>02- Droit à l&#39;oubli</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>5- Compte client</controllingFieldValue>
+            <valueName>03- Fonctionnement Compte</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>6- Prospection</controllingFieldValue>
+            <valueName>01- UGC Illimite</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>6- Prospection</controllingFieldValue>
+            <valueName>02- Club</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>6- Prospection</controllingFieldValue>
+            <valueName>03- Autre</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>7- Finance</controllingFieldValue>
+            <valueName>01- Changement tarifaire</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>7- Finance</controllingFieldValue>
+            <valueName>02- Impaye</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>7- Finance</controllingFieldValue>
+            <valueName>03- Facture / attestation de paiement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>7- Finance</controllingFieldValue>
+            <valueName>04- Remboursement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>7- Finance</controllingFieldValue>
+            <valueName>05- Changement coordonnees bancaires</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>8- Cinéma</controllingFieldValue>
+            <valueName>01- Accueil</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>8- Cinéma</controllingFieldValue>
+            <valueName>02- Confort Proprete</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>8- Cinéma</controllingFieldValue>
+            <valueName>03- Objet Perdu</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>8- Cinéma</controllingFieldValue>
+            <valueName>04- Information Film</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>8- Cinéma</controllingFieldValue>
+            <valueName>05- Programmation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>9- Divers</controllingFieldValue>
+            <valueName>01- Digital</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>9- Divers</controllingFieldValue>
+            <valueName>02- Autre</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>9- Divers</controllingFieldValue>
+            <valueName>03- Commentaire</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

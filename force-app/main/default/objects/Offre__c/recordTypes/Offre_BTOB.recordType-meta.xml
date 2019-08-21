@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Offre_BTOB</fullName>
+    <active>true</active>
+    <label>Offre BTOB</label>
+    <picklistValues>
+        <picklist>Operation__c</picklist>
+        <values>
+            <fullName>Acquisition</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Migration</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renouvellement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>abotiers</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>retentionaccepte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>welcomeback</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

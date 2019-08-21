@@ -1,0 +1,3 @@
+<aura:component description="LCP008_QA_RefreshContraintes" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <c:LCP003_Dispatcher bttnOperation="RefreshContraintes" myRecordId="{!v.recordId}" otherVar="pardefaut"/>
+</aura:component>

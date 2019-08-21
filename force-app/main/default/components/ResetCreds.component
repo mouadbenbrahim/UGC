@@ -1,0 +1,34 @@
+<!--
+ - Created by CustomerTimes on 10.10.2017.
+ -->
+
+<apex:component id="ResetCreds" controller="LoginPageController" allowDML="true">
+	<apex:attribute name="telephonyBoardC" type="TelephonyBoardController" description="TelephonyBoardController"
+	                assignTo="{!telephonyBoard}"/>
+	<apex:attribute name="admin" type="Boolean" description="visible only for admin"
+	                assignTo="{!isAdmin}" required="false"/>
+	<apex:actionFunction name="logOut" action="{!logOut}" oncomplete="refreshPage()" rerender="auth,main"/>
+	<style>
+		.button {
+			background-image: none;
+			border: transparent;
+		}
+	</style>
+	<div class="slds-m-bottom--xxx-small ">
+		<div class="slds-media__figure" onclick="logOut()">
+	<span class="slds-avatar_x-small slds-icon_container null slds-icon__svg--default " title="">
+	<svg class="button slds-avatar_x-small slds-icon slds-icon-text-default" aria-hidden="true">
+		<use xmlns:xlink="http://www.w3.org/1999/xlink"
+		     xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#logout')}"/>
+	</svg>
+	<span class="slds-assistive-text">{!$Label.Log_out}</span>
+	</span>
+		</div>
+	</div>
+	<script>
+		function refreshPage(){
+			console.log('refreshPage');
+			location.reload();
+		}
+	</script>
+</apex:component>

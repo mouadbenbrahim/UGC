@@ -1,0 +1,3 @@
+<aura:component description="LCP002_Desabonnement" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <c:LCP003_Dispatcher bttnOperation="Desabonnement" myRecordId="{!v.recordId}" otherVar="pardefaut"/>
+</aura:component>

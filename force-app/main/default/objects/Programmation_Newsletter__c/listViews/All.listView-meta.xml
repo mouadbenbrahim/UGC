@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>CodeComplexe__c</columns>
+    <columns>NomFilm__c</columns>
+    <columns>Semaine__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CodeComplexe__c</field>
+        <operation>equals</operation>
+        <value>BERCY</value>
+    </filters>
+    <filters>
+        <field>Semaine__c</field>
+        <operation>equals</operation>
+        <value>49</value>
+    </filters>
+    <label>Tout</label>
+</ListView>

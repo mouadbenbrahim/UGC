@@ -1,0 +1,40 @@
+<aura:component controller="LCC002_BandeauField" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="fieldValues" type="LCC002_BandeauField.ListWRPFieldValues[]"/>
+    <aura:attribute name="image" type="string"/>
+    
+
+    
+    <div class="flexipageComponent" data-aura-class="flexipageComponent">
+		<table>
+			<tr>        
+	        	<td>
+	        		<p align="center">
+    					<img src="{!v.image}" style="height: 220px;background: white;"/>
+    				</p>
+    			</td>
+				<td>
+			        <div class="slds-page-header forceHighlightsStencilDesktop" data-aura-class="forceHighlightsStencilDesktop" style="height: 220px;background: white;">
+						<aura:iteration var="val0" items="{!v.fieldValues}" indexVar="index0">
+							<ul class="slds-grid slds-page-header__detail-row" role="list" style="z-index:1">
+								<aura:iteration var="val" items="{!val0.listWRPFieldValues}" indexVar="index">
+			                        <li class="slds-page-header__detail-block forceHighlightsDesktopListRecordItem" role="listitem"  data-aura-class="forceHighlightsDesktopListRecordItem" style="max-width: 204px;">
+			                            <p class="slds-text-heading--label-normal slds-m-bottom--xx-small slds-truncate" title="{!val.label}">
+			                                {!val.label}
+			                            </p>
+			                            <p class="slds-text-body--regular  slds-truncate">
+			                                <span>{!val.value}</span>
+			                            </p>
+			                        </li>
+								</aura:iteration>
+							</ul>
+				            <br/> 
+						</aura:iteration>	
+					</div>
+				</td>
+			</tr>
+		</table>        
+	</div>
+
+</aura:component>

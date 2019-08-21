@@ -1,0 +1,3 @@
+<aura:component description="LCP017_AnonymisationAbonne" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global">
+    <c:LCP003_Dispatcher bttnOperation="AnonymisationAbonne" myRecordId="{!v.recordId}" otherVar="pardefaut"/>
+</aura:component>

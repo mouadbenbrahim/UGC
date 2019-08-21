@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FamilleMatrice__c</fullName>
+    <externalId>false</externalId>
+    <label>Famille</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>0- Souscription</fullName>
+                <default>false</default>
+                <label>0- Souscription</label>
+            </value>
+            <value>
+                <fullName>1- Vie de l&#39;abonnement</fullName>
+                <default>false</default>
+                <label>1- Vie de l&#39;abonnement</label>
+            </value>
+            <value>
+                <fullName>2- Club UGC / fidelite</fullName>
+                <default>false</default>
+                <label>2- Club UGC / fidelite</label>
+            </value>
+            <value>
+                <fullName>3- Autres Produits</fullName>
+                <default>false</default>
+                <label>3- Autres Produits</label>
+            </value>
+            <value>
+                <fullName>4- Reservation</fullName>
+                <default>false</default>
+                <label>4- Réservation</label>
+            </value>
+            <value>
+                <fullName>5- Compte client</fullName>
+                <default>false</default>
+                <label>5- Compte client</label>
+            </value>
+            <value>
+                <fullName>6- Prospection</fullName>
+                <default>false</default>
+                <label>6- Prospection</label>
+            </value>
+            <value>
+                <fullName>7- Finance</fullName>
+                <default>false</default>
+                <label>7- Finance</label>
+            </value>
+            <value>
+                <fullName>8- Cinéma</fullName>
+                <default>false</default>
+                <label>8- Cinéma</label>
+            </value>
+            <value>
+                <fullName>9- Divers</fullName>
+                <default>false</default>
+                <label>9- Divers</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

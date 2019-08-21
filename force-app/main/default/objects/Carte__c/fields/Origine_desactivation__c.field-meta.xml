@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origine_desactivation__c</fullName>
+    <externalId>false</externalId>
+    <label>Origine désactivation</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>L</fullName>
+                <default>false</default>
+                <label>L</label>
+            </value>
+            <value>
+                <fullName>E</fullName>
+                <default>false</default>
+                <label>E</label>
+            </value>
+            <value>
+                <fullName>M</fullName>
+                <default>false</default>
+                <label>M</label>
+            </value>
+            <value>
+                <fullName>X</fullName>
+                <default>false</default>
+                <label>X</label>
+            </value>
+            <value>
+                <fullName>Perdu</fullName>
+                <default>false</default>
+                <label>Perdu</label>
+            </value>
+            <value>
+                <fullName>Abimé</fullName>
+                <default>false</default>
+                <label>Abimé</label>
+            </value>
+            <value>
+                <fullName>Changement de photo</fullName>
+                <default>false</default>
+                <label>Changement de photo</label>
+            </value>
+            <value>
+                <fullName>Changement de nom</fullName>
+                <default>false</default>
+                <label>Changement de nom</label>
+            </value>
+            <value>
+                <fullName>Carte démagnétisée</fullName>
+                <default>false</default>
+                <label>Carte démagnétisée</label>
+            </value>
+            <value>
+                <fullName>Photo illisible</fullName>
+                <default>false</default>
+                <label>Photo illisible</label>
+            </value>
+            <value>
+                <fullName>S</fullName>
+                <default>false</default>
+                <label>S</label>
+            </value>
+            <value>
+                <fullName>R</fullName>
+                <default>false</default>
+                <label>R</label>
+            </value>
+            <value>
+                <fullName>V</fullName>
+                <default>false</default>
+                <label>V</label>
+            </value>
+            <value>
+                <fullName>P</fullName>
+                <default>false</default>
+                <label>P</label>
+            </value>
+            <value>
+                <fullName>C</fullName>
+                <default>false</default>
+                <label>C</label>
+            </value>
+            <value>
+                <fullName>D</fullName>
+                <default>false</default>
+                <label>D</label>
+            </value>
+            <value>
+                <fullName>A</fullName>
+                <default>false</default>
+                <label>A</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

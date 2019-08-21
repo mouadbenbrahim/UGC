@@ -1,0 +1,21 @@
+<aura:component controller="LCC_IframeHercule" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="Id"  />
+    <aura:attribute name="selTabId" type="String"  />
+    <aura:attribute name="dto" type="IframeHerculeDto"  />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.dto}" action="{!c.reinitTab}"/>
+
+	<lightning:tabset selectedTabId="{!v.selTabId}" onselect="{!c.reinitTab}">
+        <!-- Attention, aura:id et urlFragments doivent être identiques -->
+        <c:IframeHerculeTab aura:id="Fidelite" urlFragment="Fidelite" label="Fidélité" />
+            
+        <c:IframeHerculeTab aura:id="Actions" urlFragment="Actions" label="Actions" />
+        <c:IframeHerculeTab aura:id="Cartes" urlFragment="Cartes" label="Porte carte" />
+        <c:IframeHerculeTab aura:id="Preferences" urlFragment="Preferences" label="Newsletter et cinémas préférés" />
+        <c:IframeHerculeTab aura:id="Ventes" urlFragment="Ventes" label="Vente carte" />
+        <c:IframeHerculeTab aura:id="Reservation" urlFragment="Reservation" label="Réservations" />
+        <c:IframeHerculeTab aura:id="Logins" urlFragment="Logins" label="Derniers logs" />
+        <c:IframeHerculeTab aura:id="Vlo" urlFragment="Vlo" label="Vlo" />
+        
+    </lightning:tabset>
+</aura:component>

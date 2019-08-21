@@ -1,0 +1,7 @@
+<aura:component description="MBE002_testchild" implements="force:lightningQuickActionWithoutHeader">
+    <aura:attribute name="specificParameter" type="String" required="true" default="pardefaut"/>
+
+    <div>
+        {!v.bttnOperation} is passed from the parent.
+    </div>
+</aura:component>

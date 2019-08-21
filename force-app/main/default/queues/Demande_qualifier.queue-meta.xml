@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Demande à qualifier</name>
+    <queueMembers>
+        <users>
+            <user>marketing.cloud.connect@ugc.com</user>
+            <user>marine.gremmel@ugc.com</user>
+            <user>marion.flocon@ugc.com</user>
+        </users>
+    </queueMembers>
+    <queueRoutingConfig>Demande_qualifier</queueRoutingConfig>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reponse__c</fullName>
+    <description>Coché lorsque le statut génère l&#39;envoi automatisé d&#39;un email/courrier</description>
+    <externalId>false</externalId>
+    <label>Réponse</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Manuelle</fullName>
+                <default>false</default>
+                <label>Manuelle</label>
+            </value>
+            <value>
+                <fullName>Semi-automatique</fullName>
+                <default>false</default>
+                <label>Semi-automatique</label>
+            </value>
+            <value>
+                <fullName>Automatique</fullName>
+                <default>false</default>
+                <label>Automatique</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

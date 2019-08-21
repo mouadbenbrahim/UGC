@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Demande de fonctionnalité</masterLabel>
+        <translation>Verzoek functionaliteit</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Exemples</masterLabel>
+        <translation>Voorbeeld</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Problème</masterLabel>
+        <translation>Probleem</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Question</masterLabel>
+        <translation>Vraag</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Requête particulière</masterLabel>
+        <translation>Speciaal verzoek</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

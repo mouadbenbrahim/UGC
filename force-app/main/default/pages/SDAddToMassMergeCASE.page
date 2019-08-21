@@ -1,0 +1,50 @@
+<apex:page standardController="Case"
+extensions="SDAddToMassMerge"
+recordSetVar="recordsAddToMassMerge" id="thisPage">
+
+<apex:form >
+    <apex:actionFunction action="{!createMassMergeJobs}" name="createMassMergeJobs" rerender="thisPage">
+        <apex:param name="objectName" value="Case" assignTo="{!objectName}" />
+    </apex:actionFunction>
+    <apex:actionFunction action="{!setShowHeaderFalse}" name="createJobsNoHeader" rerender="thisPage"
+    oncomplete="createMassMergeJobs()" />
+</apex:form>
+
+<script type="text/javascript">
+function addToMassMerge() {
+    if (inIframe()) {
+        createJobsNoHeader();
+    } else {
+        createMassMergeJobs();
+    }
+}
+
+function inIframe () {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        alert('Error occured when attempting to detect Salesforce Console.');
+        return false;
+    }
+}
+
+function addLoadEvent(func) {
+    if (window.addEventListener) { // Most browsers
+        window.addEventListener("load", func, false);
+    }
+    else if (window.attachEvent) { // IE
+        window.attachEvent("onload", func);
+    }
+}
+
+addLoadEvent(function() { addToMassMerge(); });
+</script>
+
+<div style="display:none;">
+    <apex:pageBlock >
+    <apex:pageBlockTable value="{!selected}" var="r">
+        <apex:column value="{!r.Id}" />
+    </apex:pageBlockTable>
+    </apex:pageBlock>
+</div>
+</apex:page>

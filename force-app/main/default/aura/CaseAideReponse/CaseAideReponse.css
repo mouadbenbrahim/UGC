@@ -1,0 +1,12 @@
+.THIS {
+}
+
+.THIS .slds-card__header {
+    text-transform: uppercase;
+}
+
+.THIS .slds-card__body {
+    font-weight: bold;
+    color: red;
+    text-transform: uppercase;
+}

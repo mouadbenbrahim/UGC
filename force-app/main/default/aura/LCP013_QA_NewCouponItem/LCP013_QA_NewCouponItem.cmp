@@ -1,0 +1,19 @@
+<aura:component description="LCP013_QA_NewCouponItem" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="LCC013_NewCouponItem">
+
+    <aura:attribute name="champs" type="Coupon__c"/>
+    <aura:attribute name="rec" type="Coupon__c"/>
+    <aura:attribute name="myId" type="String" Default="{!v.recordId}"/>
+
+    <force:recordData aura:id="RecordService"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.rec}"
+                      targetFields="{!v.champs}"
+                      fields="Name"
+                      layoutType="FULL"
+                      mode="EDIT"
+                      recordUpdated="{!c.doInit}"
+    />
+
+   <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+
+</aura:component>

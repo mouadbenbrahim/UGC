@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignmentRule>
+        <fullName>Affection des demandes</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <assignedTo>FR_Demande_de_r_abonnement</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Une demande de réabonnement</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_MonPrelevementMensuel</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Mon prélèvement mensuel</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_LeProgrammeFideliteLeClub</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Le programme Fidélité/Le Club</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_UnChangementDeCoordonneesBancaires</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un changement de coordonnées bancaires</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_CommentMeDesabonner</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Une demande de désabonnement</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_UGCPlus</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>UGC +</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_AutresProduitsUnAutreSujet</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un autre sujet</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>equals</operation>
+                <value>Ma carte UGC Illimité</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_MonSoldeDePointsFidelite</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Mon solde de points Fidélité</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Demande_qualifier</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>E-mail</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>DemandeIssueCinemaPriorit1</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2 OR 3</booleanFilter>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>Autres Produits</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>Fidélité</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>Prompto</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>DemandeIssueCinemaPriorite2</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>Salle</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>UGC Illimité</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>DemandeIssueCinemaPriorite3</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>UGC Unlimited FR</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Domaine__c</field>
+                <operation>equals</operation>
+                <value>UGC Unlimited NL</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_MaCarteUGC55Plus</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Ma carte UGC 5/5+</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_FideliteUGCPlusUnAutreSujet</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>equals</operation>
+                <value>Ma carte UGC +</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un autre sujet</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_UnProduitUGC</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un produit UGC (UGC SOLO,UGC Blue,etc.)</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_EnvoiCatalogue</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Produit1__c</field>
+                <operation>notEqual</operation>
+                <value>&quot; &quot;</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_PerteDUnObjetEnSalle</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>La perte d&#39;un objet en salles</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_VivalOpera</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Viva L&#39;Opéra !</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_UneReservationDePlaces</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Une réservation de places</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_AutresProduitsUnAutreSujet</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>equals</operation>
+                <value>Un autre produit UGC,un cinéma ou un film...</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un autre sujet</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_UncinemaUGC</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un cinéma UGC</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FR_Un_film</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.QuestionConcerne__c</field>
+                <operation>equals</operation>
+                <value>Un film</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>DemandeMarketingDesinscription</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>contains</operation>
+                <value>désinscription</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>DemandeMarketinfOffreCommerciale</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>contains</operation>
+                <value>offre commerciale</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Reseaux_Sociaux</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2 OR 3</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Facebook</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Twitter</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Critizr</value>
+            </criteriaItems>
+        </ruleEntry>
+    </assignmentRule>
+</AssignmentRules>

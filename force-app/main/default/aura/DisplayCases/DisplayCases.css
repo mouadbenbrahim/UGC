@@ -1,0 +1,67 @@
+.THIS {
+	z-index: 10;
+	position: relative;
+}
+.THIS .inputSelect {
+	width : 75px;
+    padding-left: 20px;
+}
+.THIS .btn-pageNumber {
+    border: blue;
+}
+.THIS.toggle {
+   	display: none;
+}
+.THIS .AppelSortant svg{
+ 	background-color : #CD5C5C;
+}
+.THIS .AppelEntrant svg{
+ 	background-color : green;
+}
+.THIS .CourrierSortant svg{
+ 	background-color : #CD5C5C;
+}
+.THIS .CourrierEntrant svg{
+ 	background-color : green;
+}
+.THIS .EmailSortant svg{
+ 	background-color : #CD5C5C;
+}
+.THIS .EmailEntrant svg{
+ 	background-color : green;
+}
+.THIS.toggle {
+   	display: none;
+}
+.THIS .origin img {
+	margin-left: 1px;
+}
+
+.THIS.paginationDiv {
+    position: ;
+    z-index: 5;
+}
+
+.THIS.table{
+    position:relative;
+   
+}
+.THIS.slds-table{
+   position:relative;
+   width:100%;
+}
+
+.THIS.slds-table_fixed-layout{
+    position:relative;
+    width:100%;
+}
+
+.THIS.slds-cell-wrap{
+    
+    width:100%;
+}
+
+.THIS.slds-max-medium-table--stacked-horizontal{
+    
+    width:100%;
+}

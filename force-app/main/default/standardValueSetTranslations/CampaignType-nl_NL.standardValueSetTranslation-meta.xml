@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSetTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <valueTranslation>
+        <masterLabel>Autre</masterLabel>
+        <translation>Andere</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Bannières publicitaires</masterLabel>
+        <translation>Banner reclame</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>E-mail</masterLabel>
+        <translation>e-mail</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Partenaires</masterLabel>
+        <translation>Partners</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Programme de parrainage</masterLabel>
+        <translation>sponsering programma</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Publicité</masterLabel>
+        <translation>Publiciteit</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Relations publiques</masterLabel>
+        <translation>Klacht publiek</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Séminaire / Conférence</masterLabel>
+        <translation>Seminar / conferentie</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Télémarketing</masterLabel>
+        <translation>Telemarketing</translation>
+    </valueTranslation>
+</StandardValueSetTranslation>

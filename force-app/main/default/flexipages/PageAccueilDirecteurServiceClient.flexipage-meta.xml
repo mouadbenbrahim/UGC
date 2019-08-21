@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>decorate</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>richTextValue</name>
+                <value>​CONFIGURATION
+&lt;ol&gt;
+	&lt;li&gt;&lt;b&gt;&lt;span style=&quot;font-size:14px;&quot;&gt;Administration&lt;/span&gt;&lt;/b&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+	&lt;li&gt;&amp;nbsp;des familles :&amp;nbsp;http://urlz.fr/6kZ8&lt;/li&gt;
+	&lt;li&gt;des motifs :&amp;nbsp;http://urlz.fr/6kZb&lt;/li&gt;
+	&lt;li&gt;des sous-motifs :&amp;nbsp;&amp;nbsp;https://lc.cx/gQ7V&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;&amp;nbsp;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 2. Files d&amp;#39;attente&lt;/b&gt;
+
+&lt;ul&gt;
+	&lt;li&gt;Affectation des charg&amp;eacute;s de client&amp;egrave;le aux files d&amp;#39;attente : http://urlz.fr/5RhY&lt;/li&gt;
+	&lt;li&gt;Gestion des priorit&amp;eacute;s des files d&amp;#39;attente :&amp;nbsp;http://urlz.fr/5RhN&lt;/li&gt;
+	&lt;li&gt;Configuration de la capacit&amp;eacute; de travail des charg&amp;eacute;s : http://urlz.fr/69Ms&lt;/li&gt;
+&lt;/ul&gt;</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:richText</componentName>
+        </componentInstances>
+        <name>top</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>cacheAge</name>
+                <value>1440</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>reportName</name>
+                <value>TicketsRestantATraiter</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>showRefreshButton</name>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:reportChart</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>dashboardName</name>
+                <value>HzzGGlMWbXOvBoUheRmoRYfjzdeWij</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>hideOnError</name>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentName>desktopDashboards:embeddedDashboard</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentName>home:eventContainer</componentName>
+        </componentInstances>
+        <name>bottomLeft</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>cacheAge</name>
+                <value>1440</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>reportName</name>
+                <value>TicketsOuvertsFamille</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>showRefreshButton</name>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:reportChart</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentName>runtime_sales_activities:todayTaskContainer</componentName>
+        </componentInstances>
+        <name>bottomRight</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>context</name>
+                <value>NEWS</value>
+            </componentInstanceProperties>
+            <componentName>forceChatter:exposedFeed</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentName>csvGenerator</componentName>
+        </componentInstances>
+        <name>sidebar</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Page d&#39;accueil Directeur du service client</masterLabel>
+    <template>
+        <name>home:desktopTemplate</name>
+    </template>
+    <type>HomePage</type>
+</FlexiPage>

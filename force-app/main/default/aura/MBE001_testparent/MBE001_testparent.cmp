@@ -1,0 +1,8 @@
+<aura:component description="MBE001_testparent" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global">
+    <!--<aura:attribute name="xRecordId" type="Id" />-->
+    <c:LCP00X_Canevas bttnOperation="Resiliation" myRecordId="{!v.recordId}" otherVar="pardefaut"/>
+    <!--<c:LCP00X_Canevas bttnOperation="Resiliation" testVar="{!v.recordId}"/>-->
+
+    <!--<c:LCP00X_Canevas bttnOperation="param1passe"  xRecordId="{v.recordId}" />-->
+
+</aura:component>

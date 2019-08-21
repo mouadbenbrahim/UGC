@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>DemandeValidation</fullName>
+        <description>Demande de validation</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>fbarbier-martins@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/Nouvelle_demande_approbation</template>
+    </alerts>
+    <alerts>
+        <fullName>DemandeValidationDirecteur</fullName>
+        <description>Demande validation directeur</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>fbarbier-martins@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/DemandApprobationDirecteur</template>
+    </alerts>
+    <alerts>
+        <fullName>DemandeValidationDirecteurClientele</fullName>
+        <description>Demande de validation directeur de clientèle</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>fbarbier-martins@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/DemandApprobationDirecteur</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_d_approbation_pour_le_directeur</fullName>
+        <description>Demande d&#39;approbation pour le directeur</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>fbarbier-martins@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/DemandApprobationDirecteur</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_d_approbation_valid_e_par_les_superviseurs</fullName>
+        <description>Demande d&#39;approbation validée par les superviseurs</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>ProcessusApprobation/Validation_remboursementsuperviseur</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_de_remboursement_pour_le_directeur</fullName>
+        <description>Demande de remboursement pour le directeur</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>fbarbier-martins@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/DemandApprobationDirecteur</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_de_rembourssement_envoyee</fullName>
+        <description>Demande de rembourssement envoyée</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/ConfirmationDemandeRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_envoyee_au_superviseur</fullName>
+        <description>Demande envoyée au superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>acabrera@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>vdevergnes@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/Nouvelle_demande_approbation</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_validation_superviseur</fullName>
+        <description>Demande validation superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>acabrera@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>vdevergnes@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/Nouvelle_demande_approbation</template>
+    </alerts>
+    <alerts>
+        <fullName>RefusDemandeRemboursementSuperviseur</fullName>
+        <description>Refus demande de remboursement par superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/RefusRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>RefusDirecteurClientele</fullName>
+        <description>Refus directeur de clientèle</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>Groupesuperviseur</recipient>
+            <type>group</type>
+        </recipients>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>ProcessusApprobation/RefusRemboursementDirecteurClientele</template>
+    </alerts>
+    <alerts>
+        <fullName>RefusRemboursementSuperviseur</fullName>
+        <description>Refus remboursement superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/RefusRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>RefusSuperviseur</fullName>
+        <description>Refus superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/RefusRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Refus_de_la_demande_de_remboursement_superviseur</fullName>
+        <description>Refus de la demande de remboursement superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>ProcessusApprobation/RefusRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>RefussuperviseurTest</fullName>
+        <description>Refus superviseur</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>ac@easyfront.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/RefusRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>TEST</fullName>
+        <description>TEST Refus final</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/RefusRemboursementDirecteurClientele</template>
+    </alerts>
+    <alerts>
+        <fullName>ValidationDuRemboursement</fullName>
+        <description>Validation du remboursement</description>
+        <protected>false</protected>
+        <recipients>
+            <field>ContactEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/DemandeValideeCB</template>
+    </alerts>
+    <alerts>
+        <fullName>ValidationFinaleDRC</fullName>
+        <description>Validation finale DRC</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>Groupesuperviseur</recipient>
+            <type>group</type>
+        </recipients>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>ProcessusApprobation/ValidationRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_aupr_s_de_Francis</fullName>
+        <description>Validation auprès de Francis TEST</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>ac@easyfront.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/DemandApprobationDirecteur</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_demande_de_remboursement</fullName>
+        <description>Validation demande de remboursement ( Pour client )</description>
+        <protected>false</protected>
+        <recipients>
+            <field>ContactEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Demande_de_remboursement_client</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_demande_de_remboursementt</fullName>
+        <description>Validation demande de remboursement ( Pour client )</description>
+        <protected>false</protected>
+        <recipients>
+            <field>ContactEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Demande_de_remboursement_client</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_du_remboursement</fullName>
+        <description>Validation du remboursement</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>SVP_Customer_Experience</recipient>
+            <type>role</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/ConfirmationDemandeRemboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_refus_demande_de_remboursement</fullName>
+        <description>Validation/refus demande de remboursement</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Validation_refus_demande_remboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_refus_demande_de_remboursements</fullName>
+        <description>Validation/refus demande de remboursement</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Validation_refus_demande_remboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_refus_demande_de_remboursementt</fullName>
+        <description>Validation/refus demande de remboursement</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Validation_refus_demande_remboursement</template>
+    </alerts>
+    <alerts>
+        <fullName>Validation_refuss_demande_de_remboursementt</fullName>
+        <description>Validation/refus demande de remboursement</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Validation_refus_demande_remboursement</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>CaseCochee</fullName>
+        <field>Tech_enAttente__c</field>
+        <literalValue>1</literalValue>
+        <name>Case cochée</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Cloture15Jours</fullName>
+        <description>Une demande client est clôturée automatiquement après 15 jours si elle est toujours en attente retour client.</description>
+        <field>Status</field>
+        <literalValue>Fermée</literalValue>
+        <name>Clôture 15 jours</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>EnAttente</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>EnCoursValidation</literalValue>
+        <name>En attente</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>EtapeTraitement</fullName>
+        <field>Status</field>
+        <literalValue>EnAttenteRemboursement</literalValue>
+        <name>Etape du traitement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>EtapeTraitement1</fullName>
+        <field>Status</field>
+        <literalValue>EnAttenteRemboursement</literalValue>
+        <name>Etape du traitement1</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>EtapeTraitement3</fullName>
+        <field>Status</field>
+        <literalValue>Rejetée</literalValue>
+        <name>Etape du traitement3</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>EtapeTraitement4</fullName>
+        <field>Status</field>
+        <literalValue>EnAttenteRemboursement</literalValue>
+        <name>Etape du traitement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>EtapeTraitementRefus</fullName>
+        <field>Status</field>
+        <literalValue>EnAttenteRemboursement</literalValue>
+        <name>Etape du traitement refus</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Etape_du_traitement</fullName>
+        <field>Status</field>
+        <literalValue>Fermée</literalValue>
+        <name>Etape du traitement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Etape_du_traitement1</fullName>
+        <field>Status</field>
+        <literalValue>EnAttenteRemboursement</literalValue>
+        <name>Etape du traitement1</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Etape_traitement</fullName>
+        <field>Status</field>
+        <literalValue>Fermée</literalValue>
+        <name>Etape du traitement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Etapes_du_traitement</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>ValidationSuperviseur</literalValue>
+        <name>Etapes du traitement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>MAJStatutFermee</fullName>
+        <description>La demande client est maj à Fermée</description>
+        <field>Status</field>
+        <literalValue>Fermée</literalValue>
+        <name>MAJ Statut Fermée</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>MAJTypeEnregistrementDemandeencours</fullName>
+        <description>MAJ du type d&#39;enregistrement à Demande en cours dès la création d&quot;un nouveau ticket</description>
+        <field>RecordTypeId</field>
+        <lookupValue>DemandesCliensencours</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>MAJ Type Enregistrement Demande en cours</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>MAJTypeEnregistrementDemandesClients</fullName>
+        <description>Change le type d&#39;enregistrement de la demande à &quot;Demandes Clients traitées&quot;</description>
+        <field>RecordTypeId</field>
+        <lookupValue>DemandesClientsTraitees</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>MAJ Type Enregistrement Demandes Clients</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>MAJTypeEnregistrementDemandesSalle</fullName>
+        <field>RecordTypeId</field>
+        <lookupValue>RTDemandesSallesTraitees</lookupValue>
+        <lookupValueType>RecordType</lookupValueType>
+        <name>MAJ Type Enregistrement Demandes Salle</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>RefusRemboursement</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Refus par superviseur</literalValue>
+        <name>Refus remboursement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>RefusRemboursementSuperviseur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Refus superviseur</literalValue>
+        <name>Refus remboursement superviseur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>RefusValidationSuperviseur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Refus par superviseur</literalValue>
+        <name>Refus validation superviseur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Refus_directeur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>RefusDRC</literalValue>
+        <name>Refus directeur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Refus_directeurr</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>RefusDRC</literalValue>
+        <name>Refus directeur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Refusremboursementdirecteur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Refus par directeur de clientèle</literalValue>
+        <name>Refus remboursement directeur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Statut_refus_DRC</fullName>
+        <field>Status</field>
+        <literalValue>Rejetée</literalValue>
+        <name>Statut refus DRC</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Statut_refuss_DRC</fullName>
+        <field>Status</field>
+        <literalValue>Rejetée</literalValue>
+        <name>Statut refus DRC</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>UpdateDateCr_ation</fullName>
+        <field>Date_de_creation__c</field>
+        <formula>CreatedDate</formula>
+        <name>UpdateDateCréation</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>ValidationRemboursement</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Validée</literalValue>
+        <name>Validation remboursement</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>ValidationRemboursementPartielle</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Validation partielle remboursement</literalValue>
+        <name>Validation remboursement partielle</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>ValidationRemboursementSuperviseur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Validation partielle remboursement</literalValue>
+        <name>Validation remboursement par superviseur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Validation_directeur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Validée DRC</literalValue>
+        <name>Validation directeur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Validation_directeurr</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>Validée DRC</literalValue>
+        <name>Validation directeur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Validation_superviseur</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>ValidationSuperviseur</literalValue>
+        <name>Validation superviseur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Validation_superviseur_test</fullName>
+        <field>EtapeValidationRembousement__c</field>
+        <literalValue>ValidationSuperviseur</literalValue>
+        <name>Validation superviseur</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>remboursement_en_attente</fullName>
+        <field>RemboursementFaire__c</field>
+        <literalValue>1</literalValue>
+        <name>remboursement en attente</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>CASE_WF02_Change layout demande traitée</fullName>
+        <actions>
+            <name>MAJTypeEnregistrementDemandesClients</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Lorsque la demande issue d&#39;un client est traitée (statut = Fermé), la demande ne doit plus être modifiée &gt; changement de présentation de page</description>
+        <formula>AND (NOT(  $User.ByPassWorkflow__c ), 
+RecordTypeId=&quot;0120Y000000ZZhM&quot;, ISPICKVAL(Status,&quot;Fermée&quot;))</formula>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>CASE_WF04_Change layout demande traitée issue d%27une salle</fullName>
+        <actions>
+            <name>MAJTypeEnregistrementDemandesSalle</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Lorsque la demande issue d&#39;une salle est traitée (statut = Fermé), la demande ne doit plus être modifiée &gt; changement de présentation de page</description>
+        <formula>AND (NOT( $User.ByPassWorkflow__c ),  ISPICKVAL(Origin, &quot;Salle&quot;),  ISPICKVAL(Status,&quot;Fermée&quot;))</formula>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>CASE_WF05_Change layout Demande client en cours</fullName>
+        <actions>
+            <name>MAJTypeEnregistrementDemandeencours</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Un ticket est créé avec la page layout &quot;Nouvelle Demande client&quot; 
+A l&#39;enregistrement du nouveau ticket --&gt; changement de page layout à &quot;Demande client en cours&quot;</description>
+        <formula>AND (NOT( $User.ByPassWorkflow__c),  RecordTypeId=&quot;0120Y000000ZonK&quot;)</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>CASE_WF06 Clôture automatique 15 jours</fullName>
+        <active>true</active>
+        <booleanFilter>2 AND 1</booleanFilter>
+        <criteriaItems>
+            <field>Case.Status</field>
+            <operation>equals</operation>
+            <value>EnAttenteRetourClient</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.ByPassWorkflow__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <description>Si un ticket est ouvert depuis 15 jours et En attente retour client alors il se clôture automatiquement.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Cloture15Jours</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <offsetFromField>Case.CreatedDate</offsetFromField>
+            <timeLength>15</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>Transfert file d%27attente</fullName>
+        <active>true</active>
+        <criteriaItems>
+            <field>User.ByPassWorkflow__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>UpdateDateCréation</fullName>
+        <actions>
+            <name>UpdateDateCr_ation</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Case.Origin</field>
+            <operation>contains</operation>
+            <value>E-mail,Téléphone,Formulairedecontact,Courrier,Salle,Facebook,Twitter,Critizr,Interne,Système</value>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <tasks>
+        <fullName>AppelEntrant</fullName>
+        <assignedToType>owner</assignedToType>
+        <dueDateOffset>0</dueDateOffset>
+        <notifyAssignee>false</notifyAssignee>
+        <priority>Normale</priority>
+        <protected>false</protected>
+        <status>Achevée</status>
+        <subject>Appel Entrant</subject>
+    </tasks>
+</Workflow>

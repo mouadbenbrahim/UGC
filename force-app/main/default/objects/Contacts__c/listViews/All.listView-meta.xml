@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>FamilleMatrice__c</columns>
+    <columns>MotifMatrice__c</columns>
+    <columns>SousMotifMatrice__c</columns>
+    <columns>Famille_Statut__c</columns>
+    <columns>Motif_Statut__c</columns>
+    <columns>SousMotif_Statut__c</columns>
+    <columns>NomModeleEmailHTML__c</columns>
+    <columns>NomModeleCourrierEmail__c</columns>
+    <columns>Reponse__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

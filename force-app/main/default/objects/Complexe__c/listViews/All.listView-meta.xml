@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>EstActif__c</columns>
+    <columns>CodeComplexe__c</columns>
+    <columns>Region__c</columns>
+    <columns>CodePays__c</columns>
+    <columns>Point_vente_UI__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Tous les complexes</label>
+</ListView>

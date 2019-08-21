@@ -1,0 +1,55 @@
+<aura:component description="LCP023_PromoRemise_NewEditForm"
+                implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome"
+                controller="LCC023_PromoRemise_NewEditForm">
+
+    <aura:attribute name="promoId" type="String" required="false" default=""/>
+    <aura:attribute name="operation" type="String" required="true" default=""/>
+    <aura:attribute name="myRecordId" type="String" required="true" default=""/>
+    <aura:attribute name="promoRemiseRTid" type="String"/>
+
+    <!--    <aura:if operation="nouveauRecord">
+            <aura:set attribute="myRecordId" value=" " />
+        </aura:if>-->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+
+    <div class="slds-page-header" role="banner">
+        <p class="slds-text-heading--label">{!v.operation}-{!v.myRecordId}-{!v.promoRemiseRTid}" </p>
+        <h1 class="slds-page-header__title slds-m-right_small slds-truncate slds-align-left">
+            Nouveau Promo Remise
+        </h1>
+    </div>
+
+    <lightning:recordEditForm objectApiName="PromoRemise__c" aura:id="myForm"
+                              recordId="{!v.myRecordId}"
+                              recordTypeId="{!v.promoRemiseRTid}"
+                              onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccess}"
+                              onload="{!c.handleOnload}">
+
+
+        <lightning:messages/> <!--Zone affiche les messages erreurs-->
+        <!--<lightning:inputField fieldName="Promo__c" value="{!v.promo.fields.Id.value}" class="slds-hide"/>-->
+        <!--<lightning:inputField fieldName="Name"/>-->
+        <lightning:inputField fieldName="Charge__c" aura:id="chargeLkp" onchange="{!c.handleChargeChange}"/>
+        <lightning:inputField fieldName="Montant__c" aura:id="rMontant"/>
+        <lightning:inputField fieldName="NombreMensu__c" aura:id="rNombremensu"/>
+        <lightning:inputField fieldName="DebuteXmois__c" aura:id="rDebutexmois"/>
+        <!--<lightning:outputField fieldName="RecordTypeId" aura:id="rType"/>-->
+
+        <lightning:button variant="brand" type="submit" label="Update Remise"/>
+        <!--<lightning:button variant="brand" type="submit" label="Update Remise" onclick="{!c.handleSubmit}"/>-->
+        <lightning:button variant="neutral" label="Cancel" onclick="{!c.handleCancel}"/>
+
+        <!-- MBE sortir le bouton dans le footer  pb afffichage si dans modal__content -->
+        <!--<lightning:button class="slds-m-top_small" type="submit" label="Update Remise" />-->
+    </lightning:recordEditForm>
+
+
+    <!--
+                    <lightning:button variant="brand" type="submit" label="Update Remise" onclick="{!c.handleSubmit}"/>
+                    <lightning:button variant="neutral" label="Cancel" onclick="{!c.handleCancel}"/>
+    -->
+    <!--<lightning:button variant="brand" label="Submit" onclick="{!c.saveRecord}" />-->
+
+
+</aura:component>

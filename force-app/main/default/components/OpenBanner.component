@@ -1,0 +1,50 @@
+<apex:component id="OpenBanner">
+    <apex:attribute name="urlBanner" type="String" required="false" description="url"/>
+    <apex:attribute name="styleClass" description="" type="String" required="false"/>
+    <apex:attribute name="styleClassForText" description="" type="String" required="false"/>
+
+    <style>
+
+        .vd-open-banner {
+            background-color: rgb(61, 147, 219);
+            max-height: 40px;
+            max-width: 40px;
+        }
+
+        .vd-open-banner img {
+            max-height: 24px;
+            max-width: 24px;
+            cursor: pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        function openPopUp() {
+            var winp;
+
+            function popup_agent(connect_url) {
+                var option = 'width=280,height=653,resizable=yes,scrollbars=no,menubar=no,location=no,toolbar=no,status=no';
+                var pname = 'Softphone';
+                winp = window.open(connect_url, pname, option);
+            }
+
+            popup_agent("{!urlBanner}");
+        }
+    </script>
+
+    <div>
+        <div class="slds-m-around_x-small {!styleClass}  {!styleClassForText} slds-align--absolute-center">
+                {!$Label.Open_Banner}
+        </div>
+        <div class="slds-m-around_x-small {!styleClass} slds-align--absolute-center">
+            <span class="slds-icon_container slds-icon_container_circle vd-open-banner" title="Banner icon">
+                <span class="slds-avatar">
+                    <img onclick="openPopUp();return false;" src="{!URLFOR($Resource.ViaDialog,
+                            'images/open-banner.png')}"/>
+                </span>
+
+                <span class="slds-assistive-text">{!$Label.Open_Banner}
+                </span>
+            </span>
+        </div>
+    </div>
+</apex:component>
