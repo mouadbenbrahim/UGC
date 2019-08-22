@@ -245,7 +245,7 @@
         <name>ExternalDataSource</name>
     </types>
     <types>
-        <members>*</members>
+         <!--<members>*</members>-->
         <name>ExternalServiceRegistration</name>
     </types>
     <types>
