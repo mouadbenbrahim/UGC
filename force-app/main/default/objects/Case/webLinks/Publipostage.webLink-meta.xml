@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Publipostage</fullName>
+    <availability>online</availability>
+    <description>Bouton redirigant vers sdocs pour l&#39;envoi en masse de documents 
+Utilisé depuis les vues de listes de l&#39;objet Case</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Publipostage</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>/apex/SDAddToMassMergeCase</url>
+</WebLink>

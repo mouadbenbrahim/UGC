@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NoCartes__c</fullName>
+    <description>Champ qui concatène le numéro de carte UI et fidélité pour le bandeau de la fiche client</description>
+    <externalId>false</externalId>
+    <formula>&quot;N° Carte UI: &quot; + NoCarteUI__c
+&amp;  BR()  &amp; 
+&quot;N° Carte Fid:&quot; + NoCarteFidelite__c</formula>
+    <label>Numéro Cartes</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Telephones__c</fullName>
+    <description>Champ qui copie les numéros de téléphone renseignés sur la fiche client</description>
+    <externalId>false</externalId>
+    <formula>Contact.HomePhone+BR()+ Contact.MobilePhone+BR() + Account.TelephoneBureau__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Téléphones</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

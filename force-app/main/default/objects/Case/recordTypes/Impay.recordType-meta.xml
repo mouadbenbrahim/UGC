@@ -1,0 +1,1524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Impay</fullName>
+    <active>true</active>
+    <businessProcess>Demandes clients</businessProcess>
+    <label>Impayé</label>
+    <picklistValues>
+        <picklist>Actions__c</picklist>
+        <values>
+            <fullName>A clôturer</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>En attente remboursement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>En attente retour client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>En attente retour interne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pas de réponse et à clôturer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transfert à la salle</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Billet__c</picklist>
+        <values>
+            <fullName>En possession de l%27abonné</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>N%2FA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Récupéré par la salle</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Canal__c</picklist>
+        <values>
+            <fullName>Application</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Borne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Site UGC</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Carte__c</picklist>
+        <values>
+            <fullName>En possession de l%27abonné</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>N%2FA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Récupéré par la salle</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Categorie__c</picklist>
+        <values>
+            <fullName>Aanvraag nieuwe kaart met kosten</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aanvraag nieuwe kaart zonder kosten</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accueil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Annulation Réservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Autres %28à préciser%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Avertissement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Billet%28s%29 non édité%28s%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartes partenaires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confort%2C Propreté</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Echange de points</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Edition avec frais</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Edition sans frais</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fonctionnement Fidélité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gain de points</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inscription</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opzegging</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Programmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Projection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retrait de réservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Réservation inexistante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Résiliation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECRETARIAT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solde de points</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stand UI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stand UU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sécurité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGC 5%2F7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGC Blue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGC SOLO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waarschuwing</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Communication_sortante__c</picklist>
+        <values>
+            <fullName>Courrier</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Téléphone</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>DemandeRemboursement__c</picklist>
+        <values>
+            <fullName>Réservations autres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGCIllimité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGCUnlimited</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VLO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Domaine__c</picklist>
+        <values>
+            <fullName>Autres Produits</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fidélité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prompto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGC Illimité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGC Unlimited FR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UGC Unlimited NL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>EtapeValidationRembousement__c</picklist>
+        <values>
+            <fullName>EnCoursValidation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refus superviseur</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RefusDRC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ValidationSuperviseur</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validée DRC</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Etat_remboursement__c</picklist>
+        <values>
+            <fullName>Rembourse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>en attente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Famille__c</picklist>
+        <values>
+            <fullName>0- Souscription</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1- Vie de l%27abonnement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2- Club UGC %2F fidelite</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3- Autres Produits</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4- Reservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5- Compte client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6- Prospection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7- Finance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8- Cinema</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9- Divers</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ModeAnnulation__c</picklist>
+        <values>
+            <fullName>Automatique</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manuel</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Mois_de_d_but_remise__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motif_R_dition_de_Carte__c</picklist>
+        <values>
+            <fullName>Abimé</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte démagnétisée</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Changement de nom</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Changement de photo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perdu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Photo illisible</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motif__c</picklist>
+        <values>
+            <fullName>01- Accueil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- CNIL %2F Comite de la vie privee</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Changement tarifaire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Digital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Info process abo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Inscription</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Modalites de reservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Offres UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- Reception carte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01- UGC Illimite</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Annulation Réservation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Autre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Club</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Confort Proprete</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Droit a l%27oubli</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Erreur prise abo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Formules UGC%2B</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Impaye</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Reedition payante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02- Solde de points</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Click and collect</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Echange de points</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Facture %2F attestation de paiement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Fonctionnement Compte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Objet Perdu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Q3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Reedition gratuite</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03- Solo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04- Blue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04- Dematerialise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04- Desabonnement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04- Fonctionnement Club</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04- Information Film</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04- Remboursement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05- B2B</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05- Changement coordonnees bancaires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05- Programmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05- Resiliation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05- VLO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06- Gestes commerciaux</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06- Migration UI 1%2F2%2F3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06- VPC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07- Creation Abonnement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07- Reabonnement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08- Retention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09- Retour Carte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10- Retractation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11- Avertissement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12- Annulation Migration</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13- Annulation Contrat</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>99- Autre</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motif_d_avertissement__c</picklist>
+        <values>
+            <fullName>Autres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fraude</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Menace et %2F ou Violence envers le personnel UGC</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motif_de_R_siliation__c</picklist>
+        <values>
+            <fullName>Code X</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M6</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Moyen_de_paiement_souhait__c</picklist>
+        <values>
+            <fullName>CB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CB %28UI%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CB %28UU%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CB %28VLO%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chèque</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chèque %28UI%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chèque %28UU%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chèque %28VLO%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Offre_de_r_tention__c</picklist>
+        <values>
+            <fullName>Hausse tarifaire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Points fidélité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REMRETARG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REMRETOR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>REMRETPLAT</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Courrier entrant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Courrier sortant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>E-mail entrant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email sortant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facebook</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Formulairedecontact</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Interne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Twitter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Téléphone entrant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Téléphone sortant</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Pallier__c</picklist>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>Faible</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Haute</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Moyenne</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>R_sultat_R_tention__c</picklist>
+        <values>
+            <fullName>Accepté</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Client indécis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refuse avec desabonnement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refuse sans desabonnement</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Raison_de_d_sabonnement__c</picklist>
+        <values>
+            <fullName>1- Frais de réédition</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10- Femme enceinte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11- Raison de santé</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12- Départ Hors Zone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13- Prison</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14- Chômage</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15- Décès</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16- Programmation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17- Mécontent d%27UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18- Problème technique</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19- Suspension</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2- Régularisation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20- Pas de raison donnée</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21- Autres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3- Trop cher</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4- Rentabilité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5- Pas de consommation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6- Concurrence</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7- Insécurité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8- Va au cinéma seul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9- Places via le CE</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Raison_remboursement__c</picklist>
+        <values>
+            <fullName>A1- CB Achat %3E 1 an - Délai OK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>A2- CB Achat %3E 1 an - Délai dépassé %3A Incident Technique UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>A2- CB Achat %3E 1 an - Délai dépassé %3A Motif client à préciser</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>A2- E-CB - Délai dépassé %3A Incident Technique UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>A2- E-CB - Délai dépassé %3A Motif client à préciser</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>B1- CB Achat %3C 1 an %3A Retour KO ATOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>B2- CB Achat %3C 1 an - Délai OK %3A Motif client à préciser</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>B2- CB Achat %3C 1 an - Délai dépassé %3A Incident Technique UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>B2- CB Achat %3C 1 an - Délai dépassé %3A Motif client à préciser</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>C1- Achat salle annulation UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G20- Désabo anticipé</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G21- Résiliation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G22- Doublon</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G23- Annulation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G23- Autres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G23- Décès</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G23- Réduction préavis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G23- Rétractation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>G23-Trop perçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>double débit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>resa introuvable</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Exemples</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fonctionnalité complexe</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Formation non dispensée à l%27utilisateur</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions non explicites</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nouveau problème</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problème existant</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RebondCommercial__c</picklist>
+        <values>
+            <fullName>Non proposé</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposé - accepté</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposé - refusé</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SousCategorie__c</picklist>
+        <values>
+            <fullName>AVP supprimée%2Freportée</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aanvraag annulatie contract %28preciseren%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accès handicapés</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Andere %28preciseren%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Appels NL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Au contrôle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Autres %28à préciser%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Betaling incident op stand</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Billetterie CNC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte SACEM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte abîmée %28 à préciser%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte démagnétisée</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte journaliste</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte permanente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Carte professionnelle UGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confiserie %2F Ciné Café</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dans la file d%27attente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Demande Annulation de Contrat %28à expliquer%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Demande Annulation de contrat</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Double facturation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Déclenchement alarme%2Févacuation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Délai de retrait</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Déprogrammation de séance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>En borne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>En caisse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Erreur Confiserie%2FCiné Café</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Erreur communication in situ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Erreur en caisse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Etat copie</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Etat de la salle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Flying Blue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foto verwijderd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incident Spectateurs</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incident bij de uitgave van de kaart %28preciseren%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incident de Paiement sur Stand</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incident lors de l%27édition de la carte %28à préciser%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Interruption de séance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intervention Forces de l%27ordre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intervention Pompiers</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kaart beschadigd %28preciseren%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kaart gedemagnetiseerd</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M1 %3A Trouble Ordre Public</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M1 %3A Verstoning van de openbare orde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M10%3A Andere %28preciseren%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M2 %3A Geluidshinder in de zaal %28bv%2E gsm%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M2 %3A Nuisance sonore en salles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M3 %3A Bedreigingen%2C beledigingen of agressie</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M3 %3A Menaces%2C Insultes%2C Agression</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M4 %3A Fume en zone NF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M4 %3A Roken in een niet-rokerszone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M5 %3A Opening van de nooduitgangen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M5 %3A Ouverture des sorties de secours</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M6 %3A Drager vershillend dan abonee</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M6 %3A Porteur différent Titulaire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M7 %3A Diefstal en beschadiging</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M7 %3A Vol et Dégradation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M8 %3A Herinschrijven na een eerste opzegging voor niet-betaling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M8 %3A Réinscription après 1ère résiliation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M9 %3A Niet respecteren van de UGC Charter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>M9 %3A Non Respect de la Charte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Message d%27erreur en borne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Message d%27erreur en caisse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mode de règlement hors UI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nom illisible</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Non reconnu en borne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Non reconnu en caisse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OSC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Onleesbare naam</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Panne Prompto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Panne borne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Photo effacée</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plus de papier édition de billet%28s%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Points non attribués</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retard de séance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retrait en borne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retrait en caisse</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>S%27miles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solde inexact</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Son</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sorties</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suppression de séance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Toilettes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zone de commentaires</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SousMotif__c</picklist>
+        <values>
+            <fullName>A- Action</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AD- Action DRC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AH- Action Selfcare</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AS- Action Stand</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Click to Call Info</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Click to Call Recla</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I- Info</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>R- Récla</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>R1- 1er rejet</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>R2- 2nd rejet</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Demande de fonctionnalité</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Exemples</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problème</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Question</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Requête particulière</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TypeGesteCommercial__c</picklist>
+        <values>
+            <fullName>Crédit point</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>E-invitations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Envoi goodies</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Invitations physiques</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TypeRemboursement__c</picklist>
+        <values>
+            <fullName>Autres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VLO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type_de_d_sabonnement__c</picklist>
+        <values>
+            <fullName>Désabonnement avec justificatif %28E%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Désabonnement avec préavis %28L%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type_de_migration__c</picklist>
+        <values>
+            <fullName>UI 1 %3E UI 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UI 2 %3E UI 1</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>sous_motif_de_r_siliation__c</picklist>
+        <values>
+            <fullName>Autres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fraude</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Menace et %2F ou Violence envers le personnel UGC</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

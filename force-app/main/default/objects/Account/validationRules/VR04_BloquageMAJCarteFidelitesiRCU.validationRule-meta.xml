@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR04_BloquageMAJCarteFidelitesiRCU</fullName>
+    <active>true</active>
+    <description>Bloquage de la mise à jour du numéro de carte fidélité si le RCU a mis à jour la fiche client</description>
+    <errorConditionFormula>AND (
+NOT( $User.ByPassValidationRule__c),
+ISCHANGED( NoCarteFidelite__c),
+NOT(ISBLANK( IdMonCompte__c)),
+NOT(ISPICKVAL(CliStatutRCU__c,&quot;Supprimé&quot;))
+)</errorConditionFormula>
+    <errorMessage>Vous ne pouvez pas modifier le numéro de la carte fidélité</errorMessage>
+</ValidationRule>

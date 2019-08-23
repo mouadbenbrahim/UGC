@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IconePND__c</fullName>
+    <description>Si PND adresse est cochée alors l&#39;icone apparaît</description>
+    <externalId>false</externalId>
+    <formula>IF(PNDADRESSE__c ,IMAGE(&quot;/resource/1506359427000/IconePND?isdtp=p1&quot;,&quot;60,60&quot;),&quot; &quot; )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>...</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

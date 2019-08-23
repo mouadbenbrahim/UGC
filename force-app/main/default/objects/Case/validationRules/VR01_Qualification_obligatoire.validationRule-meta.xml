@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR01_Qualification_obligatoire</fullName>
+    <active>true</active>
+    <description>La qualification du ticket (type de demande, statut et sous statut) est obligatoire pour pouvoir le clôturer (statut = fermé).</description>
+    <errorConditionFormula>AND(
+NOT($User.ByPassValidationRule__c),
+ISPICKVAL( Status , &quot;Fermée&quot;),
+OR(( ISBLANK(TEXT(Famille__c))), ISBLANK(TEXT(Motif__c)), ISBLANK(TEXT( SousMotif__c )))
+)</errorConditionFormula>
+    <errorMessage>Merci de qualifier le ticket avant de le clôturer.</errorMessage>
+</ValidationRule>

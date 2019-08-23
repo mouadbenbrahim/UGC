@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UGCCINECITEROUEN_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>UGC CINE CITE ROUEN</label>
+    <queue>UGCCINECITEROUEN</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categorie__c</fullName>
+    <externalId>false</externalId>
+    <label>Catégorie</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Domaine__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cartes partenaires</fullName>
+                <default>false</default>
+                <label>Cartes partenaires</label>
+            </value>
+            <value>
+                <fullName>UGC 5/7</fullName>
+                <default>false</default>
+                <label>UGC 5/7</label>
+            </value>
+            <value>
+                <fullName>UGC Blue</fullName>
+                <default>false</default>
+                <label>UGC Blue</label>
+            </value>
+            <value>
+                <fullName>UGC SOLO</fullName>
+                <default>false</default>
+                <label>UGC SOLO</label>
+            </value>
+            <value>
+                <fullName>Echange de points</fullName>
+                <default>false</default>
+                <label>Echange de points</label>
+            </value>
+            <value>
+                <fullName>Fonctionnement Fidélité</fullName>
+                <default>false</default>
+                <label>Fonctionnement Fidélité</label>
+            </value>
+            <value>
+                <fullName>Gain de points</fullName>
+                <default>false</default>
+                <label>Gain de points</label>
+            </value>
+            <value>
+                <fullName>Inscription</fullName>
+                <default>false</default>
+                <label>Inscription</label>
+            </value>
+            <value>
+                <fullName>Solde de points</fullName>
+                <default>false</default>
+                <label>Solde de points</label>
+            </value>
+            <value>
+                <fullName>Annulation Réservation</fullName>
+                <default>false</default>
+                <label>Annulation Réservation</label>
+            </value>
+            <value>
+                <fullName>Autres (à préciser)</fullName>
+                <default>false</default>
+                <label>Autres (à préciser)</label>
+            </value>
+            <value>
+                <fullName>Billet(s) non édité(s)</fullName>
+                <default>false</default>
+                <label>Billet(s) non édité(s)</label>
+            </value>
+            <value>
+                <fullName>Réservation inexistante</fullName>
+                <default>false</default>
+                <label>Réservation inexistante</label>
+            </value>
+            <value>
+                <fullName>Retrait de réservation</fullName>
+                <default>false</default>
+                <label>Retrait de réservation</label>
+            </value>
+            <value>
+                <fullName>Accueil</fullName>
+                <default>false</default>
+                <label>Accueil</label>
+            </value>
+            <value>
+                <fullName>Confort, Propreté</fullName>
+                <default>false</default>
+                <label>Confort, Propreté</label>
+            </value>
+            <value>
+                <fullName>Programmation</fullName>
+                <default>false</default>
+                <label>Programmation</label>
+            </value>
+            <value>
+                <fullName>Projection</fullName>
+                <default>false</default>
+                <label>Projection</label>
+            </value>
+            <value>
+                <fullName>Sécurité</fullName>
+                <default>false</default>
+                <label>Sécurité</label>
+            </value>
+            <value>
+                <fullName>Résiliation</fullName>
+                <default>false</default>
+                <label>Résiliation</label>
+            </value>
+            <value>
+                <fullName>Stand UI</fullName>
+                <default>false</default>
+                <label>Stand UI</label>
+            </value>
+            <value>
+                <fullName>Avertissement</fullName>
+                <default>false</default>
+                <label>Avertissement</label>
+            </value>
+            <value>
+                <fullName>Edition avec frais</fullName>
+                <default>false</default>
+                <label>Edition avec frais</label>
+            </value>
+            <value>
+                <fullName>Edition sans frais</fullName>
+                <default>false</default>
+                <label>Edition sans frais</label>
+            </value>
+            <value>
+                <fullName>SECRETARIAT</fullName>
+                <default>false</default>
+                <label>SECRETARIAT</label>
+            </value>
+            <value>
+                <fullName>Stand UU</fullName>
+                <default>false</default>
+                <label>Stand UU</label>
+            </value>
+            <value>
+                <fullName>Aanvraag nieuwe kaart met kosten</fullName>
+                <default>false</default>
+                <label>Aanvraag nieuwe kaart met kosten</label>
+            </value>
+            <value>
+                <fullName>Aanvraag nieuwe kaart zonder kosten</fullName>
+                <default>false</default>
+                <label>Aanvraag nieuwe kaart zonder kosten</label>
+            </value>
+            <value>
+                <fullName>Opzegging</fullName>
+                <default>false</default>
+                <label>Opzegging</label>
+            </value>
+            <value>
+                <fullName>Waarschuwing</fullName>
+                <default>false</default>
+                <label>Waarschuwing</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Autres Produits</controllingFieldValue>
+            <valueName>Cartes partenaires</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres Produits</controllingFieldValue>
+            <valueName>UGC 5/7</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres Produits</controllingFieldValue>
+            <valueName>UGC Blue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres Produits</controllingFieldValue>
+            <valueName>UGC SOLO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres Produits</controllingFieldValue>
+            <controllingFieldValue>Fidélité</controllingFieldValue>
+            <controllingFieldValue>Prompto</controllingFieldValue>
+            <controllingFieldValue>Salle</controllingFieldValue>
+            <valueName>Autres (à préciser)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fidélité</controllingFieldValue>
+            <valueName>Echange de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fidélité</controllingFieldValue>
+            <valueName>Fonctionnement Fidélité</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fidélité</controllingFieldValue>
+            <valueName>Gain de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fidélité</controllingFieldValue>
+            <valueName>Inscription</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fidélité</controllingFieldValue>
+            <valueName>Solde de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Prompto</controllingFieldValue>
+            <valueName>Annulation Réservation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Prompto</controllingFieldValue>
+            <valueName>Billet(s) non édité(s)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Prompto</controllingFieldValue>
+            <valueName>Réservation inexistante</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Prompto</controllingFieldValue>
+            <valueName>Retrait de réservation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Salle</controllingFieldValue>
+            <valueName>Accueil</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Salle</controllingFieldValue>
+            <valueName>Confort, Propreté</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Salle</controllingFieldValue>
+            <valueName>Programmation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Salle</controllingFieldValue>
+            <valueName>Projection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Salle</controllingFieldValue>
+            <valueName>Sécurité</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Illimité</controllingFieldValue>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <valueName>Résiliation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Illimité</controllingFieldValue>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <valueName>Stand UI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Illimité</controllingFieldValue>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <valueName>Avertissement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Illimité</controllingFieldValue>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <valueName>Edition avec frais</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Illimité</controllingFieldValue>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <valueName>Edition sans frais</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <valueName>SECRETARIAT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Unlimited FR</controllingFieldValue>
+            <controllingFieldValue>UGC Unlimited NL</controllingFieldValue>
+            <valueName>Stand UU</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Unlimited NL</controllingFieldValue>
+            <valueName>Aanvraag nieuwe kaart met kosten</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Unlimited NL</controllingFieldValue>
+            <valueName>Aanvraag nieuwe kaart zonder kosten</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Unlimited NL</controllingFieldValue>
+            <valueName>Opzegging</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC Unlimited NL</controllingFieldValue>
+            <valueName>Waarschuwing</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Civilite__c</fullName>
+    <description>Champ à utiliser dans les modèles d&#39;email pour afficher &quot;Cher&quot; ou &quot;Chère&quot; selon la civilité du client et la langue</description>
+    <externalId>false</externalId>
+    <formula>IF ( AND(ISPICKVAL(Account.Salutation, &quot;Monsieur&quot;), ISPICKVAL(Account.ProduitUGC__c,&quot;français&quot;)),&quot;Cher&quot;, 
+	
+IF ( AND(OR(ISPICKVAL(Account.Salutation, &quot;Melle&quot;),ISPICKVAL(Account.Salutation, &quot;Madame&quot;)),
+            ISPICKVAL(Account.ProduitUGC__c,&quot;français&quot;)),&quot;Chère&quot;,
+		 
+IF ( AND(ISPICKVAL(Account.Salutation, &quot;Monsieur&quot;),ISPICKVAL(Account.ProduitUGC__c,&quot;belge&quot;)),&quot;Beste&quot;, 
+	
+IF (AND( OR(ISPICKVAL(Account.Salutation, &quot;Melle&quot;),ISPICKVAL(Account.Salutation, &quot;Madame&quot;)), 
+	ISPICKVAL(Account.ProduitUGC__c,&quot;belge&quot;)),&quot;Beste&quot;,&quot;&quot;))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Civilité</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

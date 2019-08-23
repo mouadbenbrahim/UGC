@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR01_CreationFicheCompte</fullName>
+    <active>true</active>
+    <description>Lors de la création de fiche compte, il faut soit: 
+- Nom, Prénom, email
+- Nom, Prénom, adresse postale,
+- Nom, Prénom, téléphone</description>
+    <errorConditionFormula>AND ( NOT( $User.ByPassValidationRule__c), 
+	      NOT(ISBLANK(LastName)),
+	      AND ((ISBLANK(  Ville__c  )),
+	         (ISBLANK(PersonEmail)),
+	         (ISBLANK(PersonHomePhone)),
+(ISBLANK ( TelephoneBureau__c )),
+(ISBLANK  ( PersonMobilePhone   ))
+
+
+
+
+
+	)
+)</errorConditionFormula>
+    <errorMessage>Merci de renseigner le nom du client et son adresse email ou son adresse postale ou son numéro de téléphone</errorMessage>
+</ValidationRule>

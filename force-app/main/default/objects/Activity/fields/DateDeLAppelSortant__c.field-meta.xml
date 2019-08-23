@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DateDeLAppelSortant__c</fullName>
+    <defaultValue>Today ()</defaultValue>
+    <description>Champ apparaissant dans consigner un appel.</description>
+    <externalId>false</externalId>
+    <label>Date de l&#39;appel sortant</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

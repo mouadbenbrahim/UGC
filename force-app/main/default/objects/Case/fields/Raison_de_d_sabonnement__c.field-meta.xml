@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Raison_de_d_sabonnement__c</fullName>
+    <externalId>false</externalId>
+    <label>Raison de désabonnement</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1- Frais de réédition</fullName>
+                <default>false</default>
+                <label>1- Frais de réédition</label>
+            </value>
+            <value>
+                <fullName>2- Régularisation</fullName>
+                <default>false</default>
+                <label>2- Régularisation</label>
+            </value>
+            <value>
+                <fullName>3- Trop cher</fullName>
+                <default>false</default>
+                <label>3- Trop cher</label>
+            </value>
+            <value>
+                <fullName>4- Rentabilité</fullName>
+                <default>false</default>
+                <label>4- Rentabilité</label>
+            </value>
+            <value>
+                <fullName>5- Pas de consommation</fullName>
+                <default>false</default>
+                <label>5- Pas de consommation</label>
+            </value>
+            <value>
+                <fullName>6- Concurrence</fullName>
+                <default>false</default>
+                <label>6- Concurrence</label>
+            </value>
+            <value>
+                <fullName>7- Insécurité</fullName>
+                <default>false</default>
+                <label>7- Insécurité</label>
+            </value>
+            <value>
+                <fullName>8- Va au cinéma seul</fullName>
+                <default>false</default>
+                <label>8- Va au cinéma seul</label>
+            </value>
+            <value>
+                <fullName>9- Places via le CE</fullName>
+                <default>false</default>
+                <label>9- Places via le CE</label>
+            </value>
+            <value>
+                <fullName>10- Femme enceinte</fullName>
+                <default>false</default>
+                <label>10- Femme enceinte</label>
+            </value>
+            <value>
+                <fullName>11- Raison de santé</fullName>
+                <default>false</default>
+                <label>11- Raison de santé</label>
+            </value>
+            <value>
+                <fullName>12- Départ Hors Zone</fullName>
+                <default>false</default>
+                <label>12- Départ Hors Zone</label>
+            </value>
+            <value>
+                <fullName>13- Prison</fullName>
+                <default>false</default>
+                <label>13- Prison</label>
+            </value>
+            <value>
+                <fullName>14- Chômage</fullName>
+                <default>false</default>
+                <label>14- Chômage</label>
+            </value>
+            <value>
+                <fullName>15- Décès</fullName>
+                <default>false</default>
+                <label>15- Décès</label>
+            </value>
+            <value>
+                <fullName>16- Programmation</fullName>
+                <default>false</default>
+                <label>16- Programmation</label>
+            </value>
+            <value>
+                <fullName>17- Mécontent d&#39;UGC</fullName>
+                <default>false</default>
+                <label>17- Mécontent d&#39;UGC</label>
+            </value>
+            <value>
+                <fullName>18- Problème technique</fullName>
+                <default>false</default>
+                <label>18- Problème technique</label>
+            </value>
+            <value>
+                <fullName>19- Suspension</fullName>
+                <default>false</default>
+                <label>19- Suspension</label>
+            </value>
+            <value>
+                <fullName>20- Pas de raison donnée</fullName>
+                <default>false</default>
+                <label>20- Pas de raison donnée</label>
+            </value>
+            <value>
+                <fullName>21- Autres</fullName>
+                <default>false</default>
+                <label>21- Autres</label>
+            </value>
+            <value>
+                <fullName>Manque de temps</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Manque de temps</label>
+            </value>
+            <value>
+                <fullName>Programation</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Programation</label>
+            </value>
+            <value>
+                <fullName>Rentabilité</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Rentabilité</label>
+            </value>
+            <value>
+                <fullName>Tarif</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Tarif</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -158,6 +158,92 @@
     </types>
     <types>
         <members>*</members>
+        <members>Account</members>
+        <members>AccountBrand</members>
+        <members>AccountContactRole</members>
+        <members>Activity</members>
+        <members>AgentWork</members>
+        <members>Asset</members>
+        <members>AssetRelationship</members>
+        <members>AssistantProgress</members>
+        <members>AuthorizationForm</members>
+        <members>AuthorizationFormConsent</members>
+        <members>AuthorizationFormDataUse</members>
+        <members>AuthorizationFormText</members>
+        <members>Campaign</members>
+        <members>CampaignMember</members>
+        <members>Case</members>
+        <members>CaseContactRole</members>
+        <members>CaseMilestone</members>
+        <members>ChatterActivity</members>
+        <members>CollaborationGroup</members>
+        <members>CollaborationGroupMember</members>
+        <members>Contact</members>
+        <members>ContactPointTypeConsent</members>
+        <members>ContactRequest</members>
+        <members>ContentVersion</members>
+        <members>Contract</members>
+        <members>ContractContactRole</members>
+        <members>ContractLineItem</members>
+        <members>DataUseLegalBasis</members>
+        <members>DataUsePurpose</members>
+        <members>DuplicateRecordItem</members>
+        <members>DuplicateRecordSet</members>
+        <members>EmailMessage</members>
+        <members>Entitlement</members>
+        <members>EntitlementContact</members>
+        <members>Event</members>
+        <members>ExchangeUserMapping</members>
+        <members>ExpressionFilter</members>
+        <members>ExpressionFilterCriteria</members>
+        <members>ExternalService__mdt</members>
+        <members>FeedItem</members>
+        <members>ForecastingCategoryMapping</members>
+        <members>Global_Parameters__mdt</members>
+        <members>Idea</members>
+        <members>Image</members>
+        <members>Individual</members>
+        <members>Knowledge__kav</members>
+        <members>Lead</members>
+        <members>LinkedArticle</members>
+        <members>Macro</members>
+        <members>MacroAction</members>
+        <members>MacroInstruction</members>
+        <members>Opportunity</members>
+        <members>OpportunityCompetitor</members>
+        <members>OpportunityContactRole</members>
+        <members>OpportunityLineItem</members>
+        <members>Order</members>
+        <members>OrderItem</members>
+        <members>PartnerRole</members>
+        <members>PendingServiceRouting</members>
+        <members>PersonAccount</members>
+        <members>Pricebook2</members>
+        <members>PricebookEntry</members>
+        <members>Product2</members>
+        <members>PromptAction</members>
+        <members>Question</members>
+        <members>QuickText</members>
+        <members>Recommendation</members>
+        <members>RecordAction</members>
+        <members>RecordTypeMapping__mdt</members>
+        <members>Reply</members>
+        <members>Scorecard</members>
+        <members>ScorecardAssociation</members>
+        <members>ScorecardMetric</members>
+        <members>ServiceContract</members>
+        <members>Site</members>
+        <members>SocialPersona</members>
+        <members>SocialPost</members>
+        <members>Solution</members>
+        <members>StreamingChannel</members>
+        <members>Task</members>
+        <members>Topic</members>
+        <members>TopicAssignment</members>
+        <members>UGC_Generic_Param__mdt</members>
+        <members>User</members>
+        <members>UserProvisioningRequest</members>
+        <members>UserServicePresence</members>       
         <name>CustomObject</name>
     </types>
     <types>
@@ -421,7 +507,7 @@
         <name>RecordType</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>RemoteSiteSetting</name>
     </types>
     <types>

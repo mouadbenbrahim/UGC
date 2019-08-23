@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Offre_de_r_tention__c</fullName>
+    <externalId>false</externalId>
+    <label>Offre de rétention</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Points fidélité</fullName>
+                <default>false</default>
+                <label>Points fidélité (Bronze)</label>
+            </value>
+            <value>
+                <fullName>REMRET1MOIS</fullName>
+                <default>false</default>
+                <label>1 mois gratuit</label>
+            </value>
+            <value>
+                <fullName>REMRETARG</fullName>
+                <default>false</default>
+                <label>1 mois gratuit + bonus (Argent)</label>
+            </value>
+            <value>
+                <fullName>REMRETOR</fullName>
+                <default>false</default>
+                <label>2 mois gratuits (Or)</label>
+            </value>
+            <value>
+                <fullName>REMRETPLAT</fullName>
+                <default>false</default>
+                <label>2 mois gratuits + bonus (Platine)</label>
+            </value>
+            <value>
+                <fullName>Hausse tarifaire</fullName>
+                <default>false</default>
+                <label>Hausse tarifaire</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

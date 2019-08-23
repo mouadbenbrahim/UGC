@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Billet__c</fullName>
+    <description>Champ pour la création d&#39;un ticket par la salle</description>
+    <externalId>false</externalId>
+    <label>Billet</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>N/A</fullName>
+                <default>false</default>
+                <label>N/A</label>
+            </value>
+            <value>
+                <fullName>En possession de l&#39;abonné</fullName>
+                <default>false</default>
+                <label>En possession de l&#39;abonné</label>
+            </value>
+            <value>
+                <fullName>Récupéré par la salle</fullName>
+                <default>false</default>
+                <label>Récupéré par la salle</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

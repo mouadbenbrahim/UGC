@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TechApprobationSoumise__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Quand la case est cochée cela veut dire qu&#39;il y a eu une approbation déjà effectuée  et entre dans le processus d&#39;approbation de la soumission automatique</description>
+    <externalId>false</externalId>
+    <label>Tech_Approbation soumise</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

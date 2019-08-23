@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Envoi_Catalogue_Client_UI</fullName>
+    <booleanFilter>1 AND 2 AND 3</booleanFilter>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.ORIGIN</columns>
+    <columns>Famille__c</columns>
+    <columns>TECH_MotifMatrice__c</columns>
+    <columns>SousMotif__c</columns>
+    <columns>OWNER_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>ATraiter</value>
+    </filters>
+    <filters>
+        <field>NoCarteUI__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>Produit1__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <label>Envoi Catalogue - Client UI</label>
+</ListView>

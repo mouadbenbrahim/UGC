@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TECHIdStatut__c</fullName>
+    <description>Ce champ calcule d&#39;ID du statut en associant les numéros associé à la famille, motif et sous motif</description>
+    <externalId>false</externalId>
+    <formula>TRIM(LEFT(TEXT(Famille__c),FIND(&quot;-&quot;, TEXT(Famille__c))-1)) &amp;
+
+TRIM(LEFT(TEXT(Motif__c),FIND(&quot;-&quot;, TEXT(Motif__c))-1))&amp;
+
+TRIM(LEFT(TEXT( SousMotif__c ),FIND(&quot;-&quot;, TEXT(SousMotif__c))-1))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>ID Statut</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

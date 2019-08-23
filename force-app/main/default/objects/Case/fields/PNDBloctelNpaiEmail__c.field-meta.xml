@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PNDBloctelNpaiEmail__c</fullName>
+    <description>Ce champ copie la valeur du champ de la fiche client afin de l&#39;afficher dans le bandeau du ticket</description>
+    <externalId>false</externalId>
+    <formula>Account.PNDBloctelNpaiEmail__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>PND &amp; Bloctel &amp; NPAIEmail</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

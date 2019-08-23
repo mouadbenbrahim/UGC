@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CliStatutRCU__c</fullName>
+    <externalId>false</externalId>
+    <label>Statut du client ds référentiel client</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sans email</fullName>
+                <default>false</default>
+                <label>Sans email</label>
+            </value>
+            <value>
+                <fullName>En attente</fullName>
+                <default>false</default>
+                <label>En attente</label>
+            </value>
+            <value>
+                <fullName>Validé</fullName>
+                <default>false</default>
+                <label>Validé</label>
+            </value>
+            <value>
+                <fullName>Supprimé</fullName>
+                <default>false</default>
+                <label>Supprimé</label>
+            </value>
+            <value>
+                <fullName>Refusé</fullName>
+                <default>false</default>
+                <label>Refusé</label>
+            </value>
+            <value>
+                <fullName>Anonyme</fullName>
+                <default>false</default>
+                <label>Anonyme</label>
+            </value>
+            <value>
+                <fullName>Endormi</fullName>
+                <default>false</default>
+                <label>Endormi</label>
+            </value>
+            <value>
+                <fullName>Prospect</fullName>
+                <default>false</default>
+                <label>Prospect</label>
+            </value>
+            <value>
+                <fullName>En attente infinie</fullName>
+                <default>false</default>
+                <label>En attente infinie</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

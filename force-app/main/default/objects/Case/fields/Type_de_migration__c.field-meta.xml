@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type_de_migration__c</fullName>
+    <externalId>false</externalId>
+    <label>Type de migration</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>UI 1 &gt; UI 2</fullName>
+                <default>false</default>
+                <label>UI 1 &gt; UI 2</label>
+            </value>
+            <value>
+                <fullName>UI 2 &gt; UI 1</fullName>
+                <default>false</default>
+                <label>UI 2 &gt; UI 1</label>
+            </value>
+            <value>
+                <fullName>UI 3 &gt; UI 2</fullName>
+                <default>false</default>
+                <label>UI 3 &gt; UI 2</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

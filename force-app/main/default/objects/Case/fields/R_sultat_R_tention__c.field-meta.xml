@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>R_sultat_R_tention__c</fullName>
+    <externalId>false</externalId>
+    <label>Résultat Rétention</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Accepté</fullName>
+                <default>false</default>
+                <label>Accepté</label>
+            </value>
+            <value>
+                <fullName>Refuse avec desabonnement</fullName>
+                <default>false</default>
+                <label>Refusé avec désabonnement</label>
+            </value>
+            <value>
+                <fullName>Refuse sans desabonnement</fullName>
+                <default>false</default>
+                <label>Refusé sans désabonnement</label>
+            </value>
+            <value>
+                <fullName>Client indécis</fullName>
+                <default>false</default>
+                <label>Client indécis</label>
+            </value>
+            <value>
+                <fullName>Refuse avec desabonnement E</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Refusé avec désabonnement E</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Raison_remboursement__c</fullName>
+    <externalId>false</externalId>
+    <label>Raison remboursement</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Moyen_de_paiement_souhait__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>A1- CB Achat &gt; 1 an - Délai OK</fullName>
+                <default>false</default>
+                <label>A1- CB Achat &gt; 1 an - Délai OK</label>
+            </value>
+            <value>
+                <fullName>A2- E-CB - Délai dépassé : Motif client à préciser</fullName>
+                <default>false</default>
+                <label>A2- E-CB - Délai dépassé : Motif client à préciser</label>
+            </value>
+            <value>
+                <fullName>A2- CB Achat &gt; 1 an - Délai dépassé : Motif client à préciser</fullName>
+                <default>false</default>
+                <label>A2- CB Achat &gt; 1 an - Délai dépassé : Motif client à préciser</label>
+            </value>
+            <value>
+                <fullName>A2- E-CB - Délai dépassé : Incident Technique UGC</fullName>
+                <default>false</default>
+                <label>A2- E-CB - Délai dépassé : Incident Technique UGC</label>
+            </value>
+            <value>
+                <fullName>A2- CB Achat &gt; 1 an - Délai dépassé : Incident Technique UGC</fullName>
+                <default>false</default>
+                <label>A2- CB Achat &gt; 1 an - Délai dépassé : Incident Technique UGC</label>
+            </value>
+            <value>
+                <fullName>B1- CB Achat &lt; 1 an : Retour KO ATOS</fullName>
+                <default>false</default>
+                <label>B1- CB Achat &lt; 1 an : Retour KO ATOS</label>
+            </value>
+            <value>
+                <fullName>B2- CB Achat &lt; 1 an - Délai OK : Motif client à préciser</fullName>
+                <default>false</default>
+                <label>B2- CB Achat &lt; 1 an - Délai OK : Motif client à préciser</label>
+            </value>
+            <value>
+                <fullName>B2- CB Achat &lt; 1 an - Délai dépassé : Motif client à préciser</fullName>
+                <default>false</default>
+                <label>B2- CB Achat &lt; 1 an - Délai dépassé : Motif client à préciser</label>
+            </value>
+            <value>
+                <fullName>B2- CB Achat &lt; 1 an - Délai dépassé : Incident Technique UGC</fullName>
+                <default>false</default>
+                <label>B2- CB Achat &lt; 1 an - Délai dépassé : Incident Technique UGC</label>
+            </value>
+            <value>
+                <fullName>C1- Achat salle annulation UGC</fullName>
+                <default>false</default>
+                <label>C1- Achat salle annulation UGC</label>
+            </value>
+            <value>
+                <fullName>double débit</fullName>
+                <default>false</default>
+                <label>double débit</label>
+            </value>
+            <value>
+                <fullName>resa introuvable</fullName>
+                <default>false</default>
+                <label>resa introuvable</label>
+            </value>
+            <value>
+                <fullName>G23- Rétractation</fullName>
+                <default>false</default>
+                <label>G23- Rétractation</label>
+            </value>
+            <value>
+                <fullName>G23-Trop perçu</fullName>
+                <default>false</default>
+                <label>G23-Trop perçu</label>
+            </value>
+            <value>
+                <fullName>G23- Décès</fullName>
+                <default>false</default>
+                <label>G23- Décès</label>
+            </value>
+            <value>
+                <fullName>G23- Réduction préavis</fullName>
+                <default>false</default>
+                <label>G23- Réduction préavis</label>
+            </value>
+            <value>
+                <fullName>G20- Désabo anticipé</fullName>
+                <default>false</default>
+                <label>G20- Désabo anticipé</label>
+            </value>
+            <value>
+                <fullName>G21- Résiliation</fullName>
+                <default>false</default>
+                <label>G21- Résiliation</label>
+            </value>
+            <value>
+                <fullName>G23- Annulation</fullName>
+                <default>false</default>
+                <label>G23- Annulation</label>
+            </value>
+            <value>
+                <fullName>G22- Doublon</fullName>
+                <default>false</default>
+                <label>G22- Doublon</label>
+            </value>
+            <value>
+                <fullName>G23- Autres</fullName>
+                <default>false</default>
+                <label>G23- Autres</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G23- Rétractation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G23-Trop perçu</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G23- Décès</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G23- Réduction préavis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G20- Désabo anticipé</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G21- Résiliation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G23- Annulation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G22- Doublon</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (UU)</controllingFieldValue>
+            <controllingFieldValue>CB (UU)</controllingFieldValue>
+            <controllingFieldValue>Prélèvement (UI)</controllingFieldValue>
+            <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Virement (UI)</controllingFieldValue>
+            <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Chèque (UI)</controllingFieldValue>
+            <controllingFieldValue>CB (UI)</controllingFieldValue>
+            <valueName>G23- Autres</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (VLO)</controllingFieldValue>
+            <valueName>A1- CB Achat &gt; 1 an - Délai OK</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (VLO)</controllingFieldValue>
+            <valueName>A2- E-CB - Délai dépassé : Motif client à préciser</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (VLO)</controllingFieldValue>
+            <valueName>A2- CB Achat &gt; 1 an - Délai dépassé : Motif client à préciser</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (VLO)</controllingFieldValue>
+            <valueName>A2- E-CB - Délai dépassé : Incident Technique UGC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (VLO)</controllingFieldValue>
+            <valueName>A2- CB Achat &gt; 1 an - Délai dépassé : Incident Technique UGC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque (VLO)</controllingFieldValue>
+            <controllingFieldValue>CB (VLO)</controllingFieldValue>
+            <valueName>B1- CB Achat &lt; 1 an : Retour KO ATOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CB (VLO)</controllingFieldValue>
+            <valueName>B2- CB Achat &lt; 1 an - Délai OK : Motif client à préciser</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CB (VLO)</controllingFieldValue>
+            <valueName>B2- CB Achat &lt; 1 an - Délai dépassé : Motif client à préciser</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CB (VLO)</controllingFieldValue>
+            <valueName>B2- CB Achat &lt; 1 an - Délai dépassé : Incident Technique UGC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque</controllingFieldValue>
+            <controllingFieldValue>CB</controllingFieldValue>
+            <valueName>double débit</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chèque</controllingFieldValue>
+            <controllingFieldValue>CB</controllingFieldValue>
+            <valueName>resa introuvable</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

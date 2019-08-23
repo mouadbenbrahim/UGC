@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PersonAccountCompactLayout</fullName>
+    <fields>Name</fields>
+    <fields>OrigineDrapeau__c</fields>
+    <fields>PersonEmail</fields>
+    <fields>CliEmailComplementaire__c</fields>
+    <fields>AdressePostale__c</fields>
+    <fields>PersonMobilePhone</fields>
+    <fields>PersonHomePhone</fields>
+    <fields>TelephoneBureau__c</fields>
+    <fields>NoCartes__c</fields>
+    <fields>PNDBloctelNpaiEmail__c</fields>
+    <label>Person Account Compact Layout</label>
+</CompactLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TechApprobationDRC__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Quand le DRC approuve une demande de remboursement alors la case est cochée</description>
+    <externalId>false</externalId>
+    <label>Tech_ApprobationDRC</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

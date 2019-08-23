@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AIDE__c</fullName>
+    <externalId>false</externalId>
+    <formula>IMAGE(&quot;/resource/1513158742000/Alerte?isdtp=p1&quot;,&quot;.png&quot;,40,40) 
+&amp;&quot; &quot;&amp; 
+LOWER(&quot;Merci de remplir les montants avec une virgule et pas un point&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>.</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

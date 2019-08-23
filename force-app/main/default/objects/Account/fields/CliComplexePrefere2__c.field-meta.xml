@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CliComplexePrefere2__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Complexe Préféré n° 2</label>
+    <referenceTo>Complexe__c</referenceTo>
+    <relationshipLabel>Accounts (Complexe Préféré n° 2)</relationshipLabel>
+    <relationshipName>ComplexePrefere2</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>

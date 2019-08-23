@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Typededemande__c</fullName>
+    <externalId>false</externalId>
+    <label>Type de demande</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Autres demandes d&#39;informations</fullName>
+                <default>false</default>
+                <label>Autres demandes d&#39;informations</label>
+            </value>
+            <value>
+                <fullName>Autres types de réclamations</fullName>
+                <default>false</default>
+                <label>Autres types de réclamations</label>
+            </value>
+            <value>
+                <fullName>Demande d&#39;informations générales</fullName>
+                <default>false</default>
+                <label>Demande d&#39;informations générales</label>
+            </value>
+            <value>
+                <fullName>Média électroniques</fullName>
+                <default>false</default>
+                <label>Média électroniques</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

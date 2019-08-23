@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sous_Motifs__c</fullName>
+    <externalId>false</externalId>
+    <label>Sous Motifs</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Motifs__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>systeme inaccessible</fullName>
+                <default>false</default>
+                <label>systeme inaccessible</label>
+            </value>
+            <value>
+                <fullName>tarifs speciaux</fullName>
+                <default>false</default>
+                <label>tarifs speciaux</label>
+            </value>
+            <value>
+                <fullName>demande de confirmation</fullName>
+                <default>false</default>
+                <label>demande de confirmation</label>
+            </value>
+            <value>
+                <fullName>reservation assistee</fullName>
+                <default>false</default>
+                <label>reservation assistee</label>
+            </value>
+            <value>
+                <fullName>reservation inexistante</fullName>
+                <default>false</default>
+                <label>reservation inexistante</label>
+            </value>
+            <value>
+                <fullName>fonctionnement informatique</fullName>
+                <default>false</default>
+                <label>fonctionnement informatique</label>
+            </value>
+            <value>
+                <fullName>annulation reservation</fullName>
+                <default>false</default>
+                <label>annulation reservation</label>
+            </value>
+            <value>
+                <fullName>reclamation viva l&#39;opera</fullName>
+                <default>false</default>
+                <label>reclamation viva l&#39;opera</label>
+            </value>
+            <value>
+                <fullName>cartes ugc solo perimees</fullName>
+                <default>false</default>
+                <label>cartes ugc solo perimees</label>
+            </value>
+            <value>
+                <fullName>ugc blue</fullName>
+                <default>false</default>
+                <label>ugc blue</label>
+            </value>
+            <value>
+                <fullName>cartes 5/5+ perimees</fullName>
+                <default>false</default>
+                <label>cartes 5/5+ perimees</label>
+            </value>
+            <value>
+                <fullName>e-cartes 5/5+</fullName>
+                <default>false</default>
+                <label>e-cartes 5/5+</label>
+            </value>
+            <value>
+                <fullName>accueil salle</fullName>
+                <default>false</default>
+                <label>accueil salle</label>
+            </value>
+            <value>
+                <fullName>projection</fullName>
+                <default>false</default>
+                <label>projection</label>
+            </value>
+            <value>
+                <fullName>confort, proprete</fullName>
+                <default>false</default>
+                <label>confort, proprete</label>
+            </value>
+            <value>
+                <fullName>securite</fullName>
+                <default>false</default>
+                <label>securite</label>
+            </value>
+            <value>
+                <fullName>programmation</fullName>
+                <default>false</default>
+                <label>programmation</label>
+            </value>
+            <value>
+                <fullName>fonctionnement des bornes</fullName>
+                <default>false</default>
+                <label>fonctionnement des bornes</label>
+            </value>
+            <value>
+                <fullName>contenu inapproprie (films annonces, pub...)</fullName>
+                <default>false</default>
+                <label>contenu inapproprie (films annonces, pub...)</label>
+            </value>
+            <value>
+                <fullName>numerotation des places</fullName>
+                <default>false</default>
+                <label>numerotation des places</label>
+            </value>
+            <value>
+                <fullName>autres</fullName>
+                <default>false</default>
+                <label>autres</label>
+            </value>
+            <value>
+                <fullName>renseignements inscription</fullName>
+                <default>false</default>
+                <label>renseignements inscription</label>
+            </value>
+            <value>
+                <fullName>demande desinscription</fullName>
+                <default>false</default>
+                <label>demande desinscription</label>
+            </value>
+            <value>
+                <fullName>probleme inscription</fullName>
+                <default>false</default>
+                <label>probleme inscription</label>
+            </value>
+            <value>
+                <fullName>reclamation autre</fullName>
+                <default>false</default>
+                <label>reclamation autre</label>
+            </value>
+            <value>
+                <fullName>jeux</fullName>
+                <default>false</default>
+                <label>jeux</label>
+            </value>
+            <value>
+                <fullName>renvoi courriel activation</fullName>
+                <default>false</default>
+                <label>renvoi courriel activation</label>
+            </value>
+            <value>
+                <fullName>credit de points</fullName>
+                <default>false</default>
+                <label>credit de points</label>
+            </value>
+            <value>
+                <fullName>debit de points</fullName>
+                <default>false</default>
+                <label>debit de points</label>
+            </value>
+            <value>
+                <fullName>reclamations autres</fullName>
+                <default>false</default>
+                <label>reclamations autres</label>
+            </value>
+            <value>
+                <fullName>fonctionnement ugc fidelite</fullName>
+                <default>false</default>
+                <label>fonctionnement ugc fidelite</label>
+            </value>
+            <value>
+                <fullName>probleme inscription fidelite</fullName>
+                <default>false</default>
+                <label>probleme inscription fidelite</label>
+            </value>
+            <value>
+                <fullName>informations ugc fidelite autres</fullName>
+                <default>false</default>
+                <label>informations ugc fidelite autres</label>
+            </value>
+            <value>
+                <fullName>reclamation fonctionnement ugc fidelite</fullName>
+                <default>false</default>
+                <label>reclamation fonctionnement ugc fidelite</label>
+            </value>
+            <value>
+                <fullName>reclamation solde de points</fullName>
+                <default>false</default>
+                <label>reclamation solde de points</label>
+            </value>
+            <value>
+                <fullName>appli ugc direct</fullName>
+                <default>false</default>
+                <label>appli ugc direct</label>
+            </value>
+            <value>
+                <fullName>applis hors ugc</fullName>
+                <default>false</default>
+                <label>applis hors ugc</label>
+            </value>
+            <value>
+                <fullName>contenu ergonomie site web</fullName>
+                <default>false</default>
+                <label>contenu ergonomie site web</label>
+            </value>
+            <value>
+                <fullName>information twitter</fullName>
+                <default>false</default>
+                <label>information twitter</label>
+            </value>
+            <value>
+                <fullName>reclamation twitter</fullName>
+                <default>false</default>
+                <label>reclamation twitter</label>
+            </value>
+            <value>
+                <fullName>reclamation applis hors ugc</fullName>
+                <default>false</default>
+                <label>reclamation applis hors ugc</label>
+            </value>
+            <value>
+                <fullName>facebook</fullName>
+                <default>false</default>
+                <label>facebook</label>
+            </value>
+            <value>
+                <fullName>reclamation facebook</fullName>
+                <default>false</default>
+                <label>reclamation facebook</label>
+            </value>
+            <value>
+                <fullName>divers-coordonnees/contacts siege</fullName>
+                <default>false</default>
+                <label>divers-coordonnees/contacts siege</label>
+            </value>
+            <value>
+                <fullName>divers-ressources humaines</fullName>
+                <default>false</default>
+                <label>divers-ressources humaines</label>
+            </value>
+            <value>
+                <fullName>informations sur films</fullName>
+                <default>false</default>
+                <label>informations sur films</label>
+            </value>
+            <value>
+                <fullName>divers-autres</fullName>
+                <default>false</default>
+                <label>divers-autres</label>
+            </value>
+            <value>
+                <fullName>info viva l&#39;opera</fullName>
+                <default>false</default>
+                <label>info viva l&#39;opera</label>
+            </value>
+            <value>
+                <fullName>information droits cnil* (envoi de courrier)</fullName>
+                <default>false</default>
+                <label>information droits cnil* (envoi de courrier)</label>
+            </value>
+            <value>
+                <fullName>info sur cnil/comite de la vie privee</fullName>
+                <default>false</default>
+                <label>info sur cnil/comite de la vie privee</label>
+            </value>
+            <value>
+                <fullName>confirmation opt out</fullName>
+                <default>false</default>
+                <label>confirmation opt out</label>
+            </value>
+            <value>
+                <fullName>offres de services / partenaire</fullName>
+                <default>false</default>
+                <label>offres de services / partenaire</label>
+            </value>
+            <value>
+                <fullName>carte 5&amp;5+</fullName>
+                <default>false</default>
+                <label>carte 5&amp;5+</label>
+            </value>
+            <value>
+                <fullName>reservation mode d&#39;emploi</fullName>
+                <default>false</default>
+                <label>reservation mode d&#39;emploi</label>
+            </value>
+            <value>
+                <fullName>ugc solo</fullName>
+                <default>false</default>
+                <label>ugc solo</label>
+            </value>
+            <value>
+                <fullName>ugc +</fullName>
+                <default>false</default>
+                <label>ugc +</label>
+            </value>
+            <value>
+                <fullName>compliments/remerciements</fullName>
+                <default>false</default>
+                <label>compliments/remerciements</label>
+            </value>
+            <value>
+                <fullName>informations générales</fullName>
+                <default>false</default>
+                <label>informations générales</label>
+            </value>
+            <value>
+                <fullName>objets perdus/trouvés</fullName>
+                <default>false</default>
+                <label>objets perdus/trouvés</label>
+            </value>
+            <value>
+                <fullName>pmr : acces/programmation...</fullName>
+                <default>false</default>
+                <label>pmr : acces/programmation...</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>accueil salle</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>projection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>confort, proprete</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>securite</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>programmation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>fonctionnement des bornes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>contenu inapproprie (films annonces, pub...)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations salles</controllingFieldValue>
+            <valueName>numerotation des places</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations divers</controllingFieldValue>
+            <valueName>cartes ugc solo perimees</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations divers</controllingFieldValue>
+            <controllingFieldValue>autres produits et services</controllingFieldValue>
+            <valueName>ugc blue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations divers</controllingFieldValue>
+            <valueName>cartes 5/5+ perimees</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations divers</controllingFieldValue>
+            <controllingFieldValue>autres produits et services</controllingFieldValue>
+            <valueName>e-cartes 5/5+</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>systeme inaccessible</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>tarifs speciaux</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>demande de confirmation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>reservation assistee</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>reservation inexistante</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>fonctionnement informatique</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>annulation reservation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réclamations réservation</controllingFieldValue>
+            <valueName>reclamation viva l&#39;opera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mon UGC</controllingFieldValue>
+            <valueName>autres</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mon UGC</controllingFieldValue>
+            <valueName>renseignements inscription</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mon UGC</controllingFieldValue>
+            <valueName>demande desinscription</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mon UGC</controllingFieldValue>
+            <valueName>probleme inscription</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mon UGC</controllingFieldValue>
+            <valueName>reclamation autre</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mon UGC</controllingFieldValue>
+            <valueName>jeux</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>renvoi courriel activation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>credit de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>debit de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>reclamations autres</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>fonctionnement ugc fidelite</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>probleme inscription fidelite</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>informations ugc fidelite autres</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>reclamation fonctionnement ugc fidelite</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC fidélité</controllingFieldValue>
+            <valueName>reclamation solde de points</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>appli ugc direct</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>applis hors ugc</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>contenu ergonomie site web</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>information twitter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>reclamation twitter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>reclamation applis hors ugc</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>facebook</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Support électronique</controllingFieldValue>
+            <valueName>reclamation facebook</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>divers-coordonnees/contacts siege</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>divers-ressources humaines</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>informations sur films</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>divers-autres</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>info viva l&#39;opera</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>information droits cnil* (envoi de courrier)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>info sur cnil/comite de la vie privee</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>confirmation opt out</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Divers</controllingFieldValue>
+            <valueName>offres de services / partenaire</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>autres produits et services</controllingFieldValue>
+            <valueName>carte 5&amp;5+</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>autres produits et services</controllingFieldValue>
+            <valueName>reservation mode d&#39;emploi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>autres produits et services</controllingFieldValue>
+            <valueName>ugc solo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>autres produits et services</controllingFieldValue>
+            <valueName>ugc +</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>cinema ugc</controllingFieldValue>
+            <valueName>compliments/remerciements</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>cinema ugc</controllingFieldValue>
+            <valueName>informations générales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>cinema ugc</controllingFieldValue>
+            <valueName>objets perdus/trouvés</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>cinema ugc</controllingFieldValue>
+            <valueName>pmr : acces/programmation...</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

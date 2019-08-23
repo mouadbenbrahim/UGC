@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Test1</fullName>
+    <active>false</active>
+    <description>Test MAD</description>
+    <errorConditionFormula>AND(ISPICKVAL( Origine__c ,&quot;Appel sortant&quot;) ,  ActivityDate &gt; Today())</errorConditionFormula>
+    <errorDisplayField>ActivityDate</errorDisplayField>
+    <errorMessage>La date ne peut pas être supérieure à la date d&#39;aujourd&#39;hui</errorMessage>
+</ValidationRule>

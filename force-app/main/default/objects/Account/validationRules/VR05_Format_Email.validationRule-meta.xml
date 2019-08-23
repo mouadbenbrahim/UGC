@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR05_Format_Email</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND ( 
+NOT($User.ByPassValidationRule__c),
+NOT(ISBLANK( PersonEmail )),
+NOT(REGEX( PersonEmail ,&#39;([a-zA-Z0-9_\\-\\.]+)@((\\[a-z]{1,3}\\.[a-z]{1,3}\\.[a-z]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})&#39;)))</errorConditionFormula>
+    <errorDisplayField>PersonEmail</errorDisplayField>
+    <errorMessage>L&#39;adresse email doit contenir un &quot;@&quot; et un &quot;.&quot;</errorMessage>
+</ValidationRule>

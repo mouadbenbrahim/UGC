@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IconeCanalOrigine__c</fullName>
+    <description>Affiche l&#39;icone selon l&#39;origine</description>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL( Origine__c , &quot;Appel entrant&quot;),IMAGE(&quot;/resource/1507642306000/Appelentrant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL( Origine__c , &quot;Appel sortant&quot;),IMAGE(&quot;/resource/1510072374000/Appelsortant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL( Origine__c , &quot;Courrier entrant&quot;),IMAGE(&quot;/resource/1507642306000/CourrierEntrant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL( Origine__c , &quot;Courrier sortant&quot;),IMAGE(&quot;/resource/1510072645000/CourrierSortant?isdtp=p1t&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL( Origine__c , &quot;Email entrant&quot;),IMAGE(&quot;/resource/1507642306000/EmailEntrant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL( Origine__c , &quot;Email sortant&quot;),IMAGE(&quot;/resource/1510072535000/EmailSortant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL( Origine__c, &quot;Formulaire de contact&quot;), IMAGE(&quot;/resource/1507642306000/FormulaireContact?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL(Origine__c, &quot;Facebook&quot;), IMAGE(&quot;/resource/1507642306000/FacebookEntrant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL(Origine__c, &quot;Twitter&quot;), IMAGE(&quot;/resource/1507642306000/TwitterEntrant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL(Origine__c, &quot;Critizr&quot;), IMAGE(&quot;/resource/1507642306000/CritizrEntrant?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+IF(ISPICKVAL(Origine__c, &quot;Salle&quot;), IMAGE(&quot;/resource/1507642306000/Iconesalle?isdtp=p1&quot;,&quot;.png&quot;,30,30),
+&quot;&quot;)))))))))))</formula>
+    <label>.</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

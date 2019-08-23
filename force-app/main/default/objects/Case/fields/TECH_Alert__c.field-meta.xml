@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TECH_Alert__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>True si une alerte a été lancée sur ce case.</description>
+    <externalId>false</externalId>
+    <label>Alerté</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
