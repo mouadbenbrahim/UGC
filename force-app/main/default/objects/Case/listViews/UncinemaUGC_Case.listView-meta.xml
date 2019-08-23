@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UncinemaUGC_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>FR_Un cinéma UGC</label>
+    <queue>FR_UncinemaUGC</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

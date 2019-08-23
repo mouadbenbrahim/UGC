@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DateHeureEditionListing__c</fullName>
+    <externalId>false</externalId>
+    <label>Date et heure de l&#39;édition du listing</label>
+    <required>false</required>
+    <type>DateTime</type>
+</CustomField>

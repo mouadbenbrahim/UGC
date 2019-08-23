@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tech_enAttente__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Quand le statut de la demande client est &quot;en attente X&quot; alors une action de workflow se déclenche pour la cochée automatiquement pour entrer dans les critères du process builder &quot;Clôture automatique&quot;</description>
+    <externalId>false</externalId>
+    <label>En attente</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

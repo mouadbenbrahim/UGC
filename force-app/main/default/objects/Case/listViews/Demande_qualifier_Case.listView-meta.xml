@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Demande_qualifier_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>Demande à qualifier</label>
+    <queue>Demande_qualifier</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

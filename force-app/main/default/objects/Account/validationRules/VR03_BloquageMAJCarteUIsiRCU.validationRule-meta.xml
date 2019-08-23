@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR03_BloquageMAJCarteUIsiRCU</fullName>
+    <active>true</active>
+    <description>Bloquage de la mise à jour du numéro de carte UI si la fiche client a été maj par le RCU</description>
+    <errorConditionFormula>AND (
+
+NOT($User.ByPassValidationRule__c),
+ISCHANGED( NoCarteUI__c),
+NOT(ISBLANK( IdMonCompte__c)),
+NOT(ISPICKVAL(CliStatutRCU__c,&quot;Supprimé&quot;))
+)</errorConditionFormula>
+    <errorMessage>Vous ne pouvez pas modifier le numéro de Carte UI</errorMessage>
+</ValidationRule>

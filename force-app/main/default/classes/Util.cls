@@ -122,11 +122,8 @@ public with sharing class Util {
 	public static void parseXMLNtry(DOM.XMLNode node, RejetExtItem__c r){
 		
 		if(node.getName() == 'Nm' && node.getParent().getName() == 'Dbtr' && String.isNotBlank(node.getText())){
-	    	System.debug('##MNE Name >> ' + node.getName());
+			System.debug('##MNE Name >> ' + node.getName());
 			System.debug('##MNE Value >> ' + node.getText().trim());
-		}
-		
-		if(node.getName() == 'Nm' && node.getParent().getName() == 'Dbtr' && String.isNotBlank(node.getText())){
 			r.DebiteurName__c = node.getText().trim();
 		}
 		
@@ -139,6 +136,14 @@ public with sharing class Util {
 		
 		if(node.getName() == 'EndToEndId' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
 	    	r.PaymentReference__c = node.getText().trim();
+		}
+		
+		if(node.getName() == 'AcctSvcrRef' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
+	    	r.RejetDate__c = Date.valueOf(node.getText().trim());
+		}
+		
+		if(node.getName() == 'MndtId' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
+	    	r.RUM__c = node.getText().trim();
 		}
 		
 		if(node.getName() == 'Cd' && node.getParent().getName() == 'Rsn' && String.isNotBlank(node.getText())){

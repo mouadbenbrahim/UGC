@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LogoUGC__c</fullName>
+    <description>Test</description>
+    <externalId>false</externalId>
+    <formula>IMAGE(&quot;https://www.ugc.fr/dynamique/images/logo_ugc_blanc_2018.jpg&quot;,&quot;.png&quot;,50,75)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Logo UGC</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

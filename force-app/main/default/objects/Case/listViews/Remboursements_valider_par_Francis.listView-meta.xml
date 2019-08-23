@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Remboursements_valider_par_Francis</fullName>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>MontantRembourser__c</columns>
+    <columns>EtapeValidationRembousement__c</columns>
+    <columns>CommentaireRefus__c</columns>
+    <columns>OWNER_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>EtapeValidationRembousement__c</field>
+        <operation>equals</operation>
+        <value>ValidationSuperviseur</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.DemandesCliensencours</value>
+    </filters>
+    <label>Remboursements à valider par DRC</label>
+</ListView>

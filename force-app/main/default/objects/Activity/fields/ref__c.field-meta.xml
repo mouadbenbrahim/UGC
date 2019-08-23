@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ref__c</fullName>
+    <description>Reference (Text information set by IVR)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Reference (Text information set by IVR)</inlineHelpText>
+    <label>Reference</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

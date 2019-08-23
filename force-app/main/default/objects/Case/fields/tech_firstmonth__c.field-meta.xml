@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>tech_firstmonth__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Subscription__r.Offre__c = &#39;UI1&#39;, &#39;19,90€&#39;,  IF(Subscription__r.Offre__c = &quot;UI2&quot;, &#39;33,90€&#39;, IF(Subscription__r.Offre__c = &#39;UI3&#39;, &#39;16,90€&#39;, IF(Subscription__r.Offre__c = &#39;UU&#39;, &#39;UGC Unlimited&#39;, &#39;18,90€&#39;) ) ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>tech_firstmonth</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

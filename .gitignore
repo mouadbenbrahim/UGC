@@ -34,3 +34,6 @@ $RECYCLE.BIN/
 config/
 .sfdx
 README.md
+patch_source/
+patch_mdapi/
+

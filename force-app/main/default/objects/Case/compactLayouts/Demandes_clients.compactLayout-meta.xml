@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Demandes_clients</fullName>
+    <fields>ContactId</fields>
+    <fields>TECHDrapeau__c</fields>
+    <fields>AdresseEmail__c</fields>
+    <fields>AdressePostale__c</fields>
+    <fields>Telephones__c</fields>
+    <fields>TECH_NoCartes__c</fields>
+    <fields>PNDBloctelNpaiEmail__c</fields>
+    <fields>NoCarteUI__c</fields>
+    <fields>SousMotif__c</fields>
+    <fields>RecordTypeId</fields>
+    <label>Demandes clients</label>
+</CompactLayout>

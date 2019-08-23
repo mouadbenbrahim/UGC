@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IconeNPAIEmail__c</fullName>
+    <description>Quand la case NPAI_Email est cochée alors l&#39;icône NPAIEmail apparaît</description>
+    <externalId>false</externalId>
+    <formula>IF( NPAIEMAIL__c  , IMAGE(&quot;/resource/1506332041000/IconeNPAIEmail?isdtp=p1&quot;,&quot;60,60&quot;),&quot; &quot; )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>.....</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

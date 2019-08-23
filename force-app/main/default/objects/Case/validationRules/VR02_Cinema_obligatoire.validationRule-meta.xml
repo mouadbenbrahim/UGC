@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR02_Cinema_obligatoire</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT($User.ByPassValidationRule__c)
+&amp;&amp;
+ISPICKVAL(Actions__c,&quot;Transfert à la salle&quot;)
+&amp;&amp;
+ISBLANK( Cinema__c)</errorConditionFormula>
+    <errorMessage>Il faut renseigner le nom du cinéma auquel il faut transmettre la demande</errorMessage>
+</ValidationRule>

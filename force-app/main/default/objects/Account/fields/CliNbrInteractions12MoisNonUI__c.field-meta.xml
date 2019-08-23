@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CliNbrInteractions12MoisNonUI__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Nombre d&#39;interactions service client &amp; self care sur les 12 derniers mois pour les non UI</inlineHelpText>
+    <label>Nb d&#39;interactions SC &amp; self care 12 mois</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

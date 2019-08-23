@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motifs__c</fullName>
+    <externalId>false</externalId>
+    <label>Motifs</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Typededemande__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Réclamations salles</fullName>
+                <default>false</default>
+                <label>Réclamations salles</label>
+            </value>
+            <value>
+                <fullName>Réclamations divers</fullName>
+                <default>false</default>
+                <label>Réclamations divers</label>
+            </value>
+            <value>
+                <fullName>Réclamations réservation</fullName>
+                <default>false</default>
+                <label>Réclamations réservation</label>
+            </value>
+            <value>
+                <fullName>Mon UGC</fullName>
+                <default>false</default>
+                <label>Mon UGC</label>
+            </value>
+            <value>
+                <fullName>UGC fidélité</fullName>
+                <default>false</default>
+                <label>UGC fidélité</label>
+            </value>
+            <value>
+                <fullName>Support électronique</fullName>
+                <default>false</default>
+                <label>Support électronique</label>
+            </value>
+            <value>
+                <fullName>Divers</fullName>
+                <default>false</default>
+                <label>Divers</label>
+            </value>
+            <value>
+                <fullName>autres produits et services</fullName>
+                <default>false</default>
+                <label>autres produits et services</label>
+            </value>
+            <value>
+                <fullName>cinema ugc</fullName>
+                <default>false</default>
+                <label>cinema ugc</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Autres demandes d&#39;informations</controllingFieldValue>
+            <valueName>Divers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres types de réclamations</controllingFieldValue>
+            <valueName>Réclamations salles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres types de réclamations</controllingFieldValue>
+            <valueName>Réclamations divers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres types de réclamations</controllingFieldValue>
+            <valueName>Réclamations réservation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Demande d&#39;informations générales</controllingFieldValue>
+            <valueName>autres produits et services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Demande d&#39;informations générales</controllingFieldValue>
+            <valueName>cinema ugc</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Média électroniques</controllingFieldValue>
+            <valueName>Mon UGC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Média électroniques</controllingFieldValue>
+            <valueName>UGC fidélité</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Média électroniques</controllingFieldValue>
+            <valueName>Support électronique</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

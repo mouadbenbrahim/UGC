@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TECH_Type_de_demande__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(TEXT(Famille__c) = &quot;0- Souscription&quot; &amp;&amp; OR(TEXT(Motif__c) = &quot;05- B2B&quot;, TEXT(Motif__c) = &quot;06- VPC&quot;, TEXT(Motif__c) = &quot;07- Création Abonnement&quot;), 
+&quot;Prise d&#39;abonnement&quot;, 
+IF(TEXT(Famille__c) = &quot;1- Vie de l&#39;abonnement&quot; &amp;&amp; TEXT(Motif__c) = &quot;07- Reabonnement&quot; &amp;&amp; TEXT(SousMotif__c) = &quot;A- Action&quot;,
+&quot;Réabonnement&quot;, 
+IF(TEXT(Famille__c) = &quot;7- Finance&quot; &amp;&amp; TEXT(Motif__c) = &quot;02- Impayé&quot; &amp;&amp; TEXT(SousMotif__c) = &quot;A- Action&quot;,
+&quot;Réactivation&quot;,
+IF(TEXT(Famille__c) = &quot;1- Vie de l&#39;abonnement&quot; &amp;&amp; TEXT(Motif__c) = &quot;06- Migration UI 1/2/3&quot; &amp;&amp; TEXT(SousMotif__c) = &quot;A- Action&quot;,
+&quot;Migration&quot;,
+IF(OR(TEXT(Famille__c) = &quot;1- Vie de l&#39;abonnement&quot; &amp;&amp; TEXT(Motif__c) = &quot;04- Desabonnement&quot; &amp;&amp; TEXT(SousMotif__c) = &quot;A- Action&quot;,
+(TEXT(Famille__c) = &quot;1- Vie de l&#39;abonnement&quot; &amp;&amp; TEXT(Motif__c) = &quot;08- Retention&quot; &amp;&amp; TEXT(SousMotif__c) = &quot;A- Action&quot; &amp;&amp;  TEXT(R_sultat_R_tention__c) = &quot;Refusé avec désabonnement&quot;)),
+&quot;Désabonnement&quot;,
+IF(TEXT(Famille__c) = &quot;1- Vie de l&#39;abonnement&quot; &amp;&amp; TEXT(Motif__c) = &quot;05- Resiliation&quot; &amp;&amp; TEXT(SousMotif__c) = &quot;A- Action&quot;,
+&quot;Résiliation&quot;,
+&quot;Autre&quot;))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>TECH_Type_de_demande</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VivalOpera_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>FR_Viva l&#39;Opéra !</label>
+    <queue>FR_VivalOpera</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

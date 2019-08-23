@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origine__c</fullName>
+    <externalId>false</externalId>
+    <label>Origine</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Appel entrant</fullName>
+                <default>false</default>
+                <label>Appel entrant</label>
+            </value>
+            <value>
+                <fullName>Appel sortant</fullName>
+                <default>false</default>
+                <label>Appel sortant</label>
+            </value>
+            <value>
+                <fullName>Courrier entrant</fullName>
+                <default>false</default>
+                <label>Courrier entrant</label>
+            </value>
+            <value>
+                <fullName>Courrier sortant</fullName>
+                <default>false</default>
+                <label>Courrier sortant</label>
+            </value>
+            <value>
+                <fullName>Email entrant</fullName>
+                <default>false</default>
+                <label>Email entrant</label>
+            </value>
+            <value>
+                <fullName>Email sortant</fullName>
+                <default>false</default>
+                <label>Email sortant</label>
+            </value>
+            <value>
+                <fullName>Formulaire de contact</fullName>
+                <default>false</default>
+                <label>Formulaire de contact</label>
+            </value>
+            <value>
+                <fullName>Salle</fullName>
+                <default>false</default>
+                <label>Salle</label>
+            </value>
+            <value>
+                <fullName>Facebook</fullName>
+                <default>false</default>
+                <label>Facebook</label>
+            </value>
+            <value>
+                <fullName>Twitter</fullName>
+                <default>false</default>
+                <label>Twitter</label>
+            </value>
+            <value>
+                <fullName>Critizr</fullName>
+                <default>false</default>
+                <label>Critizr</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

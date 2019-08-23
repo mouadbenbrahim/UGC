@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TECH_Last_Semi_Auto_SDoc_Job__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Champ inutile</description>
+    <externalId>false</externalId>
+    <label>TECH_Last Semi-Auto SDoc Job</label>
+    <referenceTo>SDOC__SDJob__c</referenceTo>
+    <relationshipLabel>Cases</relationshipLabel>
+    <relationshipName>Cases</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Demande_de_r_abonnement_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>BE_Demande de réabonnement</label>
+    <queue>BE_Demande_de_r_abonnement</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

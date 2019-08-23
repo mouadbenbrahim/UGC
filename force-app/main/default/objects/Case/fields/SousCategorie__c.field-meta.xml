@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SousCategorie__c</fullName>
+    <externalId>false</externalId>
+    <label>Sous Catégorie</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Categorie__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aanvraag annulatie contract (preciseren)</fullName>
+                <default>false</default>
+                <label>Aanvraag annulatie contract (preciseren)</label>
+            </value>
+            <value>
+                <fullName>Accès handicapés</fullName>
+                <default>false</default>
+                <label>Accès handicapés</label>
+            </value>
+            <value>
+                <fullName>Andere (preciseren)</fullName>
+                <default>false</default>
+                <label>Andere (preciseren)</label>
+            </value>
+            <value>
+                <fullName>Appels NL</fullName>
+                <default>false</default>
+                <label>Appels NL</label>
+            </value>
+            <value>
+                <fullName>Au contrôle</fullName>
+                <default>false</default>
+                <label>Au contrôle</label>
+            </value>
+            <value>
+                <fullName>Autres (à préciser)</fullName>
+                <default>false</default>
+                <label>Autres (à préciser)</label>
+            </value>
+            <value>
+                <fullName>AVP supprimée/reportée</fullName>
+                <default>false</default>
+                <label>AVP supprimée/reportée</label>
+            </value>
+            <value>
+                <fullName>Betaling incident op stand</fullName>
+                <default>false</default>
+                <label>Betaling incident op stand</label>
+            </value>
+            <value>
+                <fullName>Billetterie CNC</fullName>
+                <default>false</default>
+                <label>Billetterie CNC</label>
+            </value>
+            <value>
+                <fullName>Carte abîmée ( à préciser)</fullName>
+                <default>false</default>
+                <label>Carte abîmée ( à préciser)</label>
+            </value>
+            <value>
+                <fullName>Carte démagnétisée</fullName>
+                <default>false</default>
+                <label>Carte démagnétisée</label>
+            </value>
+            <value>
+                <fullName>Carte journaliste</fullName>
+                <default>false</default>
+                <label>Carte journaliste</label>
+            </value>
+            <value>
+                <fullName>Carte permanente</fullName>
+                <default>false</default>
+                <label>Carte permanente</label>
+            </value>
+            <value>
+                <fullName>Carte professionnelle UGC</fullName>
+                <default>false</default>
+                <label>Carte professionnelle UGC</label>
+            </value>
+            <value>
+                <fullName>Carte SACEM</fullName>
+                <default>false</default>
+                <label>Carte SACEM</label>
+            </value>
+            <value>
+                <fullName>CNC</fullName>
+                <default>false</default>
+                <label>CNC</label>
+            </value>
+            <value>
+                <fullName>Confiserie / Ciné Café</fullName>
+                <default>false</default>
+                <label>Confiserie / Ciné Café</label>
+            </value>
+            <value>
+                <fullName>Dans la file d&#39;attente</fullName>
+                <default>false</default>
+                <label>Dans la file d&#39;attente</label>
+            </value>
+            <value>
+                <fullName>Déclenchement alarme/évacuation</fullName>
+                <default>false</default>
+                <label>Déclenchement alarme/évacuation</label>
+            </value>
+            <value>
+                <fullName>Délai de retrait</fullName>
+                <default>false</default>
+                <label>Délai de retrait</label>
+            </value>
+            <value>
+                <fullName>Demande Annulation de contrat</fullName>
+                <default>false</default>
+                <label>Demande Annulation de contrat</label>
+            </value>
+            <value>
+                <fullName>Demande Annulation de Contrat (à expliquer)</fullName>
+                <default>false</default>
+                <label>Demande Annulation de Contrat (à expliquer)</label>
+            </value>
+            <value>
+                <fullName>Déprogrammation de séance</fullName>
+                <default>false</default>
+                <label>Déprogrammation de séance</label>
+            </value>
+            <value>
+                <fullName>Double facturation</fullName>
+                <default>false</default>
+                <label>Double facturation</label>
+            </value>
+            <value>
+                <fullName>En borne</fullName>
+                <default>false</default>
+                <label>En borne</label>
+            </value>
+            <value>
+                <fullName>En caisse</fullName>
+                <default>false</default>
+                <label>En caisse</label>
+            </value>
+            <value>
+                <fullName>Erreur communication in situ</fullName>
+                <default>false</default>
+                <label>Erreur communication in situ</label>
+            </value>
+            <value>
+                <fullName>Erreur Confiserie/Ciné Café</fullName>
+                <default>false</default>
+                <label>Erreur Confiserie/Ciné Café</label>
+            </value>
+            <value>
+                <fullName>Erreur en caisse</fullName>
+                <default>false</default>
+                <label>Erreur en caisse</label>
+            </value>
+            <value>
+                <fullName>Etat copie</fullName>
+                <default>false</default>
+                <label>Etat copie</label>
+            </value>
+            <value>
+                <fullName>Etat de la salle</fullName>
+                <default>false</default>
+                <label>Etat de la salle</label>
+            </value>
+            <value>
+                <fullName>Flying Blue</fullName>
+                <default>false</default>
+                <label>Flying Blue</label>
+            </value>
+            <value>
+                <fullName>Foto verwijderd</fullName>
+                <default>false</default>
+                <label>Foto verwijderd</label>
+            </value>
+            <value>
+                <fullName>Incident bij de uitgave van de kaart (preciseren)</fullName>
+                <default>false</default>
+                <label>Incident bij de uitgave van de kaart (preciseren)</label>
+            </value>
+            <value>
+                <fullName>Incident de Paiement sur Stand</fullName>
+                <default>false</default>
+                <label>Incident de Paiement sur Stand</label>
+            </value>
+            <value>
+                <fullName>Incident lors de l&#39;édition de la carte (à préciser)</fullName>
+                <default>false</default>
+                <label>Incident lors de l&#39;édition de la carte (à préciser)</label>
+            </value>
+            <value>
+                <fullName>Incident Spectateurs</fullName>
+                <default>false</default>
+                <label>Incident Spectateurs</label>
+            </value>
+            <value>
+                <fullName>Interruption de séance</fullName>
+                <default>false</default>
+                <label>Interruption de séance</label>
+            </value>
+            <value>
+                <fullName>Intervention Forces de l&#39;ordre</fullName>
+                <default>false</default>
+                <label>Intervention Forces de l&#39;ordre</label>
+            </value>
+            <value>
+                <fullName>Intervention Pompiers</fullName>
+                <default>false</default>
+                <label>Intervention Pompiers</label>
+            </value>
+            <value>
+                <fullName>Kaart beschadigd (preciseren)</fullName>
+                <default>false</default>
+                <label>Kaart beschadigd (preciseren)</label>
+            </value>
+            <value>
+                <fullName>Kaart gedemagnetiseerd</fullName>
+                <default>false</default>
+                <label>Kaart gedemagnetiseerd</label>
+            </value>
+            <value>
+                <fullName>M1 : Trouble Ordre Public</fullName>
+                <default>false</default>
+                <label>M1 : Trouble Ordre Public</label>
+            </value>
+            <value>
+                <fullName>M1 : Verstoning van de openbare orde</fullName>
+                <default>false</default>
+                <label>M1 : Verstoning van de openbare orde</label>
+            </value>
+            <value>
+                <fullName>M10: Andere (preciseren)</fullName>
+                <default>false</default>
+                <label>M10: Andere (preciseren)</label>
+            </value>
+            <value>
+                <fullName>M2 : Geluidshinder in de zaal (bv. gsm)</fullName>
+                <default>false</default>
+                <label>M2 : Geluidshinder in de zaal (bv. gsm)</label>
+            </value>
+            <value>
+                <fullName>M2 : Nuisance sonore en salles</fullName>
+                <default>false</default>
+                <label>M2 : Nuisance sonore en salles</label>
+            </value>
+            <value>
+                <fullName>M3 : Bedreigingen, beledigingen of agressie</fullName>
+                <default>false</default>
+                <label>M3 : Bedreigingen, beledigingen of agressie</label>
+            </value>
+            <value>
+                <fullName>M3 : Menaces, Insultes, Agression</fullName>
+                <default>false</default>
+                <label>M3 : Menaces, Insultes, Agression</label>
+            </value>
+            <value>
+                <fullName>M4 : Fume en zone NF</fullName>
+                <default>false</default>
+                <label>M4 : Fume en zone NF</label>
+            </value>
+            <value>
+                <fullName>M4 : Roken in een niet-rokerszone</fullName>
+                <default>false</default>
+                <label>M4 : Roken in een niet-rokerszone</label>
+            </value>
+            <value>
+                <fullName>M5 : Opening van de nooduitgangen</fullName>
+                <default>false</default>
+                <label>M5 : Opening van de nooduitgangen</label>
+            </value>
+            <value>
+                <fullName>M5 : Ouverture des sorties de secours</fullName>
+                <default>false</default>
+                <label>M5 : Ouverture des sorties de secours</label>
+            </value>
+            <value>
+                <fullName>M6 : Drager vershillend dan abonee</fullName>
+                <default>false</default>
+                <label>M6 : Drager vershillend dan abonee</label>
+            </value>
+            <value>
+                <fullName>M6 : Porteur différent Titulaire</fullName>
+                <default>false</default>
+                <label>M6 : Porteur différent Titulaire</label>
+            </value>
+            <value>
+                <fullName>M7 : Diefstal en beschadiging</fullName>
+                <default>false</default>
+                <label>M7 : Diefstal en beschadiging</label>
+            </value>
+            <value>
+                <fullName>M7 : Vol et Dégradation</fullName>
+                <default>false</default>
+                <label>M7 : Vol et Dégradation</label>
+            </value>
+            <value>
+                <fullName>M8 : Herinschrijven na een eerste opzegging voor niet-betaling</fullName>
+                <default>false</default>
+                <label>M8 : Herinschrijven na een eerste opzegging voor niet-betaling</label>
+            </value>
+            <value>
+                <fullName>M8 : Réinscription après 1ère résiliation</fullName>
+                <default>false</default>
+                <label>M8 : Réinscription après 1ère résiliation</label>
+            </value>
+            <value>
+                <fullName>M9 : Niet respecteren van de UGC Charter</fullName>
+                <default>false</default>
+                <label>M9 : Niet respecteren van de UGC Charter</label>
+            </value>
+            <value>
+                <fullName>M9 : Non Respect de la Charte</fullName>
+                <default>false</default>
+                <label>M9 : Non Respect de la Charte</label>
+            </value>
+            <value>
+                <fullName>Message d&#39;erreur en borne</fullName>
+                <default>false</default>
+                <label>Message d&#39;erreur en borne</label>
+            </value>
+            <value>
+                <fullName>Message d&#39;erreur en caisse</fullName>
+                <default>false</default>
+                <label>Message d&#39;erreur en caisse</label>
+            </value>
+            <value>
+                <fullName>Mode de règlement hors UI</fullName>
+                <default>false</default>
+                <label>Mode de règlement hors UI</label>
+            </value>
+            <value>
+                <fullName>Nom illisible</fullName>
+                <default>false</default>
+                <label>Nom illisible</label>
+            </value>
+            <value>
+                <fullName>Non reconnu en borne</fullName>
+                <default>false</default>
+                <label>Non reconnu en borne</label>
+            </value>
+            <value>
+                <fullName>Non reconnu en caisse</fullName>
+                <default>false</default>
+                <label>Non reconnu en caisse</label>
+            </value>
+            <value>
+                <fullName>Onleesbare naam</fullName>
+                <default>false</default>
+                <label>Onleesbare naam</label>
+            </value>
+            <value>
+                <fullName>OSC</fullName>
+                <default>false</default>
+                <label>OSC</label>
+            </value>
+            <value>
+                <fullName>Panne borne</fullName>
+                <default>false</default>
+                <label>Panne borne</label>
+            </value>
+            <value>
+                <fullName>Panne Prompto</fullName>
+                <default>false</default>
+                <label>Panne Prompto</label>
+            </value>
+            <value>
+                <fullName>Photo effacée</fullName>
+                <default>false</default>
+                <label>Photo effacée</label>
+            </value>
+            <value>
+                <fullName>Plus de papier édition de billet(s)</fullName>
+                <default>false</default>
+                <label>Plus de papier édition de billet(s)</label>
+            </value>
+            <value>
+                <fullName>Points non attribués</fullName>
+                <default>false</default>
+                <label>Points non attribués</label>
+            </value>
+            <value>
+                <fullName>Retard de séance</fullName>
+                <default>false</default>
+                <label>Retard de séance</label>
+            </value>
+            <value>
+                <fullName>Retrait en borne</fullName>
+                <default>false</default>
+                <label>Retrait en borne</label>
+            </value>
+            <value>
+                <fullName>Retrait en caisse</fullName>
+                <default>false</default>
+                <label>Retrait en caisse</label>
+            </value>
+            <value>
+                <fullName>S&#39;miles</fullName>
+                <default>false</default>
+                <label>S&#39;miles</label>
+            </value>
+            <value>
+                <fullName>Solde inexact</fullName>
+                <default>false</default>
+                <label>Solde inexact</label>
+            </value>
+            <value>
+                <fullName>Son</fullName>
+                <default>false</default>
+                <label>Son</label>
+            </value>
+            <value>
+                <fullName>Sorties</fullName>
+                <default>false</default>
+                <label>Sorties</label>
+            </value>
+            <value>
+                <fullName>Suppression de séance</fullName>
+                <default>false</default>
+                <label>Suppression de séance</label>
+            </value>
+            <value>
+                <fullName>Toilettes</fullName>
+                <default>false</default>
+                <label>Toilettes</label>
+            </value>
+            <value>
+                <fullName>Zone de commentaires</fullName>
+                <default>false</default>
+                <label>Zone de commentaires</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M1 : Trouble Ordre Public</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M2 : Nuisance sonore en salles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M3 : Menaces, Insultes, Agression</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M4 : Fume en zone NF</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M5 : Ouverture des sorties de secours</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M6 : Porteur différent Titulaire</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M7 : Vol et Dégradation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M8 : Réinscription après 1ère résiliation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Avertissement</controllingFieldValue>
+            <controllingFieldValue>Résiliation</controllingFieldValue>
+            <valueName>M9 : Non Respect de la Charte</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Edition avec frais</controllingFieldValue>
+            <controllingFieldValue>Edition sans frais</controllingFieldValue>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <controllingFieldValue>Annulation Réservation</controllingFieldValue>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <controllingFieldValue>Retrait de réservation</controllingFieldValue>
+            <controllingFieldValue>Accueil</controllingFieldValue>
+            <controllingFieldValue>Confort, Propreté</controllingFieldValue>
+            <controllingFieldValue>Programmation</controllingFieldValue>
+            <controllingFieldValue>Sécurité</controllingFieldValue>
+            <controllingFieldValue>Cartes partenaires</controllingFieldValue>
+            <controllingFieldValue>Echange de points</controllingFieldValue>
+            <controllingFieldValue>Gain de points</controllingFieldValue>
+            <controllingFieldValue>Solde de points</controllingFieldValue>
+            <controllingFieldValue>Stand UI</controllingFieldValue>
+            <valueName>Autres (à préciser)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Edition avec frais</controllingFieldValue>
+            <valueName>Carte abîmée ( à préciser)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Edition sans frais</controllingFieldValue>
+            <valueName>Carte démagnétisée</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Edition sans frais</controllingFieldValue>
+            <valueName>Nom illisible</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Edition sans frais</controllingFieldValue>
+            <valueName>Photo effacée</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SECRETARIAT</controllingFieldValue>
+            <valueName>Appels NL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <valueName>Aanvraag annulatie contract (preciseren)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <controllingFieldValue>Aanvraag nieuwe kaart met kosten</controllingFieldValue>
+            <controllingFieldValue>Aanvraag nieuwe kaart zonder kosten</controllingFieldValue>
+            <valueName>Andere (preciseren)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <valueName>Betaling incident op stand</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <valueName>Demande Annulation de contrat</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <valueName>Incident bij de uitgave van de kaart (preciseren)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <controllingFieldValue>Stand UI</controllingFieldValue>
+            <valueName>Incident de Paiement sur Stand</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UU</controllingFieldValue>
+            <controllingFieldValue>Stand UI</controllingFieldValue>
+            <valueName>Incident lors de l&#39;édition de la carte (à préciser)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Aanvraag nieuwe kaart met kosten</controllingFieldValue>
+            <valueName>Kaart beschadigd (preciseren)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Aanvraag nieuwe kaart zonder kosten</controllingFieldValue>
+            <valueName>Foto verwijderd</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Aanvraag nieuwe kaart zonder kosten</controllingFieldValue>
+            <valueName>Kaart gedemagnetiseerd</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Aanvraag nieuwe kaart zonder kosten</controllingFieldValue>
+            <valueName>Onleesbare naam</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M1 : Verstoning van de openbare orde</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M10: Andere (preciseren)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M2 : Geluidshinder in de zaal (bv. gsm)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M3 : Bedreigingen, beledigingen of agressie</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M5 : Opening van de nooduitgangen</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M6 : Drager vershillend dan abonee</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M7 : Diefstal en beschadiging</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M8 : Herinschrijven na een eerste opzegging voor niet-betaling</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Opzegging</controllingFieldValue>
+            <controllingFieldValue>Waarschuwing</controllingFieldValue>
+            <valueName>M9 : Niet respecteren van de UGC Charter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulation Réservation</controllingFieldValue>
+            <valueName>Délai de retrait</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Annulation Réservation</controllingFieldValue>
+            <valueName>Suppression de séance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <valueName>Carte journaliste</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <valueName>Carte permanente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <valueName>Carte professionnelle UGC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <valueName>Carte SACEM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <valueName>CNC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Autres (à préciser)</controllingFieldValue>
+            <valueName>OSC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Billet(s) non édité(s)</controllingFieldValue>
+            <valueName>Panne borne</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Billet(s) non édité(s)</controllingFieldValue>
+            <valueName>Plus de papier édition de billet(s)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réservation inexistante</controllingFieldValue>
+            <controllingFieldValue>Accueil</controllingFieldValue>
+            <valueName>En borne</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Réservation inexistante</controllingFieldValue>
+            <controllingFieldValue>Accueil</controllingFieldValue>
+            <valueName>En caisse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retrait de réservation</controllingFieldValue>
+            <valueName>Billetterie CNC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retrait de réservation</controllingFieldValue>
+            <valueName>Double facturation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retrait de réservation</controllingFieldValue>
+            <valueName>Retrait en borne</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Retrait de réservation</controllingFieldValue>
+            <valueName>Retrait en caisse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Accueil</controllingFieldValue>
+            <valueName>Au contrôle</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Accueil</controllingFieldValue>
+            <valueName>Sorties</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confort, Propreté</controllingFieldValue>
+            <valueName>Confiserie / Ciné Café</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confort, Propreté</controllingFieldValue>
+            <valueName>Etat de la salle</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Confort, Propreté</controllingFieldValue>
+            <valueName>Toilettes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Programmation</controllingFieldValue>
+            <valueName>AVP supprimée/reportée</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Programmation</controllingFieldValue>
+            <valueName>Déprogrammation de séance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Programmation</controllingFieldValue>
+            <valueName>Erreur communication in situ</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Projection</controllingFieldValue>
+            <valueName>Etat copie</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Projection</controllingFieldValue>
+            <valueName>Interruption de séance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Projection</controllingFieldValue>
+            <valueName>Retard de séance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Projection</controllingFieldValue>
+            <valueName>Son</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sécurité</controllingFieldValue>
+            <valueName>Accès handicapés</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sécurité</controllingFieldValue>
+            <valueName>Déclenchement alarme/évacuation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sécurité</controllingFieldValue>
+            <valueName>Incident Spectateurs</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sécurité</controllingFieldValue>
+            <valueName>Intervention Forces de l&#39;ordre</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sécurité</controllingFieldValue>
+            <valueName>Intervention Pompiers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cartes partenaires</controllingFieldValue>
+            <valueName>Flying Blue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cartes partenaires</controllingFieldValue>
+            <valueName>S&#39;miles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UGC 5/7</controllingFieldValue>
+            <controllingFieldValue>UGC Blue</controllingFieldValue>
+            <controllingFieldValue>UGC SOLO</controllingFieldValue>
+            <controllingFieldValue>Fonctionnement Fidélité</controllingFieldValue>
+            <controllingFieldValue>Inscription</controllingFieldValue>
+            <valueName>Zone de commentaires</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Echange de points</controllingFieldValue>
+            <valueName>Non reconnu en borne</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Echange de points</controllingFieldValue>
+            <valueName>Non reconnu en caisse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gain de points</controllingFieldValue>
+            <valueName>Erreur Confiserie/Ciné Café</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gain de points</controllingFieldValue>
+            <valueName>Erreur en caisse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Gain de points</controllingFieldValue>
+            <valueName>Points non attribués</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solde de points</controllingFieldValue>
+            <valueName>Message d&#39;erreur en borne</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solde de points</controllingFieldValue>
+            <valueName>Message d&#39;erreur en caisse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solde de points</controllingFieldValue>
+            <valueName>Solde inexact</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Stand UI</controllingFieldValue>
+            <valueName>Demande Annulation de Contrat (à expliquer)</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

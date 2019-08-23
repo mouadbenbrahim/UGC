@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR06_Geste_commercial_Einvitations</fullName>
+    <active>true</active>
+    <description>Champs e-invitations à remplir si type de geste commercial = e-invitations</description>
+    <errorConditionFormula>AND( 
+NOT($User.ByPassValidationRule__c), 
+ISPICKVAL( TypeGesteCommercial__c , &quot;E-invitations&quot;), 
+ISBLANK(  NbEInvitationsEnvoyees__c ))</errorConditionFormula>
+    <errorMessage>Merci de renseigner le nombre d&#39;e-invitations</errorMessage>
+</ValidationRule>

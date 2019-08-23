@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClientResident__c</fullName>
+    <description>Champ permettant d&#39;identifier un client habitant en France ou Belgique. 
+utilisé pour alimenter le champ Code Pays.</description>
+    <externalId>false</externalId>
+    <label>Client résident en</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>France</fullName>
+                <default>true</default>
+                <label>France</label>
+            </value>
+            <value>
+                <fullName>Belgique</fullName>
+                <default>false</default>
+                <label>Belgique</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDOCcomplement__c</fullName>
+    <description>champ aidant pour SDOC permet d&#39;afficher différents blocs d&#39;adresses selon si il y a un complément d&#39;adresse ou non</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK( Residence__c )&amp;&amp; ISBLANK( Batiment__c )&amp;&amp; ISBLANK( Appartement__c )&amp;&amp; ISBLANK( Escalier__c) , TRUE, FALSE)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>SDOCcomplément</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SousMotif__c</fullName>
+    <externalId>false</externalId>
+    <label>Sous-motif</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Motif__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>I- Info</fullName>
+                <default>false</default>
+                <label>I- Info</label>
+            </value>
+            <value>
+                <fullName>R- Récla</fullName>
+                <default>false</default>
+                <label>R- Récla</label>
+            </value>
+            <value>
+                <fullName>A- Action</fullName>
+                <default>false</default>
+                <label>A- Action</label>
+            </value>
+            <value>
+                <fullName>Click to Call Info</fullName>
+                <default>false</default>
+                <label>Click to Call Info</label>
+            </value>
+            <value>
+                <fullName>Click to Call Recla</fullName>
+                <default>false</default>
+                <label>Click to Call Recla</label>
+            </value>
+            <value>
+                <fullName>AD- Action DRC</fullName>
+                <default>false</default>
+                <label>AD- Action DRC</label>
+            </value>
+            <value>
+                <fullName>AS- Action Stand</fullName>
+                <default>false</default>
+                <label>AS- Action Stand</label>
+            </value>
+            <value>
+                <fullName>AH- Action Selfcare</fullName>
+                <default>false</default>
+                <label>AH- Action Selfcare</label>
+            </value>
+            <value>
+                <fullName>R1- 1er rejet</fullName>
+                <default>false</default>
+                <label>R1- 1er rejet</label>
+            </value>
+            <value>
+                <fullName>R2- 2nd rejet</fullName>
+                <default>false</default>
+                <label>R2- 2nd rejet</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>06- VPC</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>03- Solo</controllingFieldValue>
+            <controllingFieldValue>04- Blue</controllingFieldValue>
+            <controllingFieldValue>05- VLO</controllingFieldValue>
+            <controllingFieldValue>01- Modalites de reservation</controllingFieldValue>
+            <controllingFieldValue>02- Annulation Réservation</controllingFieldValue>
+            <controllingFieldValue>01- CNIL / Comite de la vie privee</controllingFieldValue>
+            <controllingFieldValue>02- Droit a l&#39;oubli</controllingFieldValue>
+            <controllingFieldValue>01- Reception carte</controllingFieldValue>
+            <controllingFieldValue>03- Fonctionnement Compte</controllingFieldValue>
+            <controllingFieldValue>02- Reedition payante</controllingFieldValue>
+            <controllingFieldValue>01- UGC Illimite</controllingFieldValue>
+            <controllingFieldValue>03- Reedition gratuite</controllingFieldValue>
+            <controllingFieldValue>02- Club</controllingFieldValue>
+            <controllingFieldValue>04- Desabonnement</controllingFieldValue>
+            <controllingFieldValue>05- Resiliation</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>08- Retention</controllingFieldValue>
+            <controllingFieldValue>09- Retour Carte</controllingFieldValue>
+            <controllingFieldValue>10- Retractation</controllingFieldValue>
+            <controllingFieldValue>01- Changement tarifaire</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>03- Facture / attestation de paiement</controllingFieldValue>
+            <controllingFieldValue>04- Remboursement</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>01- Accueil</controllingFieldValue>
+            <controllingFieldValue>02- Confort Proprete</controllingFieldValue>
+            <controllingFieldValue>03- Objet Perdu</controllingFieldValue>
+            <controllingFieldValue>04- Information Film</controllingFieldValue>
+            <controllingFieldValue>05- Programmation</controllingFieldValue>
+            <controllingFieldValue>01- Digital</controllingFieldValue>
+            <controllingFieldValue>02- Autre</controllingFieldValue>
+            <controllingFieldValue>03- Commentaire</controllingFieldValue>
+            <controllingFieldValue>06- Gestes commerciaux</controllingFieldValue>
+            <controllingFieldValue>11- Avertissement</controllingFieldValue>
+            <controllingFieldValue>12- Annulation Migration</controllingFieldValue>
+            <controllingFieldValue>13- Annulation Contrat</controllingFieldValue>
+            <controllingFieldValue>99- Autre</controllingFieldValue>
+            <controllingFieldValue>01- Inscription</controllingFieldValue>
+            <controllingFieldValue>03- Q3</controllingFieldValue>
+            <controllingFieldValue>02- Solde de points</controllingFieldValue>
+            <controllingFieldValue>03- Echange de points</controllingFieldValue>
+            <controllingFieldValue>04- Fonctionnement Club</controllingFieldValue>
+            <controllingFieldValue>01- Offres UGC</controllingFieldValue>
+            <controllingFieldValue>02- Formules UGC+</controllingFieldValue>
+            <controllingFieldValue>01- Info process abo</controllingFieldValue>
+            <controllingFieldValue>02- Erreur prise abo</controllingFieldValue>
+            <controllingFieldValue>03- Click and collect</controllingFieldValue>
+            <controllingFieldValue>04- Dematerialise</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>I- Info</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>06- VPC</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>03- Solo</controllingFieldValue>
+            <controllingFieldValue>04- Blue</controllingFieldValue>
+            <controllingFieldValue>05- VLO</controllingFieldValue>
+            <controllingFieldValue>01- Modalites de reservation</controllingFieldValue>
+            <controllingFieldValue>02- Annulation Réservation</controllingFieldValue>
+            <controllingFieldValue>01- CNIL / Comite de la vie privee</controllingFieldValue>
+            <controllingFieldValue>02- Droit a l&#39;oubli</controllingFieldValue>
+            <controllingFieldValue>01- Reception carte</controllingFieldValue>
+            <controllingFieldValue>03- Fonctionnement Compte</controllingFieldValue>
+            <controllingFieldValue>02- Reedition payante</controllingFieldValue>
+            <controllingFieldValue>01- UGC Illimite</controllingFieldValue>
+            <controllingFieldValue>03- Reedition gratuite</controllingFieldValue>
+            <controllingFieldValue>02- Club</controllingFieldValue>
+            <controllingFieldValue>04- Desabonnement</controllingFieldValue>
+            <controllingFieldValue>05- Resiliation</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>08- Retention</controllingFieldValue>
+            <controllingFieldValue>09- Retour Carte</controllingFieldValue>
+            <controllingFieldValue>10- Retractation</controllingFieldValue>
+            <controllingFieldValue>01- Changement tarifaire</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>03- Facture / attestation de paiement</controllingFieldValue>
+            <controllingFieldValue>04- Remboursement</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>01- Accueil</controllingFieldValue>
+            <controllingFieldValue>02- Confort Proprete</controllingFieldValue>
+            <controllingFieldValue>03- Objet Perdu</controllingFieldValue>
+            <controllingFieldValue>04- Information Film</controllingFieldValue>
+            <controllingFieldValue>05- Programmation</controllingFieldValue>
+            <controllingFieldValue>01- Digital</controllingFieldValue>
+            <controllingFieldValue>02- Autre</controllingFieldValue>
+            <controllingFieldValue>03- Commentaire</controllingFieldValue>
+            <controllingFieldValue>06- Gestes commerciaux</controllingFieldValue>
+            <controllingFieldValue>11- Avertissement</controllingFieldValue>
+            <controllingFieldValue>12- Annulation Migration</controllingFieldValue>
+            <controllingFieldValue>13- Annulation Contrat</controllingFieldValue>
+            <controllingFieldValue>99- Autre</controllingFieldValue>
+            <controllingFieldValue>01- Inscription</controllingFieldValue>
+            <controllingFieldValue>03- Q3</controllingFieldValue>
+            <controllingFieldValue>02- Solde de points</controllingFieldValue>
+            <controllingFieldValue>03- Echange de points</controllingFieldValue>
+            <controllingFieldValue>04- Fonctionnement Club</controllingFieldValue>
+            <controllingFieldValue>01- Offres UGC</controllingFieldValue>
+            <controllingFieldValue>02- Formules UGC+</controllingFieldValue>
+            <controllingFieldValue>01- Info process abo</controllingFieldValue>
+            <controllingFieldValue>02- Erreur prise abo</controllingFieldValue>
+            <controllingFieldValue>03- Click and collect</controllingFieldValue>
+            <controllingFieldValue>04- Dematerialise</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>R- Récla</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>06- VPC</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>03- Solo</controllingFieldValue>
+            <controllingFieldValue>04- Blue</controllingFieldValue>
+            <controllingFieldValue>05- VLO</controllingFieldValue>
+            <controllingFieldValue>01- Modalites de reservation</controllingFieldValue>
+            <controllingFieldValue>02- Annulation Réservation</controllingFieldValue>
+            <controllingFieldValue>01- CNIL / Comite de la vie privee</controllingFieldValue>
+            <controllingFieldValue>02- Droit a l&#39;oubli</controllingFieldValue>
+            <controllingFieldValue>01- Reception carte</controllingFieldValue>
+            <controllingFieldValue>03- Fonctionnement Compte</controllingFieldValue>
+            <controllingFieldValue>02- Reedition payante</controllingFieldValue>
+            <controllingFieldValue>01- UGC Illimite</controllingFieldValue>
+            <controllingFieldValue>03- Reedition gratuite</controllingFieldValue>
+            <controllingFieldValue>02- Club</controllingFieldValue>
+            <controllingFieldValue>04- Desabonnement</controllingFieldValue>
+            <controllingFieldValue>05- Resiliation</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>08- Retention</controllingFieldValue>
+            <controllingFieldValue>09- Retour Carte</controllingFieldValue>
+            <controllingFieldValue>10- Retractation</controllingFieldValue>
+            <controllingFieldValue>01- Changement tarifaire</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>03- Facture / attestation de paiement</controllingFieldValue>
+            <controllingFieldValue>04- Remboursement</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>01- Accueil</controllingFieldValue>
+            <controllingFieldValue>02- Confort Proprete</controllingFieldValue>
+            <controllingFieldValue>03- Objet Perdu</controllingFieldValue>
+            <controllingFieldValue>04- Information Film</controllingFieldValue>
+            <controllingFieldValue>05- Programmation</controllingFieldValue>
+            <controllingFieldValue>01- Digital</controllingFieldValue>
+            <controllingFieldValue>02- Autre</controllingFieldValue>
+            <controllingFieldValue>03- Commentaire</controllingFieldValue>
+            <controllingFieldValue>06- Gestes commerciaux</controllingFieldValue>
+            <controllingFieldValue>11- Avertissement</controllingFieldValue>
+            <controllingFieldValue>12- Annulation Migration</controllingFieldValue>
+            <controllingFieldValue>13- Annulation Contrat</controllingFieldValue>
+            <controllingFieldValue>99- Autre</controllingFieldValue>
+            <controllingFieldValue>01- Inscription</controllingFieldValue>
+            <controllingFieldValue>03- Q3</controllingFieldValue>
+            <controllingFieldValue>02- Solde de points</controllingFieldValue>
+            <controllingFieldValue>03- Echange de points</controllingFieldValue>
+            <controllingFieldValue>04- Fonctionnement Club</controllingFieldValue>
+            <controllingFieldValue>01- Offres UGC</controllingFieldValue>
+            <controllingFieldValue>02- Formules UGC+</controllingFieldValue>
+            <controllingFieldValue>01- Info process abo</controllingFieldValue>
+            <controllingFieldValue>02- Erreur prise abo</controllingFieldValue>
+            <controllingFieldValue>03- Click and collect</controllingFieldValue>
+            <controllingFieldValue>04- Dematerialise</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>A- Action</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>06- VPC</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>03- Solo</controllingFieldValue>
+            <controllingFieldValue>04- Blue</controllingFieldValue>
+            <controllingFieldValue>05- VLO</controllingFieldValue>
+            <controllingFieldValue>01- Modalites de reservation</controllingFieldValue>
+            <controllingFieldValue>02- Annulation Réservation</controllingFieldValue>
+            <controllingFieldValue>01- CNIL / Comite de la vie privee</controllingFieldValue>
+            <controllingFieldValue>02- Droit a l&#39;oubli</controllingFieldValue>
+            <controllingFieldValue>01- Reception carte</controllingFieldValue>
+            <controllingFieldValue>03- Fonctionnement Compte</controllingFieldValue>
+            <controllingFieldValue>02- Reedition payante</controllingFieldValue>
+            <controllingFieldValue>01- UGC Illimite</controllingFieldValue>
+            <controllingFieldValue>03- Reedition gratuite</controllingFieldValue>
+            <controllingFieldValue>02- Club</controllingFieldValue>
+            <controllingFieldValue>04- Desabonnement</controllingFieldValue>
+            <controllingFieldValue>05- Resiliation</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>08- Retention</controllingFieldValue>
+            <controllingFieldValue>09- Retour Carte</controllingFieldValue>
+            <controllingFieldValue>10- Retractation</controllingFieldValue>
+            <controllingFieldValue>01- Changement tarifaire</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>03- Facture / attestation de paiement</controllingFieldValue>
+            <controllingFieldValue>04- Remboursement</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>01- Accueil</controllingFieldValue>
+            <controllingFieldValue>02- Confort Proprete</controllingFieldValue>
+            <controllingFieldValue>03- Objet Perdu</controllingFieldValue>
+            <controllingFieldValue>04- Information Film</controllingFieldValue>
+            <controllingFieldValue>05- Programmation</controllingFieldValue>
+            <controllingFieldValue>01- Digital</controllingFieldValue>
+            <controllingFieldValue>02- Autre</controllingFieldValue>
+            <controllingFieldValue>03- Commentaire</controllingFieldValue>
+            <controllingFieldValue>06- Gestes commerciaux</controllingFieldValue>
+            <controllingFieldValue>11- Avertissement</controllingFieldValue>
+            <controllingFieldValue>12- Annulation Migration</controllingFieldValue>
+            <controllingFieldValue>13- Annulation Contrat</controllingFieldValue>
+            <controllingFieldValue>99- Autre</controllingFieldValue>
+            <controllingFieldValue>01- Inscription</controllingFieldValue>
+            <controllingFieldValue>03- Q3</controllingFieldValue>
+            <controllingFieldValue>02- Solde de points</controllingFieldValue>
+            <controllingFieldValue>03- Echange de points</controllingFieldValue>
+            <controllingFieldValue>04- Fonctionnement Club</controllingFieldValue>
+            <controllingFieldValue>01- Offres UGC</controllingFieldValue>
+            <controllingFieldValue>02- Formules UGC+</controllingFieldValue>
+            <controllingFieldValue>01- Info process abo</controllingFieldValue>
+            <controllingFieldValue>02- Erreur prise abo</controllingFieldValue>
+            <controllingFieldValue>03- Click and collect</controllingFieldValue>
+            <controllingFieldValue>04- Dematerialise</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>Click to Call Info</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>06- VPC</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>03- Solo</controllingFieldValue>
+            <controllingFieldValue>04- Blue</controllingFieldValue>
+            <controllingFieldValue>05- VLO</controllingFieldValue>
+            <controllingFieldValue>01- Modalites de reservation</controllingFieldValue>
+            <controllingFieldValue>02- Annulation Réservation</controllingFieldValue>
+            <controllingFieldValue>01- CNIL / Comite de la vie privee</controllingFieldValue>
+            <controllingFieldValue>02- Droit a l&#39;oubli</controllingFieldValue>
+            <controllingFieldValue>01- Reception carte</controllingFieldValue>
+            <controllingFieldValue>03- Fonctionnement Compte</controllingFieldValue>
+            <controllingFieldValue>02- Reedition payante</controllingFieldValue>
+            <controllingFieldValue>01- UGC Illimite</controllingFieldValue>
+            <controllingFieldValue>03- Reedition gratuite</controllingFieldValue>
+            <controllingFieldValue>02- Club</controllingFieldValue>
+            <controllingFieldValue>04- Desabonnement</controllingFieldValue>
+            <controllingFieldValue>05- Resiliation</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>08- Retention</controllingFieldValue>
+            <controllingFieldValue>09- Retour Carte</controllingFieldValue>
+            <controllingFieldValue>10- Retractation</controllingFieldValue>
+            <controllingFieldValue>01- Changement tarifaire</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>03- Facture / attestation de paiement</controllingFieldValue>
+            <controllingFieldValue>04- Remboursement</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>01- Accueil</controllingFieldValue>
+            <controllingFieldValue>02- Confort Proprete</controllingFieldValue>
+            <controllingFieldValue>03- Objet Perdu</controllingFieldValue>
+            <controllingFieldValue>04- Information Film</controllingFieldValue>
+            <controllingFieldValue>05- Programmation</controllingFieldValue>
+            <controllingFieldValue>01- Digital</controllingFieldValue>
+            <controllingFieldValue>02- Autre</controllingFieldValue>
+            <controllingFieldValue>03- Commentaire</controllingFieldValue>
+            <controllingFieldValue>06- Gestes commerciaux</controllingFieldValue>
+            <controllingFieldValue>11- Avertissement</controllingFieldValue>
+            <controllingFieldValue>12- Annulation Migration</controllingFieldValue>
+            <controllingFieldValue>13- Annulation Contrat</controllingFieldValue>
+            <controllingFieldValue>99- Autre</controllingFieldValue>
+            <controllingFieldValue>01- Inscription</controllingFieldValue>
+            <controllingFieldValue>03- Q3</controllingFieldValue>
+            <controllingFieldValue>02- Solde de points</controllingFieldValue>
+            <controllingFieldValue>03- Echange de points</controllingFieldValue>
+            <controllingFieldValue>04- Fonctionnement Club</controllingFieldValue>
+            <controllingFieldValue>01- Offres UGC</controllingFieldValue>
+            <controllingFieldValue>02- Formules UGC+</controllingFieldValue>
+            <controllingFieldValue>01- Info process abo</controllingFieldValue>
+            <controllingFieldValue>02- Erreur prise abo</controllingFieldValue>
+            <controllingFieldValue>03- Click and collect</controllingFieldValue>
+            <controllingFieldValue>04- Dematerialise</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>Click to Call Recla</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>AD- Action DRC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <valueName>AS- Action Stand</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <valueName>AH- Action Selfcare</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <valueName>R1- 1er rejet</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <valueName>R2- 2nd rejet</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

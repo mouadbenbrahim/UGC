@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Actions__c</fullName>
+    <externalId>false</externalId>
+    <label>Actions</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>A clôturer</fullName>
+                <default>true</default>
+                <label>Fermée</label>
+            </value>
+            <value>
+                <fullName>En attente retour client</fullName>
+                <default>false</default>
+                <label>En attente retour client</label>
+            </value>
+            <value>
+                <fullName>Transfert à la salle</fullName>
+                <default>false</default>
+                <label>Transfert à la salle</label>
+            </value>
+            <value>
+                <fullName>En attente remboursement</fullName>
+                <default>false</default>
+                <label>En attente remboursement</label>
+            </value>
+            <value>
+                <fullName>Pas de réponse et à clôturer</fullName>
+                <default>false</default>
+                <label>Pas de réponse et à clôturer</label>
+            </value>
+            <value>
+                <fullName>En attente retour interne</fullName>
+                <default>false</default>
+                <label>En attente retour interne</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

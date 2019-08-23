@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>Account-Account Layout</members>
+		<members>Account-Account Layout SDoc</members>
+		<members>Account-Business Account layout</members>
+		<members>AccountBrand-Account Brand Layout</members>
+		<members>Agent__c-Agent Layout</members>
+		<members>Asset-Asset Layout</members>
+		<members>BilendiAccounting__c-BilendiAccounting Layout</members>
+		<members>Bot_Command__c-Bot Action Layout</members>
+		<members>Broker__c-Broker Layout</members>
+		<members>Campaign-Campaign Layout</members>
+		<members>Campaign-Copy of Campaign Layout</members>
+		<members>CampaignMember-Campaign Member Page Layout</members>
+		<members>Carte__c-Présentation Carte</members>
+		<members>Case-Annulation Migration</members>
+		<members>Case-Annulation contrat</members>
+		<members>Case-Avertissement</members>
+		<members>Case-Case Layout</members>
+		<members>Case-Chgt coordonnées bancaires</members>
+		<members>Case-Demande marketing</members>
+		<members>Case-Demandes Client Traitées layout</members>
+		<members>Case-Demandes Salles en cours</members>
+		<members>Case-Demandes Salles traitées</members>
+		<members>Case-Demandes client en cours</members>
+		<members>Case-Droit à l%27oubli</members>
+		<members>Case-Désabonnement</members>
+		<members>Case-Geste commerciaux</members>
+		<members>Case-Impayé</members>
+		<members>Case-Migration</members>
+		<members>Case-Nouvelle demande client</members>
+		<members>Case-Portal Case Layout</members>
+		<members>Case-Remboursement</members>
+		<members>Case-Réabonnement</members>
+		<members>Case-Résiliation</members>
+		<members>Case-Rétention</members>
+		<members>Case-Rétractation</members>
+		<members>Case-Réédition</members>
+		<members>Case-Souscription</members>
+		<members>Case-Standard</members>
+		<members>Case-Ticket Envoi Catalogue</members>
+		<members>CaseClose-Close Case Layout</members>
+		<members>CaseClose-Souscription</members>
+		<members>CaseClose-Standard</members>
+		<members>CaseInteraction-Case Feed Layout</members>
+		<members>CaseMilestone-Case Milestone Layout</members>
+		<members>CollaborationGroup-Présentation Groupe</members>
+		<members>Commune__c-Présentation Commune</members>
+		<members>CommunityMemberLayout-Community Member Layout</members>
+		<members>Complexe__c-Complexe Layout</members>
+		<members>Compteur_Prime__c-Compteur Prime Layout</members>
+		<members>Contact-Contact Layout</members>
+		<members>Contact-Contact Layout SDoc</members>
+		<members>Contacts__c-Contact Layout</members>
+		<members>ContentAsset-Asset File Layout</members>
+		<members>ContentVersion-Présentation Version de contenu</members>
+		<members>Contract-Contract Layout</members>
+		<members>Contract-Contract Layout SDoc</members>
+		<members>ContractLineItem-Contract Line Item Layout</members>
+		<members>CouponItem__c-Coupon Item BtoB Layout</members>
+		<members>CouponItem__c-Coupon Item BtoC multiple Layout</members>
+		<members>CouponItem__c-Coupon Item Layout</members>
+		<members>CouponItem__c-Coupon Item Nominatif Agent Layout</members>
+		<members>CouponItem__c-Coupon Item Nominatif Client Layout</members>
+		<members>Coupon__c-Coupon BtoB Layout</members>
+		<members>Coupon__c-Coupon BtoC Nominatif Layout</members>
+		<members>Coupon__c-Coupon BtoC generique Layout</members>
+		<members>Coupon__c-Coupon BtoC multiples Layout</members>
+		<members>Coupon__c-Coupon Layout</members>
+		<members>Dette__c-Dette Layout</members>
+		<members>DuplicateRecordItem-Duplicate Record Item Layout</members>
+		<members>DuplicateRecordSet-Duplicate Record Set Layout</members>
+		<members>EmailMessage-Email Message Layout - Email-to-Case</members>
+		<members>Entitlement-Entitlement Layout</members>
+		<members>Evenement__c-Présentation Evènement</members>
+		<members>Event-Event Layout</members>
+		<members>ExternalService__mdt-Présentation External Service</members>
+		<members>Favorite__c-Favorite Layout</members>
+		<members>FeedItem-Présentation Élément de fil</members>
+		<members>File_Impression__c-File d%27impression Layout</members>
+		<members>Film__c-Film Layout</members>
+		<members>Global-Global Layout</members>
+		<members>Global-Publisher Layout Salle</members>
+		<members>Global-Publisher layout Chargé de clientèle</members>
+		<members>Global_Parameters__mdt-Presentation Global Parameters</members>
+		<members>Idea-Idea Layout</members>
+		<members>Individual-Présentation Individu</members>
+		<members>Knowledge__kav-Présentation de page Knowledge</members>
+		<members>Lead-Lead Layout</members>
+		<members>Lead-Lead Layout SDoc</members>
+		<members>LinkedArticle-Linked Article Layout</members>
+		<members>ListEmail-Présentation E-mail de liste</members>
+		<members>LiveChatTranscriptActive-Live Chat Transcript %28In Progress%29 Layout</members>
+		<members>LiveChatTranscriptWaiting-Live Chat Transcript %28Waiting%29 Layout</members>
+		<members>MC_Campaign__c-MC Campagne Layout</members>
+		<members>Macro-Macro Layout</members>
+		<members>OffreContrainte__c-Contrainte Layout</members>
+		<members>OffreLieu__c-Lieu Layout</members>
+		<members>Offre__c-Offre Layout</members>
+		<members>Opportunity-Opportunity Layout</members>
+		<members>Opportunity-Opportunity Layout SDoc</members>
+		<members>OpportunityLineItem-Opportunity Product Layout</members>
+		<members>Order-Order Layout</members>
+		<members>OrderItem-Order Product Layout</members>
+		<members>Outlook-Actions Salesforce for Outlook</members>
+		<members>Payment_Run_Calendar__c-Payment Run Calendar Layout</members>
+		<members>PersonAccount-Person Account Layout</members>
+		<members>PersonAccount-test</members>
+		<members>Pricebook2-Price Book Layout</members>
+		<members>PricebookEntry-Price Book Entry Layout</members>
+		<members>ProdRatePlanCharge__c-Rate Plan Charge Layout</members>
+		<members>ProdRatePlan__c-Produit Layout</members>
+		<members>Product2-Product Layout</members>
+		<members>Produit__c-Produit</members>
+		<members>Programmation_Newsletter__c-Programmation Newsletter Layout</members>
+		<members>PromoProduit__c-PromoProduit Layout</members>
+		<members>PromoRemise__c-PromoRemise L1 Layout</members>
+		<members>PromoRemise__c-PromoRemise Layout</members>
+		<members>PromoRemise__c-PromoRemise Non Surchargeable Layout</members>
+		<members>Promo__c-Promo Abo de base Layout</members>
+		<members>Promo__c-Promo Layout</members>
+		<members>Promo__c-Promo charge de base Layout</members>
+		<members>Promo__c-Promos BtoB Layout</members>
+		<members>Promo__c-Promos de base Layout</members>
+		<members>Promo__c-Promos des offres Layout</members>
+		<members>Property__c-Property Layout</members>
+		<members>Question-Question Layout</members>
+		<members>QuickText-Présentation de Texte rapide</members>
+		<members>RecordTypeMapping__mdt-Présentation Record Type Mapping</members>
+		<members>Rejected_Notification__c-Rejected Notification Layout</members>
+		<members>RejetExtItem__c-RejetExt Item Layout</members>
+		<members>RejetExterne__c-Rejet externe Layout</members>
+		<members>Reply-Reply Layout</members>
+		<members>SDOC__SDField__c-SDoc Field Layout</members>
+		<members>SDOC__SDJob__c-SDJob Layout</members>
+		<members>SDOC__SDRelationship__c-SDoc Relationship Layout</members>
+		<members>SDOC__SDTemplate__c-SDoc Template Layout</members>
+		<members>SDOC__SDoc__c-SDoc Layout</members>
+		<members>Salle__c-Salle Layout</members>
+		<members>Scorecard-Scorecard Layout</members>
+		<members>ScorecardAssociation-Scorecard Association Layout</members>
+		<members>ScorecardMetric-Scorecard Metric Layout</members>
+		<members>Seance__c-Séance Layout</members>
+		<members>ServiceContract-Service Contract Layout</members>
+		<members>SocialPersona-Social Persona Layout</members>
+		<members>SocialPost-Social Post Layout</members>
+		<members>Solution-Solution Layout</members>
+		<members>Suivi_Demandes_Fidelite__c-Suivi Demandes Fidelite Layout</members>
+		<members>Task-Task Layout</members>
+		<members>UGC_Generic_Param__mdt-UGC Generic Param Layout</members>
+		<members>User-User Layout</members>
+		<members>UserAlt-Présentation Profil de l%27utilisateur</members>
+		<members>UserProvAccount-User Provisioning Account Layout</members>
+		<members>UserProvisioningLog-User Provisioning Log Layout</members>
+		<members>UserProvisioningRequest-User Provisioning Request Layout</members>
+		<members>Zuora__CreditMemoItem__c-Credit Memo Item Layout</members>
+		<members>Zuora__CreditMemoPart__c-Credit Memo Part Layout</members>
+		<members>Zuora__CreditMemo__c-Credit Memo Layout</members>
+		<members>Zuora__CrmId_Change_Result__c-CrmId Change Result Layout</members>
+		<members>Zuora__CustomerAccount__c-Billing Account Z-Force Layout v2%2E4</members>
+		<members>Zuora__CustomerAccount__c-Billing Account Z-Force Layout v2%2E5</members>
+		<members>Zuora__CustomerAccount__c-Billing Account Z-Force Layout v2%2E6</members>
+		<members>Zuora__CustomerAccount__c-Billing Account Z-Force Layout v2%2E9</members>
+		<members>Zuora__CustomerAccount__c-Customer Account Layout</members>
+		<members>Zuora__DebitMemoItem__c-Debit Memo Item Layout</members>
+		<members>Zuora__DebitMemo__c-Debit Memo Layout</members>
+		<members>Zuora__InvoiceItem__c-Invoice Item Layout</members>
+		<members>Zuora__ObjectStub__c-ObjectStub Layout</members>
+		<members>Zuora__PaymentGateway__c-PaymentGateway Layout</members>
+		<members>Zuora__PaymentInvoice__c-PaymentInvoice Layout</members>
+		<members>Zuora__PaymentInvoice__c-PaymentInvoice Z-Force Layout v2%2E5</members>
+		<members>Zuora__PaymentMethod__c-Payment Method Layout</members>
+		<members>Zuora__PaymentPart__c-Payment Part Layout</members>
+		<members>Zuora__PaymentTerm__c-ProductTerm Layout</members>
+		<members>Zuora__Payment__c-Payment Layout</members>
+		<members>Zuora__Payment__c-Payment Z-Force Layout v2%2E4</members>
+		<members>Zuora__Payment__c-Payment Z-Force Layout v2%2E5</members>
+		<members>Zuora__Payment__c-Payment Z-Force Layout v2%2E7</members>
+		<members>Zuora__Product__c-Product Layout</members>
+		<members>Zuora__RefundInvoicePayment__c-RefundInvoicePayment Layout</members>
+		<members>Zuora__RefundPart__c-Refund Part Layout</members>
+		<members>Zuora__Refund__c-Refund Layout</members>
+		<members>Zuora__Refund__c-Refund Z-Force Layout v2%2E7</members>
+		<members>Zuora__SubscriptionChargeTierHistory__c-Subscription Charge Tier History Layout</members>
+		<members>Zuora__SubscriptionHistory__c-Subscription History Layout</members>
+		<members>Zuora__SubscriptionProductChargeHistory__c-Subscription Product %26 Charge History Layout</members>
+		<members>Zuora__SubscriptionProductCharge__c-Subscription Charge Layout</members>
+		<members>Zuora__SubscriptionProductCharge__c-Subscription Charge Z-Force Layout v2%2E6</members>
+		<members>Zuora__SubscriptionProductCharge__c-Subscription Charge Z-Force Layout v2%2E9</members>
+		<members>Zuora__SubscriptionProductFeature__c-SubscriptionProductFeature Layout</members>
+		<members>Zuora__SubscriptionRatePlanChargeTier__c-Subscription Rate Plan Charge Tier Layout</members>
+		<members>Zuora__SubscriptionRatePlanHistory__c-Subscription Rate Plan History Layout</members>
+		<members>Zuora__SubscriptionRatePlan__c-Subscription Rate Plan Layout</members>
+		<members>Zuora__Subscription__c-Subscription Layout</members>
+		<members>Zuora__Subscription__c-Subscription Z-Force Layout v2%2E6</members>
+		<members>Zuora__Sync_History__c-Sync History Layout</members>
+		<members>Zuora__TaxationItem__c-TaxationItem Layout</members>
+		<members>Zuora__UnitOfMeasure__c-Unit Of Measure Layout</members>
+		<members>Zuora__ZInvoice__c-ZInvoice Layout</members>
+		<members>Zuora__ZInvoice__c-ZInvoice Z-Force Layout v2%2E100</members>
+		<members>Zuora__ZInvoice__c-ZInvoice Z-Force Layout v2%2E4</members>
+		<members>Zuora__ZInvoice__c-ZInvoice Z-Force Layout v2%2E5</members>
+		<members>Zuora__ZInvoice__c-ZInvoice Z-Force Layout v2%2E9</members>
+		<name>Layout</name>
+	</types>
+	<version>46.0</version>
+</Package>
