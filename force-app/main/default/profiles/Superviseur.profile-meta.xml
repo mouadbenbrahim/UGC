@@ -6449,6 +6449,9 @@
         <layout>Contacts__c-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ContentAsset-Asset File Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ContentVersion-Présentation Version de contenu</layout>
     </layoutAssignments>
     <layoutAssignments>
