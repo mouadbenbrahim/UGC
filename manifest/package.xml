@@ -53,7 +53,7 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>AuthProvider</name>
     </types>
     <types>
@@ -73,7 +73,7 @@
         <name>BusinessProcess</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>CallCenter</name>
     </types>
     <types>
@@ -81,7 +81,7 @@
         <name>CaseSubjectParticle</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>Certificate</name>
     </types>
     <types>
@@ -97,7 +97,7 @@
         <name>CleanDataService</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>Community</name>
     </types>
     <types>
@@ -105,7 +105,7 @@
         <name>CompactLayout</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ConnectedApp</name>
     </types>
     <types>
@@ -185,7 +185,7 @@
         <name>Dashboard</name>
     </types>
     <types>
-        <!--<members>*</members>-->
+        <members>*</members>
         <name>DataCategoryGroup</name>
     </types>
     <types>
@@ -205,7 +205,7 @@
         <name>EclairGeoData</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>EmailServicesFunction</name>
     </types>
     <types>
@@ -293,7 +293,7 @@
         <name>Index</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>InstalledPackage</name>
     </types>
     <types>
@@ -341,7 +341,7 @@
         <name>NamedCredential</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>NetworkBranding</name>
     </types>
     <types>
@@ -365,7 +365,7 @@
         <name>PlatformEventChannel</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>Portal</name>
     </types>
     <types>
@@ -437,7 +437,7 @@
         <name>Role</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>SamlSsoConfig</name>
     </types>
     <types>
