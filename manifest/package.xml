@@ -109,7 +109,7 @@
         <name>ConnectedApp</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ContentAsset</name>
     </types>
     <types>

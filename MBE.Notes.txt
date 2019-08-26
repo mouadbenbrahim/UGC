@@ -7,3 +7,9 @@ TODO
 You do not have the proper permissions to access Layout.
 You do not have the proper permissions to access Layout.
 Metadata API received improper input. Please ensure file name and capitalization is correct. Load of metadata from db failed for metadata of type:NetworkBranding and file name:cbUGC.
+
+
+CustomLabels:
+-- Ne pas deployer les custom labels car ils contiennent des donnees dependant des Environnements.
+
+Toujours Avoir les Profils
