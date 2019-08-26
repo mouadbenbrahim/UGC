@@ -471,11 +471,11 @@
         <name>Profile</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ProfilePasswordPolicy</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ProfileSessionSetting</name>
     </types>
     <types>
