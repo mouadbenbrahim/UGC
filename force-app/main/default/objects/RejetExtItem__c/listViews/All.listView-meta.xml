@@ -6,9 +6,13 @@
     <columns>CurrencyRejet__c</columns>
     <columns>MontantRejet__c</columns>
     <columns>PaymentReference__c</columns>
+    <columns>REF_FR__c</columns>
+    <columns>REF_BE__c</columns>
+    <columns>RUM__c</columns>
     <columns>DebiteurName__c</columns>
     <columns>CREATED_DATE</columns>
     <columns>CREATEDBY_USER</columns>
+    <columns>RejetDate__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
     <language>en_US</language>

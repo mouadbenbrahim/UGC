@@ -745,6 +745,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SM_Remboursement_010819</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SM_Resiliation</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -939,7 +943,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Abonnement__c.DateFinEngagement__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2792,6 +2796,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.tech_payeur_ville__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.tech_rum__c</field>
         <readable>true</readable>
@@ -2800,6 +2809,11 @@
         <editable>true</editable>
         <field>Account.test__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.test_indexed__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -3422,6 +3436,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Carte__c.ID_CONTRACT_BILENDI__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Carte__c.LieuEdition__c</field>
         <readable>true</readable>
@@ -3520,6 +3539,11 @@
         <editable>true</editable>
         <field>Case.Attribue__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.BILENDI__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -4660,6 +4684,11 @@
         <editable>true</editable>
         <field>Case.sous_motif_de_r_siliation__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.tech_adressetitulaireducompte__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -7067,6 +7096,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>RejetExtItem__c.REF_BE__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>RejetExtItem__c.REF_FR__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>RejetExtItem__c.RUM__c</field>
         <readable>true</readable>
@@ -8124,6 +8163,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__Subscription__c.Date_de_fin_de_contrat__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__Subscription__c.LegacyExternalID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

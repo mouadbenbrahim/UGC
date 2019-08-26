@@ -8,14 +8,15 @@
     <columns>ContratId__c</columns>
     <columns>DateValeur__c</columns>
     <columns>DateVisibiliteTotem__c</columns>
-    <columns>LAST_UPDATE</columns>
     <columns>ModePaiement__c</columns>
     <columns>Montant__c</columns>
     <columns>Origine__c</columns>
-    <columns>StatutEnvoi__c</columns>
     <columns>TypePiece__c</columns>
     <columns>DateInsertionBase__c</columns>
     <columns>DateVisibiliteTins__c</columns>
+    <columns>RUM__c</columns>
+    <columns>PieceReferenceId__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
+    <language>en_US</language>
 </ListView>
