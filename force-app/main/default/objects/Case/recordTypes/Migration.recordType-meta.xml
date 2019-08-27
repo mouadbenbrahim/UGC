@@ -1502,11 +1502,27 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>UI 2 %3E UI 1</fullName>
+            <fullName>UI1CDD %3E UI2CDI</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>UI 3 %3E UI 2</fullName>
+            <fullName>UI1CDI %3E UI2CDI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UI2CDD %3E UI1CDI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UI2CDI %3E UI1CDI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UI3CDD %3E UI2CDI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UI3CDI %3E UI2CDI</fullName>
             <default>false</default>
         </values>
     </picklistValues>

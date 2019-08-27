@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Eligibilite_Reabo__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Flag d&#39;éligibilité de réabonnement du client</description>
+    <externalId>false</externalId>
+    <label>Eligibilité Réabonnement</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

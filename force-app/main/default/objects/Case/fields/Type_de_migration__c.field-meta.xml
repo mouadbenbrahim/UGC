@@ -17,13 +17,45 @@
                 <label>UI 1 &gt; UI 2</label>
             </value>
             <value>
+                <fullName>UI1CDI &gt; UI2CDI</fullName>
+                <default>false</default>
+                <label>UI1CDI &gt; UI2CDI</label>
+            </value>
+            <value>
+                <fullName>UI1CDD &gt; UI2CDI</fullName>
+                <default>false</default>
+                <label>UI1CDD &gt; UI2CDI</label>
+            </value>
+            <value>
+                <fullName>UI3CDI &gt; UI2CDI</fullName>
+                <default>false</default>
+                <label>UI3CDI &gt; UI2CDI</label>
+            </value>
+            <value>
+                <fullName>UI3CDD &gt; UI2CDI</fullName>
+                <default>false</default>
+                <label>UI3CDD &gt; UI2CDI</label>
+            </value>
+            <value>
+                <fullName>UI2CDI &gt; UI1CDI</fullName>
+                <default>false</default>
+                <label>UI2CDI &gt; UI1CDI</label>
+            </value>
+            <value>
+                <fullName>UI2CDD &gt; UI1CDI</fullName>
+                <default>false</default>
+                <label>UI2CDD &gt; UI1CDI</label>
+            </value>
+            <value>
                 <fullName>UI 2 &gt; UI 1</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>UI 2 &gt; UI 1</label>
             </value>
             <value>
                 <fullName>UI 3 &gt; UI 2</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>UI 3 &gt; UI 2</label>
             </value>
         </valueSetDefinition>

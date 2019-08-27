@@ -1505,10 +1505,6 @@
             <fullName>UI 1 %3E UI 2</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>UI 2 %3E UI 1</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>sous_motif_de_r_siliation__c</picklist>

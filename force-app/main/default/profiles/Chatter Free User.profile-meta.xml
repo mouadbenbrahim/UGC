@@ -813,6 +813,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TestUpdateAccountReaboTrigger</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Test_MailBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1416,6 +1420,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Doublon_potentiel__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Eligibilite_Reabo__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7996,6 +8005,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__Subscription__c.Date_de_fin_de_contrat__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Subscription__c.LegacyExternalID__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

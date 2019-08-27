@@ -109,7 +109,7 @@
         <name>ConnectedApp</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ContentAsset</name>
     </types>
     <types>
@@ -471,11 +471,11 @@
         <name>Profile</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ProfilePasswordPolicy</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>ProfileSessionSetting</name>
     </types>
     <types>
