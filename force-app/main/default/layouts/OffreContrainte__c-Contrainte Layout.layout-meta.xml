@@ -13,6 +13,14 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
+                <field>ContrainteSur__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Action__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
                 <field>Offre__c</field>
             </layoutItems>
             <layoutItems>
@@ -22,14 +30,6 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>DateFin__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Action__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>ContrainteSur__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

@@ -5167,6 +5167,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Offre__c.Hermes_Intitule_Offre__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Offre__c.Intitule__c</field>
         <readable>false</readable>
     </fieldPermissions>
