@@ -1,4 +1,6 @@
-. $HOME/.bash_profile
+#!/bin/bash
+
+. ~/.bash_profile
 export BR=$1
 export SCR=liv/script
 export TS=$(date +%Y%m%d_%HH%M)
@@ -11,11 +13,6 @@ sfdx force:source:retrieve -x manifest/package.xml -u $BR
 git add .
 git commit -m "retrieve $BR Repo: $TS"
 git push origin $BR:$BR
-
-
-
-
-
 
 
 
