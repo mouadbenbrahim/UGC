@@ -5,7 +5,6 @@ public without sharing class SM001_GesteCommercial {
     public static String endpoint = '/v1/action/amend';
     public static String prodRatePlanChargeReferenceGesteCommercialCDI = 'REMMONT';
     public static String prodRatePlanChargeReferenceGesteCommercialCDD = 'REMMENS';
-    public static String prodRatePlanChargeReferenceDetteTechnique = 'DETTETECH';
     
     public static String sendAmendRequest(String inBody, String zEntityId){
         system.debug('##MNE SM001_GesteCommercial sendRequest inBody >> '+inBody);

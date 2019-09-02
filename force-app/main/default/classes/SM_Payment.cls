@@ -21,7 +21,7 @@ public with sharing class SM_Payment {
     }
     
 
-	public static void precessCreatePayment(String accountId, String invoiceId, Decimal amount, String paymentMethodId, String zEntityId, String access_token){
+	public static string precessCreatePayment(String accountId, String invoiceId, Decimal amount, String paymentMethodId, String zEntityId, String access_token){
 		system.debug('##MNE SM_Payment precessCreatePayment accountId >> '+accountId);
 		system.debug('##MNE SM_Payment precessCreatePayment invoiceId >> '+invoiceId);
 		system.debug('##MNE SM_Payment precessCreatePayment amount >> '+amount);
@@ -35,39 +35,8 @@ public with sharing class SM_Payment {
 		
 		String method = 'POST';
 		String wsOut = WS001_CallZuora.sendRequest(access_token, endpoint, zEntityId, method, bodyCreatePayment, 'type1', '211.0');
-        
-        /*//call out new product Amendment
-        Http h = new Http();
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint('callout:ZuoraAPI'+endpoint);
-        req.setMethod('POST');
-        req.setHeader('Content-Type', 'application/json');
-        req.setHeader('Zuora-Entity-Ids', zEntityId);
-        req.setHeader('Authorization', 'Bearer '+access_token);
-        req.setTimeout(60000);
-        req.setBody(bodyCreatePayment);
-        HttpResponse res = h.send(req);
-        String repWS = res.getBody();
-        system.debug('##MNE SM_Payment precessCreatePayment repWS >> '+repWS);
-        
-        //deserialisation du resultat de l'Amendment
-        SM001_GesteCommercial.Resultat resApex =   (SM001_GesteCommercial.Resultat)System.JSON.deserialize(repWS, SM001_GesteCommercial.Resultat.class);
-        System.debug('##MNE SM_Payment precessCreatePayment resJsonOriginal >> '+repWS);
-        System.debug('##MNE SM_Payment precessCreatePayment resApex >> '+resApex);
-        
-        //gestion erreur de l'Amendment
-        Boolean success = true;
-        String messageError = '';
-        if(resApex != null && resApex.results != null  && resApex.results.size() > 0){
-        	for(SM001_GesteCommercial.Result r : resApex.results){
-        		if(!r.Success){
-        			if(r.Errors != null && r.Errors.size() > 0){
-        				throw new MyException(r.Errors.get(0).Message);
-        			}
-        		}
-        	}
-        }*/
-        
+		system.debug('##MNE SM_Payment precessCreatePayment wsOut >> '+wsOut);
+		return wsOut;        
 	}
 
     

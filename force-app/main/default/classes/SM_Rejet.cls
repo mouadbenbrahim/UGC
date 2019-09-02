@@ -6,6 +6,7 @@ public with sharing class SM_Rejet {
 	
 	public static String endpoint = '/v1/action/amend';
 	public static String prodRatePlanChargeReferenceDetteTechnique = 'DETTETECH';
+	public static list<RejetExtItem__c> listRejetExtItemToUpdate;
     
     public static void traiterFichier(Id rejetExterneId) {
     	system.debug('##MNE SM_Rejet traiterFichier rejetExterneId >> '+rejetExterneId);
@@ -78,6 +79,7 @@ public with sharing class SM_Rejet {
      	list<BilendiAccounting__c> listBilendiAccounting = new list<BilendiAccounting__c>([Select Id, Name, ContratId__c From BilendiAccounting__c WHERE Name IN :paymentRefFR OR Name IN :paymentRefBE]);
      	system.debug('##MNE SM_Rejet processRejetBredInZuora listBilendiAccounting >> '+listBilendiAccounting);
      	if(listBilendiAccounting == null || listBilendiAccounting.size() == 0){
+     		notifierAllItem(listNtry, 'Pas de Bilendi Accounting trouvé');
      		return;
      	}
      	
@@ -88,9 +90,10 @@ public with sharing class SM_Rejet {
      		mapBilendiAccountingBypaymentRef.put(ba.Name, ba);
      	}
      	
-     	list<Zuora__Subscription__c> listZSub = new list<Zuora__Subscription__c>([Select Id, LegacyExternalID__c, Zuora__External_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c From Zuora__Subscription__c WHERE LegacyExternalID__c IN :listContratId]);
+     	list<Zuora__Subscription__c> listZSub = new list<Zuora__Subscription__c>([Select Id, LegacyExternalID__c, Zuora__External_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c, TECH_Pays__c From Zuora__Subscription__c WHERE LegacyExternalID__c IN :listContratId]);
      	system.debug('##MNE SM_Rejet processRejetBredInZuora listZSub >> '+listZSub);
      	if(listZSub == null || listZSub.size() == 0){
+     		notifierAllItem(listNtry, 'Pas de subscription trouvé');
      		return;
      	}
      	
@@ -99,7 +102,7 @@ public with sharing class SM_Rejet {
      	}
      	
      	//3 lier les Ntry avec les Zsub
-     	list<RejetExtItem__c> listRejetExtItemToUpdate = new list<RejetExtItem__c>();
+     	listRejetExtItemToUpdate = new list<RejetExtItem__c>();
      	for(RejetExtItem__c item : listNtry){
      		BilendiAccounting__c ba = null;
      		Zuora__Subscription__c zSub = null;
@@ -127,13 +130,12 @@ public with sharing class SM_Rejet {
      			mapZSubscriptionByRejetExtItemId.put(item.Id, zSub);
      		}
      	}
-     	
-     	if(listRejetExtItemToUpdate.size() > 0){
-     		update listRejetExtItemToUpdate;
-     	}
+
      	
      	if(mapZSubscriptionByRejetExtItemId.size() > 0){
      		processRejetBredInZuora(mapRejetExtItemById, mapZSubscriptionByRejetExtItemId);
+     	} else if(listRejetExtItemToUpdate.size() > 0){
+     		update listRejetExtItemToUpdate;
      	}
      	
      }
@@ -141,32 +143,140 @@ public with sharing class SM_Rejet {
      public static void processRejetBredInZuora(map<Id, RejetExtItem__c> mapRejetExtItemById, map<Id, Zuora__Subscription__c> mapZSubscriptionByRejetExtItemId){
      	
      	if(mapZSubscriptionByRejetExtItemId.size() == 0 || mapZSubscriptionByRejetExtItemId.size() == 0){
+     		notifierAllItem(mapRejetExtItemById, mapZSubscriptionByRejetExtItemId, 'Pas de subscription trouvé 2');
      		return;
      	}
      	
-     	for(Id item : mapZSubscriptionByRejetExtItemId.keySet()){
+     	//recuperer ProductRatePlanChargeId pour la dette technique France et Belgique
+     	String FR_ProductRatePlanId;
+		String FR_ProductRatePlanChargeId;
+		String BE_ProductRatePlanId;
+		String BE_ProductRatePlanChargeId;
+		
+		/*String prefixe = '';
+		if(acc.CodePays__c == '033'){
+			prefixe = 'FR';
+		}else if(acc.CodePays__c == '032'){
+			prefixe = 'BE';
+		}*/
+		
+		String FR_productRatePlanReference = 'FR' + prodRatePlanChargeReferenceDetteTechnique;
+		String BE_productRatePlanReference = 'BE' + prodRatePlanChargeReferenceDetteTechnique;
+		list<ProdRatePlanCharge__c> listProdRatePlanCharge = new list<ProdRatePlanCharge__c>([SELECT Reference__c, zid__c, ProdRatePlan__r.zid__c FROM ProdRatePlanCharge__c WHERE Reference__c = :FR_productRatePlanReference OR Reference__c = :BE_productRatePlanReference]);
+		system.debug('##MNE SM_Rejet processRejetBredInZuora listProdRatePlanCharge >> '+listProdRatePlanCharge);
+		if(listProdRatePlanCharge.size() != 2){
+			system.debug('##MNE SM_Rejet processRejetBredInZuora Pas de Product Rate Plan Charge trouvée pour la dette technique du Rejet Bred');
+			notifierAllItem(mapRejetExtItemById, mapZSubscriptionByRejetExtItemId, 'Pas de Product Rate Plan Charge trouvée pour la dette technique');
+            throw new MyException('Pas de Product Rate Plan Charge trouvée pour la dette technique du Rejet Bred.');
+		}
+		
+		for(ProdRatePlanCharge__c prpc : listProdRatePlanCharge){
+			if(prpc.Reference__c.startsWithIgnoreCase('FR')){
+				FR_ProductRatePlanId = prpc.ProdRatePlan__r.zid__c;
+				FR_ProductRatePlanChargeId = prpc.zid__c;
+			}else{
+				BE_ProductRatePlanId = prpc.ProdRatePlan__r.zid__c;
+				BE_ProductRatePlanChargeId = prpc.zid__c;
+			}
+		}
+		
+		//recuperer paymentMethodId pour other France et Belgique
+		String FR_paymentMethodId;
+		String BE_paymentMethodId;
+		list<UGC_Generic_Param__mdt> listPaymentMethodId = new list<UGC_Generic_Param__mdt>([SELECT ParamValue__c, Entite__c FROM UGC_Generic_Param__mdt WHERE ParamName__c = 'paymentMethodIdOther']);
+        system.debug('##MNE SM_Rejet processRejetBredInZuora listPaymentMethodId >> '+listPaymentMethodId);
+		if(listPaymentMethodId.size() != 2){
+			system.debug('##MNE SM_Rejet processRejetBredInZuora Pas de Payment Method Other trouvé pour le Rejet Bred');
+			notifierAllItem(mapRejetExtItemById, mapZSubscriptionByRejetExtItemId, 'Pas de Payment Method Other trouvé');
+            throw new MyException('Pas de Payment Method Other trouvé pour le Rejet Bred.');
+		}
+		
+		for(UGC_Generic_Param__mdt pm : listPaymentMethodId){
+			if(pm.Entite__c == 'France'){
+				FR_paymentMethodId = pm.ParamValue__c;
+			}else{
+				BE_paymentMethodId = pm.ParamValue__c;
+			}
+		}
+		
+     	String access_token = WS001_CallZuora.oauthLogin();								//OK
+     	for(Id itemId : mapZSubscriptionByRejetExtItemId.keySet()){
+     		Zuora__Subscription__c zSub = mapZSubscriptionByRejetExtItemId.get(itemId);
+     		RejetExtItem__c item = mapRejetExtItemById.get(itemId);
      		
+     		String ProductRatePlanId;													//OK
+			String ProductRatePlanChargeId;												//OK
+			String paymentMethodId;														//OK
+			if(Util.FRANCE.contains(zSub.TECH_Pays__c)){
+     			ProductRatePlanId = FR_ProductRatePlanId;
+     			ProductRatePlanChargeId = FR_ProductRatePlanChargeId;
+     			paymentMethodId = FR_paymentMethodId;
+     		} else {
+     			ProductRatePlanId = BE_ProductRatePlanId;
+     			ProductRatePlanChargeId = BE_ProductRatePlanChargeId;
+     			paymentMethodId = BE_paymentMethodId;
+     		}
+			String zEntityId = WS001_CallZuora.getZuoraEntityId(zSub.TECH_Pays__c);		//OK
+			
+	     	String zuoraSubId = zSub.Zuora__External_Id__c;								//OK
+	     	String accountId = zSub.Zuora__CustomerAccount__r.Zuora__External_Id__c;	//OK
+	     	Decimal price = item.MontantRejet__c;										//OK
+	     	
+			String zInvoiceId;															//OK
+			String zPaymentId;
+			
+			
+			try{
+           		String rep = SM_Rejet.precessAmendmentAddProd(zuoraSubId, ProductRatePlanId, ProductRatePlanChargeId, price, zEntityId, access_token);
+           		Resultat resApex = (Resultat)System.JSON.deserialize(rep, Resultat.class);
+           		zInvoiceId = resApex.results.get(0).InvoiceId;
+	        }catch(Exception e){
+	        	system.debug('##MNE SM_Rejet processRejetBredInZuora add product exception >> '+e.getMessage());
+	            system.debug('##MNE SM_Rejet processRejetBredInZuora add product Error Step 1');
+	            item.ErrorMessage__c = 'add product Error Step 1 >> '+e.getMessage();
+     			listRejetExtItemToUpdate.add(item);
+	            continue;
+	        }
+	        
+	        try{
+           		String rep = SM_Payment.precessCreatePayment(accountId, zInvoiceId, price, paymentMethodId, zEntityId, access_token);
+           		WSZ.RefundOut resApex = (WSZ.RefundOut)System.JSON.deserialize(rep, WSZ.RefundOut.class);
+           		zPaymentId = resApex.id;
+	        }catch(Exception e){
+	        	system.debug('##MNE SM_Rejet processRejetBredInZuora create payment exception >> '+e.getMessage());
+	            system.debug('##MNE SM_Rejet processRejetBredInZuora create payment Error Step 2');
+	            item.ErrorMessage__c = 'create payment Error Step 2 >> '+e.getMessage();
+     			listRejetExtItemToUpdate.add(item);
+	            continue;
+	        }
+	        
+	        try{
+           		SM_Remboursement.unapplyPayment(price, zInvoiceId, zPaymentId, zEntityId, access_token);
+	        }catch(Exception e){
+	        	system.debug('##MNE SM_Rejet processRejetBredInZuora Unapply Payment exception >> '+e.getMessage());
+	            system.debug('##MNE SM_Rejet processRejetBredInZuora Unapply Payment Error Step 3');
+	            item.ErrorMessage__c = 'Unapply Payment Error Step 3 >> '+e.getMessage();
+     			listRejetExtItemToUpdate.add(item);
+	            continue;
+	        }
+     		
+     		try{
+           		SM_Remboursement.executeRefundRejetBred(price, zPaymentId, zEntityId, access_token);
+	        }catch(Exception e){
+	        	system.debug('##MNE SM_Rejet processRejetBredInZuora create Refund exception >> '+e.getMessage());
+	            system.debug('##MNE SM_Rejet processRejetBredInZuora create Refund Error Step 4');
+	            item.ErrorMessage__c = 'Create Refund Error Step 4 >> '+e.getMessage();
+     			listRejetExtItemToUpdate.add(item);
+	            continue;
+	        }
+	        
+	        item.ErrorMessage__c = 'OK traité : Pas d\'erreur';
+     		listRejetExtItemToUpdate.add(item);
      	}
      	
-     	Decimal price = 25;
-     	String zuoraSubId = '8adce4216a06d477016a20430bb100fa';
-		String ProductRatePlanId = '8adc8f99658a0b910165aa1454d906c6';
-		String ProductRatePlanChargeId = '8adc8f99658a0b910165aa15fc33074f';
-     	String accountId = '8adc8f9969e30e130169e863cb8c3b7c';
-		String zInvoiceId = '8adc8f996cdb8533016cdcaa4c2156e9';
-		String paymentMethodId = '8adc8f9963ecb5c20163f45800ab62a9';
-		String zPaymentId = '8adcc59c6cdb8da5016cdd52c6b15ca9';
-     	String zEntityId = '8adce421-63ec-c07b-0163-f45782667179';
-		String access_token = 'e3e33c9fa99c4d7c885cb92ccf93042a';
-		
-     	
-     	
-     	SM_Rejet.precessAmendmentAddProd(zuoraSubId, ProductRatePlanId, ProductRatePlanChargeId, price, zEntityId, access_token);
-     	SM_Payment.precessCreatePayment(accountId, zInvoiceId, price, paymentMethodId, zEntityId, access_token);
-     	SM_Remboursement.unapplyPayment(price, zInvoiceId, zPaymentId, zEntityId, access_token);
-     	SM_Remboursement.executeRefundRejetBred(price, zPaymentId, zEntityId, access_token);
-     	
-     	
+     	if(listRejetExtItemToUpdate.size() > 0){
+     		update listRejetExtItemToUpdate;
+     	}
      }
      
     
@@ -174,7 +284,47 @@ public with sharing class SM_Rejet {
 	}
 	
 	
-	public static void precessAmendmentAddProd(String zuoraSubId, String ProductRatePlanId, String ProductRatePlanChargeId, Decimal price, String zEntityId, String access_token){
+	
+
+	public static void notifierAllItem(map<Id, RejetExtItem__c> mapRejetExtItemById, map<Id, Zuora__Subscription__c> mapZSubscriptionByRejetExtItemId, String message){
+		if(mapZSubscriptionByRejetExtItemId == null || mapZSubscriptionByRejetExtItemId == null || mapZSubscriptionByRejetExtItemId.size() == 0 || mapZSubscriptionByRejetExtItemId.size() == 0){
+			return;
+		}
+		list<RejetExtItem__c> listItemToUpdate = new list<RejetExtItem__c>();
+		for(Id itemId : mapZSubscriptionByRejetExtItemId.keySet()){
+     		RejetExtItem__c item = mapRejetExtItemById.get(itemId);
+     		listItemToUpdate.add(item);
+		}
+		
+		if(listItemToUpdate.size() > 0){
+			notifierAllItem(listItemToUpdate, message);
+		}
+	}
+	
+	public static void notifierAllItem(list<RejetExtItem__c> listItem, String message){
+		if(listItem == null){
+			listItem = new list<RejetExtItem__c>();
+		}
+		
+		if(listItem.size() != 0){
+			for(RejetExtItem__c item : listItem){
+				item.ErrorMessage__c = message;
+			}
+		}
+		
+		if(listRejetExtItemToUpdate != null && listRejetExtItemToUpdate.size() != 0){
+			listItem.addAll(listRejetExtItemToUpdate);
+		}
+		
+		if(listItem.size() > 0){
+			update listItem;
+		}
+		
+	}
+	
+	
+	
+	public static String precessAmendmentAddProd(String zuoraSubId, String ProductRatePlanId, String ProductRatePlanChargeId, Decimal price, String zEntityId, String access_token){
 		system.debug('##MNE SM_Rejet precessAmendmentAddProd zuoraSubId >> '+zuoraSubId);
 		system.debug('##MNE SM_Rejet precessAmendmentAddProd ProductRatePlanId >> '+ProductRatePlanId);
 		system.debug('##MNE SM_Rejet precessAmendmentAddProd ProductRatePlanChargeId >> '+ProductRatePlanChargeId);
@@ -189,7 +339,7 @@ public with sharing class SM_Rejet {
 		String method = 'POST';
 		String wsOut = WS001_CallZuora.sendRequest(access_token, endpoint, zEntityId, method, bodyRejetBredAddProd, 'type1', '211.0');
 		system.debug('##MNE SM_Rejet precessAmendmentAddProd wsOut >> '+wsOut);
-        
+		return wsOut;
 	}
 	
 	public static String getBodyRejetBredAddProd (String zuoraSubId, String ProductRatePlanId, String ProductRatePlanChargeId, Decimal price){
@@ -302,6 +452,28 @@ public with sharing class SM_Rejet {
             this.ProductRatePlanChargeId = ProductRatePlanChargeId;
             this.Price = price;
         }
+    }
+    
+    
+    
+    //-----------------------------------Response Resultat-----------------------------------
+    public class Resultat {
+        public list<Result> results = null;
+    }
+    //-----------------------------------Result-----------------------------------
+    public class Result {
+        public list<Error> Errors = null;
+        public String SubscriptionId;
+        public Double TotalDeltaTcv;
+        public list<String> AmendmentIds = null;
+        public Integer TotalDeltaMrr;
+        public Boolean Success;
+        public String InvoiceId;
+    }
+    //-----------------------------------Error-----------------------------------
+    public class Error {
+        public String Code;
+        public String Message;
     }
 
 

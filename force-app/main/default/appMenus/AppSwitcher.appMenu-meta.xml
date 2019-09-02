@@ -172,4 +172,8 @@
         <name>DreamHouse</name>
         <type>CustomApplication</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>SFDX_JWT</name>
+        <type>ConnectedApp</type>
+    </appMenuItems>
 </AppMenu>
