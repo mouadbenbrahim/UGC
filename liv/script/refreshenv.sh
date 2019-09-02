@@ -9,12 +9,8 @@ $SCR/switchpkgdir.sh force-app
 wk
 sfdx force:source:retrieve -x manifest/package.xml -u $BR
 git add .
-# git commit -m "retrieve $BR Repo: $TS"
-
-
-
-
-
+git commit -m "retrieve $BR Repo: $TS"
+git push origin $BR:$BR
 
 
 
