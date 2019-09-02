@@ -117,7 +117,7 @@ public with sharing class SM_Remboursement {
         
 
         //Unaply payment
-    	unapplyPayment(dem.MontantRembourser__c, invoiceId, zuoraPaymentId, zEntityId);  
+    	unapplyPayment(dem.MontantRembourser__c, invoiceId, zuoraPaymentId, zEntityId, null);  
        
 
     	//String methodTypeRefund = 'Other';
@@ -374,7 +374,7 @@ public with sharing class SM_Remboursement {
         return c.Id;
     }
     
-     public static void unapplyPayment(Decimal amountUnapply, String zInvoiceId, String zPaymentId, String zEntityId) {
+     public static void unapplyPayment(Decimal amountUnapply, String zInvoiceId, String zPaymentId, String zEntityId, String access_token) {
      	System.debug('##MNE SM_Remboursement unapplyPayment amountUnapply >> ' + amountUnapply);
      	System.debug('##MNE SM_Remboursement unapplyPayment zInvoiceId >> ' + zInvoiceId);
      	System.debug('##MNE SM_Remboursement unapplyPayment zPaymentId >> ' + zPaymentId);
@@ -386,7 +386,13 @@ public with sharing class SM_Remboursement {
         String wsOut = '';
 
         // Retrieve Zuora token
-        String accessToken = WS001_CallZuora.access_token;
+        String accessToken;
+        if(access_token != null){
+        	accessToken = access_token;
+        }
+        else {
+        	accessToken = WS001_CallZuora.access_token;
+        }
 
         // Call WS
         WSZ.UnapplyPaymentIn wsInObj = new WSZ.UnapplyPaymentIn();
@@ -488,6 +494,29 @@ public with sharing class SM_Remboursement {
     
         return (WSZ.RefundOut) JSON.deserializeStrict(wsOut, WSZ.RefundOut.class);
 
+    }
+    
+    public static void executeRefundRejetBred(Decimal totalAmount, String zPaymentId, String zEntityId, String access_token) {
+    	System.debug('##MNE SM_Remboursement executeRefundRejetBred totalAmount >> ' + totalAmount);
+    	System.debug('##MNE SM_Remboursement executeRefundRejetBred zPaymentId >> ' + zPaymentId);
+    	System.debug('##MNE SM_Remboursement executeRefundRejetBred zEntityId >> ' + zEntityId);
+		 
+		String endpoint = '/v1/payments/'+zPaymentId+'/refunds';
+		String method = 'POST';
+		
+		WSZ.RefundlIn wsInObj = new WSZ.RefundlIn();
+		wsInObj.typeX = 'External';
+		wsInObj.methodType = 'Other';
+		wsInObj.reasonCode = 'Payment Rejection';
+		wsInObj.refundDate = Util.zDate(Date.today());
+		wsInObj.totalAmount = totalAmount;
+		wsInObj.comment = 'Gestion Rejet Bred';
+		String wsIn = (String) JSON.serialize(wsInObj);
+		wsIn = wsIn.replace('typeX','type');
+		System.debug('##MNE SM_Remboursement executeRefundRejetBred wsIn >> ' + wsIn);
+		
+		String wsOut = WS001_CallZuora.sendRequest(access_token, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
+		system.debug('##MNE SM_Remboursement executeRefundRejetBred wsOut >> '+wsOut);
     }
 
 

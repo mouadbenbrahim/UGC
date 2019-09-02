@@ -510,6 +510,11 @@ public with sharing class WSZ {
     public class UnapplyPaymentInItem {
     	public Decimal amount;
 	 	public String invoiceId;
+	 	
+	 	/*public UnapplyPaymentInItem(String invoiceId, Decimal amount){
+	 		this.invoiceId = invoiceId;
+	 		this.amount = amount;
+	 	}*/
     }
     
     public class ApplyCreditMemoIn {
@@ -748,6 +753,30 @@ public with sharing class WSZ {
             this.reference = reference;
         }
     }
+    
+    public class CreatePaymentIn {
+		public String accountId;
+		public Decimal amount;
+		public String effectiveDate;
+		public String paymentMethodId;
+		public String typeX;
+		public String currencyX; 
+		public list<UnapplyPaymentInItem> invoices;
+		
+		public CreatePaymentIn(String accountId, String invoiceId, Decimal amount, String paymentMethodId){
+			this.accountId = accountId;
+			this.amount = amount;
+            this.effectiveDate = String.valueOf(Date.Today());
+            this.paymentMethodId = paymentMethodId;
+            this.typeX = 'External';
+            this.currencyX = 'EUR';
+            this.invoices = new list<UnapplyPaymentInItem>();
+            UnapplyPaymentInItem tmp = new UnapplyPaymentInItem();
+            tmp.invoiceId = invoiceId;
+	 		tmp.amount = amount;
+            this.invoices.add(tmp);
+        }
+	}
 
 
 }

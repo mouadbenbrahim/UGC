@@ -6277,6 +6277,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Offre__c.Hermes_Intitule_Offre__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Offre__c.Intitule__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7087,6 +7092,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>RejetExtItem__c.ErrorMessage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>RejetExtItem__c.MontantRejet__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7113,6 +7123,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>RejetExtItem__c.RejetDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>RejetExtItem__c.Traiement_OK__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
