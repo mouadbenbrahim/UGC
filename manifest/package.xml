@@ -247,6 +247,7 @@
         <members>Zuora__SubscriptionProductCharge__c</members>
         <members>Zuora__Subscription__c</members>
         <members>Zuora__ZInvoice__c</members>
+        <members>Zuora__CustomerAccount__c</members>        	
         <name>CustomObject</name>
     </types>
     <types>
