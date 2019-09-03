@@ -36,7 +36,7 @@
     <description>TEST FBM 28 07 2017</description>
     <label>Informations</label>
     <objectUsage>
-        <object>KnowledgeArticleVersion</object>
         <object>Question</object>
+        <object>KnowledgeArticleVersion</object>
     </objectUsage>
 </DataCategoryGroup>
