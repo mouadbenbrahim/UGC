@@ -39,4 +39,8 @@ patch_mdapi/
 mbe_temp/
 patch_mdapi_tmp/
 work/
+force-app/main/default/profiles/
+force-app/main/default/permissionsets/
+
+
 
