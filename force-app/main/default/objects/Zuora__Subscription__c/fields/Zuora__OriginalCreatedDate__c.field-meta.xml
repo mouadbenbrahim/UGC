@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__OriginalCreatedDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The date when the subscription was originally created. This value is the same as the CreatedDate value until the subscription is amended.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The date when the subscription was originally created. This value is the same as the CreatedDate value until the subscription is amended.</inlineHelpText>
+    <label>Original Created Date (Deprecated)</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Date_de_fin_de_contrat__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF((TypeContrat__c = &#39;CDD&#39; &amp;&amp; (ISPICKVAL(CodeFinContrat__c,&#39;&#39;))),Zuora__TermEndDate__c-1,IF((TypeContrat__c =&#39;CDI&#39;&amp;&amp; (ISPICKVAL(CodeFinContrat__c,&#39;&#39;))),NULL,IF(ISPICKVAL(CodeFinContrat__c, &#39;L&#39;),Zuora__SubscriptionEndDate__c-1,IF(ISPICKVAL(CodeFinContrat__c, &#39;E&#39;),Zuora__SubscriptionEndDate__c- 1, IF(ISPICKVAL(CodeFinContrat__c, &#39;A&#39;),Zuora__SubscriptionEndDate__c-1, IF(ISPICKVAL(CodeFinContrat__c, &#39;M&#39;),Zuora__SubscriptionEndDate__c-1  ,IF(ISPICKVAL(CodeFinContrat__c, &#39;X&#39;),Zuora__SubscriptionEndDate__c-1  , NULL)))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Date de fin de contrat</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

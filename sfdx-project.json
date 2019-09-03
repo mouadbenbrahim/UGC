@@ -1,7 +1,7 @@
 {
   "packageDirectories": [
     {
-      "path": "work/patch/fapp2/force-app",
+      "path": "force-app",
       "default": true
     }        
   ],

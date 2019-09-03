@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__TermSettingType__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Case sensitive. Denotes if a subscription is evergreen (has no end date or term length) or has a term.</description>
+    <externalId>false</externalId>
+    <label>Term Setting Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>TERMED</fullName>
+                <default>false</default>
+                <label>TERMED</label>
+            </value>
+            <value>
+                <fullName>EVERGREEN</fullName>
+                <default>false</default>
+                <label>EVERGREEN</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

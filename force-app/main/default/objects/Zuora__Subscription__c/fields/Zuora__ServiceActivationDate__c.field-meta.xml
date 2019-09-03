@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__ServiceActivationDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This is when the service was activated, and will trigger charges that have their trigger event set to Upon Service Activation.</description>
+    <externalId>false</externalId>
+    <label>Service Activation Date</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>
