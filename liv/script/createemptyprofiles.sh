@@ -1,5 +1,6 @@
 #!/bin/bash
-cd $1
+cd $1/main/default/profiles/
+
 echo "" > "Admin.profile-meta.xml"                        
 echo "" > "Directeur du service client.profile-meta.xml"          
 echo "" > "Salesforce_Nicolas.profile-meta.xml"
@@ -24,4 +25,13 @@ echo "" > "Synchro.profile-meta.xml"
 echo "" > "ContractManager.profile-meta.xml"               
 echo "" > "ReadOnly.profile-meta.xml"                             
 echo "" > "System admin Easyfront.profile-meta.xml"
+
+cd $1/main/default/permissionsets/
+echo "" > "Case_Feed.permissionset-meta.xml"
+echo "" > "Marketing_Cloud_Connected_App.permissionset-meta.xml"
+echo "" > "Password_Never_Expires.permissionset-meta.xml"
+echo "" > "UGC_Extra_admin.permissionset-meta.xml"
+echo "" > "Viadialog_permission_set.permissionset-meta.xml"
+echo "" > "Viadialog_permission_set_for_admin.permissionset-meta.xml"
+
 cd -

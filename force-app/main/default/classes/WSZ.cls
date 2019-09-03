@@ -148,6 +148,7 @@ public with sharing class WSZ {
     public class SubProduct {
         public String Reference;
         public String HermesIntituleOffre;
+        public String HermesIntituleOffreNL;
         public String Marche;
         public String CodeOffreCo;
         public Boolean IsB2B;
