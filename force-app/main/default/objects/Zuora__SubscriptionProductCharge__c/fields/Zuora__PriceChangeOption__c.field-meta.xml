@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__PriceChangeOption__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Applies an automatic price change when a termed subscription is renewed.</description>
+    <externalId>false</externalId>
+    <label>Price Change Option</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

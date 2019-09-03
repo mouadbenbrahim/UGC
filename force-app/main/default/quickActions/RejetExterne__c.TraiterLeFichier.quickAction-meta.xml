@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
     <height>250</height>
-    <label>Traiter le fichier</label>
-    <lightningComponent>LCP026_RejetBRED</lightningComponent>
+    <label>Traiter le Fichier</label>
+    <lightningComponent>LCP027_RejetBRED_Traiter_STEP2</lightningComponent>
     <optionsCreateFeedItem>false</optionsCreateFeedItem>
     <type>LightningComponent</type>
     <width>-100</width>

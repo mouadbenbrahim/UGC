@@ -10,6 +10,12 @@ public with sharing class SM_Rejet {
     
     public static void traiterFichier(Id rejetExterneId) {
     	system.debug('##MNE SM_Rejet traiterFichier rejetExterneId >> '+rejetExterneId);
+    	
+    	list<RejetExtItem__c> listNtry = new list<RejetExtItem__c>([SELECT Id FROM RejetExtItem__c WHERE RejetExterne__c = :rejetExterneId]);
+    	
+    	if(listNtry.size() > 0){
+     		throw new MyException('Le fichier à deja été parser');
+     	}
         
         list<ContentDocumentLink> listDoc = new list<ContentDocumentLink>([SELECT ContentDocumentId, LinkedEntityId, ContentDocument.FileExtension, ContentDocument.FileType  FROM ContentDocumentLink
         WHERE LinkedEntityId = :rejetExterneId AND LinkedEntity.Type='RejetExterne__c' AND ContentDocument.FileType = 'XML']);
@@ -52,11 +58,29 @@ public with sharing class SM_Rejet {
         }
         
         //traiter les rejet
+        //getZSubRejetBred(listNtry);
+    }
+    
+    public static void getZSubRejetBredStep2(Id rejetExternId){
+    	system.debug('##MNE SM_Rejet getZSubRejetBredStep2 rejetExternId >> '+rejetExternId);
+    	
+    	if(rejetExternId == null){
+    		throw new MyException('Error Id');
+    	}
+    	
+    	list<RejetExtItem__c> listNtry = new list<RejetExtItem__c>([SELECT CodeRejet__c,Contenu__c,CurrencyRejet__c,DebiteurName__c,ErrorMessage__c,Id,MontantRejet__c,Name,PaymentReference__c,REF_BE__c,REF_FR__c,RejetDate__c,RejetExterne__c,RUM__c FROM RejetExtItem__c WHERE RejetExterne__c = :rejetExternId]);
+    	
+    	if(listNtry == null || listNtry.size() == 0){
+     		throw new MyException('Pas de rejet trouvé à traiter');
+     	}
+     	
+    	//traiter les rejet
         getZSubRejetBred(listNtry);
     }
     
+    
 	public static void getZSubRejetBred(list<RejetExtItem__c> listNtry){
-     	system.debug('##MNE SM_Rejet processRejetBredInZuora listNtry >> '+listNtry);
+     	system.debug('##MNE SM_Rejet getZSubRejetBred listNtry >> '+listNtry);
      	
      	if(listNtry == null || listNtry.size() == 0){
      		return;
@@ -77,7 +101,7 @@ public with sharing class SM_Rejet {
      		mapRejetExtItemById.put(item.Id, item);
      	}
      	list<BilendiAccounting__c> listBilendiAccounting = new list<BilendiAccounting__c>([Select Id, Name, ContratId__c From BilendiAccounting__c WHERE Name IN :paymentRefFR OR Name IN :paymentRefBE]);
-     	system.debug('##MNE SM_Rejet processRejetBredInZuora listBilendiAccounting >> '+listBilendiAccounting);
+     	system.debug('##MNE SM_Rejet getZSubRejetBred listBilendiAccounting >> '+listBilendiAccounting);
      	if(listBilendiAccounting == null || listBilendiAccounting.size() == 0){
      		notifierAllItem(listNtry, 'Pas de Bilendi Accounting trouvé');
      		return;
@@ -91,7 +115,7 @@ public with sharing class SM_Rejet {
      	}
      	
      	list<Zuora__Subscription__c> listZSub = new list<Zuora__Subscription__c>([Select Id, LegacyExternalID__c, Zuora__External_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c, TECH_Pays__c From Zuora__Subscription__c WHERE LegacyExternalID__c IN :listContratId]);
-     	system.debug('##MNE SM_Rejet processRejetBredInZuora listZSub >> '+listZSub);
+     	system.debug('##MNE SM_Rejet getZSubRejetBred listZSub >> '+listZSub);
      	if(listZSub == null || listZSub.size() == 0){
      		notifierAllItem(listNtry, 'Pas de subscription trouvé');
      		return;

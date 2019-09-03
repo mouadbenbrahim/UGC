@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__UnusedUnitsCreditRates__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Specifies the rate to credit a customer for unused units of usage. This field is applicable only for overage charge models when the OverageUnusedUnitsCreditOption field value is CreditBySpecificRate.</description>
+    <externalId>false</externalId>
+    <label>Unused Units Credit Rates</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

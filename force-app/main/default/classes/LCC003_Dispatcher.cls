@@ -66,8 +66,14 @@ public without sharing class LCC003_Dispatcher {
                 when 'AnnulationDesabo' {
                      SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
                 }
-                when 'RejetBRED' {
+                /*when 'RejetBRED' {
                      SM_Rejet.traiterFichier(currentId);  
+                }*/
+                when 'RejetBRED_Parser_STEP1' {
+                     SM_Rejet.traiterFichier(currentId);  
+                }
+                when 'RejetBRED_Traiter_STEP2' {
+                     SM_Rejet.getZSubRejetBredStep2(currentId);  
                 }
                 when 'GesteCommercial' {
                      LCC006_GesteCommercial.executeGesteCommercial(currentId);  
