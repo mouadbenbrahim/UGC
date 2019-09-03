@@ -243,7 +243,10 @@
         <members>UGC_Generic_Param__mdt</members>
         <members>User</members>
         <members>UserProvisioningRequest</members>
-        <members>UserServicePresence</members>       
+        <members>UserServicePresence</members>
+        <members>Zuora__SubscriptionProductCharge__c</members>
+        <members>Zuora__Subscription__c</members>
+        <members>Zuora__ZInvoice__c</members>
         <name>CustomObject</name>
     </types>
     <types>

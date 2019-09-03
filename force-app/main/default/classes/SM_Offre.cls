@@ -98,18 +98,23 @@ public with sharing class SM_Offre {
 
     private static void addContraintes(Id offId) {
 
-        Offre__c offre = [SELECT Id, DateDebut__c, DateFin__c, RecordType.Name FROM Offre__c WHERE Id = :offId];
+        Offre__c offre = [SELECT Id, DateDebut__c, DateFin__c, RecordType.Name, Promo__c FROM Offre__c WHERE Id = :offId];
         // Map<Id, String> lieus = new Map<Id, Id>([SELECT Complexe__c, Complexe__r.CodeComplexe__c FROM OffreLieu__c
         //WHERE Offre__c = :offId]);
-        Set<Id> offreSet = new Set<Id>();
+        Set<Id> lieuSet = new Set<Id>();
+        Set<Id> pdtSet = new Set<Id>();
 
         for (OffreLieu__c offreLieu : [SELECT Complexe__c FROM OffreLieu__c WHERE Offre__c = :offId]) {
-            offreSet.add(offreLieu.Complexe__c);
+            lieuSet.add(offreLieu.Complexe__c);
+        }
+
+        for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :offre.Promo__c]) {
+            pdtSet.add(promoProduit.Produit__c);
         }
 
         if (offre.RecordType.Name == 'Offre commerciale' || offre.RecordType.Name == 'Offre coupon') {
             List<Offre__c> tgtOffres = [
-                    SELECT Id, DateDebut__c, DateFin__c
+                    SELECT Id, DateDebut__c, DateFin__c, Promo__c
                     FROM Offre__c
                     WHERE Id != :offId
                     AND (RecordType.Name = 'Offre commerciale' OR RecordType.Name = 'Offre coupon')
@@ -117,13 +122,14 @@ public with sharing class SM_Offre {
 
             List<OffreContrainte__c> contraintes = new List<OffreContrainte__c>();
             List<OffreContrainte__c> tgtContraintes = new List<OffreContrainte__c>();
-            System.debug('MBEN offreSet: ' + offreSet);
+            System.debug('MBEN offreSet: ' + lieuSet);
 
             for (Offre__c tgtOffre : tgtOffres) {
 
                 Date maxDateDebut = Util.maxDate(tgtOffre.DateDebut__c, offre.DateDebut__c);
                 Date minDateFin = Util.minDate(tgtOffre.DateFin__c, offre.DateFin__c);
-                Set<Id> tgtoffreSet = new Set<Id>();
+                Set<Id> lieuTgtSet = new Set<Id>();
+                Set<Id> pdtTgtSet = new Set<Id>();
 
                 System.debug('MBEN tgt1: ' + tgtOffre.Id);
 
@@ -132,12 +138,20 @@ public with sharing class SM_Offre {
                     System.debug('MBEN tgt2: ' + tgtOffre.Id);
 
                     for (OffreLieu__c offreLieu : [SELECT Complexe__c FROM OffreLieu__c WHERE Offre__c = :tgtOffre.Id]) {
-                        tgtoffreSet.add(offreLieu.Complexe__c);
+                        lieuTgtSet.add(offreLieu.Complexe__c);
                     }
-                    System.debug('MBEN tgtoffreSet: ' + tgtoffreSet);
-                    offreSet.retainAll(tgtoffreSet);
+                    System.debug('MBEN lieuTgtSet: ' + lieuTgtSet);
+                    lieuSet.retainAll(lieuTgtSet);
+
+                    for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :tgtOffre.Promo__c]) {
+                        pdtTgtSet.add(promoProduit.Produit__c);
+                    }
+
+                    pdtSet.retainAll(pdtTgtSet);
+
+
                     //verifier s'ils offre et tgtOffre n ont pas des lieux cinema en commun : pas de contraintes
-                    if (!offreSet.isEmpty()) {
+                    if (!lieuSet.isEmpty() &&  !pdtSet.isEmpty() ) {
                         System.debug('MBEN tgt3: ' + tgtOffre.Id);
                     OffreContrainte__c co = new OffreContrainte__c();
                     OffreContrainte__c tgtco = new OffreContrainte__c();
