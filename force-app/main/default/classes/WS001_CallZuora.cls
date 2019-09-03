@@ -151,6 +151,7 @@ public with sharing class WS001_CallZuora {
         }
         if (inBody != null ) {req.setBody(inBody);}
 
+        system.debug('##MBEN requestValue >> '+inBody);
         //req.setCompressed(true); si active erreur sur le retour JSON.
         req.setTimeout(60000);
         HttpResponse res = null;

@@ -3,6 +3,8 @@
     <fullName>Offres_commerciales</fullName>
     <columns>NAME</columns>
     <columns>Promo__c</columns>
+    <columns>HermesIntituleOffre__c</columns>
+    <columns>HermesIntituleOffreNL__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>

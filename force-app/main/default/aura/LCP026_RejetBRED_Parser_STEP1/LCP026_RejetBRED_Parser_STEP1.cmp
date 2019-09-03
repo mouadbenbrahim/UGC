@@ -1,0 +1,3 @@
+<aura:component description="LCP026_RejetBRED_Parser_STEP1" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <c:LCP003_Dispatcher bttnOperation="RejetBRED_Parser_STEP1" myRecordId="{!v.recordId}" otherVar="pardefaut"/>
+</aura:component>

@@ -106,47 +106,52 @@ public with sharing class Util {
     
     public static void parseXML(DOM.XMLNode node, list<RejetExtItem__c> listNtry, Id rejetExterneId){
         if (node.getName() == 'Ntry') {
-            RejetExtItem__c r = new RejetExtItem__c();
-            parseXMLNtry(node, r);
-            if(r != new RejetExtItem__c()){
-                r.RejetExterne__c = rejetExterneId;
-                listNtry.add(r);
-            }
+        	RejetExtItem__c r = new RejetExtItem__c();
+        	parseXMLNtry(node, r);
+        	if(r != new RejetExtItem__c()){
+        		r.RejetExterne__c = rejetExterneId;
+        		listNtry.add(r);
+        	}
         }
 
         for (Dom.XMLNode child: node.getChildElements()) {
-            parseXML(child, listNtry, rejetExterneId);
+    		parseXML(child, listNtry, rejetExterneId);
         }
     }
     
-    public static void parseXMLNtry(DOM.XMLNode node, RejetExtItem__c r){
-        
-        if(node.getName() == 'Nm' && node.getParent().getName() == 'Dbtr' && String.isNotBlank(node.getText())){
-            System.debug('##MNE Name >> ' + node.getName());
-            System.debug('##MNE Value >> ' + node.getText().trim());
-        }
-        
-        if(node.getName() == 'Nm' && node.getParent().getName() == 'Dbtr' && String.isNotBlank(node.getText())){
-            r.DebiteurName__c = node.getText().trim();
-        }
-        
-        if(node.getName() == 'Amt' && node.getParent().getName() == 'Ntry' && String.isNotBlank(node.getText())){
-            r.MontantRejet__c = Decimal.valueOf(node.getText().trim());
-            if(String.isNotBlank(node.getAttributeValue('Ccy',''))){
-                r.CurrencyRejet__c = node.getAttributeValue('Ccy','').trim();
-            }
-        }
-        
-        if(node.getName() == 'EndToEndId' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
-            r.PaymentReference__c = node.getText().trim();
-        }
-        
-        if(node.getName() == 'Cd' && node.getParent().getName() == 'Rsn' && String.isNotBlank(node.getText())){
-            r.CodeRejet__c = node.getText().trim();
-        }
+	public static void parseXMLNtry(DOM.XMLNode node, RejetExtItem__c r){
+		
+		if(node.getName() == 'Nm' && node.getParent().getName() == 'Dbtr' && String.isNotBlank(node.getText())){
+			System.debug('##MNE Name >> ' + node.getName());
+			System.debug('##MNE Value >> ' + node.getText().trim());
+			r.DebiteurName__c = node.getText().trim();
+		}
+		
+		if(node.getName() == 'Amt' && node.getParent().getName() == 'Ntry' && String.isNotBlank(node.getText())){
+			r.MontantRejet__c = Decimal.valueOf(node.getText().trim());
+			if(String.isNotBlank(node.getAttributeValue('Ccy',''))){
+				r.CurrencyRejet__c = node.getAttributeValue('Ccy','').trim();
+			}
+		}
+		
+		if(node.getName() == 'EndToEndId' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
+	    	r.PaymentReference__c = node.getText().trim();
+		}
+		
+		if(node.getName() == 'AcctSvcrRef' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
+	    	r.RejetDate__c = Date.valueOf(node.getText().trim());
+		}
+		
+		if(node.getName() == 'MndtId' && node.getParent().getName() == 'Refs' && String.isNotBlank(node.getText())){
+	    	r.RUM__c = node.getText().trim();
+		}
+		
+		if(node.getName() == 'Cd' && node.getParent().getName() == 'Rsn' && String.isNotBlank(node.getText())){
+			r.CodeRejet__c = node.getText().trim();
+		}
 
         for (Dom.XMLNode child: node.getChildElements()) {
-            parseXMLNtry(child, r);
+    		parseXMLNtry(child, r);
         }
     }
 

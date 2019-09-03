@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__TriggerDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The date when the charge becomes effective, and billing begins. This field is required if the TriggerEvent field value is SpecificDate.</description>
+    <externalId>false</externalId>
+    <label>Trigger Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>
