@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__ProcessedThroughDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The date until when charges have been processed. When billing in arrears, such as usage, this field value is the the same as the ChargedThroughDate value. This date is the earliest date when a charge can be amended.</description>
+    <externalId>false</externalId>
+    <label>Processed Through Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

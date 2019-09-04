@@ -6,6 +6,7 @@
     <columns>DateDebut__c</columns>
     <columns>DateFin__c</columns>
     <columns>HermesIntituleOffre__c</columns>
+    <columns>HermesIntituleOffreNL__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>

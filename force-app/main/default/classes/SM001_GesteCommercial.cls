@@ -1,4 +1,6 @@
 public without sharing class SM001_GesteCommercial {
+
+    //test MNE
     
     public static String endpoint = '/v1/action/amend';
     public static String prodRatePlanChargeReferenceGesteCommercialCDI = 'REMMONT';
@@ -77,6 +79,10 @@ public without sharing class SM001_GesteCommercial {
         try{
             Body res = new Body(zuoraSubId, ProductRatePlanId, ProductRatePlanChargeId, montantRemise, nbDeMoisRemise, dateDemande, moisDebutRemise);
             String s = JSON.serialize(res);
+            s = s.replace('"TermStartDate":null,', '');
+			s = s.replace('"TermStartDate":null', '');
+			s = s.replace('"CurrentTerm":null,', '');
+			s = s.replace('"CurrentTerm":null', '');
             system.debug('##MNE json rep >> '+s);
             return s;
         }catch(Exception e){

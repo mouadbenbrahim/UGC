@@ -168,4 +168,8 @@
         <name>UGC_Octopus</name>
         <type>ConnectedApp</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>SFDX_JWT</name>
+        <type>ConnectedApp</type>
+    </appMenuItems>
 </AppMenu>

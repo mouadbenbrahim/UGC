@@ -98,18 +98,23 @@ public with sharing class SM_Offre {
 
     private static void addContraintes(Id offId) {
 
-        Offre__c offre = [SELECT Id, DateDebut__c, DateFin__c, RecordType.Name FROM Offre__c WHERE Id = :offId];
+        Offre__c offre = [SELECT Id, DateDebut__c, DateFin__c, RecordType.Name, Promo__c FROM Offre__c WHERE Id = :offId];
         // Map<Id, String> lieus = new Map<Id, Id>([SELECT Complexe__c, Complexe__r.CodeComplexe__c FROM OffreLieu__c
         //WHERE Offre__c = :offId]);
-        Set<Id> offreSet = new Set<Id>();
+        Set<Id> lieuSet = new Set<Id>();
+        Set<Id> pdtSet = new Set<Id>();
 
         for (OffreLieu__c offreLieu : [SELECT Complexe__c FROM OffreLieu__c WHERE Offre__c = :offId]) {
-            offreSet.add(offreLieu.Complexe__c);
+            lieuSet.add(offreLieu.Complexe__c);
+        }
+
+        for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :offre.Promo__c]) {
+            pdtSet.add(promoProduit.Produit__c);
         }
 
         if (offre.RecordType.Name == 'Offre commerciale' || offre.RecordType.Name == 'Offre coupon') {
             List<Offre__c> tgtOffres = [
-                    SELECT Id, DateDebut__c, DateFin__c
+                    SELECT Id, DateDebut__c, DateFin__c, Promo__c
                     FROM Offre__c
                     WHERE Id != :offId
                     AND (RecordType.Name = 'Offre commerciale' OR RecordType.Name = 'Offre coupon')
@@ -117,13 +122,14 @@ public with sharing class SM_Offre {
 
             List<OffreContrainte__c> contraintes = new List<OffreContrainte__c>();
             List<OffreContrainte__c> tgtContraintes = new List<OffreContrainte__c>();
-            System.debug('MBEN offreSet: ' + offreSet);
+            System.debug('MBEN offreSet: ' + lieuSet);
 
             for (Offre__c tgtOffre : tgtOffres) {
 
                 Date maxDateDebut = Util.maxDate(tgtOffre.DateDebut__c, offre.DateDebut__c);
                 Date minDateFin = Util.minDate(tgtOffre.DateFin__c, offre.DateFin__c);
-                Set<Id> tgtoffreSet = new Set<Id>();
+                Set<Id> lieuTgtSet = new Set<Id>();
+                Set<Id> pdtTgtSet = new Set<Id>();
 
                 System.debug('MBEN tgt1: ' + tgtOffre.Id);
 
@@ -132,12 +138,20 @@ public with sharing class SM_Offre {
                     System.debug('MBEN tgt2: ' + tgtOffre.Id);
 
                     for (OffreLieu__c offreLieu : [SELECT Complexe__c FROM OffreLieu__c WHERE Offre__c = :tgtOffre.Id]) {
-                        tgtoffreSet.add(offreLieu.Complexe__c);
+                        lieuTgtSet.add(offreLieu.Complexe__c);
                     }
-                    System.debug('MBEN tgtoffreSet: ' + tgtoffreSet);
-                    offreSet.retainAll(tgtoffreSet);
+                    System.debug('MBEN lieuTgtSet: ' + lieuTgtSet);
+                    lieuSet.retainAll(lieuTgtSet);
+
+                    for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :tgtOffre.Promo__c]) {
+                        pdtTgtSet.add(promoProduit.Produit__c);
+                    }
+
+                    pdtSet.retainAll(pdtTgtSet);
+
+
                     //verifier s'ils offre et tgtOffre n ont pas des lieux cinema en commun : pas de contraintes
-                    if (!offreSet.isEmpty()) {
+                    if (!lieuSet.isEmpty() &&  !pdtSet.isEmpty() ) {
                         System.debug('MBEN tgt3: ' + tgtOffre.Id);
                     OffreContrainte__c co = new OffreContrainte__c();
                     OffreContrainte__c tgtco = new OffreContrainte__c();
@@ -195,6 +209,7 @@ public with sharing class SM_Offre {
                 ratePlansAboBase = getRemisesRatePlans(offAboBase.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansAboBase);
                 subProd.HermesIntituleOffre = offAboBase.get(0).HermesIntituleOffre__c;
+                subProd.HermesIntituleOffreNL = offAboBase.get(0).HermesIntituleOffreNL__c;                
                 subProd.CodeOffreCo = offAboBase.get(0).Reference__c;
             }
 
@@ -204,6 +219,7 @@ public with sharing class SM_Offre {
                 ratePlansChargeBase = getRemisesRatePlans(offChargeBase.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansChargeBase);
                 subProd.HermesIntituleOffre = offChargeBase.get(0).HermesIntituleOffre__c;
+                subProd.HermesIntituleOffreNL = offChargeBase.get(0).HermesIntituleOffreNL__c;
                 subProd.CodeOffreCo = offChargeBase.get(0).Reference__c;
             }
 
@@ -213,6 +229,7 @@ public with sharing class SM_Offre {
                 ratePlansBase = getRemisesRatePlans(offBase.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansBase);
                 subProd.HermesIntituleOffre = offBase.get(0).HermesIntituleOffre__c;
+                subProd.HermesIntituleOffreNL = offBase.get(0).HermesIntituleOffreNL__c;
                 subProd.CodeOffreCo = offBase.get(0).Reference__c;
             }
 
@@ -222,6 +239,7 @@ public with sharing class SM_Offre {
                 ratePlansCom = getRemisesRatePlans(offCo.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansCom);
                 subProd.HermesIntituleOffre += '|' + offCo.get(0).HermesIntituleOffre__c;
+                subProd.HermesIntituleOffreNL += '|' + offCo.get(0).HermesIntituleOffreNL__c;
                 subProd.CodeOffreCo = offCo.get(0).Reference__c;
             }
 
@@ -235,13 +253,15 @@ public with sharing class SM_Offre {
                         ratePlansPc = getRemisesRatePlans(offPc.get(0), subIn);
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
                         subProd.HermesIntituleOffre += '|' + offPc.get(0).HermesIntituleOffre__c;
+                        subProd.HermesIntituleOffreNL += '|' + offPc.get(0).HermesIntituleOffreNL__c;
                         subProd.CodeOffreCo = offPc.get(0).Reference__c;
                     }
                     if (offPc.get(0).RecordType.Name == 'Offre BTOB') {
                         System.debug('MBEN: Offre BtoB: couponG15: ' + couponG);
                         ratePlansPc = getBtoBRatePlan(offPc.get(0), subIn, couponG);
                         subProd.Marche = 'BTOB';
-                        subProd.HermesIntituleOffre = offPc.get(0).HermesIntituleOffre__c;
+                        subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
+                        subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
                         subProd.CodeOffreCo =  offPc.get(0).Reference__c;
                         subProd.subscribeToRatePlans.clear(); //supprimer les anciens Rateplans si BtoB
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
@@ -263,7 +283,7 @@ public with sharing class SM_Offre {
 
     public static List<Offre__c> offreBaseEligible(String rpReference, WSZ.SubOffreIn subIn) {
         List<Offre__c> offBase = [
-                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, RecordType.Name, Reference__c
+                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Remise de base'
                 AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
@@ -278,7 +298,7 @@ public with sharing class SM_Offre {
     //Eligibilite sur date offre, produit
     public static List<Offre__c> aboBaseEligible(String rpReference, WSZ.SubOffreIn subIn) {
         List<Offre__c> offBase = [
-                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, RecordType.Name, Reference__c
+                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Abonnement de base'
                 AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
@@ -293,7 +313,7 @@ public with sharing class SM_Offre {
 
     public static List<Offre__c> chargeBaseEligible(String rpReference, WSZ.SubOffreIn subIn) {
         List<Offre__c> offBase = [
-                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, RecordType.Name, Reference__c
+                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Frais de base'
                 AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
@@ -310,7 +330,7 @@ public with sharing class SM_Offre {
 
         // Offres selectionnables: Date, Lieu, Produit
         List<Offre__c> offCo1 = [
-                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, RecordType.Name, Reference__c
+                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Offre commerciale'
                 AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
@@ -330,7 +350,7 @@ public with sharing class SM_Offre {
             offCo2 = offCo1.clone();
         } else {
             offCo2 = [
-                    SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, RecordType.Name, Reference__c
+                    SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                     FROM Offre__c
                     WHERE
                     Id IN :offCo1 AND
@@ -379,7 +399,7 @@ public with sharing class SM_Offre {
 
         //Trouver une offre eligible
         offPromoCodes = [
-                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, RecordType.Name, Promo__c, Reference__c
+                SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Promo__c, Reference__c
                 FROM Offre__c
                 WHERE Coupon__c = :couponG.Id
                 AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription

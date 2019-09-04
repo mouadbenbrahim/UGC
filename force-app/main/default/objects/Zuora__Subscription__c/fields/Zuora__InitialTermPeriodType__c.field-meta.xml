@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__InitialTermPeriodType__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The period type for the first subscription term.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The period type for the first subscription term.</inlineHelpText>
+    <label>Initial Term Period Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Month</fullName>
+                <default>false</default>
+                <label>Month</label>
+            </value>
+            <value>
+                <fullName>Year</fullName>
+                <default>false</default>
+                <label>Year</label>
+            </value>
+            <value>
+                <fullName>Day</fullName>
+                <default>false</default>
+                <label>Day</label>
+            </value>
+            <value>
+                <fullName>Week</fullName>
+                <default>false</default>
+                <label>Week</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
