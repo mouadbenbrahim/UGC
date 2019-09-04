@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Coupon__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>test git</description>
     <externalId>false</externalId>
     <label>Coupon</label>
     <lookupFilter>
