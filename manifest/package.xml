@@ -275,7 +275,7 @@
         <name>Dashboard</name>
     </types>
     <types>
-        <members>*</members>
+        <!--<members>*</members>-->
         <name>DataCategoryGroup</name>
     </types>
     <types>
