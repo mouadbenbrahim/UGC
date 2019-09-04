@@ -192,8 +192,10 @@ public with sharing class SM_Subscription {
         map<String, Zuora__Subscription__c> mapSubscriptionByZuoraPreviousSubscriptionId = new map<String, Zuora__Subscription__c>();
         
         for(Zuora__Subscription__c sub : listSubscriptions){
-            if(String.isNotBlank(sub.Zuora__PreviousSubscriptionId__c)){
-                mapSubscriptionByZuoraPreviousSubscriptionId.put(sub.Zuora__PreviousSubscriptionId__c, sub);
+            //if(String.isNotBlank(sub.Zuora__PreviousSubscriptionId__c)){
+            if(String.isNotBlank(sub.Name)){
+                //mapSubscriptionByZuoraPreviousSubscriptionId.put(sub.Zuora__PreviousSubscriptionId__c, sub);
+                mapSubscriptionByZuoraPreviousSubscriptionId.put(sub.Name, sub);
             }
         }
         
@@ -203,7 +205,7 @@ public with sharing class SM_Subscription {
         for(Case c : listCasesToProcess){
             if(String.isNotBlank(c.SubscriptionZID__c) && mapSubscriptionByZuoraPreviousSubscriptionId.containsKey(c.SubscriptionZID__c)){
                 c.Subscription__c    = mapSubscriptionByZuoraPreviousSubscriptionId.get(c.SubscriptionZID__c).Id;
-                c.SubscriptionZID__c = mapSubscriptionByZuoraPreviousSubscriptionId.get(c.SubscriptionZID__c).Zuora__Zuora_Id__c; 
+                c.SubscriptionZID__c = mapSubscriptionByZuoraPreviousSubscriptionId.get(c.SubscriptionZID__c).Name; 
                 listCasesToUpdated.add(c);
             }   
         }

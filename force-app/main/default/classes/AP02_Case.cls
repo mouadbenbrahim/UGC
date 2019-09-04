@@ -856,7 +856,7 @@ public class AP02_Case {
     	
     	Date d1 = Date.today();
         List<Zuora__Subscription__c> subscriptions = [
-                SELECT Id, Zuora__Zuora_Id__c, Zuora__Account__r.Id
+                SELECT Id, Zuora__Zuora_Id__c, Zuora__Account__r.Id, Name
                 FROM Zuora__Subscription__c
                 WHERE Zuora__Account__r.Id IN :setAccId
                 AND ( Zuora__SubscriptionEndDate__c > :d1 OR Zuora__SubscriptionEndDate__c = NULL )
@@ -873,7 +873,8 @@ public class AP02_Case {
         		list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
         		for(Case c : listCase){
         			c.Subscription__c	 = zSub.Id;
-        			c.SubscriptionZID__c = zSub.Zuora__Zuora_Id__c;
+        			//c.SubscriptionZID__c = zSub.Zuora__Zuora_Id__c;
+        			c.SubscriptionZID__c = zSub.Name;
         			setAccIdAlreadyTreated.add(zSub.Zuora__Account__r.Id);
         		}
         	}
