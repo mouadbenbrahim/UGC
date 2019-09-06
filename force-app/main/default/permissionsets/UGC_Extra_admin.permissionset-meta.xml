@@ -4707,6 +4707,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>File_Impression__c.SubscriptionZID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>File_Impression__c.Subscription__c</field>
         <readable>false</readable>
     </fieldPermissions>

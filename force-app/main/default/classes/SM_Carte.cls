@@ -7,7 +7,7 @@ public with sharing class SM_Carte {
     public SM_Carte(){}
     
     
-    @Future(callout=true)
+    @Future(callout=true) 
     public static void desactivationByListAsynchrone(set<Id> setAccountId, String code) {
         map<Id, Boolean> desactivationResult = desactivationByList(setAccountId, code);
         system.debug ('##MNE SM_Carte desactivationByListAsynchrone desactivationResult >> '+desactivationResult); 
@@ -145,15 +145,10 @@ public with sharing class SM_Carte {
     
     
     public static void processTriggerAfterInsert (List<Carte__c> listCartes)  { 
-        system.debug('##ECH SM_Carte processTriggerAfterInsert listCartes>> '+listCartes);
         createFileImpressionRecords (listCartes);
     }
     
     public static void createFileImpressionRecords (List<Carte__c> listCartes)  { 
-        
-        system.debug('##ECH SM_Carte createFileImpressionRecords listCartes>> '+listCartes);
-        
-        
         if(listCartes == null || listCartes.size() == 0){
             return;
         }
@@ -163,23 +158,16 @@ public with sharing class SM_Carte {
         }
 
         list<File_Impression__c> listFileImpressionToIsert = new list<File_Impression__c>();
-        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c FROM Carte__c WHERE Id IN :setCarteId]);
+        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c, DemandeClient__r.SubscriptionZID__c FROM Carte__c WHERE Id IN :setCarteId]);
         
         for(Carte__c c : listCartes){
             File_Impression__c fi   = new File_Impression__c();
-            system.debug('##ECH SM_Carte processTriggerAfterInsert Subscription__c:'+mapCarteById.get(c.Id).DemandeClient__r.Subscription__c);
-            
-            //if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.Subscription__c != null){
-            //    fi.Subscription__c  = mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
-            //}
-            
-            List<Zuora__Subscription__c> SubCarte = [SELECT Name from Zuora__Subscription__c where NAME=:c.NumeroContrat__c LIMIT 1];
-            system.debug('##ECH SM_Carte processTriggerAfterInsert SubCarte.size():'+SubCarte.size());
-            system.debug('##ECH SM_Carte processTriggerAfterInsert SubCarte.size():'+SubCarte.size());
-            
-            
-            if(SubCarte.size()>0)
-            fi.Subscription__c = SubCarte[0].id;
+            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.Subscription__c != null){
+                fi.Subscription__c  	= mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
+            }
+            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c != null){
+                fi.SubscriptionZID__c  	= mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c;
+            }
             
             //fi.Subscription__c      = c.Contrat__c;
             fi.Name                 = c.Name;
@@ -189,15 +177,7 @@ public with sharing class SM_Carte {
             fi.Case__c              = c.DemandeClient__c;
             fi.Statut__c            = 'A Imprimer';
             listFileImpressionToIsert.add(fi);
-            
-            system.debug('##ECH SM_Carte createFileImpressionRecords Subscription__c>> '+mapCarteById.get(c.Id).DemandeClient__r.Subscription__c);
-            system.debug('##ECH SM_Carte createFileImpressionRecords c.Abonn__c>> '+c.Abonn__c);
-            system.debug('##ECH SM_Carte createFileImpressionRecords c.DemandeClient__c>> '+c.DemandeClient__c);
-            system.debug('##ECH SM_Carte createFileImpressionRecords c.Id>> '+c.Id);
-            
         }
-         
-        system.debug('##ECH SM_Carte createFileImpressionRecords listFileImpressionToIsert>> '+listFileImpressionToIsert);
 
         if(listFileImpressionToIsert.size() > 0){
             insert listFileImpressionToIsert;

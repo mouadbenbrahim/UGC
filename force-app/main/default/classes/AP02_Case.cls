@@ -4,12 +4,12 @@
 * @author yann d'ALMEIDA 
 */
 public class AP02_Case {
-    
-    public static String TECHIdStatut_007AD = '007AD';  //0- Souscription -> 07- Creation Abonnement    -> AD- Action DRC
-    public static String TECHIdStatut_005AD = '005AD';  //0- Souscription -> 05- B2B                    -> AD- Action DRC
-    public static String TECHIdStatut_005AH = '005AH';  //0- Souscription -> 05- B2B                    -> AH- Action Selfcare
-    public static String TECHIdStatut_007AH = '007AH';  //0- Souscription -> 07- Creation Abonnement    -> AH- Action Selfcare
-    public static String TECHIdStatut_007AS = '007AS';  //0- Souscription -> 07- Creation Abonnement    -> AS- Action Stand
+	
+	public static String TECHIdStatut_007AD = '007AD';	//0- Souscription -> 07- Creation Abonnement 	-> AD- Action DRC
+	public static String TECHIdStatut_005AD = '005AD';	//0- Souscription -> 05- B2B 					-> AD- Action DRC
+	public static String TECHIdStatut_005AH = '005AH';	//0- Souscription -> 05- B2B 					-> AH- Action Selfcare
+	public static String TECHIdStatut_007AH = '007AH';	//0- Souscription -> 07- Creation Abonnement 	-> AH- Action Selfcare
+	public static String TECHIdStatut_007AS = '007AS';	//0- Souscription -> 07- Creation Abonnement 	-> AS- Action Stand
     
     // methode pour envoyer les informations du nouvel account au RCU UGC pour validation 
     public static void processTriggerBeforeInsert (List<Case> cases)  {   
@@ -36,11 +36,11 @@ public class AP02_Case {
             }
             
             if(caseToCre.AccountId != null){
-                if(!mapListCaseByAccId.containsKey(caseToCre.AccountId)){
-                     mapListCaseByAccId.put(caseToCre.AccountId, new list<Case>());
-                }
-                mapListCaseByAccId.get(caseToCre.AccountId).add(caseToCre);
-                setAccId.add(caseToCre.AccountId);
+            	if(!mapListCaseByAccId.containsKey(caseToCre.AccountId)){
+            		 mapListCaseByAccId.put(caseToCre.AccountId, new list<Case>());
+            	}
+	            mapListCaseByAccId.get(caseToCre.AccountId).add(caseToCre);
+	            setAccId.add(caseToCre.AccountId);
             }
         }
 
@@ -132,11 +132,11 @@ public class AP02_Case {
             }
             
             if(caseToUpd.AccountId != null){
-                if(!mapListCaseByAccId.containsKey(caseToUpd.AccountId)){
-                     mapListCaseByAccId.put(caseToUpd.AccountId, new list<Case>());
-                }
-                mapListCaseByAccId.get(caseToUpd.AccountId).add(caseToUpd);
-                setAccId.add(caseToUpd.AccountId);
+            	if(!mapListCaseByAccId.containsKey(caseToUpd.AccountId)){
+            		 mapListCaseByAccId.put(caseToUpd.AccountId, new list<Case>());
+            	}
+	            mapListCaseByAccId.get(caseToUpd.AccountId).add(caseToUpd);
+	            setAccId.add(caseToUpd.AccountId);
             }
             
         }
@@ -343,17 +343,17 @@ public class AP02_Case {
             nomModelSdocSet.add(c.Nom_du_mod_le_email_UU_n_erlandais__c);*/
             
             if(String.isNotBlank(c.NomModeleCourrierEmail__c))
-                nomModelSdocSet.addAll(c.NomModeleCourrierEmail__c.split(';'));
-            if(String.isNotBlank(c.NomModeleEmailHTML__c))
-                nomModelSdocSet.addAll(c.NomModeleEmailHTML__c.split(';'));
-            if(String.isNotBlank(c.Nom_du_mod_le_courrier_UU_fran_ais_pdf__c))
-                nomModelSdocSet.addAll(c.Nom_du_mod_le_courrier_UU_fran_ais_pdf__c.split(';'));
-            if(String.isNotBlank(c.Nom_du_mod_le_email_UU_fran_ais_HTML__c))    
-                nomModelSdocSet.addAll(c.Nom_du_mod_le_email_UU_fran_ais_HTML__c.split(';'));
-            if(String.isNotBlank(c.Nom_du_mod_le_courrier_UU_n_erlandais__c))    
-                nomModelSdocSet.addAll(c.Nom_du_mod_le_courrier_UU_n_erlandais__c.split(';'));
-             if(String.isNotBlank(c.Nom_du_mod_le_email_UU_n_erlandais__c))   
-                nomModelSdocSet.addAll(c.Nom_du_mod_le_email_UU_n_erlandais__c.split(';'));
+	            nomModelSdocSet.addAll(c.NomModeleCourrierEmail__c.split(';'));
+	        if(String.isNotBlank(c.NomModeleEmailHTML__c))
+	            nomModelSdocSet.addAll(c.NomModeleEmailHTML__c.split(';'));
+ 			if(String.isNotBlank(c.Nom_du_mod_le_courrier_UU_fran_ais_pdf__c))
+	            nomModelSdocSet.addAll(c.Nom_du_mod_le_courrier_UU_fran_ais_pdf__c.split(';'));
+	        if(String.isNotBlank(c.Nom_du_mod_le_email_UU_fran_ais_HTML__c))    
+	            nomModelSdocSet.addAll(c.Nom_du_mod_le_email_UU_fran_ais_HTML__c.split(';'));
+	        if(String.isNotBlank(c.Nom_du_mod_le_courrier_UU_n_erlandais__c))    
+	            nomModelSdocSet.addAll(c.Nom_du_mod_le_courrier_UU_n_erlandais__c.split(';'));
+	         if(String.isNotBlank(c.Nom_du_mod_le_email_UU_n_erlandais__c))   
+	            nomModelSdocSet.addAll(c.Nom_du_mod_le_email_UU_n_erlandais__c.split(';'));
         }
         system.debug('--#### nomModelSdocSet SIZE = ' + nomModelSdocSet.size());
         
@@ -425,60 +425,60 @@ public class AP02_Case {
                         }
                         
                         else if(c.TECHIdStatut__c == TECHIdStatut_007AD || c.TECHIdStatut__c == TECHIdStatut_005AD || c.TECHIdStatut__c == TECHIdStatut_007AS){
-                            if(String.isNotBlank(courrierTemplateName)){
-                                list<String> listCourrierTemplateName = courrierTemplateName.split(';');
-                                for(String courrierTemplateNameTMP : listCourrierTemplateName){
-                                    courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
-                                    if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
-                                        SDOC__SDJob__c job = new SDOC__SDJob__c(
-                                            SDOC__Start__c=true, 
-                                            SDOC__Oid__c=c.Id, 
-                                            SDOC__ObjApiName__c='Case', 
-                                            SDOC__SendEmail__c='0',
-                                            SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
-                                        jobList.add(job);
-                                        taskToInsert.add(createTask('courrier', c));
-                                        c.AideReponseClient__c = 'Un courrier a été généré.';
-                                    }
-                                }
-                            }
+                        	if(String.isNotBlank(courrierTemplateName)){
+	                        	list<String> listCourrierTemplateName = courrierTemplateName.split(';');
+	                        	for(String courrierTemplateNameTMP : listCourrierTemplateName){
+	                        		courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
+	                        		if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
+	                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
+			                                SDOC__Start__c=true, 
+			                                SDOC__Oid__c=c.Id, 
+			                                SDOC__ObjApiName__c='Case', 
+			                                SDOC__SendEmail__c='0',
+			                                SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
+	                            		jobList.add(job);
+			                            taskToInsert.add(createTask('courrier', c));
+			                            c.AideReponseClient__c = 'Un courrier a été généré.';
+	                        		}
+	                        	}
+                        	}
                         }
                         
                         else if(c.TECHIdStatut__c == TECHIdStatut_005AH || c.TECHIdStatut__c == TECHIdStatut_007AH){
-                            if(String.isNotBlank(courrierTemplateName)){
-                                list<String> listCourrierTemplateName = courrierTemplateName.split(';');
-                                for(String courrierTemplateNameTMP : listCourrierTemplateName){
-                                    courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
-                                    if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
-                                        SDOC__SDJob__c job = new SDOC__SDJob__c(
-                                            SDOC__Start__c=true, 
-                                            SDOC__Oid__c=c.Id, 
-                                            SDOC__ObjApiName__c='Case', 
-                                            SDOC__SendEmail__c='0',
-                                            SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
-                                        jobList.add(job);
-                                        taskToInsert.add(createTask('courrier', c));
-                                        c.AideReponseClient__c = 'Un courrier a été généré.';
-                                    }
-                                }
-                            }
-                            if(String.isNotBlank(emailTemplateName)){
-                                list<String> listEmailTemplateName = emailTemplateName.split(';');
-                                for(String emailTemplateNameTMP : listEmailTemplateName){
-                                    emailTemplateNameTMP = emailTemplateNameTMP.trim();
-                                    if(mapNomSdocsIdSdocs.containsKey(emailTemplateNameTMP)){
-                                        SDOC__SDJob__c job = new SDOC__SDJob__c(
-                                            SDOC__Start__c=true, 
-                                            SDOC__Oid__c=c.Id, 
-                                            SDOC__ObjApiName__c='Case', 
-                                            SDOC__SendEmail__c='1',
-                                            SDOC__Doclist__c= mapNomSdocsIdSdocs.get(emailTemplateNameTMP));
-                                        jobList.add(job);
-                                        taskToInsert.add(createTask('email', c));
-                                        c.AideReponseClient__c = 'Un email a été envoyé au client.';
-                                    }
-                                }
-                            }
+                        	if(String.isNotBlank(courrierTemplateName)){
+	                        	list<String> listCourrierTemplateName = courrierTemplateName.split(';');
+	                        	for(String courrierTemplateNameTMP : listCourrierTemplateName){
+	                        		courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
+	                        		if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
+	                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
+			                                SDOC__Start__c=true, 
+			                                SDOC__Oid__c=c.Id, 
+			                                SDOC__ObjApiName__c='Case', 
+			                                SDOC__SendEmail__c='0',
+			                                SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
+	                            		jobList.add(job);
+			                            taskToInsert.add(createTask('courrier', c));
+			                            c.AideReponseClient__c = 'Un courrier a été généré.';
+	                        		}
+	                        	}
+                        	}
+                        	if(String.isNotBlank(emailTemplateName)){
+	                        	list<String> listEmailTemplateName = emailTemplateName.split(';');
+	                        	for(String emailTemplateNameTMP : listEmailTemplateName){
+	                        		emailTemplateNameTMP = emailTemplateNameTMP.trim();
+	                        		if(mapNomSdocsIdSdocs.containsKey(emailTemplateNameTMP)){
+	                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
+	                                		SDOC__Start__c=true, 
+	                                		SDOC__Oid__c=c.Id, 
+	                                		SDOC__ObjApiName__c='Case', 
+	                                		SDOC__SendEmail__c='1',
+	                                		SDOC__Doclist__c= mapNomSdocsIdSdocs.get(emailTemplateNameTMP));
+	                            		jobList.add(job);
+	                            		taskToInsert.add(createTask('email', c));
+	                            		c.AideReponseClient__c = 'Un email a été envoyé au client.';
+	                        		}
+	                        	}
+                        	}
                         }
 
                         /*if(typeTemplate == 'HTML' && mapNomSdocsIdSdocs.containsKey(emailTemplateName)) {
@@ -507,38 +507,38 @@ public class AP02_Case {
                         }*/
                         
                         else if(typeTemplate == 'HTML' && String.isNotBlank(emailTemplateName)){
-                            list<String> listEmailTemplateName = emailTemplateName.split(';');
-                            for(String emailTemplateNameTMP : listEmailTemplateName){
-                                emailTemplateNameTMP = emailTemplateNameTMP.trim();
-                                if(mapNomSdocsIdSdocs.containsKey(emailTemplateNameTMP)){
-                                    SDOC__SDJob__c job = new SDOC__SDJob__c(
-                                        SDOC__Start__c=true, 
-                                        SDOC__Oid__c=c.Id, 
-                                        SDOC__ObjApiName__c='Case', 
-                                        SDOC__SendEmail__c='1',
-                                        SDOC__Doclist__c= mapNomSdocsIdSdocs.get(emailTemplateNameTMP));
-                                    jobList.add(job);
-                                    taskToInsert.add(createTask('email', c));
-                                    c.AideReponseClient__c = 'Un email a été envoyé au client.';
-                                }
-                            }
-                            
+                        	list<String> listEmailTemplateName = emailTemplateName.split(';');
+                        	for(String emailTemplateNameTMP : listEmailTemplateName){
+                        		emailTemplateNameTMP = emailTemplateNameTMP.trim();
+                        		if(mapNomSdocsIdSdocs.containsKey(emailTemplateNameTMP)){
+                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
+                                		SDOC__Start__c=true, 
+                                		SDOC__Oid__c=c.Id, 
+                                		SDOC__ObjApiName__c='Case', 
+                                		SDOC__SendEmail__c='1',
+                                		SDOC__Doclist__c= mapNomSdocsIdSdocs.get(emailTemplateNameTMP));
+                            		jobList.add(job);
+                            		taskToInsert.add(createTask('email', c));
+                            		c.AideReponseClient__c = 'Un email a été envoyé au client.';
+                        		}
+                        	}
+                        	
                         } else if(typeTemplate == 'PDF' && String.isNotBlank(courrierTemplateName)){
-                            list<String> listCourrierTemplateName = courrierTemplateName.split(';');
-                            for(String courrierTemplateNameTMP : listCourrierTemplateName){
-                                courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
-                                if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
-                                    SDOC__SDJob__c job = new SDOC__SDJob__c(
-                                        SDOC__Start__c=true, 
-                                        SDOC__Oid__c=c.Id, 
-                                        SDOC__ObjApiName__c='Case', 
-                                        SDOC__SendEmail__c='0',
-                                        SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
-                                    jobList.add(job);
-                                    taskToInsert.add(createTask('courrier', c));
-                                    c.AideReponseClient__c = 'Un courrier a été généré.';
-                                }
-                            }
+                        	list<String> listCourrierTemplateName = courrierTemplateName.split(';');
+                        	for(String courrierTemplateNameTMP : listCourrierTemplateName){
+                        		courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
+                        		if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
+                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
+		                                SDOC__Start__c=true, 
+		                                SDOC__Oid__c=c.Id, 
+		                                SDOC__ObjApiName__c='Case', 
+		                                SDOC__SendEmail__c='0',
+		                                SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
+                            		jobList.add(job);
+		                            taskToInsert.add(createTask('courrier', c));
+		                            c.AideReponseClient__c = 'Un courrier a été généré.';
+                        		}
+                        	}
                         }
                         
                         
@@ -851,10 +851,10 @@ public class AP02_Case {
     
     //MNE_04-04-2019
     public static void initSubscriptionId (map<Id, list<Case>> mapListCaseByAccId, set<Id> setAccId){
-        system.debug('##MNE AP02_Case initSubscriptionId mapListCaseByAccId >> '+mapListCaseByAccId);
-        system.debug('##MNE AP02_Case initSubscriptionId setAccId >> '+setAccId);
-        
-        Date d1 = Date.today();
+    	system.debug('##MNE AP02_Case initSubscriptionId mapListCaseByAccId >> '+mapListCaseByAccId);
+    	system.debug('##MNE AP02_Case initSubscriptionId setAccId >> '+setAccId);
+    	
+    	Date d1 = Date.today();
         List<Zuora__Subscription__c> subscriptions = [
                 SELECT Id, Zuora__Zuora_Id__c, Zuora__Account__r.Id, Name
                 FROM Zuora__Subscription__c
@@ -869,18 +869,18 @@ public class AP02_Case {
         
         set<Id> setAccIdAlreadyTreated = new set<Id>();
         for(Zuora__Subscription__c zSub : subscriptions) {
-            if(mapListCaseByAccId.containsKey(zSub.Zuora__Account__r.Id) && !setAccIdAlreadyTreated.contains(zSub.Zuora__Account__r.Id)){
-                list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
-                for(Case c : listCase){
-                    c.Subscription__c    = zSub.Id;
-                    //c.SubscriptionZID__c = zSub.Zuora__Zuora_Id__c;
-                    c.SubscriptionZID__c = zSub.Name;
-                    setAccIdAlreadyTreated.add(zSub.Zuora__Account__r.Id);
-                }
-            }
+        	if(mapListCaseByAccId.containsKey(zSub.Zuora__Account__r.Id) && !setAccIdAlreadyTreated.contains(zSub.Zuora__Account__r.Id)){
+        		list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
+        		for(Case c : listCase){
+        			c.Subscription__c	 = zSub.Id;
+        			//c.SubscriptionZID__c = zSub.Zuora__Zuora_Id__c;
+        			c.SubscriptionZID__c = zSub.Name;
+        			setAccIdAlreadyTreated.add(zSub.Zuora__Account__r.Id);
+        		}
+        	}
         }
         
-        
+    	
     }
         
     
