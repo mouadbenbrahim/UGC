@@ -99,7 +99,7 @@ public with sharing class SM_Subscription {
     public static WRPRep getActiveSubscriptionId(Id accId) {
         Date d1 = Date.today();
         List<Zuora__Subscription__c> subscriptions = [
-                SELECT Id, Zuora__Zuora_Id__c
+                SELECT Id, Zuora__Zuora_Id__c, Name
                 FROM Zuora__Subscription__c
                 WHERE Zuora__Account__r.Id = :accId
                 //AND Zuora__Status__c = 'Active' AND Zuora__SubscriptionEndDate__c > :d1 ORDER BY CreatedDate DESC LIMIT 1];
@@ -112,7 +112,7 @@ public with sharing class SM_Subscription {
             return null;
         } else {
             //return subscriptions[0].Id;
-            return new WRPRep(subscriptions[0].Id, subscriptions[0].Zuora__Zuora_Id__c);
+            return new WRPRep(subscriptions[0].Id, subscriptions[0].Zuora__Zuora_Id__c, subscriptions[0].Name);
         }
     }
 
@@ -202,6 +202,9 @@ public with sharing class SM_Subscription {
         list<Case> listCasesToProcess = new list<Case>([Select Id, SubscriptionZID__c, Subscription__c FROM Case WHERE SubscriptionZID__c IN :mapSubscriptionByZuoraPreviousSubscriptionId.keySet()]);
         list<Case> listCasesToUpdated = new list<Case>();
         
+        list<File_Impression__c> listFIToProcess = new list<File_Impression__c>([Select Id, SubscriptionZID__c, Subscription__c FROM File_Impression__c WHERE SubscriptionZID__c IN :mapSubscriptionByZuoraPreviousSubscriptionId.keySet()]);
+        list<File_Impression__c> listFIToUpdated = new list<File_Impression__c>();
+        
         for(Case c : listCasesToProcess){
             if(String.isNotBlank(c.SubscriptionZID__c) && mapSubscriptionByZuoraPreviousSubscriptionId.containsKey(c.SubscriptionZID__c)){
                 c.Subscription__c    = mapSubscriptionByZuoraPreviousSubscriptionId.get(c.SubscriptionZID__c).Id;
@@ -212,15 +215,28 @@ public with sharing class SM_Subscription {
         if(listCasesToUpdated.size() > 0){
             update listCasesToUpdated;
         }
+        
+        for(File_Impression__c fi : listFIToProcess){
+            if(String.isNotBlank(fi.SubscriptionZID__c) && mapSubscriptionByZuoraPreviousSubscriptionId.containsKey(fi.SubscriptionZID__c)){
+                fi.Subscription__c    = mapSubscriptionByZuoraPreviousSubscriptionId.get(fi.SubscriptionZID__c).Id;
+                fi.SubscriptionZID__c = mapSubscriptionByZuoraPreviousSubscriptionId.get(fi.SubscriptionZID__c).Name; 
+                listFIToUpdated.add(fi);
+            }   
+        }
+        if(listFIToUpdated.size() > 0){
+            update listFIToUpdated;
+        }
     }
     
     public without sharing class WRPRep {
         public Id subscriptionId            { get; set; }
         public String zuoraSubscriptionId   { get; set; }
+        public String subscriptionName   { get; set; }
         
-        public WRPRep(Id subscriptionId, String zuoraSubscriptionId) {
+        public WRPRep(Id subscriptionId, String zuoraSubscriptionId, String subscriptionName) {
             this.subscriptionId         = subscriptionId;
             this.zuoraSubscriptionId    = zuoraSubscriptionId;
+            this.subscriptionName    	= subscriptionName;
         }
     }
     

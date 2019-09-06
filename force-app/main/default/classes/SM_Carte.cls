@@ -158,13 +158,17 @@ public with sharing class SM_Carte {
         }
 
         list<File_Impression__c> listFileImpressionToIsert = new list<File_Impression__c>();
-        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c FROM Carte__c WHERE Id IN :setCarteId]);
+        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c, DemandeClient__r.SubscriptionZID__c FROM Carte__c WHERE Id IN :setCarteId]);
         
         for(Carte__c c : listCartes){
             File_Impression__c fi   = new File_Impression__c();
             if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.Subscription__c != null){
-                fi.Subscription__c  = mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
+                fi.Subscription__c  	= mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
             }
+            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c != null){
+                fi.SubscriptionZID__c  	= mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c;
+            }
+            
             //fi.Subscription__c      = c.Contrat__c;
             fi.Name                 = c.Name;
             fi.Account__c           = c.Abonn__c;

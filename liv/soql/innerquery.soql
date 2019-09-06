@@ -1,0 +1,8 @@
+SELECT Id,(select id from cases),(select Id from Zuora__Subscriptions__r) from Account limit 10
+
+SELECT Id,(select id from cases),(select Name from Zuora__Subscriptions__r) from Account where Id ='0010E00000XD6ga'
+
+
+select Id, Account__c from Zuora__Subscription__c
+
+

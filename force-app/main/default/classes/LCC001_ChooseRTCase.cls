@@ -37,7 +37,8 @@ public class LCC001_ChooseRTCase {
         c.ContactId  = contact.Id;
         //c.Subscription__c = subId;
         c.Subscription__c = repIds == null ? null : repIds.subscriptionId;
-        c.SubscriptionZID__c = repIds == null ? null : repIds.zuoraSubscriptionId;
+        //c.SubscriptionZID__c = repIds == null ? null : repIds.zuoraSubscriptionId;
+        c.SubscriptionZID__c = repIds == null ? null : repIds.subscriptionName;
         //c.RecordTypeId = '0126E000000HbLfQAK';
         insert c;
 
