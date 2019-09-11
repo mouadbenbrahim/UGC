@@ -4,19 +4,45 @@
  * @Author             : mouad
  * @Group              : 
  * @Last Modified By   : mouad
- * @Last Modified On   : 08/09/2019 à 19:18:10
+ * @Last Modified On   : 09/09/2019 à 17:15:43
  * @Modification Log   : 
  * Ver       Date            Author      		    Modification
  * 1.0    07/09/2019   mouad     Initial Version
 **/
 public with sharing class ZUC {
 
-public class AmendRequest {
+private static Map<String,String> requestMap;
+
+// public ZUC(){
+//     this.requestMap = new Map<String,String>();
+// }
+
+
+public void addMap(Map<String,String> curMap){
+    // this.requestMap.putAll(curMap);
+}
+
+public class ActionAmendRequest {
+
+    public List<ZUC.AmendRequest> requests = new List<ZUC.AmendRequest>();
+   
+    public ActionAmendRequest(){
+        this.requests.add(new ZUC.AmendRequest());
+        // requestMap.putALL(new Map<String, String>{'a1' => 'aa1'});
+        system.debug(requestMap);
+     }
+     
+
+
+}
+
+public class AmendRequest implements WS001_CallZuora.MappedProperties {
 
     public AmendRequest() {
         this.amendments = new List<Amendment>();
         this.amendOptions = new AmendRequestAmendOptions();
         this.previewOptions = new AmendRequestPreviewOptions();
+        // super.addMap(new Map<String, String>{'b1' => 'bb1'});
     }
 
     /**
@@ -37,6 +63,15 @@ public class AmendRequest {
     */
     public AmendRequestPreviewOptions previewOptions { get; set; }
 
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'AmendOptions' => 'amendOptions',
+        'Amendments' => 'amendments',
+        'PreviewOptions' => 'previewOptions'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
 
 }
 
@@ -216,7 +251,7 @@ public class Amendment {
 
 }
 
-public class AmendRequestPreviewOptions { // implements Swagger.MappedProperties {
+public class AmendRequestPreviewOptions implements WS001_CallZuora.MappedProperties {
 /**
     *  Determines whether to create an amendment or display a preview of the change.
     * @return enablePreviewMode
@@ -286,7 +321,7 @@ public Integer hashCode() {
 }
 
 
-public class AmendmentRatePlanData { //implements  Swagger.MappedProperties {
+public class AmendmentRatePlanData implements  WS001_CallZuora.MappedProperties {
 
 public AmendmentRatePlanData() {
     this.ratePlan = new RatePlan();
@@ -343,7 +378,7 @@ public Integer hashCode() {
 }
 }
 
-public class RatePlan { //implements Swagger.MappedProperties {
+public class RatePlan implements WS001_CallZuora.MappedProperties {
     /**
      *  The ID of the amendment associated with the rate plan. This field only applies to amendment rate plans.\n\n\n**Character limit**: 32\n\n**Values**: a valid amendment ID 
      * @return amendmentId
@@ -456,7 +491,7 @@ public Integer hashCode() {
 }
 }
 
-public class SubscriptionProductFeatureList { // implements Swagger.MappedProperties {
+public class SubscriptionProductFeatureList implements WS001_CallZuora.MappedProperties {
 
     public SubscriptionProductFeatureList() {
         subscriptionProductFeature = new List<SubscriptionProductFeature>();
@@ -492,7 +527,7 @@ public class SubscriptionProductFeatureList { // implements Swagger.MappedProper
     }
 }
 
-public class RatePlanChargeDataInRatePlanData { // implements Swagger.MappedProperties {
+public class RatePlanChargeDataInRatePlanData implements WS001_CallZuora.MappedProperties {
     /**
      * The accounting code for the charge. Accounting codes group transactions that contain similar accounting attributes.\n\n**Character limit**: 100\n\n\n**Values**: inherited from `ProductRatePlanCharge.AccountingCode` 
      * @return accountingCode
@@ -1041,7 +1076,7 @@ public class RatePlanChargeDataInRatePlanData { // implements Swagger.MappedProp
     }
 }
 
-public class AmendRequestAmendOptions { // implements Swagger.MappedProperties {
+public class AmendRequestAmendOptions implements WS001_CallZuora.MappedProperties {
     /**
      * 
      * @return applyCreditBalance
@@ -1123,7 +1158,7 @@ public class AmendRequestAmendOptions { // implements Swagger.MappedProperties {
     }
 }
 
-public class ElectronicPaymentOptions { // implements Swagger.MappedProperties {
+public class ElectronicPaymentOptions implements WS001_CallZuora.MappedProperties {
     /**
      * 
      * @return paymentMethodId
@@ -1154,7 +1189,7 @@ public class ElectronicPaymentOptions { // implements Swagger.MappedProperties {
     }
 }
 
-public class ExternalPaymentOptions { // implements Swagger.MappedProperties {
+public class ExternalPaymentOptions implements WS001_CallZuora.MappedProperties {
     /**
      * 
      * @return amount
@@ -1221,7 +1256,7 @@ public class ExternalPaymentOptions { // implements Swagger.MappedProperties {
     }
 }
 
-public class InvoiceProcessingOptions { // implements Swagger.MappedProperties {
+public class InvoiceProcessingOptions implements WS001_CallZuora.MappedProperties {
     /**
      *  The invoice date.
      * @return invoiceDate
@@ -1262,7 +1297,7 @@ public class InvoiceProcessingOptions { // implements Swagger.MappedProperties {
 }
 
 
-public class SubscriptionProductFeature { // implements SwagSubscriptionProductFeatureObject, Swagger.MappedProperties {
+public class SubscriptionProductFeature  implements WS001_CallZuora.MappedProperties { // SubscriptionProductFeatureObject, 
     /**
      * 
      * @return createdById
@@ -1365,7 +1400,1069 @@ public class SubscriptionProductFeature { // implements SwagSubscriptionProductF
     }
 }
 
-// getExamples Methods
+public class AmendResult  implements  WS001_CallZuora.MappedProperties {
+    /**
+     * A list of the IDs of the associated amendments. There can be as many as three amendment IDs. Use a comma to separate each amendment ID.\n
+     * @return amendmentIds
+     */
+    public List<String> amendmentIds { get; set; }
+
+    /**
+     * Get chargeMetricsData
+     * @return chargeMetricsData
+     */
+    public ChargeMetricsData chargeMetricsData { get; set; }
+
+    /**
+     * 
+     * @return errors
+     */
+    public List<ActionsErrorResponse> errors { get; set; }
+
+    /**
+     * 
+     * @return gatewayResponse
+     */
+    public String gatewayResponse { get; set; }
+
+    /**
+     * 
+     * @return gatewayResponseCode
+     */
+    public String gatewayResponseCode { get; set; }
+
+    /**
+     * 
+     * @return invoiceDatas
+     */
+    public List<InvoiceData> invoiceDatas { get; set; }
+
+    /**
+     * 
+     * @return invoiceId
+     */
+    public String invoiceId { get; set; }
+
+    /**
+     * 
+     * @return paymentId
+     */
+    public String paymentId { get; set; }
+
+    /**
+     * 
+     * @return paymentTransactionNumber
+     */
+    public String paymentTransactionNumber { get; set; }
+
+    /**
+     * 
+     * @return subscriptionId
+     */
+    public String subscriptionId { get; set; }
+
+    /**
+     * 
+     * @return success
+     */
+    public Boolean success { get; set; }
+
+    /**
+     * 
+     * @return totalDeltaMrr
+     */
+    public Double totalDeltaMrr { get; set; }
+
+    /**
+     * 
+     * @return totalDeltaTcv
+     */
+    public Double totalDeltaTcv { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'AmendmentIds' => 'amendmentIds',
+        'ChargeMetricsData' => 'chargeMetricsData',
+        'Errors' => 'errors',
+        'GatewayResponse' => 'gatewayResponse',
+        'GatewayResponseCode' => 'gatewayResponseCode',
+        'InvoiceDatas' => 'invoiceDatas',
+        'InvoiceId' => 'invoiceId',
+        'PaymentId' => 'paymentId',
+        'PaymentTransactionNumber' => 'paymentTransactionNumber',
+        'SubscriptionId' => 'subscriptionId',
+        'Success' => 'success',
+        'TotalDeltaMrr' => 'totalDeltaMrr',
+        'TotalDeltaTcv' => 'totalDeltaTcv'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+    public AmendResult() {
+        amendmentIds = new List<String>();
+        errors = new List<ActionsErrorResponse>();
+        invoiceDatas = new List<InvoiceData>();
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof AmendResult) {
+            AmendResult amendResult = (AmendResult) obj;
+            return this.amendmentIds == amendResult.amendmentIds
+                && this.chargeMetricsData == amendResult.chargeMetricsData
+                && this.errors == amendResult.errors
+                && this.gatewayResponse == amendResult.gatewayResponse
+                && this.gatewayResponseCode == amendResult.gatewayResponseCode
+                && this.invoiceDatas == amendResult.invoiceDatas
+                && this.invoiceId == amendResult.invoiceId
+                && this.paymentId == amendResult.paymentId
+                && this.paymentTransactionNumber == amendResult.paymentTransactionNumber
+                && this.subscriptionId == amendResult.subscriptionId
+                && this.success == amendResult.success
+                && this.totalDeltaMrr == amendResult.totalDeltaMrr
+                && this.totalDeltaTcv == amendResult.totalDeltaTcv;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (amendmentIds == null ? 0 : System.hashCode(amendmentIds));
+        hashCode = (17 * hashCode) + (chargeMetricsData == null ? 0 : System.hashCode(chargeMetricsData));
+        hashCode = (17 * hashCode) + (errors == null ? 0 : System.hashCode(errors));
+        hashCode = (17 * hashCode) + (gatewayResponse == null ? 0 : System.hashCode(gatewayResponse));
+        hashCode = (17 * hashCode) + (gatewayResponseCode == null ? 0 : System.hashCode(gatewayResponseCode));
+        hashCode = (17 * hashCode) + (invoiceDatas == null ? 0 : System.hashCode(invoiceDatas));
+        hashCode = (17 * hashCode) + (invoiceId == null ? 0 : System.hashCode(invoiceId));
+        hashCode = (17 * hashCode) + (paymentId == null ? 0 : System.hashCode(paymentId));
+        hashCode = (17 * hashCode) + (paymentTransactionNumber == null ? 0 : System.hashCode(paymentTransactionNumber));
+        hashCode = (17 * hashCode) + (subscriptionId == null ? 0 : System.hashCode(subscriptionId));
+        hashCode = (17 * hashCode) + (success == null ? 0 : System.hashCode(success));
+        hashCode = (17 * hashCode) + (totalDeltaMrr == null ? 0 : System.hashCode(totalDeltaMrr));
+        hashCode = (17 * hashCode) + (totalDeltaTcv == null ? 0 : System.hashCode(totalDeltaTcv));
+        return hashCode;
+    }
+}
+
+public class ChargeMetricsData implements WS001_CallZuora.MappedProperties {
+    /**
+     * 
+     * @return chargeMetrics
+     */
+    public List<NewChargeMetrics> chargeMetrics { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'ChargeMetrics' => 'chargeMetrics'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+    public ChargeMetricsData() {
+        chargeMetrics = new List<NewChargeMetrics>();
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof ChargeMetricsData) {
+            ChargeMetricsData chargeMetricsData = (ChargeMetricsData) obj;
+            return this.chargeMetrics == chargeMetricsData.chargeMetrics;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (chargeMetrics == null ? 0 : System.hashCode(chargeMetrics));
+        return hashCode;
+    }
+}
+
+public class NewChargeMetrics  implements WS001_CallZuora.MappedProperties {
+    /**
+     * 
+     * @return chargeNumber
+     */
+    public String chargeNumber { get; set; }
+
+    /**
+     * 
+     * @return DMRR
+     */
+    public Double DMRR { get; set; }
+
+    /**
+     * 
+     * @return DTCV
+     */
+    public Double DTCV { get; set; }
+
+    /**
+     * 
+     * @return MRR
+     */
+    public Double MRR { get; set; }
+
+    /**
+     * 
+     * @return originalId
+     */
+    public String originalId { get; set; }
+
+    /**
+     * 
+     * @return originalRatePlanId
+     */
+    public String originalRatePlanId { get; set; }
+
+    /**
+     * 
+     * @return productRatePlanChargeId
+     */
+    public String productRatePlanChargeId { get; set; }
+
+    /**
+     * 
+     * @return productRatePlanId
+     */
+    public String productRatePlanId { get; set; }
+
+    /**
+     * 
+     * @return TCV
+     */
+    public Double TCV { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'ChargeNumber' => 'chargeNumber',
+        'OriginalId' => 'originalId',
+        'OriginalRatePlanId' => 'originalRatePlanId',
+        'ProductRatePlanChargeId' => 'productRatePlanChargeId',
+        'ProductRatePlanId' => 'productRatePlanId'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof NewChargeMetrics) {
+            NewChargeMetrics newChargeMetrics = (NewChargeMetrics) obj;
+            return this.chargeNumber == newChargeMetrics.chargeNumber
+                && this.DMRR == newChargeMetrics.DMRR
+                && this.DTCV == newChargeMetrics.DTCV
+                && this.MRR == newChargeMetrics.MRR
+                && this.originalId == newChargeMetrics.originalId
+                && this.originalRatePlanId == newChargeMetrics.originalRatePlanId
+                && this.productRatePlanChargeId == newChargeMetrics.productRatePlanChargeId
+                && this.productRatePlanId == newChargeMetrics.productRatePlanId
+                && this.TCV == newChargeMetrics.TCV;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (chargeNumber == null ? 0 : System.hashCode(chargeNumber));
+        hashCode = (17 * hashCode) + (DMRR == null ? 0 : System.hashCode(DMRR));
+        hashCode = (17 * hashCode) + (DTCV == null ? 0 : System.hashCode(DTCV));
+        hashCode = (17 * hashCode) + (MRR == null ? 0 : System.hashCode(MRR));
+        hashCode = (17 * hashCode) + (originalId == null ? 0 : System.hashCode(originalId));
+        hashCode = (17 * hashCode) + (originalRatePlanId == null ? 0 : System.hashCode(originalRatePlanId));
+        hashCode = (17 * hashCode) + (productRatePlanChargeId == null ? 0 : System.hashCode(productRatePlanChargeId));
+        hashCode = (17 * hashCode) + (productRatePlanId == null ? 0 : System.hashCode(productRatePlanId));
+        hashCode = (17 * hashCode) + (TCV == null ? 0 : System.hashCode(TCV));
+        return hashCode;
+    }
+}
+
+public class ActionsErrorResponse  implements WS001_CallZuora.MappedProperties {
+    /**
+     * 
+     * @return code
+     */
+    public String code { get; set; }
+
+    /**
+     * 
+     * @return message
+     */
+    public String message { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Code' => 'code',
+        'Message' => 'message'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof ActionsErrorResponse) {
+            ActionsErrorResponse actionsErrorResponse = (ActionsErrorResponse) obj;
+            return this.code == actionsErrorResponse.code
+                && this.message == actionsErrorResponse.message;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (code == null ? 0 : System.hashCode(code));
+        hashCode = (17 * hashCode) + (message == null ? 0 : System.hashCode(message));
+        return hashCode;
+    }
+}
+
+public class InvoiceData  implements WS001_CallZuora.MappedProperties {
+    /**
+     * Get invoice
+     * @return invoice
+     */
+    public InvoiceDataInvoice invoice { get; set; }
+
+    /**
+     * 
+     * @return invoiceItem
+     */
+    public List<InvoiceItem> invoiceItem { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Invoice' => 'invoice',
+        'InvoiceItem' => 'invoiceItem'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+    public InvoiceData() {
+        invoiceItem = new List<InvoiceItem>();
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof InvoiceData) {
+            InvoiceData invoiceData = (InvoiceData) obj;
+            return this.invoice == invoiceData.invoice
+                && this.invoiceItem == invoiceData.invoiceItem;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (invoice == null ? 0 : System.hashCode(invoice));
+        hashCode = (17 * hashCode) + (invoiceItem == null ? 0 : System.hashCode(invoiceItem));
+        return hashCode;
+    }
+}
+
+public class InvoiceDataInvoice  implements WS001_CallZuora.MappedProperties { // InvoiceObjectNSFields, InvoiceObjectCustomFields, 
+    /**
+     * ID of the corresponding object in NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
+     * @return integrationIdNS
+     */
+    public String integrationIdNS { get; set; }
+
+    /**
+     * Status of the invoice\'s synchronization with NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
+     * @return integrationStatusNS
+     */
+    public String integrationStatusNS { get; set; }
+
+    /**
+     * Date when the invoice was synchronized with NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
+     * @return syncDateNS
+     */
+    public String syncDateNS { get; set; }
+
+    /**
+     * 
+     * @return accountId
+     */
+    public String accountId { get; set; }
+
+    /**
+     *  The amount of the invoice adjustments associated with the invoice. **Character limi**t: 16\n\n\n**Values**: a valid currency amount 
+     * @return adjustmentAmount
+     */
+    public Double adjustmentAmount { get; set; }
+
+    /**
+     *  The sum of all charges and taxes associated with the invoice.\n\n\n**Character limit**: 16\n\n\n**Values**: automatically generated 
+     * @return amount
+     */
+    public Double amount { get; set; }
+
+    /**
+     *  The sum of all charges associated with the invoice. Taxes are excluded from this value.\n\n\n**Character limit**: 16\n\n\n**Values**: automatically generated 
+     * @return amountWithoutTax
+     */
+    public Double amountWithoutTax { get; set; }
+
+    /**
+     *  The remaining balance of the invoice after all payments, adjustments, and refunds are applied.\n\n\n**Character limit**: 16\n\n\n**Values**: automatically generated 
+     * @return balance
+     */
+    public Double balance { get; set; }
+
+    /**
+     *  The ID of a Bill Run.\n\n\n**Character limit**: 32\n\n\n**Values**: a BillRun ID 
+     * @return billRunId
+     */
+    public String billRunId { get; set; }
+
+    /**
+     *  Required 
+     * @return body
+     */
+    public String body { get; set; }
+
+    /**
+     *  Additional information related to the invoice that a Zuora user added to the invoice.\n\n\n**Character limit**: 255 **Values:** a string of 255 characters or fewer 
+     * @return comments
+     */
+    public String comments { get; set; }
+
+    /**
+     *  The user ID of the person who created the invoice. If a bill run generated the invoice, then the value is the user ID of person who created the bill run.\n\n\n**Character limit**: 32\n\n\n**Values**: automatically generated 
+     * @return createdById
+     */
+    public String createdById { get; set; }
+
+    /**
+     *  The date when the invoice was generated.\n\n\n**Character limit**: 29\n\n\n**Values**: automatically generated 
+     * @return createdDate
+     */
+    public Datetime createdDate { get; set; }
+
+    /**
+     *  The currency amount of the adjustment applied to the customer\'s credit balance.\n\n\n**Character limit**: 16\n\n\n**Values**: a valid currency amount This field is only available if the [Zuora Global Support](http://support.zuora.com/) to enable this feature.\n\n\n
+     * @return creditBalanceAdjustmentAmount
+     */
+    public Double creditBalanceAdjustmentAmount { get; set; }
+
+    /**
+     *  The date by which the payment for this invoice is due.\n\n\n**Character limit**: 29 
+     * @return dueDate
+     */
+    public Date dueDate { get; set; }
+
+    /**
+     *  Specifies whether the invoice includes one-time charges. You can use this field only with the `generate\n` call for the Invoice object.\n\n\n**Character limit**: 5\n\n\n**Values**: automatically generated from one of the following: `True` (default), `False` 
+     * @return includesOneTime
+     */
+    public Boolean includesOneTime { get; set; }
+
+    /**
+     *  Specifies whether the invoice includes recurring charges. You can use this field only with the `generate\n`call for the Invoice object.\n\n\n**Character limit**: 5\n\n\n**Values**: automatically generated from one of the following: `True` (default), `False` 
+     * @return includesRecurring
+     */
+    public Boolean includesRecurring { get; set; }
+
+    /**
+     *  Specifies whether the invoice includes usage charges. You can use this field only with the `generate\n`call for the Invoice object.\n\n\n**Character limit**: 5\n\n\n**Values**: automatically generated from one of the following: `True `(default), `False` 
+     * @return includesUsage
+     */
+    public Boolean includesUsage { get; set; }
+
+    /**
+     *  Specifies the date on which to generate the invoice.\n\n\n**Character limit**: 29 
+     * @return invoiceDate
+     */
+    public Date invoiceDate { get; set; }
+
+    /**
+     *  The unique identification number for the invoice. This number is returned as a string.\n\n\n**Character limit**: 32\n\n\n**Values**: automatically generated 
+     * @return invoiceNumber
+     */
+    public String invoiceNumber { get; set; }
+
+    /**
+     *  The date when the invoice was last emailed.\n\n\n**Character limit**: 29\n\n\n**Values**: automatically generated 
+     * @return lastEmailSentDate
+     */
+    public Datetime lastEmailSentDate { get; set; }
+
+    /**
+     *  The amount of payments applied to the invoice.\n\n\n**Character limit**: 16 **Value**s: automatically generated 
+     * @return paymentAmount
+     */
+    public Double paymentAmount { get; set; }
+
+    /**
+     *  The user ID of the person who moved the invoice to Posted status.\n\n\n**Character limit**: 32\n\n\n**Values**: automatically generated 
+     * @return postedBy
+     */
+    public String postedBy { get; set; }
+
+    /**
+     *  The date when the invoice was posted.\n**Character limit:** 29\n\n\n**Values**: automatically generated 
+     * @return postedDate
+     */
+    public Datetime postedDate { get; set; }
+
+    /**
+     *  Specifies the amount of a refund that was applied against an earlier payment on the invoice.\n\n\n**Character limit**: 16\n\n\n**Values**: automatically generated 
+     * @return refundAmount
+     */
+    public Double refundAmount { get; set; }
+
+    /**
+     *  Regenerates a PDF of an invoice that was already generated. Add this field to an `update\n` call to regenerate an invoice PDF. Note that when you set the `RegenerateInvoicePDF` field to `true`, you cannot update any other fields in the same `update\n` call. Otherwise, you will receive the following `INVALID_VALUE` error: &quot;When field RegenerateInvoicePDF is set to true to regenerate the invoice PDF file, changes on other fields of the invoice are not allowed.&quot;\n\n**Character limit**: 5\n\n\n**Values**: `True`, `False` 
+     * @return regenerateInvoicePDF
+     */
+    public Boolean regenerateInvoicePDF { get; set; }
+
+    /**
+     *  The status of the invoice in the system. This status is not the status of the payment of the invoice, just the status of the invoice itself.\n\n\n**Character limit**: 8\n\n\n**Values**: one of the following:\n\n-  Draft (default, automatically set upon invoice creation)\n\n-  Posted\n\n-  Canceled\n\n
+     * @return status
+     */
+    public String status { get; set; }
+
+    /**
+     *  This date is used to determine which charges are to be billed. All charges that are to be billed on this date or prior will be included in this bill run.\n\n\n**Character limit**: 29 
+     * @return targetDate
+     */
+    public Date targetDate { get; set; }
+
+    /**
+     *  The total amount of the taxes applied to the invoice.\n\n\n**Character limit**: 16\n\n\n**Values**: automatically generated 
+     * @return taxAmount
+     */
+    public Double taxAmount { get; set; }
+
+    /**
+     *  The total amount of the invoice that is exempt from taxation.\n\n\n**Character limit**: 16\n\n\n**Values**: automatically generated 
+     * @return taxExemptAmount
+     */
+    public Double taxExemptAmount { get; set; }
+
+    /**
+     *  Specifies whether or not the invoice was transferred to an external accounting system, such as NetSuite.\n\n\n**Character limit**: 10\n\n\n**Values**: Processing, Yes, Error, Ignore 
+     * @return transferredToAccounting
+     */
+    public String transferredToAccounting { get; set; }
+
+    /**
+     * 
+     * @return updatedById
+     */
+    public String updatedById { get; set; }
+
+    /**
+     *  The date when the invoice was last updated.\n\n\n**Character limit**: 29\n\n\n**Values**: automatically generated 
+     * @return updatedDate
+     */
+    public Datetime updatedDate { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'IntegrationId__NS' => 'integrationIdNS',
+        'IntegrationStatus__NS' => 'integrationStatusNS',
+        'SyncDate__NS' => 'syncDateNS',
+        'AccountId' => 'accountId',
+        'AdjustmentAmount' => 'adjustmentAmount',
+        'Amount' => 'amount',
+        'AmountWithoutTax' => 'amountWithoutTax',
+        'Balance' => 'balance',
+        'BillRunId' => 'billRunId',
+        'Body' => 'body',
+        'Comments' => 'comments',
+        'CreatedById' => 'createdById',
+        'CreatedDate' => 'createdDate',
+        'CreditBalanceAdjustmentAmount' => 'creditBalanceAdjustmentAmount',
+        'DueDate' => 'dueDate',
+        'IncludesOneTime' => 'includesOneTime',
+        'IncludesRecurring' => 'includesRecurring',
+        'IncludesUsage' => 'includesUsage',
+        'InvoiceDate' => 'invoiceDate',
+        'InvoiceNumber' => 'invoiceNumber',
+        'LastEmailSentDate' => 'lastEmailSentDate',
+        'PaymentAmount' => 'paymentAmount',
+        'PostedBy' => 'postedBy',
+        'PostedDate' => 'postedDate',
+        'RefundAmount' => 'refundAmount',
+        'RegenerateInvoicePDF' => 'regenerateInvoicePDF',
+        'Status' => 'status',
+        'TargetDate' => 'targetDate',
+        'TaxAmount' => 'taxAmount',
+        'TaxExemptAmount' => 'taxExemptAmount',
+        'TransferredToAccounting' => 'transferredToAccounting',
+        'UpdatedById' => 'updatedById',
+        'UpdatedDate' => 'updatedDate'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof InvoiceDataInvoice) {
+            InvoiceDataInvoice invoiceDataInvoice = (InvoiceDataInvoice) obj;
+            return this.integrationIdNS == invoiceDataInvoice.integrationIdNS
+                && this.integrationStatusNS == invoiceDataInvoice.integrationStatusNS
+                && this.syncDateNS == invoiceDataInvoice.syncDateNS
+                && this.accountId == invoiceDataInvoice.accountId
+                && this.adjustmentAmount == invoiceDataInvoice.adjustmentAmount
+                && this.amount == invoiceDataInvoice.amount
+                && this.amountWithoutTax == invoiceDataInvoice.amountWithoutTax
+                && this.balance == invoiceDataInvoice.balance
+                && this.billRunId == invoiceDataInvoice.billRunId
+                && this.body == invoiceDataInvoice.body
+                && this.comments == invoiceDataInvoice.comments
+                && this.createdById == invoiceDataInvoice.createdById
+                && this.createdDate == invoiceDataInvoice.createdDate
+                && this.creditBalanceAdjustmentAmount == invoiceDataInvoice.creditBalanceAdjustmentAmount
+                && this.dueDate == invoiceDataInvoice.dueDate
+                && this.includesOneTime == invoiceDataInvoice.includesOneTime
+                && this.includesRecurring == invoiceDataInvoice.includesRecurring
+                && this.includesUsage == invoiceDataInvoice.includesUsage
+                && this.invoiceDate == invoiceDataInvoice.invoiceDate
+                && this.invoiceNumber == invoiceDataInvoice.invoiceNumber
+                && this.lastEmailSentDate == invoiceDataInvoice.lastEmailSentDate
+                && this.paymentAmount == invoiceDataInvoice.paymentAmount
+                && this.postedBy == invoiceDataInvoice.postedBy
+                && this.postedDate == invoiceDataInvoice.postedDate
+                && this.refundAmount == invoiceDataInvoice.refundAmount
+                && this.regenerateInvoicePDF == invoiceDataInvoice.regenerateInvoicePDF
+                && this.status == invoiceDataInvoice.status
+                && this.targetDate == invoiceDataInvoice.targetDate
+                && this.taxAmount == invoiceDataInvoice.taxAmount
+                && this.taxExemptAmount == invoiceDataInvoice.taxExemptAmount
+                && this.transferredToAccounting == invoiceDataInvoice.transferredToAccounting
+                && this.updatedById == invoiceDataInvoice.updatedById
+                && this.updatedDate == invoiceDataInvoice.updatedDate;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (integrationIdNS == null ? 0 : System.hashCode(integrationIdNS));
+        hashCode = (17 * hashCode) + (integrationStatusNS == null ? 0 : System.hashCode(integrationStatusNS));
+        hashCode = (17 * hashCode) + (syncDateNS == null ? 0 : System.hashCode(syncDateNS));
+        hashCode = (17 * hashCode) + (accountId == null ? 0 : System.hashCode(accountId));
+        hashCode = (17 * hashCode) + (adjustmentAmount == null ? 0 : System.hashCode(adjustmentAmount));
+        hashCode = (17 * hashCode) + (amount == null ? 0 : System.hashCode(amount));
+        hashCode = (17 * hashCode) + (amountWithoutTax == null ? 0 : System.hashCode(amountWithoutTax));
+        hashCode = (17 * hashCode) + (balance == null ? 0 : System.hashCode(balance));
+        hashCode = (17 * hashCode) + (billRunId == null ? 0 : System.hashCode(billRunId));
+        hashCode = (17 * hashCode) + (body == null ? 0 : System.hashCode(body));
+        hashCode = (17 * hashCode) + (comments == null ? 0 : System.hashCode(comments));
+        hashCode = (17 * hashCode) + (createdById == null ? 0 : System.hashCode(createdById));
+        hashCode = (17 * hashCode) + (createdDate == null ? 0 : System.hashCode(createdDate));
+        hashCode = (17 * hashCode) + (creditBalanceAdjustmentAmount == null ? 0 : System.hashCode(creditBalanceAdjustmentAmount));
+        hashCode = (17 * hashCode) + (dueDate == null ? 0 : System.hashCode(dueDate));
+        hashCode = (17 * hashCode) + (includesOneTime == null ? 0 : System.hashCode(includesOneTime));
+        hashCode = (17 * hashCode) + (includesRecurring == null ? 0 : System.hashCode(includesRecurring));
+        hashCode = (17 * hashCode) + (includesUsage == null ? 0 : System.hashCode(includesUsage));
+        hashCode = (17 * hashCode) + (invoiceDate == null ? 0 : System.hashCode(invoiceDate));
+        hashCode = (17 * hashCode) + (invoiceNumber == null ? 0 : System.hashCode(invoiceNumber));
+        hashCode = (17 * hashCode) + (lastEmailSentDate == null ? 0 : System.hashCode(lastEmailSentDate));
+        hashCode = (17 * hashCode) + (paymentAmount == null ? 0 : System.hashCode(paymentAmount));
+        hashCode = (17 * hashCode) + (postedBy == null ? 0 : System.hashCode(postedBy));
+        hashCode = (17 * hashCode) + (postedDate == null ? 0 : System.hashCode(postedDate));
+        hashCode = (17 * hashCode) + (refundAmount == null ? 0 : System.hashCode(refundAmount));
+        hashCode = (17 * hashCode) + (regenerateInvoicePDF == null ? 0 : System.hashCode(regenerateInvoicePDF));
+        hashCode = (17 * hashCode) + (status == null ? 0 : System.hashCode(status));
+        hashCode = (17 * hashCode) + (targetDate == null ? 0 : System.hashCode(targetDate));
+        hashCode = (17 * hashCode) + (taxAmount == null ? 0 : System.hashCode(taxAmount));
+        hashCode = (17 * hashCode) + (taxExemptAmount == null ? 0 : System.hashCode(taxExemptAmount));
+        hashCode = (17 * hashCode) + (transferredToAccounting == null ? 0 : System.hashCode(transferredToAccounting));
+        hashCode = (17 * hashCode) + (updatedById == null ? 0 : System.hashCode(updatedById));
+        hashCode = (17 * hashCode) + (updatedDate == null ? 0 : System.hashCode(updatedDate));
+        return hashCode;
+    }
+}
+
+public class InvoiceItem  implements WS001_CallZuora.MappedProperties { // InvoiceItemObjectNSFields, InvoiceItemObjectCustomFields, 
+    /**
+     * ID of the corresponding object in NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
+     * @return integrationIdNS
+     */
+    public String integrationIdNS { get; set; }
+
+    /**
+     * Status of the invoice item\'s synchronization with NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
+     * @return integrationStatusNS
+     */
+    public String integrationStatusNS { get; set; }
+
+    /**
+     * Date when the invoice item was synchronized with NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
+     * @return syncDateNS
+     */
+    public String syncDateNS { get; set; }
+
+    /**
+     * The unique ID of the invoice item that the discount charge is applied to.
+     * @return appliedToItemId
+     */
+    public String appliedToItemId { get; set; }
+
+    /**
+     * The amount of the invoice item that is available to credit.        \n
+     * @return availableToCreditAmount
+     */
+    public Double availableToCreditAmount { get; set; }
+
+    /**
+     * The balance of the invoice item.
+     * @return balance
+     */
+    public String balance { get; set; }
+
+    /**
+     * The amount of the charge. This amount does not include taxes regardless if the charge\'s tax mode is inclusive or exclusive.
+     * @return chargeAmount
+     */
+    public String chargeAmount { get; set; }
+
+    /**
+     * Description of the charge.
+     * @return chargeDescription
+     */
+    public String chargeDescription { get; set; }
+
+    /**
+     * ID of the charge.
+     * @return chargeId
+     */
+    public String chargeId { get; set; }
+
+    /**
+     * Name of the charge.
+     * @return chargeName
+     */
+    public String chargeName { get; set; }
+
+    /**
+     * Item ID.
+     * @return id
+     */
+    public String id { get; set; }
+
+    /**
+     * Name of the product associated with this item.
+     * @return productName
+     */
+    public String productName { get; set; }
+
+    /**
+     * Quantity of this item, in the configured unit of measure for the charge.
+     * @return quantity
+     */
+    public String quantity { get; set; }
+
+    /**
+     * End date of the service period for this item, i.e., the last day of the service period, as _yyyy-mm-dd_.
+     * @return serviceEndDate
+     */
+    public Date serviceEndDate { get; set; }
+
+    /**
+     * Start date of the service period for this item, as _yyyy-mm-dd_. For a one-time fee item, the date of the charge.
+     * @return serviceStartDate
+     */
+    public Date serviceStartDate { get; set; }
+
+    /**
+     * ID of the subscription for this item.
+     * @return subscriptionId
+     */
+    public String subscriptionId { get; set; }
+
+    /**
+     * Name of the subscription for this item.
+     * @return subscriptionName
+     */
+    public String subscriptionName { get; set; }
+
+    /**
+     * Returns `true` if the request was processed successfully.
+     * @return success
+     */
+    public Boolean success { get; set; }
+
+    /**
+     * Tax applied to the charge.
+     * @return taxAmount
+     */
+    public String taxAmount { get; set; }
+
+    /**
+     * Get taxationItems
+     * @return taxationItems
+     */
+    public InvoiceItemTaxationItems taxationItems { get; set; }
+
+    /**
+     * Unit used to measure. consumption.
+     * @return unitOfMeasure
+     */
+    public String unitOfMeasure { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'IntegrationId__NS' => 'integrationIdNS',
+        'IntegrationStatus__NS' => 'integrationStatusNS',
+        'SyncDate__NS' => 'syncDateNS'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof InvoiceItem) {
+            InvoiceItem invoiceItem = (InvoiceItem) obj;
+            return this.integrationIdNS == invoiceItem.integrationIdNS
+                && this.integrationStatusNS == invoiceItem.integrationStatusNS
+                && this.syncDateNS == invoiceItem.syncDateNS
+                && this.appliedToItemId == invoiceItem.appliedToItemId
+                && this.availableToCreditAmount == invoiceItem.availableToCreditAmount
+                && this.balance == invoiceItem.balance
+                && this.chargeAmount == invoiceItem.chargeAmount
+                && this.chargeDescription == invoiceItem.chargeDescription
+                && this.chargeId == invoiceItem.chargeId
+                && this.chargeName == invoiceItem.chargeName
+                && this.id == invoiceItem.id
+                && this.productName == invoiceItem.productName
+                && this.quantity == invoiceItem.quantity
+                && this.serviceEndDate == invoiceItem.serviceEndDate
+                && this.serviceStartDate == invoiceItem.serviceStartDate
+                && this.subscriptionId == invoiceItem.subscriptionId
+                && this.subscriptionName == invoiceItem.subscriptionName
+                && this.success == invoiceItem.success
+                && this.taxAmount == invoiceItem.taxAmount
+                && this.taxationItems == invoiceItem.taxationItems
+                && this.unitOfMeasure == invoiceItem.unitOfMeasure;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (integrationIdNS == null ? 0 : System.hashCode(integrationIdNS));
+        hashCode = (17 * hashCode) + (integrationStatusNS == null ? 0 : System.hashCode(integrationStatusNS));
+        hashCode = (17 * hashCode) + (syncDateNS == null ? 0 : System.hashCode(syncDateNS));
+        hashCode = (17 * hashCode) + (appliedToItemId == null ? 0 : System.hashCode(appliedToItemId));
+        hashCode = (17 * hashCode) + (availableToCreditAmount == null ? 0 : System.hashCode(availableToCreditAmount));
+        hashCode = (17 * hashCode) + (balance == null ? 0 : System.hashCode(balance));
+        hashCode = (17 * hashCode) + (chargeAmount == null ? 0 : System.hashCode(chargeAmount));
+        hashCode = (17 * hashCode) + (chargeDescription == null ? 0 : System.hashCode(chargeDescription));
+        hashCode = (17 * hashCode) + (chargeId == null ? 0 : System.hashCode(chargeId));
+        hashCode = (17 * hashCode) + (chargeName == null ? 0 : System.hashCode(chargeName));
+        hashCode = (17 * hashCode) + (id == null ? 0 : System.hashCode(id));
+        hashCode = (17 * hashCode) + (productName == null ? 0 : System.hashCode(productName));
+        hashCode = (17 * hashCode) + (quantity == null ? 0 : System.hashCode(quantity));
+        hashCode = (17 * hashCode) + (serviceEndDate == null ? 0 : System.hashCode(serviceEndDate));
+        hashCode = (17 * hashCode) + (serviceStartDate == null ? 0 : System.hashCode(serviceStartDate));
+        hashCode = (17 * hashCode) + (subscriptionId == null ? 0 : System.hashCode(subscriptionId));
+        hashCode = (17 * hashCode) + (subscriptionName == null ? 0 : System.hashCode(subscriptionName));
+        hashCode = (17 * hashCode) + (success == null ? 0 : System.hashCode(success));
+        hashCode = (17 * hashCode) + (taxAmount == null ? 0 : System.hashCode(taxAmount));
+        hashCode = (17 * hashCode) + (taxationItems == null ? 0 : System.hashCode(taxationItems));
+        hashCode = (17 * hashCode) + (unitOfMeasure == null ? 0 : System.hashCode(unitOfMeasure));
+        return hashCode;
+    }
+}
+
+public class InvoiceItemTaxationItems {
+    /**
+     * List of taxation items.\n
+     * @return data
+     */
+    public List<GETInvoiceTaxItemType> data { get; set; }
+
+    /**
+     * URL to retrieve the next page of the response if it exists; otherwise absent.\n
+     * @return nextPage
+     */
+    public String nextPage { get; set; }
+
+    public InvoiceItemTaxationItems() {
+        data = new List<GETInvoiceTaxItemType>();
+    }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof InvoiceItemTaxationItems) {
+            InvoiceItemTaxationItems invoiceItemTaxationItems = (InvoiceItemTaxationItems) obj;
+            return this.data == invoiceItemTaxationItems.data
+                && this.nextPage == invoiceItemTaxationItems.nextPage;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (data == null ? 0 : System.hashCode(data));
+        hashCode = (17 * hashCode) + (nextPage == null ? 0 : System.hashCode(nextPage));
+        return hashCode;
+    }
+}
+
+public class GETInvoiceTaxItemType {
+    /**
+     * The amount of the invoice taxation item that is available to credit.\n
+     * @return availableToCreditAmount
+     */
+    public Double availableToCreditAmount { get; set; }
+
+    /**
+     * The balance of the taxation item.\n
+     * @return balance
+     */
+    public Double balance { get; set; }
+
+    /**
+     * The amount of credit memos applied to the taxation item. \n
+     * @return creditAmount
+     */
+    public Double creditAmount { get; set; }
+
+    /**
+     * The amount of taxes or VAT for which the customer has an exemption.\n
+     * @return exemptAmount
+     */
+    public Double exemptAmount { get; set; }
+
+    /**
+     * The ID of the taxation item.\n
+     * @return id
+     */
+    public String id { get; set; }
+
+    /**
+     * The jurisdiction that applies the tax or VAT. This value is typically a state, province, county, or city.\n
+     * @return jurisdiction
+     */
+    public String jurisdiction { get; set; }
+
+    /**
+     * The identifier for the location based on the value of the `taxCode` field.\n
+     * @return locationCode
+     */
+    public String locationCode { get; set; }
+
+    /**
+     * The name of the taxation item.\n
+     * @return name
+     */
+    public String name { get; set; }
+
+    /**
+     * The amount of payments applied to the taxation item. \n
+     * @return paymentAmount
+     */
+    public Double paymentAmount { get; set; }
+
+    /**
+     * The amount of taxation.\n
+     * @return taxAmount
+     */
+    public Double taxAmount { get; set; }
+
+    /**
+     * The tax code identifies which tax rules and tax rates to apply to a specific invoice.\n
+     * @return taxCode
+     */
+    public String taxCode { get; set; }
+
+    /**
+     * The description of the tax code.\n
+     * @return taxCodeDescription
+     */
+    public String taxCodeDescription { get; set; }
+
+    /**
+     * The date that the tax is applied to the invoice, in `yyyy-mm-dd` format.\n
+     * @return taxDate
+     */
+    public Date taxDate { get; set; }
+
+    /**
+     * The tax rate applied to the invoice.\n
+     * @return taxRate
+     */
+    public Double taxRate { get; set; }
+
+    /**
+     * The description of the tax rate.\n
+     * @return taxRateDescription
+     */
+    public String taxRateDescription { get; set; }
+
+    /**
+     * The type of the tax rate.\n
+     */
+    // public enum TaxRateTypeEnum {
+    //     PERCENTAGE,
+    //     FLATFEE
+    // }
+
+    /**
+     * The type of the tax rate.\n
+     * @return taxRateType
+     */
+    // public TaxRateTypeEnum taxRateType { get; set; }
+
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof GETInvoiceTaxItemType) {
+            GETInvoiceTaxItemType geTInvoiceTaxItemType = (GETInvoiceTaxItemType) obj;
+            return this.availableToCreditAmount == geTInvoiceTaxItemType.availableToCreditAmount
+                && this.balance == geTInvoiceTaxItemType.balance
+                && this.creditAmount == geTInvoiceTaxItemType.creditAmount
+                && this.exemptAmount == geTInvoiceTaxItemType.exemptAmount
+                && this.id == geTInvoiceTaxItemType.id
+                && this.jurisdiction == geTInvoiceTaxItemType.jurisdiction
+                && this.locationCode == geTInvoiceTaxItemType.locationCode
+                && this.name == geTInvoiceTaxItemType.name
+                && this.paymentAmount == geTInvoiceTaxItemType.paymentAmount
+                && this.taxAmount == geTInvoiceTaxItemType.taxAmount
+                && this.taxCode == geTInvoiceTaxItemType.taxCode
+                && this.taxCodeDescription == geTInvoiceTaxItemType.taxCodeDescription
+                && this.taxDate == geTInvoiceTaxItemType.taxDate
+                && this.taxRate == geTInvoiceTaxItemType.taxRate
+                && this.taxRateDescription == geTInvoiceTaxItemType.taxRateDescription;
+                // && this.taxRateType == geTInvoiceTaxItemType.taxRateType;
+        }
+        return false;
+    }
+
+    public Integer hashCode() {
+        Integer hashCode = 43;
+        hashCode = (17 * hashCode) + (availableToCreditAmount == null ? 0 : System.hashCode(availableToCreditAmount));
+        hashCode = (17 * hashCode) + (balance == null ? 0 : System.hashCode(balance));
+        hashCode = (17 * hashCode) + (creditAmount == null ? 0 : System.hashCode(creditAmount));
+        hashCode = (17 * hashCode) + (exemptAmount == null ? 0 : System.hashCode(exemptAmount));
+        hashCode = (17 * hashCode) + (id == null ? 0 : System.hashCode(id));
+        hashCode = (17 * hashCode) + (jurisdiction == null ? 0 : System.hashCode(jurisdiction));
+        hashCode = (17 * hashCode) + (locationCode == null ? 0 : System.hashCode(locationCode));
+        hashCode = (17 * hashCode) + (name == null ? 0 : System.hashCode(name));
+        hashCode = (17 * hashCode) + (paymentAmount == null ? 0 : System.hashCode(paymentAmount));
+        hashCode = (17 * hashCode) + (taxAmount == null ? 0 : System.hashCode(taxAmount));
+        hashCode = (17 * hashCode) + (taxCode == null ? 0 : System.hashCode(taxCode));
+        hashCode = (17 * hashCode) + (taxCodeDescription == null ? 0 : System.hashCode(taxCodeDescription));
+        hashCode = (17 * hashCode) + (taxDate == null ? 0 : System.hashCode(taxDate));
+        hashCode = (17 * hashCode) + (taxRate == null ? 0 : System.hashCode(taxRate));
+        hashCode = (17 * hashCode) + (taxRateDescription == null ? 0 : System.hashCode(taxRateDescription));
+        // hashCode = (17 * hashCode) + (taxRateType == null ? 0 : System.hashCode(taxRateType));
+        return hashCode;
+    }
+}
+
+
+// --------------------------------------------------- getExamples Methods
 public static Amendment Amendment_getExample() {
     Amendment amendment = new Amendment();
     amendment.autoRenew = true;
@@ -1560,6 +2657,151 @@ public static SubscriptionProductFeature SubscriptionProductFeature_getExample()
     return subscriptionProductFeature;
 }
 
+    public static ChargeMetricsData ChargeMetricsData_getExample() {
+        ChargeMetricsData chargeMetricsData = new ChargeMetricsData();
+        chargeMetricsData.chargeMetrics = new List<NewChargeMetrics>{NewChargeMetrics_getExample()};
+        return chargeMetricsData;
+    }
+
+    public static NewChargeMetrics NewChargeMetrics_getExample() {
+        NewChargeMetrics newChargeMetrics = new NewChargeMetrics();
+        newChargeMetrics.chargeNumber = 'aeiou';
+        newChargeMetrics.DMRR = 1.3579;
+        newChargeMetrics.DTCV = 1.3579;
+        newChargeMetrics.MRR = 1.3579;
+        newChargeMetrics.originalId = 'aeiou';
+        newChargeMetrics.originalRatePlanId = 'aeiou';
+        newChargeMetrics.productRatePlanChargeId = 'aeiou';
+        newChargeMetrics.productRatePlanId = 'aeiou';
+        newChargeMetrics.TCV = 1.3579;
+        return newChargeMetrics;
+    }
+
+    public static ActionsErrorResponse ActionsErrorResponse_getExample() {
+        ActionsErrorResponse actionsErrorResponse = new ActionsErrorResponse();
+        actionsErrorResponse.code = 'aeiou';
+        actionsErrorResponse.message = 'aeiou';
+        return actionsErrorResponse;
+    }
+
+    public static AmendResult AmendResult_getExample() {
+        AmendResult amendResult = new AmendResult();
+        amendResult.amendmentIds = new List<String>{'aeiou'};
+        amendResult.chargeMetricsData = ChargeMetricsData_getExample();
+        amendResult.errors = new List<ActionsErrorResponse>{ActionsErrorResponse_getExample()};
+        amendResult.gatewayResponse = 'aeiou';
+        amendResult.gatewayResponseCode = 'aeiou';
+        amendResult.invoiceDatas = new List<InvoiceData>{InvoiceData_getExample()};
+        amendResult.invoiceId = 'aeiou';
+        amendResult.paymentId = 'aeiou';
+        amendResult.paymentTransactionNumber = 'aeiou';
+        amendResult.subscriptionId = 'aeiou';
+        amendResult.success = true;
+        amendResult.totalDeltaMrr = 1.3579;
+        amendResult.totalDeltaTcv = 1.3579;
+        return amendResult;
+    }
+
+    public static InvoiceData InvoiceData_getExample() {
+        InvoiceData invoiceData = new InvoiceData();
+        invoiceData.invoice = InvoiceDataInvoice_getExample();
+        invoiceData.invoiceItem = new List<InvoiceItem>{InvoiceItem_getExample()};
+        return invoiceData;
+    }
+
+    public static InvoiceDataInvoice InvoiceDataInvoice_getExample() {
+        InvoiceDataInvoice invoiceDataInvoice = new InvoiceDataInvoice();
+        invoiceDataInvoice.integrationIdNS = 'aeiou';
+        invoiceDataInvoice.integrationStatusNS = 'aeiou';
+        invoiceDataInvoice.syncDateNS = 'aeiou';
+        invoiceDataInvoice.accountId = 'aeiou';
+        invoiceDataInvoice.adjustmentAmount = 1.3579;
+        invoiceDataInvoice.amount = 1.3579;
+        invoiceDataInvoice.amountWithoutTax = 1.3579;
+        invoiceDataInvoice.balance = 1.3579;
+        invoiceDataInvoice.billRunId = 'aeiou';
+        invoiceDataInvoice.body = 'aeiou';
+        invoiceDataInvoice.comments = 'aeiou';
+        invoiceDataInvoice.createdById = 'aeiou';
+        invoiceDataInvoice.createdDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+        invoiceDataInvoice.creditBalanceAdjustmentAmount = 1.3579;
+        invoiceDataInvoice.dueDate = Date.newInstance(2000, 1, 23);
+        invoiceDataInvoice.includesOneTime = true;
+        invoiceDataInvoice.includesRecurring = true;
+        invoiceDataInvoice.includesUsage = true;
+        invoiceDataInvoice.invoiceDate = Date.newInstance(2000, 1, 23);
+        invoiceDataInvoice.invoiceNumber = 'aeiou';
+        invoiceDataInvoice.lastEmailSentDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+        invoiceDataInvoice.paymentAmount = 1.3579;
+        invoiceDataInvoice.postedBy = 'aeiou';
+        invoiceDataInvoice.postedDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+        invoiceDataInvoice.refundAmount = 1.3579;
+        invoiceDataInvoice.regenerateInvoicePDF = true;
+        invoiceDataInvoice.status = 'aeiou';
+        invoiceDataInvoice.targetDate = Date.newInstance(2000, 1, 23);
+        invoiceDataInvoice.taxAmount = 1.3579;
+        invoiceDataInvoice.taxExemptAmount = 1.3579;
+        invoiceDataInvoice.transferredToAccounting = 'aeiou';
+        invoiceDataInvoice.updatedById = 'aeiou';
+        invoiceDataInvoice.updatedDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+        return invoiceDataInvoice;
+    }
+
+    public static InvoiceItem InvoiceItem_getExample() {
+        InvoiceItem invoiceItem = new InvoiceItem();
+        invoiceItem.integrationIdNS = 'aeiou';
+        invoiceItem.integrationStatusNS = 'aeiou';
+        invoiceItem.syncDateNS = 'aeiou';
+        invoiceItem.appliedToItemId = 'aeiou';
+        invoiceItem.availableToCreditAmount = 1.3579;
+        invoiceItem.balance = 'aeiou';
+        invoiceItem.chargeAmount = 'aeiou';
+        invoiceItem.chargeDescription = 'aeiou';
+        invoiceItem.chargeId = 'aeiou';
+        invoiceItem.chargeName = 'aeiou';
+        invoiceItem.id = 'aeiou';
+        invoiceItem.productName = 'aeiou';
+        invoiceItem.quantity = 'aeiou';
+        invoiceItem.serviceEndDate = Date.newInstance(2000, 1, 23);
+        invoiceItem.serviceStartDate = Date.newInstance(2000, 1, 23);
+        invoiceItem.subscriptionId = 'aeiou';
+        invoiceItem.subscriptionName = 'aeiou';
+        invoiceItem.success = true;
+        invoiceItem.taxAmount = 'aeiou';
+        invoiceItem.taxationItems = InvoiceItemTaxationItems_getExample();
+        invoiceItem.unitOfMeasure = 'aeiou';
+        return invoiceItem;
+    }
+
+    public static InvoiceItemTaxationItems InvoiceItemTaxationItems_getExample() {
+        InvoiceItemTaxationItems invoiceItemTaxationItems = new InvoiceItemTaxationItems();
+        invoiceItemTaxationItems.data = new List<GETInvoiceTaxItemType>{GETInvoiceTaxItemType_getExample()};
+        invoiceItemTaxationItems.nextPage = 'aeiou';
+        return invoiceItemTaxationItems;
+    }
+
+    public static GETInvoiceTaxItemType GETInvoiceTaxItemType_getExample() {
+        GETInvoiceTaxItemType geTInvoiceTaxItemType = new GETInvoiceTaxItemType();
+        geTInvoiceTaxItemType.availableToCreditAmount = 1.3579;
+        geTInvoiceTaxItemType.balance = 1.3579;
+        geTInvoiceTaxItemType.creditAmount = 1.3579;
+        geTInvoiceTaxItemType.exemptAmount = 1.3579;
+        geTInvoiceTaxItemType.id = 'aeiou';
+        geTInvoiceTaxItemType.jurisdiction = 'aeiou';
+        geTInvoiceTaxItemType.locationCode = 'aeiou';
+        geTInvoiceTaxItemType.name = 'aeiou';
+        geTInvoiceTaxItemType.paymentAmount = 1.3579;
+        geTInvoiceTaxItemType.taxAmount = 1.3579;
+        geTInvoiceTaxItemType.taxCode = 'aeiou';
+        geTInvoiceTaxItemType.taxCodeDescription = 'aeiou';
+        geTInvoiceTaxItemType.taxDate = Date.newInstance(2000, 1, 23);
+        geTInvoiceTaxItemType.taxRate = 1.3579;
+        geTInvoiceTaxItemType.taxRateDescription = 'aeiou';
+        // geTInvoiceTaxItemType.taxRateType = TaxRateTypeEnum.PERCENTAGE;
+        return geTInvoiceTaxItemType;
+    }
+
+
 public static void test1(){
     ZUC.AmendRequest c1 = new ZUC.AmendRequest();
     c1.amendOptions.generateInvoice=false;
@@ -1577,5 +2819,7 @@ public static void test1(){
     c1.amendments[0].ratePlanData.ratePlan.productRatePlanId='';
     c1.previewOptions.enablePreviewMode=false;
 }
+
+
 
 } // END Class

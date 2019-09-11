@@ -120,6 +120,7 @@
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -129,6 +130,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -138,6 +140,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -147,6 +150,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -156,6 +160,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -165,6 +170,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -174,6 +180,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -183,6 +190,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>
@@ -192,6 +200,7 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <controllingFieldValue>Chèque (UU)</controllingFieldValue>

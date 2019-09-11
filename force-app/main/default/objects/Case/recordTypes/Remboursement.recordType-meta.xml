@@ -722,6 +722,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Espèce</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Prélèvement %28UI%29</fullName>
             <default>false</default>
         </values>

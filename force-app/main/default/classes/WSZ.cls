@@ -257,6 +257,8 @@ public with sharing class WSZ {
         public String postedById;
         public String postedOn;
         public String status;
+        public String taxStatus;
+        public String taxMessage;
         public Double amount;
         public Double taxAmount;
         public Double totalTaxExemptAmount;

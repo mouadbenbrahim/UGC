@@ -103,6 +103,10 @@ public with sharing class SM_Remboursement {
            when 'Chèque (UI)','Chèque (UU)' {
                methodTypeRefund = 'Check' ;
 
+           }
+           when 'Espèce'{
+           	   methodTypeRefund = 'Cash' ;
+               
            }            
            when 'Prélèvement (UI)','Prélèvement (UU)' {
                methodTypeRefund = null ;

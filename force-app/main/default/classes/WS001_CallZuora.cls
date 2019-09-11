@@ -1,3 +1,14 @@
+/**
+ * @File Name          : WS001_CallZuora.cls
+ * @Description        : 
+ * @Author             : mouad
+ * @Group              : 
+ * @Last Modified By   : mouad
+ * @Last Modified On   : 09/09/2019 à 06:10:40
+ * @Modification Log   : 
+ * Ver       Date            Author      		    Modification
+ * 1.0    09/09/2019   mouad     Initial Version
+**/
 public with sharing class WS001_CallZuora {
 
     //public static String oauth_endpoint = 'https://rest.sandbox.eu.zuora.com/oauth/token';    https://rest.sandbox.eu.zuora.com
@@ -11,7 +22,11 @@ public with sharing class WS001_CallZuora {
     public static String ZuoraEntityId_Belgique = Label.ZuoraEntityId_Belgique;
     //String testEnumFR = WS001_CallZuora.getZuoraEntityId(WS001_CallZuora.ZuoraEntityCountry.FRA);
     //String testEnumBE = WS001_CallZuora.getZuoraEntityId(WS001_CallZuora.ZuoraEntityCountry.BEL);
-    
+
+    public interface MappedProperties {
+        Map<String, String> getPropertyMappings();
+    }
+
     public static String access_token {
         get {
             if (access_token == null){
@@ -177,6 +192,61 @@ public with sharing class WS001_CallZuora {
             throw new MyException(msgError);
         }
         return wsOut;
+    }
+
+    public static Object sendRequest2(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
+    Type requestType, Type returnType, String version){
+        String bodyOut = '';       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS = '';
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            bodyInS = (String) JSON.serialize(bodyIn);
+            Object o = requestType.newInstance();
+            System.debug('---------ETAP1 INSTANCE');
+            if (o instanceof MappedProperties) {
+                // Map<String, String> propertyMappings = ((MappedProperties) o).getPropertyMappings();
+                System.debug('---------ETAP2 INSTANCE');
+                Map<String, String> propertyMappings = ((MappedProperties) o).getPropertyMappings();
+                System.debug('-----PM:' + propertyMappings);
+                for (String baseName : propertyMappings.keySet()) {
+                    bodyInS = bodyInS.replaceAll('"' + propertyMappings.get(baseName) + '"\\s*:',
+                        '"' + baseName + '":');
+                }
+                System.debug(bodyInS);
+            }            
+            req.setBody(bodyInS);
+        }
+
+
+        // system.debug('##MBEN requestValue >> '+bodyIn);
+        //req.setCompressed(true); si active erreur sur le retour JSON.
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOut = res.getBody();
+        //blob res2 = res.getBodyAsBlob();
+
+        bodyOut = bodyOut.replace('"currency"', '"currencyTMP"');
+        //responseValue = responseValue.replace('"name"', '"nameTMP"');
+
+        // system.debug('##MBEN responseValue >> '+bodyOut);
+        JsonParser parser = Json.createParser(bodyOut);
+        parser.nextToken();
+        return parser.readValueAs(returnType);
+
     }
 
     public class MyException extends Exception{}
