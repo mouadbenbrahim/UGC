@@ -2,11 +2,11 @@
 <PresenceUserConfig xmlns="http://soap.sforce.com/2006/04/metadata">
     <assignments>
         <profiles>
-            <profile>Admin</profile>
-            <profile>Chargé de Clientèle</profile>
-            <profile>Chargé de clientèle Junior</profile>
-            <profile>Directeur du service client</profile>
-            <profile>Superviseur</profile>
+            <profile>admin</profile>
+            <profile>chargé de clientèle</profile>
+            <profile>chargé de clientèle junior</profile>
+            <profile>directeur du service client</profile>
+            <profile>superviseur</profile>
         </profiles>
     </assignments>
     <capacity>20</capacity>
