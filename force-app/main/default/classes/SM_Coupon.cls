@@ -4,6 +4,10 @@
 
 public with sharing class SM_Coupon {
 
+    /**
+     * cree en masse les couponItems des coupon de type multiples
+     * @param  coupId du parent (coupon__c)
+     */
     public static void generateCouponItems(Id coupId){
         List<CouponItem__c> couponItems = new List<CouponItem__c>();
         Coupon__c coupon = [SELECT Id, NombreCaracteres__c, Prefixe__c, Quantite__c, InclureChiffres__c, RecordType.Name
@@ -22,6 +26,11 @@ public with sharing class SM_Coupon {
         if (!couponItems.isEmpty()) {insert couponItems;}
     }
 
+    /**
+     * consommer description
+     * @param  coup    coupon description
+     * @param  dateSub date souscription description
+     */
     public static void consommer(String coup, Date dateSub) {
 
         WSZ.CouponGeneric couponG = new WSZ.CouponGeneric();
@@ -138,6 +147,28 @@ public with sharing class SM_Coupon {
             }
         }
         return couponG;
+    }
+
+    /**
+     * generateCouponItem cree 1 coupon Item pour le parent (coupon__c)
+     * @param  coupId    Id du coupon parent
+     * @param  accountId Id du compte SF pour les coupon welcome back
+     * @param  dateDebut Date du coupon
+     * @param  datefin   Date du coupon
+     */
+    public static String generateCouponItem(Id coupId, Id accountId, Date dateDebut, Date dateFin){
+        String mCode = '';
+        String recTypeId = '';
+        List<CouponItem__c> couponItems = new List<CouponItem__c>();
+        Coupon__c coupon = [SELECT Id, NombreCaracteres__c, Prefixe__c, Quantite__c, InclureChiffres__c, RecordType.Name
+                FROM Coupon__c WHERE Id = :coupId LIMIT 1];
+        // Integer qte = coupon.Quantite__c.intValue();        
+        mCode = Util.generateRandomString(coupon.NombreCaracteres__c.intValue(), coupon.InclureChiffres__c);
+        mCode = coupon.Prefixe__c + mCode;       
+        recTypeId = [SELECT Id FROM RecordType WHERE SobjectType='CouponItem__c' AND Name = :coupon.RecordType.Name LIMIT 1].Id;
+        if (recTypeId != null) {couponItems.add(new CouponItem__c(Name=mCode, Coupon__c=coupId, RecordTypeId=recTypeId, Account__c=accountId, DateDebut__c=dateDebut,DateFin__c=dateFin ));}        
+        if (!couponItems.isEmpty()) {insert couponItems;}
+        return mCode;
     }
 
 

@@ -2,6 +2,7 @@
  * Created by mouad on 03/09/2018.
  */
 
+
 public with sharing class SM_Desabonnement {
 
     public static Case dem = new Case();
@@ -95,6 +96,18 @@ public with sharing class SM_Desabonnement {
         newSubZID = rCancel.subscriptionId;
         system.debug('##MNE SM_Desabonnement desabonner newSubZID >> '+newSubZID);
         System.debug((String) JSON.serialize(rCancel));
+
+        // Create Welcome Back coupon :
+        String offreWelcomeBack = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;
+        Integer validiteCoupon = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);
+        Id parentCouponID = [Select Coupon__c from Offre__c where Name = :offreWelcomeBack Limit 1].Coupon__c;
+        String coupon = SM_Coupon.generateCouponItem(parentCouponID,acc.Id,Date.today(),Date.today().addMonths(validiteCoupon));
+
+        // TODO Create Abotier coupon
+        
+        // Mise a jour du Case avec le coupon welcomeback
+        dem.CouponWelcomeback__c = coupon;
+        update dem;
 
         // Get Amendment Id: (MBEN: 04072019)
         WSZ.AmendOut amend = SM_Amendment.getAmendment(newSubZID, zEntityId);
@@ -228,8 +241,7 @@ public with sharing class SM_Desabonnement {
 
         String codeDesaCarte = null;
         String operation = 'annulation';
-        Id remboursementId = null;
-        Case dem2 = new Case(); // objects to update
+        Id remboursementId = null;        
         WSZ.SubOut rAnnule = null;
 
 
@@ -284,8 +296,8 @@ public with sharing class SM_Desabonnement {
 
 
         /** Mise a jour de la demande */
-        dem2.Status = SM_Demande.getStatus('DesaboAnnule'); // close ticket
-        update dem2;
+        dem.Status = SM_Demande.getStatus('DesaboAnnule'); // close ticket
+        update dem;
 
         //Mise à jour du Client
         // TODO acc2.CodeResiliation = ??; voir si on met à jour depuis Trigger sur souscription

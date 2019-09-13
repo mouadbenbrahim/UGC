@@ -398,7 +398,7 @@ public with sharing class SM_Offre {
             throw new RTException(RTExceptionCode.ERREUR_OFFRE_COUPON_NON_VALABLE_CLIENT);
         }
 
-        //Trouver une offre eligible
+        //Trouver une offre eligible: filtre: produit,lieu,operation
         offPromoCodes = [
                 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Promo__c, Reference__c
                 FROM Offre__c
