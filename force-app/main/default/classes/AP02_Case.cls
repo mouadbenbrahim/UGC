@@ -813,10 +813,11 @@ public class AP02_Case {
                         if(c.Date_de_D_sabonnement__c == null){
                             c.DateFinContrat__c = null;
                         } else{
-                            Integer desaboYear = c.Date_de_D_sabonnement__c.year();
+                            /*Integer desaboYear = c.Date_de_D_sabonnement__c.year();
                             Integer desaboMonth = c.Date_de_D_sabonnement__c.month();
                             //date fin de contrat = date de désabonnement + mois en cours (exemple : désabonnement le 22/11/18 : date de fin de contrat = 30/11/18
-                            c.DateFinContrat__c = Date.newInstance(desaboYear, desaboMonth+1, 1);
+                            c.DateFinContrat__c = Date.newInstance(desaboYear, desaboMonth+1, 1);*/
+                            c.DateFinContrat__c = c.Date_de_D_sabonnement__c.addDays(1);
                         }
                     }
                 }

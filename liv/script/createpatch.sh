@@ -1,6 +1,7 @@
 #!/bin/bash
-#arguments: patch, c2aa8d, 5470cf
+#arguments: patch, c2aa8d(ancien), 5470cf(nouveau), UAT
 export WORK_DIR=work/$1
+export TGT_ENV=$4
 
 rm -rRf work/$1
 
@@ -23,6 +24,6 @@ rm -rf $WORK_DIR/mdapi/*
 liv/script/switchpkgdir.sh $WORK_DIR/fapp2/force-app
 sfdx force:source:retrieve -x $WORK_DIR/package.xml  #on deploi depuis SF et non pas depuis git
 sfdx force:source:convert -r $WORK_DIR/fapp2/force-app -d $WORK_DIR/mdapi/
-JOB_ID=$(sfdx force:mdapi:deploy -w 1 --checkonly -d $WORK_DIR/mdapi/ --targetusername UAT --testlevel NoTestRun | grep 'jobid:' | sed 's/jobid:  //g')
-sfdx force:mdapi:deploy:report -i $JOB_ID -u UAT
-# sfdx force:mdapi:deploy -d $WORK_DIR/mdapi/ --targetusername UAT --testlevel NoTestRun
+JOB_ID=$(sfdx force:mdapi:deploy -w 1 --checkonly -d $WORK_DIR/mdapi/ --targetusername $TGT_ENV --testlevel NoTestRun | grep 'jobid:' | sed 's/jobid:  //g')
+sfdx force:mdapi:deploy:report -i $JOB_ID -u $TGT_ENV
+# sfdx force:mdapi:deploy -d $WORK_DIR/mdapi/ --targetusername $TGT_ENV --testlevel NoTestRun
