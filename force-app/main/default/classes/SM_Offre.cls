@@ -515,6 +515,8 @@ public with sharing class SM_Offre {
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMFRAISDOSRED') {
+                ch.triggerEvent = 'USD';
+                ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth());                
                 ch.discountAmount = rem.Montant__c;
                 // ch.endDateCondition = 'Fixed_Period';
                 // ch.upToPeriods = (Integer) rem.NombreMensu__c;
