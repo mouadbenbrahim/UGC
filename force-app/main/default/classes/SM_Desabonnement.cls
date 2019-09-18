@@ -12,8 +12,8 @@ public with sharing class SM_Desabonnement {
     
     public static Id resiliationRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Résiliation').getRecordTypeId();
     public static Id desabonnementRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Désabonnement').getRecordTypeId();
-	public static Id retentionRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Rétention').getRecordTypeId();
-	
+    public static Id retentionRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Rétention').getRecordTypeId();
+    
     public static Id retractationRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Rétractation').getRecordTypeId();
     public static Id annulationContratRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Annulation contrat').getRecordTypeId();
     
@@ -22,7 +22,7 @@ public with sharing class SM_Desabonnement {
 
     // Operation desabonnement
     public static void desabonner(Id ddeId) {
-		
+        
         String policy = 'SpecificDate';
         String codeDesaCarte = null;
         String operation = 'desabonnement';
@@ -45,28 +45,28 @@ public with sharing class SM_Desabonnement {
         
         //calcul boolean pour savoir cas sans remboursement
         Boolean noRemboursementAFaire = false;
-		if(dem.RecordTypeId == resiliationRecordTypeId){
-			noRemboursementAFaire = true;
-		}
-		if((dem.RecordTypeId == desabonnementRecordTypeId || dem.RecordTypeId == retentionRecordTypeId) && dem.Type_de_d_sabonnement__c == 'Désabonnement avec préavis (L)'){
-			noRemboursementAFaire = true;
-		}
-		if((dem.RecordTypeId == desabonnementRecordTypeId || dem.RecordTypeId == retentionRecordTypeId) && dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)' && sub.TypeContrat__c == 'CDI'){
-			noRemboursementAFaire = true;
-		}
-		
-		
-		//calcul boolean pour savoir cas avec remboursement
+        if(dem.RecordTypeId == resiliationRecordTypeId){
+            noRemboursementAFaire = true;
+        }
+        if((dem.RecordTypeId == desabonnementRecordTypeId || dem.RecordTypeId == retentionRecordTypeId) && dem.Type_de_d_sabonnement__c == 'Désabonnement avec préavis (L)'){
+            noRemboursementAFaire = true;
+        }
+        if((dem.RecordTypeId == desabonnementRecordTypeId || dem.RecordTypeId == retentionRecordTypeId) && dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)' && sub.TypeContrat__c == 'CDI'){
+            noRemboursementAFaire = true;
+        }
+        
+        
+        //calcul boolean pour savoir cas avec remboursement
         /*Boolean remboursementAFaire = false;
-		if(dem.RecordTypeId == retentionRecordTypeId && dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)' && sub.TypeContrat__c == 'CDI'){
-			remboursementAFaire = true;
-		}
-		if(dem.RecordTypeId == retractationRecordTypeId){
-			remboursementAFaire = true;
-		}
-		if(dem.RecordTypeId == desabonnementRecordTypeId && dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)' && sub.TypeContrat__c == 'CDD'){
-			remboursementAFaire = true;
-		}*/
+        if(dem.RecordTypeId == retentionRecordTypeId && dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)' && sub.TypeContrat__c == 'CDI'){
+            remboursementAFaire = true;
+        }
+        if(dem.RecordTypeId == retractationRecordTypeId){
+            remboursementAFaire = true;
+        }
+        if(dem.RecordTypeId == desabonnementRecordTypeId && dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)' && sub.TypeContrat__c == 'CDD'){
+            remboursementAFaire = true;
+        }*/
 
 
         //Cansel de la subscription
@@ -96,18 +96,6 @@ public with sharing class SM_Desabonnement {
         newSubZID = rCancel.subscriptionId;
         system.debug('##MNE SM_Desabonnement desabonner newSubZID >> '+newSubZID);
         System.debug((String) JSON.serialize(rCancel));
-
-        // Create Welcome Back coupon :
-        String offreWelcomeBack = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;
-        Integer validiteCoupon = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);
-        Id parentCouponID = [Select Coupon__c from Offre__c where Name = :offreWelcomeBack Limit 1].Coupon__c;
-        String coupon = SM_Coupon.generateCouponItem(parentCouponID,acc.Id,Date.today(),Date.today().addMonths(validiteCoupon));
-
-        // TODO Create Abotier coupon
-        
-        // Mise a jour du Case avec le coupon welcomeback
-        dem.CouponWelcomeback__c = coupon;
-        update dem;
 
         // Get Amendment Id: (MBEN: 04072019)
         WSZ.AmendOut amend = SM_Amendment.getAmendment(newSubZID, zEntityId);
@@ -141,9 +129,9 @@ public with sharing class SM_Desabonnement {
         
         //pour autoriser l'annulation du cancel
         if(String.isBlank(rCancel.creditMemoId) && String.isBlank(rCancel.invoiceId)){  //rCancel.invoiceId
-        	newSub.Tech_AvecRembouesement__c = 'false';
+            newSub.Tech_AvecRembouesement__c = 'false';
         } else {
-        	newSub.Tech_AvecRembouesement__c = 'true';
+            newSub.Tech_AvecRembouesement__c = 'true';
         }
         
         WSZ.SubOut rUpdate = SM_Subscription.updateSub(newSubZID, newSub, zEntityId);
@@ -154,18 +142,18 @@ public with sharing class SM_Desabonnement {
         Boolean createCaseRemboursement = false;
         Decimal amountToRefundRoundFromCreditMemo; 
         Date dateResiliation;
-        if(String.isNotBlank(rCancel.creditMemoId) && !noRemboursementAFaire){	
-        	WSZ.CreditMemoOut cm = SM_CreditMemo.getCreditMemo(rCancel.creditMemoId, zEntityId);
-        	Decimal amountToRefund = Decimal.valueOf(cm.amount);
-	        if(amountToRefund < 0){
-	            amountToRefund = amountToRefund * -1;
-	        }
-	        amountToRefundRoundFromCreditMemo = amountToRefund.setScale(2);
+        if(String.isNotBlank(rCancel.creditMemoId) && !noRemboursementAFaire){  
+            WSZ.CreditMemoOut cm = SM_CreditMemo.getCreditMemo(rCancel.creditMemoId, zEntityId);
+            Decimal amountToRefund = Decimal.valueOf(cm.amount);
+            if(amountToRefund < 0){
+                amountToRefund = amountToRefund * -1;
+            }
+            amountToRefundRoundFromCreditMemo = amountToRefund.setScale(2);
             dateResiliation = dateFinContrat;
             createCaseRemboursement = true;
         } else if(String.isNotBlank(rCancel.creditMemoId)  && noRemboursementAFaire) {
-        	//pas de rembooursement si resiliation, retractation ou annulationContrat
-        	//normalement on rentre pas ici car cancel a invoice term
+            //pas de rembooursement si resiliation, retractation ou annulationContrat
+            //normalement on rentre pas ici car cancel a invoice term
             SM_CreditMemo.unpost(rCancel.creditMemoId, zEntityId);
             SM_CreditMemo.cancel(rCancel.creditMemoId, zEntityId);
         }
@@ -175,22 +163,37 @@ public with sharing class SM_Desabonnement {
         
         //Remboursement
         if(dem.RemboursementFaire__c && createCaseRemboursement){
-        	SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, amountToRefundRoundFromCreditMemo, dem.AccountId, rCancel.creditMemoId, dateResiliation, null, null);
+            SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, amountToRefundRoundFromCreditMemo, dem.AccountId, rCancel.creditMemoId, dateResiliation, null, null);
         }
         else if(createCaseRemboursement){
-        	SM_Remboursement.createRebousementCase(dem.Id, amountToRefundRoundFromCreditMemo, amountToRefundRoundFromCreditMemo, dem.AccountId, rCancel.creditMemoId, dateResiliation, null, null);
+            SM_Remboursement.createRebousementCase(dem.Id, amountToRefundRoundFromCreditMemo, amountToRefundRoundFromCreditMemo, dem.AccountId, rCancel.creditMemoId, dateResiliation, null, null);
         }
         else if(dem.RemboursementFaire__c){
-        	SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, dem.MontantRembourser__c, dem.AccountId, null, dateResiliation, null, null);
+            SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, dem.MontantRembourser__c, dem.AccountId, null, dateResiliation, null, null);
         }
 
         //Desactivation de la carte
         if(String.isBlank(newSub.CodeFinContrat__c)) {
-        	codeDesaCarte = null;
+            codeDesaCarte = null;
         } else {
-        	codeDesaCarte = newSub.CodeFinContrat__c;
+            codeDesaCarte = newSub.CodeFinContrat__c;
         }
         SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
+        
+        
+        // Create Welcome Back coupon :
+        String offreWelcomeBack = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;
+        Integer validiteCoupon = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);
+        Id parentCouponID = [Select Coupon__c from Offre__c where Name = :offreWelcomeBack Limit 1].Coupon__c;
+        String coupon = SM_Coupon.generateCouponItem(parentCouponID,acc.Id,Date.today(),Date.today().addMonths(validiteCoupon));
+
+        // TODO Create Abotier coupon
+        
+        // Mise a jour du Case avec le coupon welcomeback
+        dem.CouponWelcomeback__c = coupon;
+        update dem;
+
+
 
         clientNotification();
     }
