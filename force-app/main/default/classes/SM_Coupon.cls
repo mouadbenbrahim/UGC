@@ -10,18 +10,26 @@ public with sharing class SM_Coupon {
      */
     public static void generateCouponItems(Id coupId){
         List<CouponItem__c> couponItems = new List<CouponItem__c>();
-        Coupon__c coupon = [SELECT Id, NombreCaracteres__c, Prefixe__c, Quantite__c, InclureChiffres__c, RecordType.Name
-                FROM Coupon__c WHERE Id = :coupId LIMIT 1];
+        // Coupon__c coupon = [SELECT Id, NombreCaracteres__c, Prefixe__c, Quantite__c, InclureChiffres__c, RecordType.Name
+        //         FROM Coupon__c WHERE Id = :coupId LIMIT 1];
+        List<Coupon__c> listCoupon = new List<Coupon__c>([SELECT Id, NombreCaracteres__c, Prefixe__c, Quantite__c, InclureChiffres__c, RecordType.Name
+                FROM Coupon__c WHERE Id = :coupId and Type__c = 'Multiples' LIMIT 1]);
+        if (listCoupon.size() == 0) {
+            throw new RTException(RTExceptionCode.ERREUR_COUPON_MULTIPLE_NON_TROUVE);
+        }
+        Coupon__c coupon = listCoupon.get(0);
+
         String mCode = '';
-        String recTypeId = '';
+        Id recTypeId = [SELECT Id FROM RecordType WHERE SobjectType='CouponItem__c' AND Name = :coupon.RecordType.Name LIMIT 1].Id;
         Integer qte = coupon.Quantite__c.intValue();
+        Integer nbrCar = coupon.NombreCaracteres__c.intValue();        
+
         for (Integer i = 0; i < qte; i++){
-            mCode = Util.generateRandomString(coupon.NombreCaracteres__c.intValue(), coupon.InclureChiffres__c);
+            mCode = Util.generateRandomString(nbrCar, coupon.InclureChiffres__c);
             mCode = coupon.Prefixe__c + mCode;
-            System.debug('MBEN: Code: ' + mCode);
-            recTypeId = [SELECT Id FROM RecordType WHERE SobjectType='CouponItem__c' AND Name = :coupon.RecordType.Name LIMIT 1].Id;
+            System.debug('MBEN: Code: ' + mCode);            
             System.debug('MBEN+ recTypeId: ' + recTypeId);
-            if (recTypeId != null) {couponItems.add(new CouponItem__c(Name=mCode, Coupon__c=coupId, RecordTypeId=recTypeId));}
+            couponItems.add(new CouponItem__c(Name=mCode, Coupon__c=coupId, RecordTypeId=recTypeId));
         }
         if (!couponItems.isEmpty()) {insert couponItems;}
     }
@@ -150,7 +158,7 @@ public with sharing class SM_Coupon {
     }
 
     /**
-     * generateCouponItem cree 1 coupon Item pour le parent (coupon__c)
+     * generateCouponItem cree 1 coupon Item pour le parent (coupon__c) pour welcome back
      * @param  coupId    Id du coupon parent
      * @param  accountId Id du compte SF pour les coupon welcome back
      * @param  dateDebut Date du coupon
