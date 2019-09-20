@@ -20,7 +20,9 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_OFFRE_COUPON_NON_VALABLE_AGENT = new RTExceptionCode('erreur coupon non valable pour cet agent', 1012);
     public static final RTExceptionCode ERREUR_OFFRE_COUPON_NON_VALABLE_CLIENT = new RTExceptionCode('erreur coupon non valable pour ce client', 1013);
     public static final RTExceptionCode ERREUR_OFFRE_AUCUN_COUPON2 = new RTExceptionCode('Aucune offre n est valable avec ce coupon', 1014);
-    public static final RTExceptionCode ERREUR_COUPON_MULTIPLE_NON_TROUVE = new RTExceptionCode('erreur coupon multiple non trouve', 1015);    
+    public static final RTExceptionCode ERREUR_COUPON_MULTIPLE_NON_TROUVE = new RTExceptionCode('erreur coupon multiple non trouve', 1015);
+    public static final RTExceptionCode ERREUR_GESTCO_CDD_PRODUIT_ABSENT = new RTExceptionCode('Pas de Product Rate Plan Charge trouvee pour le geste commercial', 1016);
+    public static final RTExceptionCode ERREUR_GESTCO_APPLICATION_CDD = new RTExceptionCode('Erreur Application du Gestco sur un CDD ', 1017);
     //'Aucune offre n est valable avec ce coupon', 'ERREUR_COUPON_AUCUNE_OFFRE_VALABLE'
 
     public static final RTExceptionCode OPEN = new RTExceptionCode('Open', 30);

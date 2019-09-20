@@ -4,7 +4,7 @@
  * @Author             : mouad
  * @Group              : 
  * @Last Modified By   : mouad
- * @Last Modified On   : 19/09/2019 à 20:26:27
+ * @Last Modified On   : 23/09/2019 à 00:57:02
  * @Modification Log   : 
  * Ver       Date            Author      		    Modification
  * 1.0    07/09/2019   mouad     Initial Version
@@ -34,6 +34,22 @@ public class ActionAmendRequest {
      }
      
 
+
+}
+
+// add manually by mouad
+public class ActionAmendResult {
+
+    //  public List<ZUC.AmendRequest> requests = new List<ZUC.AmendRequest>();
+    public List<ZUC.AmendResult> results { get; set; }
+   
+    public ActionAmendResult(){
+        results = new List<ZUC.AmendResult>{new ZUC.AmendResult()};
+     }
+     
+    // private final Map<String, String> propertyMappings = new Map<String, String>{
+    //     'results' => 'results'
+    // };
 
 }
 
@@ -562,8 +578,20 @@ public class SubscriptionProductFeatureList implements WS001_CallZuora.MappedPro
         return hashCode;
     }
 }
+public class RatePlanChargeDataInRatePlanData {
+    public RatePlanChargeInRatePlanChargeData ratePlanCharge;
+    
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'RatePlanCharge' => 'ratePlanCharge'
+    };
+    
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }    
 
-public class RatePlanChargeDataInRatePlanData implements WS001_CallZuora.MappedProperties {
+}
+// public class RatePlanChargeDataInRatePlanData { //implements WS001_CallZuora.MappedProperties {
+public class RatePlanChargeInRatePlanChargeData { //implements WS001_CallZuora.MappedProperties {    
     /**
      * The accounting code for the charge. Accounting codes group transactions that contain similar accounting attributes.\n\n**Character limit**: 100\n\n\n**Values**: inherited from `ProductRatePlanCharge.AccountingCode` 
      * @return accountingCode
@@ -980,7 +1008,7 @@ public class RatePlanChargeDataInRatePlanData implements WS001_CallZuora.MappedP
     }
 
 
-
+    /*
     public Boolean equals(Object obj) {
         if (obj instanceof RatePlanChargeDataInRatePlanData) {
             RatePlanChargeDataInRatePlanData ratePlanChargeDataInRatePlanDataRatePlanCharge = (RatePlanChargeDataInRatePlanData) obj;
@@ -1110,6 +1138,7 @@ public class RatePlanChargeDataInRatePlanData implements WS001_CallZuora.MappedP
         hashCode = (17 * hashCode) + (weeklyBillCycleDay == null ? 0 : System.hashCode(weeklyBillCycleDay));
         return hashCode;
     }
+    */
 }
 
 public class AmendRequestAmendOptions implements WS001_CallZuora.MappedProperties {
@@ -1442,6 +1471,9 @@ public class AmendResult  { // implements  WS001_CallZuora.MappedProperties {
      * @return amendmentIds
      */
     public List<String> amendmentIds { get; set; }
+    
+    //TODO MBE asupprimer plus tard
+    public ActionsErrorResponse singleError { get; set; }
 
     /**
      * Get chargeMetricsData
@@ -1528,7 +1560,8 @@ public class AmendResult  { // implements  WS001_CallZuora.MappedProperties {
         'SubscriptionId' => 'subscriptionId',
         'Success' => 'success',
         'TotalDeltaMrr' => 'totalDeltaMrr',
-        'TotalDeltaTcv' => 'totalDeltaTcv'
+        'TotalDeltaTcv' => 'totalDeltaTcv',
+        'SingleError' => 'singleError'        
     };
 
     public Map<String, String> getPropertyMappings() {
@@ -1537,8 +1570,9 @@ public class AmendResult  { // implements  WS001_CallZuora.MappedProperties {
 
     public AmendResult() {
         amendmentIds = new List<String>();
-        errors = new List<ActionsErrorResponse>();
+        errors = new List<ActionsErrorResponse>{new ActionsErrorResponse()};
         invoiceDatas = new List<InvoiceData>();
+        singleError = new ActionsErrorResponse();
     }
 
 
@@ -2553,7 +2587,7 @@ public static AmendRequestPreviewOptions AmendRequestPreviewOptions_getExample()
 public static AmendmentRatePlanData AmendmentRatePlanData_getExample() {
     AmendmentRatePlanData amendmentRatePlanData = new AmendmentRatePlanData();
     amendmentRatePlanData.ratePlan = RatePlan_getExample();
-    amendmentRatePlanData.ratePlanChargeData = new List<RatePlanChargeDataInRatePlanData>{RatePlanChargeDataInRatePlanData_getExample()};
+    // amendmentRatePlanData.ratePlanChargeData = new List<RatePlanChargeDataInRatePlanData>{RatePlanChargeDataInRatePlanData_getExample()};
     amendmentRatePlanData.subscriptionProductFeatureList = SubscriptionProductFeatureList_getExample();
     return amendmentRatePlanData;
 }
@@ -2580,7 +2614,7 @@ public static SubscriptionProductFeatureList SubscriptionProductFeatureList_getE
     subscriptionProductFeatureList.subscriptionProductFeature = new List<SubscriptionProductFeature>{SubscriptionProductFeature_getExample()};
     return subscriptionProductFeatureList;
 }
-
+/*
 public static RatePlanChargeDataInRatePlanData RatePlanChargeDataInRatePlanData_getExample() {
     RatePlanChargeDataInRatePlanData ratePlanChargeDataInRatePlanDataRatePlanCharge = new RatePlanChargeDataInRatePlanData();
     ratePlanChargeDataInRatePlanDataRatePlanCharge.accountingCode = 'aeiou';
@@ -2644,7 +2678,7 @@ public static RatePlanChargeDataInRatePlanData RatePlanChargeDataInRatePlanData_
     ratePlanChargeDataInRatePlanDataRatePlanCharge.weeklyBillCycleDay = 'aeiou';
     return ratePlanChargeDataInRatePlanDataRatePlanCharge;
 }
-
+*/
 public static AmendRequestAmendOptions AmendRequestAmendOptions_getExample() {
     AmendRequestAmendOptions amendRequestAmendOptions = new AmendRequestAmendOptions();
     amendRequestAmendOptions.applyCreditBalance = true;

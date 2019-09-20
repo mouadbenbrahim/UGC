@@ -4,7 +4,7 @@
  * @Author             : mouad
  * @Group              : 
  * @Last Modified By   : mouad
- * @Last Modified On   : 19/09/2019 à 18:52:59
+ * @Last Modified On   : 23/09/2019 à 02:02:21
  * @Modification Log   : 
  * Ver       Date            Author      		    Modification
  * 1.0    19/09/2019   mouad     Initial Version
@@ -22,9 +22,16 @@ public ZUC_Parser(Boolean mapSwap) {
 }
 
 
+/**
+* @description serialize un objet en json string avec renommage des variables.
+* Ca utilise propertymapping des classes pour le renommage, utilise pour les requete send de Zuora.
+* @author mouad | 23/09/2019 
+* @param Object lc1 : l object a convertir
+* @return String : json de la nouvelle structure renommer.
+**/
 public String serializeWithMapping(Object lc1){
 
-    Map<String,Object> currMap = untypeObj(lc1);
+    Map<String,Object> currMap = untypeObj(lc1,true);
     String bodyStr = JSON.serialize(lc1,true);
 
     JSONParser parser = JSON.createParser(bodyStr);
@@ -131,7 +138,7 @@ public void runParse(JSONParser myParser, JSONGenerator gen, Map<String,Object> 
 				//if (currMap.containsKey(gName)){newName=String.valueOf(propMap.get(gName));} else {newName=gName;}
 				gen.writeFieldName(getMapVal(propMap,gName));
 				gen.writeStartObject();
-				runParse(myParser, gen,untypeObj(currMap.get(gName))); //recursive
+				runParse(myParser, gen,untypeObj(currMap.get(gName),true)); //recursive
 			}		
 		}else if (gToken == 'START_OBJECT' && gName == 'propertyMappings') {
 				myParser.skipChildren();
@@ -162,7 +169,7 @@ public void runParse(JSONParser myParser, JSONGenerator gen, Map<String,Object> 
 				List<Object> listObj = (List<Object>)currMap.get(gName);			 				
 			 	for (Object obj1 : listObj){										
 			 		gen.writeStartObject();
-			 		runParse(myParser, gen, untypeObj(obj1)); //recursive
+			 		runParse(myParser, gen, untypeObj(obj1,true)); //recursive
 			 	}
 				 gen.writeEndArray();			 	
 			}
@@ -186,8 +193,8 @@ public void runParse(JSONParser myParser, JSONGenerator gen, Map<String,Object> 
 * @param Object currObj 
 * @return Map<String, Object> 
 **/
-public Map<String,Object> untypeObj(Object currObj) {
-	Map<String,Object> map1 = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(currObj,true));
+public Map<String,Object> untypeObj(Object currObj, Boolean ignoreEmpty) {
+	Map<String,Object> map1 = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(currObj,ignoreEmpty));
 	return map1;
 }
 
@@ -209,5 +216,111 @@ public void jsonParseLog(String jString) {
 	}
 
 }
+
+
+public void runParse2(Map<String,Object> emptyMap, Map<String,Object> currMap,Map<String,Object> newMap){
+		String keytrans='DEFAULT';
+		String currItemJson;
+		Object currItemObj;
+		Object empObj;
+		String emptyJson;
+		System.debug('emptyMap: ' + emptyMap);
+		System.debug('currMap: ' + currMap);
+		System.debug('newMap: ' + newMap);		
+		Map<String,Object> propMap = untypeObj(emptyMap.get('propertyMappings'),false);
+
+		for (String itemKey : currMap.keySet()){					
+			currItemObj = currMap.get(itemKey);
+			currItemJson = JSON.serialize(currItemObj,false);
+			keyTrans = getMapVal(propMap,itemKey); 
+
+			System.debug('MBEN: itemKey: '+itemKey + '  keyTrans: ' + keyTrans + '   Json: ' + currItemJson);
+			
+			if (currItemJson == null) {
+				System.debug('MBEN: Cas non traite dans ARRAY');
+
+			}else if (currItemJson.startsWith('{')) {
+			 	System.debug('MBEN {{{: un objet');
+				Map<String,Object> currItemMap = (Map<String,Object>)JSON.deserializeUntyped(currItemJson);
+				Map<String,Object> emptyItemMap = untypeObj(emptyMap.get(keyTrans),false);
+				System.debug('MBEN emptyMap: '+emptyMap);
+				System.debug('MBEN emptyMapObject: '+emptyMap.get(keyTrans));
+				System.debug('MBEN emptyItemMap: '+emptyItemMap);
+				Map<String,Object> newMap1 = new Map<String,Object>();
+				runParse2(emptyItemMap,currItemMap,newMap1);
+				newMap.put(keyTrans,newMap1);				
+
+			 }else if (currItemJson.startsWith('[{')){ // liste d objets
+			 	System.debug('MBEN [{: liste d objets');
+				List<Object> listObj = (List<Object>)currItemObj;
+				List<Object> newListObj = new List<Object>();
+				System.debug('propMap: '+propMap);
+				System.debug('itemKey: '+itemKey);				
+				System.debug('keyTrans: '+keyTrans);
+				Object emptyObj = emptyMap.get(keyTrans);
+				List<Object> listEmpyObj = (List<Object>)emptyObj;
+				System.debug('listObj: '+listObj);
+				System.debug('listEmpyObj: '+listEmpyObj);
+
+			 	for (Object obj1 : listObj){										
+					Map<String,Object> inMap1 = untypeObj(obj1,true);
+					Map<String,Object> emptyMap1 = untypeObj(listEmpyObj.get(0),true); //tous les element ont la meme propertyMappings, on prend le premier
+					Map<String,Object> propMap1 = untypeObj(emptyMap1.get('propertyMappings'),false);
+					Map<String,Object> newMap2 = new Map<String,Object>(); 					
+
+			 	 	runParse2(emptyMap1,inMap1,newMap2);
+
+					newListObj.add(newMap2); //voir si map rentre dans Objet
+			 	}
+				 //keyTrans = getMapVal(propMap,itemKey);
+				 newMap.put(keyTrans,newListObj);
+                
+            }else if (currItemJson.startsWith('[')) { // List simple:  pas d objet		 	
+				System.debug('MBEN [: liste simple');
+				List<Object> listObj = (List<Object>)currItemObj;
+				List<Object> newListObj = new List<Object>();
+			 	for (Object obj1 : listObj){
+					newListObj.add(obj1);					
+			 	}				
+				newMap.put(keyTrans,newListObj);
+
+			 }else { // Une valeur
+			 	System.debug('-----: une valeur');				
+				newMap.put(keyTrans,currMap.get(itemKey));
+			 }
+		}
+}
+
+/**
+* @description convertir un json en utilisant une class equivalente dont les noms sont gere par propmapping
+* Utilise pour les json Resultat de zuora
+* @author mouad | 23/09/2019 
+* @param String jsonStr 
+* @param String className 
+* @return String : json de la nouvelle structure traduite
+**/
+public String serializeWithMapping2(String jsonStr, String className){
+/* Sample call:
+String bodyOutS = '{"SingleError":{"Code":"Err000","Message":"pb000"},"Errors":[{"Code":"Err111","Message":"pb111"},{"Code":"Err222","Message":"pb222"}],"SubscriptionId":"8adcd9eb6d485afb016d4a7d090015c8","TotalDeltaTcv":20,"Success":true,"AmendmentIds":["8adcd9eb6d485afb016d4a7d087b15be","XXX8adcd9eb6d485afb016d4a7d087b15be"],"TotalDeltaMrr":0,"InvoiceId":"8adcd9eb6d485afb016d4a7d0b7915f1"}';
+ZUC_Parser p = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+String jsonStr = p.serializeWithMapping2(bodyOutS,'ZUC.AmendResult');
+System.debug('jsonStr' + jsonStr);
+*/
+
+
+	Type t = Type.forName(className);
+	Object emptyResult = (Object)t.newInstance();
+	//ZUC.AmendResult emptyResult = new ZUC.AmendResult();	
+	Map<String,Object> newMap = new Map<String,Object>();
+	// System.debug('emptyResultJSON' + JSON.serialize(emptyResult,false));
+	Map<String,Object> emptyMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(emptyResult,false));
+	Map<String,Object> inMap = (Map<String,Object>)JSON.deserializeUntyped(jsonStr);
+	runParse2(emptyMap,inMap,newMap);
+	System.debug('MBEN: map result: ' + newMap); // MAP
+	System.debug('MBEN: json result: ' + JSON.serialize(newMap,false)); // JSON
+	System.debug('MBEN: object result: ' + JSON.deserializeStrict(JSON.serialize(newMap,false),t)); //Object mais contient les null
+	return JSON.serialize(newMap,false);
+}
+
 
 }

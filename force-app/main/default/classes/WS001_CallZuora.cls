@@ -217,8 +217,9 @@ public with sharing class WS001_CallZuora {
             //reqParser.mapSwap = true;
             bodyInS = reqParser.serializeWithMapping(bodyIn);
             req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
         }    
-
+        
         req.setTimeout(60000);
         HttpResponse res = null;
         res = h.send(req);
