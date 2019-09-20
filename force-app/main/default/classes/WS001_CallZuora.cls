@@ -4,7 +4,7 @@
  * @Author             : mouad
  * @Group              : 
  * @Last Modified By   : mouad
- * @Last Modified On   : 09/09/2019 à 06:10:40
+ * @Last Modified On   : 19/09/2019 à 22:25:03
  * @Modification Log   : 
  * Ver       Date            Author      		    Modification
  * 1.0    09/09/2019   mouad     Initial Version
@@ -194,12 +194,12 @@ public with sharing class WS001_CallZuora {
         return wsOut;
     }
 
-    public static Object sendRequest2(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
+    public static String sendRequest2(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
     Type requestType, Type returnType, String version){
-        String bodyOut = '';       
+        String bodyOutS;       
         Boolean success = null;
         String msgError = '';
-        String bodyInS = '';
+        String bodyInS;
 
         Http h = new Http();
         HttpRequest req = new HttpRequest();
@@ -213,6 +213,30 @@ public with sharing class WS001_CallZuora {
         }
 
         if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            //reqParser.mapSwap = true;
+            bodyInS = reqParser.serializeWithMapping(bodyIn);
+            req.setBody(bodyInS);
+        }    
+
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+        
+        /*JsonParser parser = Json.createParser(bodyOutS);
+        parser.nextToken();
+        bodyOut = parser.readValueAs(Object);*/
+        
+        //Object bodyOut = (Object)JSON.deserializeStrict(bodyOutS,Object.class);
+        //ZUC_Parser resParser = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+        //bodyOut = resParser.serializeWithMapping(bodyOut);
+
+        return bodyOutS;
+
+            /*
             bodyInS = (String) JSON.serialize(bodyIn);
             Object o = requestType.newInstance();
             System.debug('---------ETAP1 INSTANCE');
@@ -226,26 +250,25 @@ public with sharing class WS001_CallZuora {
                         '"' + baseName + '":');
                 }
                 System.debug(bodyInS);
-            }            
-            req.setBody(bodyInS);
-        }
+            } 
+            */           
+            
+        
 
 
         // system.debug('##MBEN requestValue >> '+bodyIn);
         //req.setCompressed(true); si active erreur sur le retour JSON.
-        req.setTimeout(60000);
-        HttpResponse res = null;
-        res = h.send(req);
-        bodyOut = res.getBody();
+        
         //blob res2 = res.getBodyAsBlob();
 
-        bodyOut = bodyOut.replace('"currency"', '"currencyTMP"');
+        //bodyOut = bodyOut.replace('"currency"', '"currencyTMP"');
         //responseValue = responseValue.replace('"name"', '"nameTMP"');
 
-        // system.debug('##MBEN responseValue >> '+bodyOut);
-        JsonParser parser = Json.createParser(bodyOut);
-        parser.nextToken();
-        return parser.readValueAs(returnType);
+
+        //JsonParser parser = Json.createParser(bodyOut);
+        //parser.nextToken();
+        //return parser.readValueAs(returnType);
+        
 
     }
 

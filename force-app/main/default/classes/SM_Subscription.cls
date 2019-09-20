@@ -295,5 +295,68 @@ public with sharing class SM_Subscription {
         return getSubscriptionByName(subName);
 
     }*/
+    
+    //##MNE 18/09/2019
+    public static void SubscriptionBeforeInsert (List<Zuora__Subscription__c> listSubscriptions)  {   
+    	system.debug('##MNE SM_Subscription SubscriptionBeforeInsert listSubscriptions >> '+listSubscriptions);
+    	if(listSubscriptions != null && listSubscriptions.size() > 0){
+    		checkPayeurSubscription(null, listSubscriptions);
+    	}
+    }
+    
+    //##MNE 18/09/2019
+    public static void SubscriptionBeforeUpdate (map<Id, Zuora__Subscription__c> mapOldSubscriptions, List<Zuora__Subscription__c> listSubscriptions)  { 
+    	system.debug('##MNE SM_Subscription SubscriptionBeforeUpdate mapOldSubscriptions >> '+mapOldSubscriptions); 
+    	system.debug('##MNE SM_Subscription SubscriptionBeforeUpdate listSubscriptions >> '+listSubscriptions);
+    	if(listSubscriptions != null && listSubscriptions.size() > 0){
+    		checkPayeurSubscription(mapOldSubscriptions, listSubscriptions);
+    	} 
+    }
+    
+    //##MNE 18/09/2019
+    public static void checkPayeurSubscription (map<Id, Zuora__Subscription__c> mapOldSubscriptions, List<Zuora__Subscription__c> listSubscriptions)  {
+    	system.debug('##MNE SM_Subscription checkPayeurSubscription mapOldSubscriptions >> '+mapOldSubscriptions); 
+    	system.debug('##MNE SM_Subscription checkPayeurSubscription listSubscriptions >> '+listSubscriptions);
+    	
+    	if(listSubscriptions == null || listSubscriptions.size() == 0){
+    		return;
+    	} 
+    	
+    	list<Account> accountToUpdate = new list<Account>();
+    	
+    	for(Zuora__Subscription__c sub : listSubscriptions){
+    		Account acc = new Account(Id = sub.Zuora__Account__c);
+    		Zuora__Subscription__c oldSub = null;
+    		if(mapOldSubscriptions != null && mapOldSubscriptions.containsKey(sub.Id)){
+    			oldSub = mapOldSubscriptions.get(sub.Id);
+    		}
+    		
+    		if(oldSub == null && sub.PayeurCRMID__c != sub.Zuora__Account__c){
+				sub.Payeur__c = sub.PayeurCRMID__c;
+				acc.Payeur__c = sub.PayeurCRMID__c;
+				accountToUpdate.add(acc);
+			}
+			else if(oldSub != null ){
+				if(oldSub.PayeurCRMID__c != sub.PayeurCRMID__c) {
+					if(sub.PayeurCRMID__c == sub.Zuora__Account__c){
+						//sub.Zuora__Account__r.Payeur__c = null
+						acc.Payeur__c = null;
+					}
+					else if(sub.PayeurCRMID__c != sub.Zuora__Account__c ) {
+						sub.Payeur__c = sub.PayeurCRMID__c;
+						acc.Payeur__c = sub.PayeurCRMID__c;
+						accountToUpdate.add(acc);
+					}
+				}
+			}
+    	}
+    	
+    	system.debug('##MNE SM_Subscription checkPayeurSubscription accountToUpdate >> '+accountToUpdate);
+    	if(accountToUpdate.size() > 0){
+    		update accountToUpdate;
+    	} 
+    	
+    }
+
 
 }

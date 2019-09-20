@@ -4,7 +4,7 @@
  * @Author             : mouad
  * @Group              : 
  * @Last Modified By   : mouad
- * @Last Modified On   : 09/09/2019 à 17:15:43
+ * @Last Modified On   : 19/09/2019 à 20:26:27
  * @Modification Log   : 
  * Ver       Date            Author      		    Modification
  * 1.0    07/09/2019   mouad     Initial Version
@@ -24,12 +24,13 @@ public void addMap(Map<String,String> curMap){
 
 public class ActionAmendRequest {
 
-    public List<ZUC.AmendRequest> requests = new List<ZUC.AmendRequest>();
+    //  public List<ZUC.AmendRequest> requests = new List<ZUC.AmendRequest>();
+    public List<ZUC.AmendRequest> requests { get; set; }
    
     public ActionAmendRequest(){
-        this.requests.add(new ZUC.AmendRequest());
+        requests = new List<ZUC.AmendRequest>();
         // requestMap.putALL(new Map<String, String>{'a1' => 'aa1'});
-        system.debug(requestMap);
+        // system.debug(requestMap);
      }
      
 
@@ -39,9 +40,9 @@ public class ActionAmendRequest {
 public class AmendRequest implements WS001_CallZuora.MappedProperties {
 
     public AmendRequest() {
-        this.amendments = new List<Amendment>();
-        this.amendOptions = new AmendRequestAmendOptions();
-        this.previewOptions = new AmendRequestPreviewOptions();
+        amendments = new List<Amendment>();
+        //this.amendOptions = new AmendRequestAmendOptions();
+        //this.previewOptions = new AmendRequestPreviewOptions();
         // super.addMap(new Map<String, String>{'b1' => 'bb1'});
     }
 
@@ -78,9 +79,9 @@ public class AmendRequest implements WS001_CallZuora.MappedProperties {
 
 public class Amendment {
     
-    Public Amendment(){
-        this.ratePlanData = new AmendmentRatePlanData();
-    }
+    // Public Amendment(){
+    //     this.ratePlanData = new AmendmentRatePlanData();
+    // }
     /**
     *  Determines whether the subscription is automatically renewed, or whether it expires at the end of the term and needs to be manually renewed. For amendment of type `TermsAndConditions`, this field is only required if you change the automatic renewal status of a subscription.\n\n\n**Values**: true, false 
     * @return autoRenew
@@ -249,9 +250,44 @@ public class Amendment {
     */
     public Datetime updatedDate { get; set; }
 
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'AutoRenew' => 'autoRenew',
+        'Code' => 'code',
+        'ContractEffectiveDate' => 'contractEffectiveDate',
+        'CreatedById' => 'createdById',
+        'CreatedDate' => 'createdDate',
+        'CurrentTerm' => 'currentTerm',
+        'CurrentTermPeriodType' => 'currentTermPeriodType',
+        'CustomerAcceptanceDate' => 'customerAcceptanceDate',
+        'Description' => 'description',
+        'DestinationAccountId' => 'destinationAccountId',
+        'DestinationInvoiceOwnerId' => 'destinationInvoiceOwnerId',
+        'EffectiveDate' => 'effectiveDate',
+        'Name' => 'name',
+        'RatePlanData' => 'ratePlanData',
+        'RenewalSetting' => 'renewalSetting',
+        'RenewalTerm' => 'renewalTerm',
+        'RenewalTermPeriodType' => 'renewalTermPeriodType',
+        'ResumeDate' => 'resumeDate',
+        'ServiceActivationDate' => 'serviceActivationDate',
+        'SpecificUpdateDate' => 'specificUpdateDate',
+        'Status' => 'status',
+        'SubscriptionId' => 'subscriptionId',
+        'SuspendDate' => 'suspendDate',
+        'TermStartDate' => 'termStartDate',
+        'TermType' => 'termType',
+        'Type' => 'r_type',
+        'UpdatedById' => 'updatedById',
+        'UpdatedDate' => 'updatedDate'
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }    
+
 }
 
-public class AmendRequestPreviewOptions implements WS001_CallZuora.MappedProperties {
+public class AmendRequestPreviewOptions { // implements WS001_CallZuora.MappedProperties {
 /**
     *  Determines whether to create an amendment or display a preview of the change.
     * @return enablePreviewMode
@@ -324,9 +360,9 @@ public Integer hashCode() {
 public class AmendmentRatePlanData implements  WS001_CallZuora.MappedProperties {
 
 public AmendmentRatePlanData() {
-    this.ratePlan = new RatePlan();
-    this.ratePlanChargeData = new List<RatePlanChargeDataInRatePlanData>();    
-    this.subscriptionProductFeatureList = new SubscriptionProductFeatureList();
+    //this.ratePlan = new RatePlan();
+    ratePlanChargeData = new List<RatePlanChargeDataInRatePlanData>();    
+    // this.subscriptionProductFeatureList = new SubscriptionProductFeatureList();
 }
 
 /**
@@ -1081,11 +1117,11 @@ public class AmendRequestAmendOptions implements WS001_CallZuora.MappedPropertie
      * 
      * @return applyCreditBalance
      */
-    public AmendRequestAmendOptions(){
-        this.electronicPaymentOptions = new ElectronicPaymentOptions();
-        this.externalPaymentOptions = new ExternalPaymentOptions();
-        this.invoiceProcessingOptions = new InvoiceProcessingOptions();
-    }
+    // public AmendRequestAmendOptions(){
+    //     // this.electronicPaymentOptions = new ElectronicPaymentOptions();
+    //     // this.externalPaymentOptions = new ExternalPaymentOptions();
+    //     // this.invoiceProcessingOptions = new InvoiceProcessingOptions();
+    // }
 
     public Boolean applyCreditBalance { get; set; }
 
@@ -1400,7 +1436,7 @@ public class SubscriptionProductFeature  implements WS001_CallZuora.MappedProper
     }
 }
 
-public class AmendResult  implements  WS001_CallZuora.MappedProperties {
+public class AmendResult  { // implements  WS001_CallZuora.MappedProperties {
     /**
      * A list of the IDs of the associated amendments. There can be as many as three amendment IDs. Use a comma to separate each amendment ID.\n
      * @return amendmentIds

@@ -53,7 +53,9 @@ public without sharing class LCC006_GesteCommercial {
 		ProductRatePlanChargeId = prodRatePlanCharge.zid__c;
 		list<SM001_GesteCommercial.Amendment> listAmendment = new list<SM001_GesteCommercial.Amendment>();
         
-        Date dateDebutRemise = sub.Zuora__SubscriptionStartDate__c;
+        //Redmine MNE 18/09/2019 ticket n°699
+        //Date dateDebutRemise = sub.Zuora__SubscriptionStartDate__c;
+        Date dateDebutRemise = sub.Zuora__TermEndDate__c;
         system.debug('##MNE LCC006_GesteCommercial executeGesteCommercialCDD dateDebutRemise >> '+dateDebutRemise);
         
         //add product mois gratuit
