@@ -24,6 +24,8 @@ rm -rf $WORK_DIR/mdapi/*
 liv/script/switchpkgdir.sh $WORK_DIR/fapp2/force-app
 sfdx force:source:retrieve -x $WORK_DIR/package.xml  #on deploi depuis SF et non pas depuis git
 sfdx force:source:convert -r $WORK_DIR/fapp2/force-app -d $WORK_DIR/mdapi/
-JOB_ID=$(sfdx force:mdapi:deploy -w 1 --checkonly -d $WORK_DIR/mdapi/ --targetusername $TGT_ENV --testlevel NoTestRun | grep 'jobid:' | sed 's/jobid:  //g')
-sfdx force:mdapi:deploy:report -i $JOB_ID -u $TGT_ENV
+# JOB_ID=$(sfdx force:mdapi:deploy -w 1 --checkonly -d $WORK_DIR/mdapi/ --targetusername $TGT_ENV --testlevel NoTestRun | grep 'jobid:' | sed 's/jobid:  //g')
+liv/script/deploy.sh $TGT_ENV teste
+echo "sfdx force:mdapi:deploy:report -i xxxxx -u $TGT_ENV"
+echo "liv/script/deploy.sh $TGT_ENV run"
 # sfdx force:mdapi:deploy -d $WORK_DIR/mdapi/ --targetusername $TGT_ENV --testlevel NoTestRun

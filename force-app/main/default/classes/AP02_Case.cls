@@ -171,6 +171,7 @@ public class AP02_Case {
         // Mise à jour des champs tech sur Case à partir des données Contact__c
         List<Case> casesGroupementLst = new List<Case>();
         List<Case> casesSocialNetwork = new List<Case>();
+        map<Id, Case> mapCaseByIdForFI = new map<Id, Case>();
 
         for(Case caseToUpd : mapNewCases.values()){
             Case oldCase = mapOldCases.get(caseToUpd.Id);
@@ -188,6 +189,10 @@ public class AP02_Case {
                 && (caseToUpd.TECH_idCritizr__c != null || caseToUpd.TECH_idFacebook__c != null || caseToUpd.TECH_idInstagram__c != null || caseToUpd.TECH_idTwitter__c != null)) {
                 casesSocialNetwork.add(caseToUpd);
             }
+            
+            if(caseToUpd.Subscription__c != null && !caseToUpd.Subscription__c.equals(oldCase.Subscription__c)){
+            	mapCaseByIdForFI.put(caseToUpd.Id, caseToUpd);
+            }
         }
 
         // Appel de la méthode de maj des champs Tech famille, motif et sous motif
@@ -203,6 +208,11 @@ public class AP02_Case {
             updateAccountOnReconciliationSN(casesSocialNetwork);
         }
         
+        // Appel de méthode update Fil Impression
+        system.debug ('##MNE AP02_Case processTriggerAfterUpdate mapCaseByIdForFI >> ' + mapCaseByIdForFI.size()) ; 
+        if(mapCaseByIdForFI.size() > 0){
+            updateFilImpression(mapCaseByIdForFI);
+        }
     }
     
     private static Boolean isEmpty(String s) {
@@ -905,8 +915,34 @@ public class AP02_Case {
     }
 
     public static void createReboursementCase(Case demande){
-
         SM_Remboursement.createRebousementCase(demande.Id, demande.MontantRembourser__c, demande.MontantRembourser__c, demande.AccountId, demande.CreditMemoId__c, demande.DateFinContrat__c, null, null);
-
+    }
+    
+    public static void updateFilImpression(map<Id, Case> mapCaseByIdForFI) {
+    	system.debug('##MNE AP02_Case updateFilImpression mapCaseByIdForFI >> '+mapCaseByIdForFI);
+        
+        if(mapCaseByIdForFI == null || mapCaseByIdForFI.size() == 0){
+        	return;
+        }
+        
+        set<Id> setCaseId = mapCaseByIdForFI.keySet();
+        
+        list<File_Impression__c> listFIToProcess = new list<File_Impression__c>([Select Id, Case__c, SubscriptionZID__c, Subscription__c FROM File_Impression__c WHERE Case__c IN :setCaseId]);
+        list<File_Impression__c> listFIToUpdated = new list<File_Impression__c>();
+        
+        if(listFIToProcess == null || listFIToProcess.size() == 0){
+        	return;
+        }
+        
+        for(File_Impression__c fi : listFIToProcess){
+            if(fi.Case__c != null && mapCaseByIdForFI.containsKey(fi.Case__c)){
+                fi.Subscription__c    = mapCaseByIdForFI.get(fi.Case__c).Subscription__c;
+                fi.SubscriptionZID__c = mapCaseByIdForFI.get(fi.Case__c).SubscriptionZID__c;
+                listFIToUpdated.add(fi);
+            }   
+        }
+        if(listFIToUpdated.size() > 0){
+            update listFIToUpdated;
+        }
     }
 }

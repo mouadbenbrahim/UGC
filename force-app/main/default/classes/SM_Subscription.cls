@@ -192,9 +192,7 @@ public with sharing class SM_Subscription {
         map<String, Zuora__Subscription__c> mapSubscriptionByZuoraPreviousSubscriptionId = new map<String, Zuora__Subscription__c>();
         
         for(Zuora__Subscription__c sub : listSubscriptions){
-            //if(String.isNotBlank(sub.Zuora__PreviousSubscriptionId__c)){
             if(String.isNotBlank(sub.Name)){
-                //mapSubscriptionByZuoraPreviousSubscriptionId.put(sub.Zuora__PreviousSubscriptionId__c, sub);
                 mapSubscriptionByZuoraPreviousSubscriptionId.put(sub.Name, sub);
             }
         }
@@ -202,8 +200,8 @@ public with sharing class SM_Subscription {
         list<Case> listCasesToProcess = new list<Case>([Select Id, SubscriptionZID__c, Subscription__c FROM Case WHERE SubscriptionZID__c IN :mapSubscriptionByZuoraPreviousSubscriptionId.keySet()]);
         list<Case> listCasesToUpdated = new list<Case>();
         
-        list<File_Impression__c> listFIToProcess = new list<File_Impression__c>([Select Id, SubscriptionZID__c, Subscription__c FROM File_Impression__c WHERE SubscriptionZID__c IN :mapSubscriptionByZuoraPreviousSubscriptionId.keySet()]);
-        list<File_Impression__c> listFIToUpdated = new list<File_Impression__c>();
+        /*list<File_Impression__c> listFIToProcess = new list<File_Impression__c>([Select Id, SubscriptionZID__c, Subscription__c FROM File_Impression__c WHERE SubscriptionZID__c IN :mapSubscriptionByZuoraPreviousSubscriptionId.keySet()]);
+        list<File_Impression__c> listFIToUpdated = new list<File_Impression__c>();*/
         
         for(Case c : listCasesToProcess){
             if(String.isNotBlank(c.SubscriptionZID__c) && mapSubscriptionByZuoraPreviousSubscriptionId.containsKey(c.SubscriptionZID__c)){
@@ -216,7 +214,7 @@ public with sharing class SM_Subscription {
             update listCasesToUpdated;
         }
         
-        for(File_Impression__c fi : listFIToProcess){
+        /*for(File_Impression__c fi : listFIToProcess){
             if(String.isNotBlank(fi.SubscriptionZID__c) && mapSubscriptionByZuoraPreviousSubscriptionId.containsKey(fi.SubscriptionZID__c)){
                 fi.Subscription__c    = mapSubscriptionByZuoraPreviousSubscriptionId.get(fi.SubscriptionZID__c).Id;
                 fi.SubscriptionZID__c = mapSubscriptionByZuoraPreviousSubscriptionId.get(fi.SubscriptionZID__c).Name; 
@@ -225,7 +223,7 @@ public with sharing class SM_Subscription {
         }
         if(listFIToUpdated.size() > 0){
             update listFIToUpdated;
-        }
+        }*/
     }
     
     public without sharing class WRPRep {
@@ -322,10 +320,16 @@ public with sharing class SM_Subscription {
     		return;
     	} 
     	
-    	list<Account> accountToUpdate = new list<Account>();
+    	map<Id, Account> mapAccountToUpdateById = new map<Id, Account>();
+    	set<Id> setAccountId = new set<Id>();
     	
     	for(Zuora__Subscription__c sub : listSubscriptions){
-    		Account acc = new Account(Id = sub.Zuora__Account__c);
+    		Account acc = null;
+    		if(sub.Zuora__Account__c != null){
+    			setAccountId.add(sub.Zuora__Account__c);
+    			acc = new Account(Id = sub.Zuora__Account__c);
+    		}
+    		
     		Zuora__Subscription__c oldSub = null;
     		if(mapOldSubscriptions != null && mapOldSubscriptions.containsKey(sub.Id)){
     			oldSub = mapOldSubscriptions.get(sub.Id);
@@ -333,29 +337,48 @@ public with sharing class SM_Subscription {
     		
     		if(oldSub == null && sub.PayeurCRMID__c != sub.Zuora__Account__c){
 				sub.Payeur__c = sub.PayeurCRMID__c;
-				acc.Payeur__c = sub.PayeurCRMID__c;
-				accountToUpdate.add(acc);
+				if(acc != null){
+					acc.Payeur__c = sub.PayeurCRMID__c;
+					mapAccountToUpdateById.put(acc.Id, acc);
+				}
 			}
 			else if(oldSub != null ){
 				if(oldSub.PayeurCRMID__c != sub.PayeurCRMID__c) {
 					if(sub.PayeurCRMID__c == sub.Zuora__Account__c){
-						//sub.Zuora__Account__r.Payeur__c = null
-						acc.Payeur__c = null;
+						if(acc != null){
+							acc.Payeur__c = null;
+							mapAccountToUpdateById.put(acc.Id, acc);
+						}
 					}
 					else if(sub.PayeurCRMID__c != sub.Zuora__Account__c ) {
 						sub.Payeur__c = sub.PayeurCRMID__c;
-						acc.Payeur__c = sub.PayeurCRMID__c;
-						accountToUpdate.add(acc);
+						if(acc != null){
+							acc.Payeur__c = sub.PayeurCRMID__c;
+							mapAccountToUpdateById.put(acc.Id, acc);
+						}
 					}
 				}
 			}
     	}
     	
-    	system.debug('##MNE SM_Subscription checkPayeurSubscription accountToUpdate >> '+accountToUpdate);
-    	if(accountToUpdate.size() > 0){
-    		update accountToUpdate;
-    	} 
-    	
+    	if(setAccountId.size() > 0){
+    		list<Account> accountToUpdate = new list<Account>();
+	    	map<Id, Account> mapAccountById = new map<Id, Account>([SELECT Id FROM Account WHERE Id  IN :setAccountId]);
+	    	set<Id> setAccountIdFromMap = mapAccountById.keySet();
+	    	
+	    	if(setAccountIdFromMap != null && setAccountIdFromMap.size() > 0){
+		    	for(Id accId : setAccountIdFromMap){
+		    		if(mapAccountToUpdateById.containsKey(accId)){
+		    			accountToUpdate.add(mapAccountToUpdateById.get(accId));
+		    		}
+		    	}
+		    	
+		    	system.debug('##MNE SM_Subscription checkPayeurSubscription accountToUpdate >> '+accountToUpdate);
+		    	if(accountToUpdate.size() > 0){
+		    		update accountToUpdate;
+		    	} 
+    		}
+    	}
     }
 
 
