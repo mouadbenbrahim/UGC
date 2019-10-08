@@ -156,6 +156,8 @@ public without sharing class SM_Desabonnement {
             }
                 
         
+          
+            
             //Remboursement
             if(dem.RemboursementFaire__c && createCaseRemboursement){
                 SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, amountToRefundRoundFromCreditMemo, dem.AccountId, rCancel.creditMemoId, dateResiliation, null, Date.today());
@@ -166,7 +168,7 @@ public without sharing class SM_Desabonnement {
             else if(dem.RemboursementFaire__c){
                 SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, dem.MontantRembourser__c, dem.AccountId, null, dateResiliation, null, Date.today());
             }
-
+            
             //Desactivation de la carte
             if(String.isBlank(zSubIn.CodeFinContrat__c)) {
                 codeDesaCarte = null;
@@ -174,6 +176,8 @@ public without sharing class SM_Desabonnement {
                 codeDesaCarte = zSubIn.CodeFinContrat__c;
             }
             SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
+
+            
         
         
             // Create Welcome Back coupon :

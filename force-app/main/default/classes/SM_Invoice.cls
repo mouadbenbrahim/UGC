@@ -35,10 +35,14 @@ public with sharing class SM_Invoice {
     	system.debug ('##MNE SM_Invoice processTriggerAfterInsert listInvoices >> ' + listInvoices); 
     	map<Id, Zuora__ZInvoice__c> mapInvoiceByIdToCreateCase = new map<Id, Zuora__ZInvoice__c>();
     	set<Id> setAccountIdToDeactivateCard = new set<Id>();
+    	set<Id> setAccountIdToReactivateCard = new set<Id>();
     	
     	for(Zuora__ZInvoice__c inv : listInvoices){
     		if(inv.Tech_FlagRejetPaye__c == 'true'){
     			//activer carte
+    			if(inv.Zuora__Account__c != null){
+    				setAccountIdToReactivateCard.add(inv.Zuora__Account__c);
+    			}
     		}
     		else if(inv.Tech_FlagRejetPaye__c == 'false' && (inv.Tech_TypeRejet__c == 'Rejet_1' || inv.Tech_TypeRejet__c == 'Rejet_2')){
     			mapInvoiceByIdToCreateCase.put(inv.Id, inv);
@@ -53,13 +57,15 @@ public with sharing class SM_Invoice {
     		listRejetCaseCreated = createRejetCase(mapInvoiceByIdToCreateCase);
     	}
     	
-    	//map<Id, Boolean> desactivationResult;
     	if(setAccountIdToDeactivateCard.size() > 0){
-    		//desactivationResult = SM_Carte.desactivationByList(setAccountIdToDeactivateCard, 'X');
-    		system.debug ('##MNE SM_Invoice processTriggerAfterInsert callout Asynchrone methode'); 
+    		system.debug ('##MNE SM_Invoice processTriggerAfterInsert callout Asynchrone methode desactivation card'); 
     		SM_Carte.desactivationByListAsynchrone(setAccountIdToDeactivateCard, 'X');
     	}
-    	//system.debug ('##MNE SM_Invoice processTriggerAfterInsert desactivationResult >> '+desactivationResult); 
+    	
+    	if(setAccountIdToReactivateCard.size() > 0){
+    		system.debug ('##MNE SM_Invoice processTriggerAfterInsert callout Asynchrone methode resactivation card'); 
+    		SM_Carte.activationByListAsynchrone(setAccountIdToReactivateCard);
+    	}
     	
     	system.debug ('##MNE SM_Invoice processTriggerAfterInsert END'); 
     }
@@ -69,6 +75,7 @@ public with sharing class SM_Invoice {
 		system.debug ('##MNE SM_Invoice processTriggerAfterUpdate listNewInvoices >> ' + listNewInvoices); 
 		map<Id, Zuora__ZInvoice__c> mapInvoiceByIdToCreateCase = new map<Id, Zuora__ZInvoice__c>();
     	set<Id> setAccountIdToDeactivateCard = new set<Id>();
+    	set<Id> setAccountIdToReactivateCard = new set<Id>();
 		
 		for(Zuora__ZInvoice__c inv : listNewInvoices){
 			Zuora__ZInvoice__c oldinv = mapOldInvoices.get(inv.Id);
@@ -80,6 +87,9 @@ public with sharing class SM_Invoice {
 			
 			if(inv.Tech_FlagRejetPaye__c != oldinv.Tech_FlagRejetPaye__c && inv.Tech_FlagRejetPaye__c == 'true'){
 				//reactiver la carte
+				if(inv.Zuora__Account__c != null){
+    				setAccountIdToReactivateCard.add(inv.Zuora__Account__c);
+    			}
 			}
 			else if(inv.Tech_FlagRejetPaye__c == 'false' && inv.Tech_TypeRejet__c != oldinv.Tech_TypeRejet__c && (inv.Tech_TypeRejet__c == 'Rejet_1' || inv.Tech_TypeRejet__c == 'Rejet_2')){
 				mapInvoiceByIdToCreateCase.put(inv.Id, inv);
@@ -94,13 +104,15 @@ public with sharing class SM_Invoice {
     		listRejetCaseCreated = createRejetCase(mapInvoiceByIdToCreateCase);
     	}
     	
-    	//map<Id, Boolean> desactivationResult;
     	if(setAccountIdToDeactivateCard.size() > 0){
-    		//desactivationResult = SM_Carte.desactivationByList(setAccountIdToDeactivateCard, 'X');
-    		system.debug ('##MNE SM_Invoice processTriggerAfterUpdate callout Asynchrone methode'); 
+    		system.debug ('##MNE SM_Invoice processTriggerAfterUpdate callout Asynchrone methode desactivation card'); 
     		SM_Carte.desactivationByListAsynchrone(setAccountIdToDeactivateCard, 'X');
     	}
-    	//system.debug ('##MNE SM_Invoice processTriggerAfterUpdate desactivationResult >> '+desactivationResult); 
+    	
+    	if(setAccountIdToReactivateCard.size() > 0){
+    		system.debug ('##MNE SM_Invoice processTriggerAfterUpdate callout Asynchrone methode resactivation card'); 
+    		SM_Carte.activationByListAsynchrone(setAccountIdToReactivateCard);
+    	}
     	
     	system.debug ('##MNE SM_Invoice processTriggerAfterUpdate END'); 
     }

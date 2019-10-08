@@ -815,15 +815,15 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Telephone sortant</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Twitter</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Téléphone entrant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Téléphone sortant</fullName>
             <default>false</default>
         </values>
     </picklistValues>

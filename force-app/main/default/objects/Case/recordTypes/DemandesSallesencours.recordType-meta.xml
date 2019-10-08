@@ -769,7 +769,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Telephone sortant</fullName>
+            <fullName>Téléphone sortant</fullName>
             <default>false</default>
         </values>
     </picklistValues>

@@ -2,6 +2,7 @@
 
 export FAPP_DIR=work/$1/fapp/force-app
 export CLASS_DIR=$FAPP_DIR/main/default/classes
+export TRIGGER_DIR=$FAPP_DIR/main/default/triggers
 #if [ ! -d "$FAPP_DIR/main/default/profiles" ]; then mkdir -p $FAPP_DIR/main/default/profiles; fi
 
 mkdir -p $FAPP_DIR/main/default/profiles
@@ -47,6 +48,15 @@ echo "" > $FAPP_DIR/main/default/permissionsets/"Viadialog_permission_set_for_ad
 
 # create empty class meta files
 FILES=$CLASS_DIR/*
+for f in $FILES
+do
+  echo "Processing $f file..."
+  echo "" > $f-meta.xml
+  #ls $f
+done
+
+# create empty triggers meta files
+FILES=$TRIGGER_DIR/*
 for f in $FILES
 do
   echo "Processing $f file..."

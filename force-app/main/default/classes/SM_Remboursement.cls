@@ -370,6 +370,23 @@ public with sharing class SM_Remboursement {
  		//c.DateFinContrat__c = dateResiliation;
  		c.Payment__c = paymentId;
  		c.DateDeRemboursement__c = remboursementDate;
+        c.Origin = 'Interne';
+        
+        List<Account> acclst = [SELECT CodePays__c from Account where Id=:accountId LIMIT 1];
+        
+        if(acclst.size()>0){
+            if(acclst[0].CodePays__c=='032')
+            c.DemandeRemboursement__c = 'UGCUnlimited';
+        	else
+        	c.DemandeRemboursement__c = 'UGCIllimité';
+        }
+		
+        List<Contact> conlst = [SELECT ID from Contact where AccountId=:accountId LIMIT 1];
+        if(conlst.size()>0){
+            c.ContactId =conlst[0].Id;
+        }
+        
+        
         //c.MontantRembourser__c
         //c.RemboursementValeur__c
         //c.TypeRemboursement__c
