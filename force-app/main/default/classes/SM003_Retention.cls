@@ -32,7 +32,7 @@ public without sharing class SM003_Retention {
             update c;
         } else if(c.R_sultat_R_tention__c != null && c.R_sultat_R_tention__c == 'Refuse avec desabonnement'){
             System.debug('##MNE SM003_Retention retention go to desabonnement');
-            SM_Desabonnement.desabonner(c.Id);
+            SM_Desabonnement.desabonner(c.Id,false);
             c.Status = 'EnCours';
             update c;
         }

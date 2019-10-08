@@ -2,7 +2,7 @@
  * Created by mouad on 02/11/2018.
  */
 
-public with sharing class SM_Coupon {
+public without sharing class SM_Coupon {
 
     /**
      * cree en masse les couponItems des coupon de type multiples

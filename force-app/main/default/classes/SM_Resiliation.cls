@@ -22,7 +22,7 @@ public with sharing class SM_Resiliation {
         if(String.isBlank(c.Motif_de_R_siliation__c)   || c.Date_de_R_siliation__c == null){
             throw new MyException('Veuillez renseigner les champs : "Motif de Résiliation" et "Date de Résiliation"');
         }
-        SM_Desabonnement.desabonner(ddeId);
+        SM_Desabonnement.desabonner(ddeId,false);
     }
 
 

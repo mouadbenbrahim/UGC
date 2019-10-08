@@ -27,7 +27,7 @@ public with sharing class SM_Subscription {
                         TypeContrat__c, CodeFinContrat__c, Zuora__NextRenewalDate__c,
                         Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__PreviousSubscriptionId__c, Tech_AvecRembouesement__c,
                         Zuora__CustomerAccount__r.Zuora__Balance__c, 
-                        Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c
+                        Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c
                 FROM Zuora__Subscription__c
                 WHERE Id = :subId
         ];
@@ -56,7 +56,7 @@ public with sharing class SM_Subscription {
     }
 
     // method updateWS
-    public static WSZ.SubOut updateSub(String subId, Zuora__Subscription__c sub, String zEntityId) {
+    public static WSZ.SubOut updateSub(String subId, Object sub, String zEntityId) {
 
         System.debug('##MBEN: updateWS');
         //String endpoint = 'https://rest.sandbox.eu.zuora.com/v1/object/subscription/' + subId;
@@ -68,9 +68,9 @@ public with sharing class SM_Subscription {
         // Retrieve Zuora token
         String accessToken = WS001_CallZuora.access_token;
 
-        wsIn = (String) JSON.serialize(sub);
+        wsIn = Util.serializeSobject(sub);
         System.debug('##MBEN7: |' + wsIn + '|');
-        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn,'type1', '211.0');
+        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn,'type1', null);
         return (WSZ.SubOut) JSON.deserializeStrict(wsOut, WSZ.SubOut.class);
     }
 
@@ -158,6 +158,7 @@ public with sharing class SM_Subscription {
         }*/
         System.debug('##MBEN7: |' + wsIn + '|');
         wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
+        System.debug('##MBEN7: cancel executed |' + wsIn + '|');
         return (WSZ.SubCancelOut) JSON.deserializeStrict(wsOut, WSZ.SubCancelOut.class);
     }
 
@@ -379,6 +380,12 @@ public with sharing class SM_Subscription {
 		    	} 
     		}
     	}
+    }
+
+    public static void syncCancelCaseId (map<Id, Zuora__Subscription__c> mapOldSubscriptions, List<Zuora__Subscription__c> listSubscriptions)  {
+    
+            //TODO   Sync du CancelCaseID et CancelCase__c
+            
     }
 
 

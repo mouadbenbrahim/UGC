@@ -22,7 +22,7 @@ public without sharing class LCC006_GesteCommercial {
         	executeGesteCommercialCDI(ddeId);
         }
         else {
-        	executeGesteCommercialCDD2(ddeId);
+        	executeGesteCommercialCDD3(ddeId);
         }
     }
         
@@ -128,6 +128,107 @@ public without sharing class LCC006_GesteCommercial {
         }        
     }
 
+public static void executeGesteCommercialCDD3(Id ddeId) {
+        String zuoraSubId = sub.Zuora__External_Id__c;
+		String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
+		String rpId;
+		String rpcId;
+        String entite = (acc.CodePays__c == '033') ? 'France' : 'Belgique';
+        Integer currentTerm = Integer.valueOf(sub.Zuora__CurrentTerm__c.split(' ').get(0));
+        Integer nbDeMoisRemise = Integer.valueOf(dem.NombreDeMoisRemise__c);
+        String rpcReference = SM001_GesteCommercial.prodRatePlanChargeReferenceGesteCommercialCDD;
+        String accessToken = WS001_CallZuora.access_token;
+        String currentTermPeriodType = sub.Zuora__CurrentTermPeriodType__c;
+        Integer newCurrentTerm;
+
+        if(CurrentTermPeriodType == 'Day'){
+            Date endDate    = Date.valueOf(sub.Zuora__TermEndDate__c);
+            Date newEndDate = endDate.addMonths(nbDeMoisRemise);
+            newCurrentTerm = currentTerm + endDate.daysBetween(newEndDate);
+        }else { //Months
+            newCurrentTerm = currentTerm + nbDeMoisRemise;
+        }
+
+        list<ProdRatePlanCharge__c> listProdRatePlanCharge = new list<ProdRatePlanCharge__c>([SELECT ReferenceCIC__c, zid__c, ProdRatePlan__r.zid__c 
+        FROM ProdRatePlanCharge__c WHERE ReferenceCIC__c = :rpcReference and Entite__c = :entite]);        
+        
+        if(listProdRatePlanCharge.size() == 0){
+            system.debug(RTExceptionCode.ERREUR_GESTCO_CDD_PRODUIT_ABSENT);            
+            throw new RTException(RTExceptionCode.ERREUR_GESTCO_CDD_PRODUIT_ABSENT);			
+		}
+
+		rpId = listProdRatePlanCharge.get(0).ProdRatePlan__r.zid__c;
+		rpcId = listProdRatePlanCharge.get(0).zid__c;
+
+        // instantiate AmendRequest Instance
+        zc_ProxyActionAmendRequest actionAmend = new zc_ProxyActionAmendRequest();
+        zc_AmendRequest req1 = new zc_AmendRequest();        
+        zc_AmendRequestPreviewOptions previewOptions = new zc_AmendRequestPreviewOptions();
+        zc_AmendRequestAmendOptions amendOptions = new zc_AmendRequestAmendOptions();
+        zc_Amendment amend1 = new zc_Amendment(); //Term and condition
+        zc_Amendment amend2 = new zc_Amendment(); //Add product
+        previewOptions.enablePreviewMode=false;
+        amendOptions.generateInvoice=true;
+        // c1.amendOptions.processPayments=false;
+        zc_InvoiceProcessingOptions invPrc = new zc_InvoiceProcessingOptions();
+        invPrc.invoiceDate=Date.today();
+        invPrc.invoiceTargetDate=sub.Zuora__TermEndDate__c;
+        amendOptions.invoiceProcessingOptions = invPrc;
+        //Term and condition
+        amend1.contractEffectiveDate=Date.today();
+        amend1.name='GestCo CDD: update term and condition';
+        amend1.status='Completed';
+        amend1.subscriptionId=sub.Zuora__External_Id__c;
+        amend1.r_type='TermsAndConditions';
+        amend1.description='GestCo CDD: update term and condition'; 
+        amend1.currentTerm=newCurrentTerm;
+        // Add remise
+        amend2.contractEffectiveDate=sub.Zuora__TermEndDate__c;        
+        amend2.name='GestCo CDD: Ajour remise';
+        amend2.status='Completed';
+        amend2.subscriptionId=sub.Zuora__External_Id__c;
+        amend2.r_type='NewProduct';
+        amend2.description='GestCo CDD: Ajour remise';           
+        zc_AmendmentRatePlanData ratePlanData = new zc_AmendmentRatePlanData();
+        zc_RatePlan ratePlan = new zc_RatePlan();
+        ratePlan.productRatePlanId=rpId;                
+        ratePlanData.ratePlan = ratePlan;
+        zc_RatePlanChargeDataInRatePlanData rpcChargeData = new zc_RatePlanChargeDataInRatePlanData();
+        zc_RatePlanChargeInRatePlanChargeData rpcCharge = new zc_RatePlanChargeInRatePlanChargeData();
+        rpcChargeData.ratePlanCharge = rpcCharge;        
+        // rpcCharge.endDateCondition = 'FixedPeriod';
+        rpcCharge.upToPeriods = nbDeMoisRemise;
+        // rpcCharge.upToPeriodsType = 'Billing Periods';        
+        rpcCharge.productRatePlanChargeId = rpcId;                
+        ratePlanData.ratePlanChargeData.add(rpcChargeData);
+        //ratePlanData.ratePlanChargeData.add(ratePlanChargeData);
+        amend2.ratePlanData = ratePlanData;
+        req1.amendments.add(amend1);
+        req1.amendments.add(amend2);
+        req1.previewOptions = previewOptions;
+        req1.amendOptions = amendOptions;
+        actionAmend.requests.add(req1);
+
+        //Call WS
+        String repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/amend', zEntityId, 'POST', actionAmend, zc_AmendRequest.class, zc_AmendResult.class, null);
+
+        // Check resultat WS
+        ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+        repWS = par.serializeWithMapping2(repWS,'zc_ProxyActionAmendResponse'); //rename members
+        zc_ProxyActionAmendResponse repObj = (zc_ProxyActionAmendResponse)JSON.deserialize(repWS, zc_ProxyActionAmendResponse.class);
+
+        Boolean success = true;
+        String messageError = '';
+        if(repObj != null && repObj.results != null  && repObj.results.size() > 0){
+            for(zc_AmendResult r : repObj.results){
+                if(!r.success){
+                    if(r.errors != null && r.errors.size() > 0){
+                        throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_GESTCO_APPLICATION_CDD)) + r.errors.get(0).message);
+                    }
+                }
+            }
+        }        
+    }
 
     public static void executeGesteCommercialCDD(Id ddeId) { //non utilise
         system.debug('##MNE LCC006_GesteCommercial executeGesteCommercialCDD BEGIN');

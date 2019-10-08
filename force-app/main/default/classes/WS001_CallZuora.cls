@@ -166,6 +166,9 @@ public with sharing class WS001_CallZuora {
         }
         if (inBody != null ) {req.setBody(inBody);}
 
+        system.debug('##MBEN endpoint >> '+endpoint);
+        system.debug('##MBEN zEntityId >> '+zEntityId);
+        system.debug('##MBEN access_token >> '+access_token);
         system.debug('##MBEN requestValue >> '+inBody);
         //req.setCompressed(true); si active erreur sur le retour JSON.
         req.setTimeout(60000);

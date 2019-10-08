@@ -36,7 +36,7 @@ public String serializeWithMapping(Object lc1){
 
     JSONParser parser = JSON.createParser(bodyStr);
     JSONGenerator gen = JSON.createGenerator(true);
-    System.debug('MBEN ORI JSON:' + bodyStr);
+    System.debug('MBEN:serializeWithMapping: ORI JSON:' + bodyStr);
 
     parser.nextToken();
     gen.writeStartObject();
@@ -58,28 +58,28 @@ public String getMapVal(Map<String,Object> propMap, String srcVal){
 	String tgtVal;
 	Map<String,String> revMap = new Map<String,String>();
 
+
 	if (propMap == null){
-		return srcVal; 
+		tgtVal = srcVal; 
+	}else if (propMap.size() == 0){
+		tgtVal = srcVal; 
+	}else {
+		for (String key : propMap.keySet()){
+			if (mapSwap) {
+				revMap.put(String.valueOf(propMap.get(key)),key);
+			}else {
+				revMap.put(key,String.valueOf(propMap.get(key)));
+			}
+		}
+
+		if (revMap.containsKey(srcVal)){
+			tgtVal=revMap.get(srcVal);
+		} else {
+			tgtVal=srcVal;
+		}
 	}
 
-	if (propMap.size() == 0){
-		return srcVal; 
-	}
-
-
-	for (String key : propMap.keySet()){
-		if (mapSwap) {
-            revMap.put(String.valueOf(propMap.get(key)),key);
-        }else {
-            revMap.put(key,String.valueOf(propMap.get(key)));
-        }
-	}
-
-	if (revMap.containsKey(srcVal)){
-		tgtVal=revMap.get(srcVal);
-	} else {
-		tgtVal=srcVal;
-	}
+	System.debug('MBEN:getMapVal:' + 'srcVal: '+ srcVal + '  tgtVal: ' +tgtVal);
 
 	return tgtVal;
 
@@ -100,6 +100,7 @@ public void runParse(JSONParser myParser, JSONGenerator gen, Map<String,Object> 
 	Object propObj = currMap.get('propertyMappings');	
 	//Map<String,String> propMap = (Map<String,String>)propObj;
 	Map<String,Object> propMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(propObj));
+	System.debug('MBEN:runParse:propMap: '+JSON.serialize(propObj));
 	System.debug('STARTMETH: '+gToken+'-'+gName+'-'+gText);	
 	System.debug('CURRMAP_OBJ' +String.valueOf(JSON.serialize(currMap,true)));
 	// System.debug('Run myMethod');

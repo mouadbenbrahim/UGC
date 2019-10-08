@@ -285,8 +285,8 @@ public with sharing class WSZ {
     }
 
 
-    //CLasses for subscription update
-    public without sharing class SubOut {
+    //Classes for subscription update
+    public class SubOut {
         public Boolean Success;
         public String Id;
     }
@@ -780,6 +780,10 @@ public with sharing class WSZ {
             this.invoices.add(tmp);
         }
 	}
+
+    public class GenericEmptyFields {
+        public List<String> fieldsToNull;        
+    }
 
 
 }

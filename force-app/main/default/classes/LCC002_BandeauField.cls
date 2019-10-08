@@ -11,7 +11,7 @@ public without sharing class LCC002_BandeauField {
         'Zuora__Status__c',//
         'Date_de_debut_de_contrat__c',//
         'Zuora__ContractEffectiveDate__c',//
-        'Date_de_fin_de_contrat__c',//
+        'DateFinContrat__c',//
         'CodeFinContrat__c',//
         'Zuora__TermEndDate__c',//
         'Lieu__c',//
@@ -68,7 +68,7 @@ public without sharing class LCC002_BandeauField {
     public static List<WRPFieldValues> getFieldValuesInSubscription(Id accId){
         system.debug('##MNE getFieldValuesInSubscription accId >> '+accId);
      
-        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerrySubscription, ', ')+ ' FROM Zuora__Subscription__c WHERE Zuora__Account__c = \'' + accId + '\'  ORDER BY LastModifiedDate DESC NULLS LAST LIMIT 1';
+        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerrySubscription, ', ')+ ' FROM Zuora__Subscription__c WHERE Zuora__Account__c = \'' + accId + '\'  ORDER BY Zuora__OriginalCreated_Date__c DESC NULLS LAST LIMIT 1';
         system.debug('##MNE getFieldValuesInSubscription query >> '+query);
         
         list<Zuora__Subscription__c> listSub = (list<Zuora__Subscription__c>) Database.query(query); 
@@ -94,9 +94,9 @@ public without sharing class LCC002_BandeauField {
                 Date d = Date.valueOf(sub.get(field));
                 system.debug('##MNE getFieldValuesInSubscription date d >> '+d); 
                 if(d == null){
-                	value = null; 
+                  value = null; 
                 }else {
-                	value = DateTime.newInstance(d.year(), d.month(), d.day()).format('dd-MM-yyyy');
+                  value = DateTime.newInstance(d.year(), d.month(), d.day()).format('dd-MM-yyyy');
                 }
             }
             rep.add(new WRPFieldValues(label, value));
@@ -214,12 +214,12 @@ public without sharing class LCC002_BandeauField {
             system.debug('##MNE LCC002_BandeauField getPhotoSFDC paysTMP >> '+paysTMP);
             
             if (Util.FRANCE.contains(paysTMP)) {
-	            pays = '033';
-	        } else {
-	            pays = '032';
-	        }
-	        
-	        system.debug('##MNE LCC002_BandeauField getPhotoSFDC pays >> '+pays);
+              pays = '033';
+          } else {
+              pays = '032';
+          }
+          
+          system.debug('##MNE LCC002_BandeauField getPhotoSFDC pays >> '+pays);
             
             String endpoint = '/Photos/GetPhoto/'+pays+'/'+RCUId;
             //String endpoint = '/Photos/GetPhoto/033/14538';

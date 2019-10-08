@@ -304,6 +304,17 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>ExecStatus__c</picklist>
+        <values>
+            <fullName>Erreur</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Famille__c</picklist>
         <values>
             <fullName>0- Souscription</fullName>

@@ -6,14 +6,14 @@
  * @Last Modified By   : mouad
  * @Last Modified On   : 09/09/2019 à 05:37:02
  * @Modification Log   : 
- * Ver       Date            Author      		    Modification
+ * Ver       Date            Author                 Modification
  * 1.0    06/09/2019   mouad     Initial Version
 **/
 public with sharing class SM_Impaye {
     public SM_Impaye() {
 
     }
-
+/*
     public Static void reglerImpaye(String zSubId){
 
         // 1.Paiement par CB de l impaye: fait par Hermes
@@ -67,4 +67,5 @@ public with sharing class SM_Impaye {
         // Mise a jour facture 
 
     }
+*/
 }

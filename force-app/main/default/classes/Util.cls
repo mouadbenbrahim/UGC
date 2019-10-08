@@ -183,4 +183,17 @@ public with sharing class Util {
         return prevDate;
     }
 
+    /**
+     * serializeSobject Seralize un sObject en supprimant les tag attributes.
+     * @param  myObject Object de type sObject
+     * @return          Json en String
+     */
+    public static String serializeSobject(Object myObject){
+        
+        Map<String,Object> map1 = (Map<String,Object>)JSON.deserializeUntyped(JSON.serializePretty(myObject,true));
+        map1.remove('attributes');
+        return JSON.serialize(map1);        
+        
+    }
+
 }
