@@ -110,7 +110,7 @@ public without sharing class LCC002_BandeauField {
     public static List<WRPFieldValues> getFieldValuesInCarte(Id accId){
         system.debug('##MNE getFieldValuesInCarte accId >> '+accId);
      
-        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerryCarte, ', ')+ ' FROM Carte__c WHERE Abonn__c = \'' + accId + '\' AND Statut__c = \'Active\'  ORDER BY LastModifiedDate DESC NULLS LAST LIMIT 1';
+        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerryCarte, ', ')+ ' FROM Carte__c WHERE Abonn__c = \'' + accId + '\' ORDER BY LastModifiedDate DESC NULLS LAST LIMIT 1';
         system.debug('##MNE getFieldValuesInCarte query >> '+query);
         
         list<Carte__c> listCarte = (list<Carte__c>) Database.query(query); 

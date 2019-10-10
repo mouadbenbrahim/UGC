@@ -55,7 +55,6 @@ public with sharing class SM_Carte {
         system.debug ('##MNE SM_Carte desactivationByListAsynchrone desactivationResult >> '+desactivationResult); 
     }
         
-    
     public static map<Id, Boolean> desactivationByList(set<Id> setAccountId, String code) {
         system.debug('##MNE SM_Carte desactivationByList setAccountId >> '+setAccountId);
         system.debug('##MNE SM_Carte desactivationByList code >> '+code);
@@ -278,8 +277,7 @@ public with sharing class SM_Carte {
     }
     
     //OK
-    @future(callout=true)
-    public static void deactivateCard(String numCard, String reason){
+    public static Boolean deactivateCard(String numCard, String reason){
         system.debug('##MNE SM_Carte deactivateCard numCard >> '+numCard);
         system.debug('##MNE SM_Carte deactivateCard reason >> '+reason);
      
@@ -314,7 +312,7 @@ public with sharing class SM_Carte {
             throw new MyException('SM_Carte deactivate impossible : problèmeb dans le WS Octopus');
         }
         system.debug('##MNE SM_Carte deactivate isOk >> '+isOk);
-        //return isOk;
+        return isOk;
     }
 
     public static WSZ.CarteOut get(Integer mId) {

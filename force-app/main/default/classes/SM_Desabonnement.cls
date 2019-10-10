@@ -175,9 +175,13 @@ public without sharing class SM_Desabonnement {
             } else {
                 codeDesaCarte = zSubIn.CodeFinContrat__c;
             }
-            SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
-
             
+            //S41 ECH Appel de la désactivation de carte asynchrone
+            //SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
+            Set<Id> setAccoundId = new Set<Id>();
+            setAccoundId.add(dem.AccountId);
+            
+            SM_Carte.desactivationByListAsynchrone(setAccoundId, codeDesaCarte);
         
         
             // Create Welcome Back coupon :
@@ -326,9 +330,15 @@ public without sharing class SM_Desabonnement {
         } else {
             codeDesaCarte = sub.CodeFinContrat__c;
         }
-        SM_Carte.desactivation(acc.Id, codeDesaCarte);
-    
-    
+        
+        
+        //S41 ECH Appel de la désactivation de carte asynchrone
+        //SM_Carte.desactivation(acc.Id, codeDesaCarte);
+        Set<Id> setAccoundId = new Set<Id>();
+        setAccoundId.add(acc.Id);
+            
+        SM_Carte.desactivationByListAsynchrone(setAccoundId, codeDesaCarte);
+        
         // Create Welcome Back coupon :
         String offreWelcomeBack = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;
         Integer validiteCoupon = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);

@@ -385,7 +385,11 @@ public with sharing class SM_Remboursement {
         if(conlst.size()>0){
             c.ContactId =conlst[0].Id;
         }
-        
+                
+        List<Zuora__Payment__c> paylst = [SELECT ID from Zuora__Payment__c where Zuora__Account__c=:accountId order by CreatedDate DESC  LIMIT 1];
+		if(paylst.size()>0){
+            c.Payment__c =paylst[0].Id;
+        }
         
         //c.MontantRembourser__c
         //c.RemboursementValeur__c
