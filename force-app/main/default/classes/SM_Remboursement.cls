@@ -360,6 +360,11 @@ public with sharing class SM_Remboursement {
         Case c = new Case();
         c.ParentId = originCaseId;
         c.MontantRembourser__c = montantARembourser;
+        
+        if(montantARembourser==null || montantARembourser==0){
+            c.MontantRembourser__c = montantARembourserFromCreditMemo;
+        }
+        
         c.MontantRemboursementCalc__c = montantARembourserFromCreditMemo;
         c.RemboursementFaire__c = true;
         c.RecordTypeId = remboursementRecordTypeId;

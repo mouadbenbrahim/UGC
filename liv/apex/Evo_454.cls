@@ -27,7 +27,15 @@ SM005_AnnulationDesabo.AnnulerDesabo('5000E000009k0y5QAA');
 
 //Date cancelDate = Date.today().addMonths(1); //.addDays(0);
 Date dateFinContrat = date.newInstance(2019,09,30);
-ID batchprocessid = Database.executeBatch(new Batch_SubscriptionCancel(dateFinContrat),50); // a terme scope = 50
+String subNumber = 'F-S00009546';
+ID batchprocessid = Database.executeBatch(new Batch_SubscriptionCancel(dateFinContrat,subNumber),50); // a terme scope = 50
+
+Date dateFinContrat = null;
+String subNumber = null;
+
+Batch_SubscriptionCancel batch = new Batch_SubscriptionCancel(dateFinContrat,subNumber);
+Database.executeBatch(batch,50);
+
 //List<Case> cases = [Select Id, Subscription__r.DateFinContrat__c From Case where Subscription__r.DateFinContrat__c=:auj and Id='5000E000009jn2WQAQ'];
 //List<Case> cases = [Select Id, Subscription__r.DateFinContrat__c From Case where Subscription__r.DateFinContrat__c=:cancelDate and Id='5000E000009jn2WQAQ'];
 //List<Case> cases = [Select Id, Subscription__r.DateFinContrat__c From Case where Id=''];
@@ -36,6 +44,8 @@ ID batchprocessid = Database.executeBatch(new Batch_SubscriptionCancel(dateFinCo
 
 Select id,  from case where ExecStatus__c='Erreur'
 
+Date dateFinContrat = date.newInstance(2019,09,30);
+Select Id, CancelCaseID__c, Source__c From Zuora__Subscription__c where Zuora__Status__c='Active' and DateFinContrat__c=2019-10-31
 
 // ------------
 
