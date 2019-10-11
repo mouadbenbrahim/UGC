@@ -23,6 +23,9 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_COUPON_MULTIPLE_NON_TROUVE = new RTExceptionCode('erreur coupon multiple non trouve', 1015);
     public static final RTExceptionCode ERREUR_GESTCO_CDD_PRODUIT_ABSENT = new RTExceptionCode('Pas de Product Rate Plan Charge trouvee pour le geste commercial', 1016);
     public static final RTExceptionCode ERREUR_GESTCO_APPLICATION_CDD = new RTExceptionCode('Erreur Application du Gestco sur un CDD', 1017);
+
+    public static final RTExceptionCode ERREUR_RETENTION_PRODUIT_ABSENT = new RTExceptionCode('Pas de Product Rate Plan Charge trouvee pour la retention', 1301);
+    public static final RTExceptionCode ERREUR_RETENTION_APPLICATION = new RTExceptionCode('Erreur Application de la retention', 1302);    
     
     public static final RTExceptionCode ERREUR_DESABO_CDI_AVEC_FINCONTRAT = new RTExceptionCode('Ce contrat comprend deja une date fin contrat', 2001);
     public static final RTExceptionCode ERREUR_DESABO_CDD_AVEC_FINCONTRAT = new RTExceptionCode('Ce contrat comprend deja une date fin contrat', 2002);
@@ -35,6 +38,7 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_DATEFINCONTRAT_VIDE = new RTExceptionCode('Erreur Annulation desabo: la date fin contrat est vide', 2104);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_STATUT_CONTRAT_NON_VALIDE = new RTExceptionCode('Erreur Annulation desabo: le statut du contrat est non valide', 2105);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CDD_DEJA_INACTIF = new RTExceptionCode('Erreur Annulation desabo: ce CDD est deja inactif', 2106);          
+
        
 
     //'Aucune offre n est valable avec ce coupon', 'ERREUR_COUPON_AUCUNE_OFFRE_VALABLE'

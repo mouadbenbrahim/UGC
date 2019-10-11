@@ -27,7 +27,8 @@ public with sharing class SM_Subscription {
                         TypeContrat__c, CodeFinContrat__c, Zuora__NextRenewalDate__c,
                         Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__PreviousSubscriptionId__c, Tech_AvecRembouesement__c,
                         Zuora__CustomerAccount__r.Zuora__Balance__c, 
-                        Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c
+                        Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c,
+                        Zuora__TermSettingType__c
                 FROM Zuora__Subscription__c
                 WHERE Id = :subId
         ];
