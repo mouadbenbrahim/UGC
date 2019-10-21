@@ -20,12 +20,12 @@ public class zc_ActionsErrorResponse implements zc_Zuc.MappedProperties {
         return propertyMappings;
     }
 
-    public static zc_ActionsErrorResponse getExample() {
-        zc_ActionsErrorResponse actionsErrorResponse = new zc_ActionsErrorResponse();
-        actionsErrorResponse.code = 'aeiou';
-        actionsErrorResponse.message = 'aeiou';
-        return actionsErrorResponse;
-    }
+    // public static zc_ActionsErrorResponse getExample() {
+    //     zc_ActionsErrorResponse actionsErrorResponse = new zc_ActionsErrorResponse();
+    //     actionsErrorResponse.code = 'aeiou';
+    //     actionsErrorResponse.message = 'aeiou';
+    //     return actionsErrorResponse;
+    // }
 
     public Boolean equals(Object obj) {
         if (obj instanceof zc_ActionsErrorResponse) {

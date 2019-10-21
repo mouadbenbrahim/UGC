@@ -6,6 +6,8 @@ public with sharing class RTExceptionCode {
 
     private static final Map<String, RTExceptionCode> codes = new Map<String, RTExceptionCode>();
 
+    public static final RTExceptionCode ERREUR_GENERIC_RUNPARSE2 = new RTExceptionCode('Erreur generic runParse2', 801);
+
     public static final RTExceptionCode ERREUR_COUPON_NON_TROUVE = new RTExceptionCode('NEW erreur coupon non trouve', 1001);
     public static final RTExceptionCode ERREUR_COUPON_DEJA_UTILISE = new RTExceptionCode('erreur coupon deja utilise', 1002);
     public static final RTExceptionCode ERREUR_COUPON = new RTExceptionCode('erreur coupon', 1003);
@@ -37,7 +39,26 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_AUCUN_CONTRAT_TROUVE = new RTExceptionCode('Erreur Annulation desabo: aucun contrat trouve a annule', 2103);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_DATEFINCONTRAT_VIDE = new RTExceptionCode('Erreur Annulation desabo: la date fin contrat est vide', 2104);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_STATUT_CONTRAT_NON_VALIDE = new RTExceptionCode('Erreur Annulation desabo: le statut du contrat est non valide', 2105);
-    public static final RTExceptionCode ERREUR_ANNUL_DESABO_CDD_DEJA_INACTIF = new RTExceptionCode('Erreur Annulation desabo: ce CDD est deja inactif', 2106);          
+    public static final RTExceptionCode ERREUR_ANNUL_DESABO_CDD_DEJA_INACTIF = new RTExceptionCode('Erreur Annulation desabo: ce CDD est deja inactif', 2106);
+    
+    public static final RTExceptionCode ERREUR_IMPAYE_GET_SOUSCRITPION_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Contrat absent', 3101);
+    public static final RTExceptionCode ERREUR_IMPAYE_GET_ACCOUNT_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Compte absent', 3102);
+    
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_SOUSCRITPION_NON_TROUVE = new RTExceptionCode('Erreur Reglement impaye: Contrat absent', 3201);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_PAS_DE_DETTE = new RTExceptionCode('Erreur Reglement impaye: aucun impaye a regler', 3202);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_DELETE_SUB = new RTExceptionCode('Erreur Reglement impaye: probleme dans le contrat', 3203);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW = new RTExceptionCode('Erreur Reglement impaye: probleme dans la preview de dette non echue', 3204);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_PROBLEM_MONTANT = new RTExceptionCode('Erreur Reglement impaye: probleme dans le montant de l impaye', 3205);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_MONTANT_DNE = new RTExceptionCode('Erreur Reglement impaye: probleme dans le montant de la dette non echue', 3206);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_PRODUIT_ABSENT = new RTExceptionCode('Erreur Reglement impaye: produit frais de reactivation absent', 3207);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS = new RTExceptionCode('Erreur Reglement impaye: probleme application frais de gestion', 3208);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT = new RTExceptionCode('Erreur Reglement impaye: probleme application payment', 3209);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_TARGETDATE_STATUSCONTRAT = new RTExceptionCode('Erreur Reglement impaye: probleme incoherence target date et status contrat', 3210);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_ACCOUNT = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour du compte', 3211);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_INVOICE = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour facture', 3212);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_SUBSCRIPTION = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour contrat', 3213);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_INCOHERENCE_DATEFIN = new RTExceptionCode('Erreur Reglement impaye: probleme incoherence dans la date fin du contrat', 3214);
+    
 
        
 

@@ -28,12 +28,42 @@ public with sharing class SM_Subscription {
                         Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__PreviousSubscriptionId__c, Tech_AvecRembouesement__c,
                         Zuora__CustomerAccount__r.Zuora__Balance__c, 
                         Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c,
-                        Zuora__TermSettingType__c
+                        Zuora__TermSettingType__c, Tech_DetteFraisGestion__c, Tech_DetteNonEchue__c, Tech_DetteTargetDate__c
                 FROM Zuora__Subscription__c
                 WHERE Id = :subId
         ];
 
        return subscription;
+    }
+
+    public static Zuora__Subscription__c getSubscriptionByZID(String subZId) {
+        //TODO: dans le cas ou la demande doit traiter une souscription non active ou ex. client qui a plusieurs subscriptions (doublons à traiter)
+        //il faut songer à lier la demande à la souscription automatiquement à la création (si une seul active) et prevoir un lookup pour
+        // laisser le CC selection une souscription si l'action doit se faire sur une souscription autre que celle renvoyé par getActiveSub..
+
+
+        System.debug('##MBEN:setSub');
+        List<Zuora__Subscription__c> subscriptions = [
+                SELECT Id, Name, Zuora__Zuora_Id__c, Zuora__Account__r.Id, Zuora__Account__r.Name,
+                        Zuora__SubscriptionNumber__c,Zuora__Status__c,
+                        Zuora__CancelledDate__c,Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,
+                        Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,Zuora__NextChargeDate__c,
+                        TypeContrat__c, CodeFinContrat__c, Zuora__NextRenewalDate__c,
+                        Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__PreviousSubscriptionId__c, Tech_AvecRembouesement__c,
+                        Zuora__CustomerAccount__r.Zuora__Balance__c, 
+                        Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c,
+                        Zuora__TermSettingType__c, Tech_DetteFraisGestion__c, Tech_DetteNonEchue__c, Tech_DetteTargetDate__c
+                FROM Zuora__Subscription__c
+                WHERE Zuora__External_Id__c = :subZId
+        ];
+
+        if (subscriptions.size() == 0){
+            return null;
+        }else if (subscriptions.size() == 1){
+            return subscriptions.get(0);
+        }else {
+            return null;
+        }
     }
 
     public static Zuora__Subscription__c getSubscriptionByName(String name) {

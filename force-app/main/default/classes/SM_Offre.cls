@@ -261,7 +261,7 @@ public with sharing class SM_Offre {
                         System.debug('MBEN: Offre BtoB: couponG15: ' + couponG);
                         ratePlansPc = getBtoBRatePlan(offPc.get(0), subIn, couponG);
                         subProd.Marche = 'BTOB';
-                        subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
+                        subProd.HermesIntituleOffre = offPc.get(0).HermesIntituleOffre__c;
                         subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
                         subProd.CodeOffreCo =  offPc.get(0).Reference__c;
                         subProd.subscribeToRatePlans.clear(); //supprimer les anciens Rateplans si BtoB

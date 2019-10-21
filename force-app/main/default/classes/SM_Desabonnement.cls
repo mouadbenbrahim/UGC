@@ -68,7 +68,7 @@ public without sharing class SM_Desabonnement {
 
         // Call depuis l'UI: decision Desabo Futur 
         if (!isBatchCall){ // UI Call
-            if (dateCancelContrat <= Date.today()) { //Decider si desabonner dans le futur ou pas ? autres criteres date fin contrat
+            if (dateCancelContrat <= Date.today().addDays(1)) { // Decider si desabonner dans le futur ou pas ? autres criteres date fin contrat
                 isDesaboNow = true;
             }else {
                 isDesaboNow = false;

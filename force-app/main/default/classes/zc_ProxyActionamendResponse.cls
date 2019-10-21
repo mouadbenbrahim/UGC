@@ -9,11 +9,11 @@ public class zc_ProxyActionamendResponse {
         results = new List<zc_AmendResult>{new zc_AmendResult()};
     }
 
-    public static zc_ProxyActionamendResponse getExample() {
-        zc_ProxyActionamendResponse proxyActionamendResponse = new zc_ProxyActionamendResponse();
-        proxyActionamendResponse.results = new List<zc_AmendResult>{zc_AmendResult.getExample()};
-        return proxyActionamendResponse;
-    }
+    // public static zc_ProxyActionamendResponse getExample() {
+    //     zc_ProxyActionamendResponse proxyActionamendResponse = new zc_ProxyActionamendResponse();
+    //     proxyActionamendResponse.results = new List<zc_AmendResult>{zc_AmendResult.getExample()};
+    //     return proxyActionamendResponse;
+    // }
 
     public Boolean equals(Object obj) {
         if (obj instanceof zc_ProxyActionamendResponse) {

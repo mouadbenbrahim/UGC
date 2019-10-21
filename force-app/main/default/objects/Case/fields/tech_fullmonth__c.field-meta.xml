@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>tech_fullmonth__c</fullName>
     <externalId>false</externalId>
-    <formula>IF(Subscription__r.Offre__c = &#39;UI1&#39;, &#39;21,90€&#39;,  IF(Subscription__r.Offre__c = &quot;UI2&quot;, &#39;36,90€&#39;, IF(Subscription__r.Offre__c = &#39;UI3&#39;, &#39;17,90€&#39;, IF(Subscription__r.Offre__c = &#39;UU&#39;, &#39;UGC Unlimited&#39;, &#39;18,90€&#39;) ) ) )</formula>
+    <formula>IF(Subscription__r.Offre__c = &#39;UI1&#39;, &#39;21,90€&#39;,  IF(Subscription__r.Offre__c = &quot;UI2&quot;, &#39;36,80€&#39;, IF(Subscription__r.Offre__c = &#39;UI3&#39;, &#39;17,90€&#39;, IF(Subscription__r.Offre__c = &#39;UU&#39;, &#39;UGC Unlimited&#39;, &#39;18,90€&#39;) ) ) )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>tech_fullmonth</label>
     <required>false</required>

@@ -785,6 +785,91 @@ public with sharing class WSZ {
         public List<String> fieldsToNull;        
     }
 
+    public class ImpayeIn {
+        public String accountId;
+        public String subscriptionId;
+    }
+
+    public class ImpayeOut {
+        public String accountId;
+        public String subscriptionId;
+        public String subscriptionName;        
+        public Double montantDetteEchue;
+        public Date dateDetteEchue;        
+        public Double montantFrais;
+        public Double montantDetteNonEchue;
+        public List<DetteEchue> detteEchues = new List<DetteEchue>();
+        public Boolean hasImpaye;
+        public Boolean success;
+        public String message;
+        public Integer errorCode;
+    }
+
+    public class DetteEchue {
+        // public String typeDette;    
+        public String invoiceId;
+        public Date invoiceDate;
+        public Double invoiceBalance;
+        public Double invoiceTotalAmount;
+
+        public DetteEchue(String invoiceId,  Date invoiceDate, Double invoiceBalance, Double invoiceTotalAmount){
+            this.invoiceId = invoiceId;
+            this.invoiceDate = invoiceDate;
+            this.invoiceTotalAmount = invoiceTotalAmount;
+            this.invoiceBalance = invoiceBalance;
+        }
+        //public String chargeId;
+        //public String chargeName;
+        //public Double chargeAmount;
+        //public Double taxAmount;
+        //public String serviceStartDate;
+        //public String serviceEndDate;                
+    }
+
+    public class ImpayeReglerIn {
+        public String accountId;
+        public String subscriptionId;
+        public Double montantPaye;
+        public String methodPaiement;
+        public String lieu;
+        public String agent;
+        public String referenceId;
+
+        public ImpayeReglerIn(String accountId, String subscriptionId, Double montantPaye, String methodPaiement, String lieu, String agent, String referenceId){
+            this.accountId = accountId;
+            this.subscriptionId = subscriptionId;            
+            this.montantPaye = montantPaye;            
+            this.methodPaiement = methodPaiement;
+            this.lieu = lieu;
+            this.agent = agent;
+            this.referenceId = referenceId;             
+        }
+    }
+
+    public class ImpayeReglerOut {
+        public String accountId;
+        public String subscriptionId;
+        public Double montantPaye;
+        public String referenceId;        
+        public String paymentId;              
+        public Boolean success;
+        public String message;
+        public Integer errorCode;
+
+        public ImpayeReglerOut(String accountId, String subscriptionId, Double montantPaye, String referenceId, String paymentId){
+            this.accountId = accountId;
+            this.subscriptionId = subscriptionId;            
+            this.montantPaye = montantPaye;            
+            this.referenceId = referenceId;
+            this.paymentId = paymentId;            
+        }
+        
+        public ImpayeReglerOut(){
+
+        }   
+             
+    }         
+
 
 }
 

@@ -230,6 +230,7 @@ public void runParse2(Map<String,Object> emptyMap, Map<String,Object> currMap,Ma
 		System.debug('newMap: ' + newMap);		
 		Map<String,Object> propMap = untypeObj(emptyMap.get('propertyMappings'),false);
 
+		try {
 		for (String itemKey : currMap.keySet()){					
 			currItemObj = currMap.get(itemKey);
 			currItemJson = JSON.serialize(currItemObj,false);
@@ -289,7 +290,15 @@ public void runParse2(Map<String,Object> emptyMap, Map<String,Object> currMap,Ma
 			 	System.debug('-----: une valeur');				
 				newMap.put(keyTrans,currMap.get(itemKey));
 			 }
-		}
+		 
+		}//for
+		} //end try
+		catch(Exception e){
+			String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
+			String dataValues = '\n currMap:' + String.valueOf(currMap) + '\n newMap:' + String.valueOf(newMap) + '\n emptyMap:' + String.valueOf(emptyMap) + '\n currItemJson:' +  String.valueOf(currItemJson) + '\n currItemObj:' + String.valueOf(currItemObj) + '\n empObj:' + String.valueOf(empObj) + '\n emptyJson:' + String.valueOf(emptyJson);
+			fullMessage += dataValues;
+			throw new RTException(new RTExceptionCode(fullMessage,801));			
+		}		
 }
 
 /**
@@ -308,18 +317,27 @@ String jsonStr = p.serializeWithMapping2(bodyOutS,'ZUC.AmendResult');
 System.debug('jsonStr' + jsonStr);
 */
 
+	Map<String,Object> newMap;
+	try{
+		Type t = Type.forName(className);
+		Object emptyResult = (Object)t.newInstance();
+		//ZUC.AmendResult emptyResult = new ZUC.AmendResult();	
+		newMap = new Map<String,Object>();
+		// System.debug('emptyResultJSON' + JSON.serialize(emptyResult,false));
+		Map<String,Object> emptyMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(emptyResult,false));
+		Map<String,Object> inMap = (Map<String,Object>)JSON.deserializeUntyped(jsonStr);
+		runParse2(emptyMap,inMap,newMap);
+		System.debug('MBEN: map result: ' + newMap); // MAP
+		System.debug('MBEN: json result: ' + JSON.serialize(newMap,false)); // JSON
+		System.debug('MBEN: object result: ' + JSON.deserialize(JSON.serialize(newMap,false),t)); //Object mais contient les null
+	}
+	catch(Exception e){
+			String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
+			String dataValues = '\n jsonStr:' + String.valueOf(jsonStr) + '\n className:' + String.valueOf(className);
+			fullMessage += dataValues;
+			throw new RTException(new RTExceptionCode(fullMessage,802));
+	}
 
-	Type t = Type.forName(className);
-	Object emptyResult = (Object)t.newInstance();
-	//ZUC.AmendResult emptyResult = new ZUC.AmendResult();	
-	Map<String,Object> newMap = new Map<String,Object>();
-	// System.debug('emptyResultJSON' + JSON.serialize(emptyResult,false));
-	Map<String,Object> emptyMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(emptyResult,false));
-	Map<String,Object> inMap = (Map<String,Object>)JSON.deserializeUntyped(jsonStr);
-	runParse2(emptyMap,inMap,newMap);
-	System.debug('MBEN: map result: ' + newMap); // MAP
-	System.debug('MBEN: json result: ' + JSON.serialize(newMap,false)); // JSON
-	System.debug('MBEN: object result: ' + JSON.deserializeStrict(JSON.serialize(newMap,false),t)); //Object mais contient les null
 	return JSON.serialize(newMap,false);
 }
 

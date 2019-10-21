@@ -103,23 +103,23 @@ public class zc_AmendResult implements zc_Zuc.MappedProperties {
         invoiceDatas = new List<zc_InvoiceData>();
     }
 
-    public static zc_AmendResult getExample() {
-        zc_AmendResult amendResult = new zc_AmendResult();
-        amendResult.amendmentIds = new List<String>{'aeiou'};
-        amendResult.chargeMetricsData = zc_ChargeMetricsData.getExample();
-        amendResult.errors = new List<zc_ActionsErrorResponse>{zc_ActionsErrorResponse.getExample()};
-        amendResult.gatewayResponse = 'aeiou';
-        amendResult.gatewayResponseCode = 'aeiou';
-        amendResult.invoiceDatas = new List<zc_InvoiceData>{zc_InvoiceData.getExample()};
-        amendResult.invoiceId = 'aeiou';
-        amendResult.paymentId = 'aeiou';
-        amendResult.paymentTransactionNumber = 'aeiou';
-        amendResult.subscriptionId = 'aeiou';
-        amendResult.success = true;
-        amendResult.totalDeltaMrr = 1.3579;
-        amendResult.totalDeltaTcv = 1.3579;
-        return amendResult;
-    }
+    // public static zc_AmendResult getExample() {
+    //     zc_AmendResult amendResult = new zc_AmendResult();
+    //     amendResult.amendmentIds = new List<String>{'aeiou'};
+    //     amendResult.chargeMetricsData = zc_ChargeMetricsData.getExample();
+    //     amendResult.errors = new List<zc_ActionsErrorResponse>{zc_ActionsErrorResponse.getExample()};
+    //     amendResult.gatewayResponse = 'aeiou';
+    //     amendResult.gatewayResponseCode = 'aeiou';
+    //     amendResult.invoiceDatas = new List<zc_InvoiceData>{zc_InvoiceData.getExample()};
+    //     amendResult.invoiceId = 'aeiou';
+    //     amendResult.paymentId = 'aeiou';
+    //     amendResult.paymentTransactionNumber = 'aeiou';
+    //     amendResult.subscriptionId = 'aeiou';
+    //     amendResult.success = true;
+    //     amendResult.totalDeltaMrr = 1.3579;
+    //     amendResult.totalDeltaTcv = 1.3579;
+    //     return amendResult;
+    // }
 
     public Boolean equals(Object obj) {
         if (obj instanceof zc_AmendResult) {
