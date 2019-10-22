@@ -9,6 +9,7 @@ public without sharing class LCC003_Dispatcher {
         System.debug('##MBEN LCC003_Dispatcher initApexMethod confirmationAction: ' + confirmationAction);
         
         Case caseToUpdate = new Case();
+        Case caseToUpdateError = new Case();
  
         // Case demande = getCase(currentId);
         if((bttnOperation == 'Anonymisation' || bttnOperation == 'AnonymisationAbonne') && !confirmationAction){
@@ -18,22 +19,23 @@ public without sharing class LCC003_Dispatcher {
         try{
             switch on bttnOperation {
                 when 'Desabonnement' {
-                    SM_Desabonnement.desabonner(currentId,false);
+					SM_Desabonnement.desabonner(currentId,false);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'Resiliation' {
-                    SM_Resiliation.resiliation(currentId);
-                    caseToUpdate.Id = currentId;
+					SM_Resiliation.resiliation(currentId);
 					caseToUpdate.Status = 'Fermee';
                 }
                 when 'getAccount' {
-                    SM_Subscription subscription = new SM_Subscription();
+					SM_Subscription subscription = new SM_Subscription();
                     //subscription.getAccount();
                 }
                 when 'Anonymisation' {
-                    rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ALL);
+					rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ALL);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'RefreshContraintes' {
-                    SM_Offre.refreshContraintes2(currentId);
+					SM_Offre.refreshContraintes2(currentId);
                 }
                 when 'GenerateCouponItems' {
                     SM_Coupon.generateCouponItems(currentId);
@@ -47,36 +49,42 @@ public without sharing class LCC003_Dispatcher {
                     // partie envoie de courrier
                     system.debug('##MNE LCC003_Dispatcher initApexMethod process >> Retention');
                     SM003_Retention.retention(currentId);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'AjoutLieux' {
                     SM_Offre.ajoutLieuAll(currentId);
                 }
                 when 'Retractation' {
                     SM_Retractation.retractation(currentId);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'AnnulationDemande' {
-                     SM_Desabonnement.desabonner(currentId,false);
+                    SM_Desabonnement.desabonner(currentId,false);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'AnonymisationAbonne' {
-                     rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ONLY_ZUORA);
+                    rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ONLY_ZUORA);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'Remboursement' {
-                     SM_Remboursement.Remboursement(currentId); 
+                    SM_Remboursement.Remboursement(currentId); 
                 }
                 when 'AnnulationDesabo' {
-                     SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
+                    SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
+					caseToUpdate.Status = 'Fermee';
                 }
                 /*when 'RejetBRED' {
                      SM_Rejet.traiterFichier(currentId);  
                 }*/
                 when 'RejetBRED_Parser_STEP1' {
-                     SM_Rejet.traiterFichier(currentId);  
+					SM_Rejet.traiterFichier(currentId);  
                 }
                 when 'RejetBRED_Traiter_STEP2' {
-                     SM_Rejet.getZSubRejetBredStep2(currentId);  
+                    SM_Rejet.getZSubRejetBredStep2(currentId);  
                 }
                 when 'GesteCommercial' {
-                     LCC006_GesteCommercial.executeGesteCommercial(currentId);  
+                    LCC006_GesteCommercial.executeGesteCommercial(currentId);
+					caseToUpdate.Status = 'Fermee';  
                 }
                 when 'DesactiverCarte' {
                     SM_Carte.desactivationFromCard(currentId, null);
@@ -99,14 +107,14 @@ public without sharing class LCC003_Dispatcher {
             System.debug('##MNE LCC003_Dispatcher initApexMethod exception getLineNumber >> ' + e.getLineNumber());  
             if(currentId.getSObjectType() == Schema.Case.SObjectType){
                 Datetime dNow = Datetime.now();
-                caseToUpdate.Id = currentId;
+                caseToUpdateError.Id = currentId;
                 String sDate = String.valueOf(dNow);
                 String current_ExecMessage = [Select ExecMessage__c from Case where Id=:currentId].ExecMessage__c;
                 String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
-                caseToUpdate.ExecMessage__c = sDate + fullMessage + '\n' + current_ExecMessage;
-                caseToUpdate.ExecStatus__c = 'Erreur';
-                caseToUpdate.ExecDate__c = dNow;
-                update caseToUpdate;
+                caseToUpdateError.ExecMessage__c = sDate + fullMessage + '\n' + current_ExecMessage;
+                caseToUpdateError.ExecStatus__c = 'Erreur';
+                caseToUpdateError.ExecDate__c = dNow;
+                update caseToUpdateError;
             }
             return rep;
         }

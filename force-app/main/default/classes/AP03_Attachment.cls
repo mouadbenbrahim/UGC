@@ -45,22 +45,27 @@ public class AP03_Attachment {
 
         list<File_Impression__c> listFileImpressionToIsert = new list<File_Impression__c>();
         for(SDOC__SDoc__c sDoc : listSDoc){
-            system.debug('##MNE AP03_Attachment createFileImpressionRecords hello3');
-            File_Impression__c fi = new File_Impression__c();
-            Case caseTMP = mapCaseById.get(sDoc.SDOC__ObjectID18__c);
-            fi.Name                 = sDoc.SDOC__Attachment_Name__c;
-            fi.Subscription__c      = caseTMP.Subscription__c;
-            fi.SubscriptionZID__c   = caseTMP.SubscriptionZID__c;
-            fi.Account__c           = caseTMP.AccountId;
-            //fi.Attachment_Id__c     = sDoc.SDOC__Attachment_ID__c;
-            fi.Attachment_Id__c     = mapAttachmentBySDocId.get(sDoc.Id).Id;
-            fi.Case__c              = caseTMP.Id;
-            fi.SDoc__c              = sDoc.Id;
-            fi.IsCarte__c           = false;
-            fi.Statut__c            = 'A Imprimer';
-            //fi.Attachment_Body__c     = EncodingUtil.base64Encode(mapAttachmentById.get(sDoc.SDOC__Attachment_ID__c).Body); 
-            fi.Attachment_Body__c   = EncodingUtil.base64Encode(mapAttachmentBySDocId.get(sDoc.Id).Body); 
-            listFileImpressionToIsert.add(fi);
+            system.debug('##ECH AP03_Attachment sDoc.SDOC__Attachment_Name__c:'+sDoc.SDOC__Attachment_Name__c);
+            if(sDoc.SDOC__Attachment_Name__c.left(3)!='UGC')
+            {
+                system.debug('##ECH AP03_Attachment createFileImpressionRecords hello3');
+                system.debug('##MNE AP03_Attachment createFileImpressionRecords hello3');
+                File_Impression__c fi = new File_Impression__c();
+                Case caseTMP = mapCaseById.get(sDoc.SDOC__ObjectID18__c);
+                fi.Name                 = sDoc.SDOC__Attachment_Name__c;
+                fi.Subscription__c      = caseTMP.Subscription__c;
+                fi.SubscriptionZID__c   = caseTMP.SubscriptionZID__c;
+                fi.Account__c           = caseTMP.AccountId;
+                //fi.Attachment_Id__c     = sDoc.SDOC__Attachment_ID__c;
+                fi.Attachment_Id__c     = mapAttachmentBySDocId.get(sDoc.Id).Id;
+                fi.Case__c              = caseTMP.Id;
+                fi.SDoc__c              = sDoc.Id;
+                fi.IsCarte__c           = false;
+                fi.Statut__c            = 'A Imprimer';
+                //fi.Attachment_Body__c     = EncodingUtil.base64Encode(mapAttachmentById.get(sDoc.SDOC__Attachment_ID__c).Body); 
+                fi.Attachment_Body__c   = EncodingUtil.base64Encode(mapAttachmentBySDocId.get(sDoc.Id).Body); 
+                listFileImpressionToIsert.add(fi);
+            }
         }
 
         if(listFileImpressionToIsert.size() > 0){

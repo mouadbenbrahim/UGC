@@ -311,12 +311,12 @@ public with sharing class SM_Impaye {
         payment.amount = montantPaye;
         payment.currency2 = 'EUR';
         payment.r_type = zc_CreatePaymentType.RTypeEnum.External;
-        payment.paymentMethodId = pmMethodId; //TODO
+        payment.paymentMethodId = pmMethodId;
         payment.effectiveDate = Date.today();
-        payment.referenceId = impayeRegIn.referenceId; //TODO
-        // TODO payment.MethodePaiement__c = ;
-        // TODO payment.Lieu__c =;
-        // TODO payment.Agent__c = ;
+        payment.referenceId = impayeRegIn.referenceId;
+        payment.methodePaiement = impayeRegIn.methodPaiement;
+        payment.lieu = impayeRegIn.lieu;
+        payment.agent = impayeRegIn.agent;
         zc_PaymentInvoiceApplicationCreateR invoice1 = new zc_PaymentInvoiceApplicationCreateR(); // Invoice Amend : FG + DNE
         invoice1.amount = montantPreview + impayeOut.montantFrais; //TODO champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes deja calcules
         invoice1.invoiceId = amendRes.results.get(0).invoiceId;
@@ -423,7 +423,7 @@ public with sharing class SM_Impaye {
         objUpdateReq.r_type = 'Account';
         zObj = new zc_ZObjectUpdate();
         zObj.id = accountID;
-        zObj.batch = 'Batch8'; //TODO conditions a ajouter
+        zObj.batch = (subRecancelled)?'Batch8':'Batch1';
         objUpdateReq.objects.add(zObj);
         System.debug(JSON.serialize(objUpdateReq,true));
 
@@ -483,7 +483,6 @@ public with sharing class SM_Impaye {
 
         // Create Case ??
 
-        // return null;
 
         WSZ.ImpayeReglerOut impayeRegOut = new WSZ.ImpayeReglerOut(accountID, currentSubId, paymentRes.amount, impayeRegIn.referenceId, paymentRes.id);
 

@@ -2,9 +2,9 @@ public with sharing class SM_Remboursement {
 
     //TODO: Creation Case Remboursement suite a une migration par trigger : cf. Spec API 17.6 et 18.5
     public static void Remboursement(Id ddeId) {
-    	system.debug('##MNE SM_Remboursement Remboursement ddeId >> '+ddeId);
-    	
-    	Case dem = SM_Demande.getDemande(ddeId);
+        system.debug('##MNE SM_Remboursement Remboursement ddeId >> '+ddeId);
+        
+        Case dem = SM_Demande.getDemande(ddeId);
 
         if (dem.Subscription__c == null) {
             throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
@@ -14,32 +14,33 @@ public with sharing class SM_Remboursement {
 
         //Fermeture de la demande
         dem.Status = 'Fermee';
+        dem.Etat_remboursement__c = 'Rembourse';
         update dem;
 
     }
     
     
     public static void executeRemboursement(Case dem, Id accId, Id subscriptionId, String zPaymentId, Boolean fromOnglet) {
-    	system.debug('##MNE SM_Remboursement executeRemboursement dem >> '+dem);
-    	system.debug('##MNE SM_Remboursement executeRemboursement accId >> '+accId);
-    	system.debug('##MNE SM_Remboursement executeRemboursement subscriptionId >> '+subscriptionId);
-    	system.debug('##MNE SM_Remboursement executeRemboursement zPaymentId >> '+zPaymentId);
-    	system.debug('##MNE SM_Remboursement executeRemboursement fromOnglet >> '+fromOnglet);
+        system.debug('##MNE SM_Remboursement executeRemboursement dem >> '+dem);
+        system.debug('##MNE SM_Remboursement executeRemboursement accId >> '+accId);
+        system.debug('##MNE SM_Remboursement executeRemboursement subscriptionId >> '+subscriptionId);
+        system.debug('##MNE SM_Remboursement executeRemboursement zPaymentId >> '+zPaymentId);
+        system.debug('##MNE SM_Remboursement executeRemboursement fromOnglet >> '+fromOnglet);
         
         String zuoraPaymentId;
         if(fromOnglet){
-        	zuoraPaymentId = zPaymentId;
+            zuoraPaymentId = zPaymentId;
         } else {
-        	zuoraPaymentId = dem.Payment__r.Zuora__EXT_ID__c;
+            zuoraPaymentId = dem.Payment__r.Zuora__EXT_ID__c;
         }
         
         system.debug('##MNE SM_Remboursement executeRemboursement zuoraPaymentId >> '+zuoraPaymentId);
         
         
         Zuora__Subscription__c sub = SM_Subscription.getSubscription(subscriptionId);
-    	Account acc = SM_Account.getAccount(accId);
-    	String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c); 
-    	
+        Account acc = SM_Account.getAccount(accId);
+        String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c); 
+        
         //WSZ.PaymentPartsOut paymentPart = SM_Payment.getPaymentPart(zuoraPaymentId, zEntityId); 
       
 
@@ -64,9 +65,9 @@ public with sharing class SM_Remboursement {
 
 
         String invoiceId = verifRemboursement(dem, acc, sub, fromOnglet,zEntityId, zuoraPaymentId);
-    	  	
-    	
-    	//MethodType
+            
+        
+        //MethodType
         String methodTypeRefund = 'Other';
         //refund
         String typeRefund = 'External';
@@ -105,7 +106,7 @@ public with sharing class SM_Remboursement {
 
            }
            when 'Espèce'{
-           	   methodTypeRefund = 'Cash' ;
+               methodTypeRefund = 'Cash' ;
                
            }            
            when 'Prélèvement (UI)','Prélèvement (UU)' {
@@ -121,18 +122,18 @@ public with sharing class SM_Remboursement {
         
 
         //Unaply payment
-    	unapplyPayment(dem.MontantRembourser__c, invoiceId, zuoraPaymentId, zEntityId, null);  
+        unapplyPayment(dem.MontantRembourser__c, invoiceId, zuoraPaymentId, zEntityId, null);  
        
 
-    	//String methodTypeRefund = 'Other';
-    	String reasonCodeRefund = 'Standard Refund';
-    	
+        //String methodTypeRefund = 'Other';
+        String reasonCodeRefund = 'Standard Refund';
+        
         String comment = dem.Raison_remboursement__c;
-    	
+        
         //Exécution du remboursement
         try{
             WSZ.RefundOut refOut = executeRefund(refundDate, dem.MontantRembourser__c, typeRefund, methodTypeRefund, reasonCodeRefund, zuoraPaymentId, zEntityId,comment);
-        	//Si erreur du remboursement, reapplication du paiemment
+            //Si erreur du remboursement, reapplication du paiemment
             if(refOut.status=='Error' || !refOut.success){
                 throw new MyException(refOut.gatewayResponse);
             }
@@ -145,12 +146,12 @@ public with sharing class SM_Remboursement {
         }
         
 
-    	//apply Credit memo
-    	if(dem.CreditMemoId__c != null){
-      		applyCreditMemo(targetDateCreditMemo, dem.MontantRembourser__c, invoiceId, dem.CreditMemoId__c, zEntityId);
-    	}
-    	else {
-    		//Create Credit Memo
+        //apply Credit memo
+        if(dem.CreditMemoId__c != null){
+            applyCreditMemo(targetDateCreditMemo, dem.MontantRembourser__c, invoiceId, dem.CreditMemoId__c, zEntityId);
+        }
+        else {
+            //Create Credit Memo
 
             //Get Invoice items for Credit Memo to initialize Credit Memo Items
             WSZ.InvoiceItemsOut gInvoiceItemsOut = getInvoiceItems(invoiceId, zEntityId);
@@ -238,7 +239,7 @@ public with sharing class SM_Remboursement {
             }
 
             System.debug('##ECH SM_Remboursement executeRemboursement lstCreditMemoInItem >> '+lstCreditMemoInItem);
-               	
+                
             //Create Credit Memo
             WSZ.CreditMemoOut creditMemoOut = createCreditMemo(creditDate, dem.MontantRembourser__c, invoiceId, zEntityId,lstCreditMemoInItem);
             
@@ -249,8 +250,8 @@ public with sharing class SM_Remboursement {
             applyCreditMemo(creditDate, dem.MontantRembourser__c, invoiceId, creditMemoOut.Id, zEntityId);
         
         }
-    	
-    	//update 
+        
+        //update 
     }
     
     @AuraEnabled
@@ -261,17 +262,17 @@ public with sharing class SM_Remboursement {
         WRPInt rep = new WRPInt();  
         
         try{
-        	Case c = [SELECT Id, AccountId, Subscription__c, DateDemande__c FROM Case WHERE Id = :caseId LIMIT 1];
-	        Zuora__Payment__c payment = [SELECT Id, Zuora__EXT_ID__c  FROM Zuora__Payment__c WHERE Id = :caseRecord.Payment__c LIMIT 1];
-	        Id accId = c.AccountId;
-	        String zPaymentId = payment.Zuora__EXT_ID__c;
-	        
-	        System.debug('##MNE SM_Remboursement ongletRemboursement Case c >> '+c);
-	        System.debug('##MNE SM_Remboursement ongletRemboursement payment >> '+payment);
-	        System.debug('##MNE SM_Remboursement ongletRemboursement zPaymentId >> '+zPaymentId);
-	        
-	        executeRemboursement(caseRecord, accId, c.Subscription__c, zPaymentId, true);
-	        
+            Case c = [SELECT Id, AccountId, Subscription__c, DateDemande__c FROM Case WHERE Id = :caseId LIMIT 1];
+            Zuora__Payment__c payment = [SELECT Id, Zuora__EXT_ID__c  FROM Zuora__Payment__c WHERE Id = :caseRecord.Payment__c LIMIT 1];
+            Id accId = c.AccountId;
+            String zPaymentId = payment.Zuora__EXT_ID__c;
+            
+            System.debug('##MNE SM_Remboursement ongletRemboursement Case c >> '+c);
+            System.debug('##MNE SM_Remboursement ongletRemboursement payment >> '+payment);
+            System.debug('##MNE SM_Remboursement ongletRemboursement zPaymentId >> '+zPaymentId);
+            
+            executeRemboursement(caseRecord, accId, c.Subscription__c, zPaymentId, true);
+            
             //creataion du nouveau case
             /*Id remboursementRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Remboursement').getRecordTypeId();
             Case cTMP = new Case();
@@ -284,7 +285,7 @@ public with sharing class SM_Remboursement {
             cTMP.RemboursementFaire__c = true;
             cTMP.RecordTypeId = remboursementRecordTypeId;
             cTMP.Famille__c = '7- Finance';
- 			cTMP.Motif__c = '04- Remboursement';
+            cTMP.Motif__c = '04- Remboursement';
             insert cTMP; */ 
             
             Id caseRemboursementId = createRebousementCase(caseId, caseRecord.MontantRembourser__c, caseRecord.MontantRembourser__c, accId, null, null, caseRecord.Payment__c, caseRecord.DateDeRemboursement__c);   
@@ -293,9 +294,9 @@ public with sharing class SM_Remboursement {
             rep.accountIdToRedirect = accId;
             
         } catch(Exception e){
-        	rep.showMessage = true;
-	        rep.messageToDisplay = e.getMessage();
-	        return rep;
+            rep.showMessage = true;
+            rep.messageToDisplay = e.getMessage();
+            return rep;
         }
         
         return rep;
@@ -304,9 +305,9 @@ public with sharing class SM_Remboursement {
     
     private static String verifRemboursement(Case dem, Account acc, Zuora__Subscription__c sub, Boolean fromOnglet, String zEntityId, String zuoraPaymentId ) {
 
-        if (!fromOnglet && dem.Status == SM_Demande.getStatus('Fermee')) {
+        /*if (!fromOnglet && dem.Status == SM_Demande.getStatus('Fermee')) {
             throw new MyException('Cette demande a deja ete traite');
-        }
+        }*/
 
         if (!fromOnglet && dem.SousMotif__c == null) { //TODO peut etre a mettre au niveau parametrage AVOIR
             throw new MyException('Sous-Motif obligatoire');
@@ -371,10 +372,10 @@ public with sharing class SM_Remboursement {
         c.AccountId = accountId;
         c.CreditMemoId__c = creditMemoId;
         c.Famille__c = '7- Finance';
- 		c.Motif__c = '04- Remboursement';
- 		//c.DateFinContrat__c = dateResiliation;
- 		c.Payment__c = paymentId;
- 		c.DateDeRemboursement__c = remboursementDate;
+        c.Motif__c = '04- Remboursement';
+        //c.DateFinContrat__c = dateResiliation;
+        c.Payment__c = paymentId;
+        c.DateDeRemboursement__c = remboursementDate;
         c.Origin = 'Interne';
         
         List<Account> acclst = [SELECT CodePays__c from Account where Id=:accountId LIMIT 1];
@@ -382,17 +383,17 @@ public with sharing class SM_Remboursement {
         if(acclst.size()>0){
             if(acclst[0].CodePays__c=='032')
             c.DemandeRemboursement__c = 'UGCUnlimited';
-        	else
-        	c.DemandeRemboursement__c = 'UGCIllimité';
+            else
+            c.DemandeRemboursement__c = 'UGCIllimité';
         }
-		
+        
         List<Contact> conlst = [SELECT ID from Contact where AccountId=:accountId LIMIT 1];
         if(conlst.size()>0){
             c.ContactId =conlst[0].Id;
         }
                 
         List<Zuora__Payment__c> paylst = [SELECT ID from Zuora__Payment__c where Zuora__Account__c=:accountId order by CreatedDate DESC  LIMIT 1];
-		if(paylst.size()>0){
+        if(paylst.size()>0){
             c.Payment__c =paylst[0].Id;
         }
         
@@ -405,11 +406,11 @@ public with sharing class SM_Remboursement {
     }
     
      public static void unapplyPayment(Decimal amountUnapply, String zInvoiceId, String zPaymentId, String zEntityId, String access_token) {
-     	System.debug('##MNE SM_Remboursement unapplyPayment amountUnapply >> ' + amountUnapply);
-     	System.debug('##MNE SM_Remboursement unapplyPayment zInvoiceId >> ' + zInvoiceId);
-     	System.debug('##MNE SM_Remboursement unapplyPayment zPaymentId >> ' + zPaymentId);
-     	System.debug('##MNE SM_Remboursement unapplyPayment zEntityId >> ' + zEntityId);
-     	
+        System.debug('##MNE SM_Remboursement unapplyPayment amountUnapply >> ' + amountUnapply);
+        System.debug('##MNE SM_Remboursement unapplyPayment zInvoiceId >> ' + zInvoiceId);
+        System.debug('##MNE SM_Remboursement unapplyPayment zPaymentId >> ' + zPaymentId);
+        System.debug('##MNE SM_Remboursement unapplyPayment zEntityId >> ' + zEntityId);
+        
         String endpoint = '/v1/payments/'+zPaymentId+'/unapply';
         String method = 'PUT';
         String wsIn = '';
@@ -418,10 +419,10 @@ public with sharing class SM_Remboursement {
         // Retrieve Zuora token
         String accessToken;
         if(access_token != null){
-        	accessToken = access_token;
+            accessToken = access_token;
         }
         else {
-        	accessToken = WS001_CallZuora.access_token;
+            accessToken = WS001_CallZuora.access_token;
         }
 
         // Call WS
@@ -436,7 +437,7 @@ public with sharing class SM_Remboursement {
         System.debug('##MNE SM_Remboursement unapplyPayment wsIn >> ' + wsIn);
         wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
         System.debug('##MNE SM_Remboursement unapplyPayment wsOut >> ' + wsOut);
-	}
+    }
 
     public static void applyPayment(Decimal amountUnapply, String zInvoiceId, String zPaymentId, String zEntityId) {
         System.debug('##ECH SM_Remboursement applyPayment amountUnapply >> ' + amountUnapply);
@@ -467,16 +468,16 @@ public with sharing class SM_Remboursement {
     }
 
 
-	
-	public static WSZ.RefundOut executeRefund(String refundDate, Decimal totalAmount, String typeX, String methodType, String reasonCode, String zPaymentId, String zEntityId, String comment) {
-    	System.debug('##MNE SM_Remboursement executeRefund refundDate >> ' + refundDate);
-    	System.debug('##MNE SM_Remboursement executeRefund totalAmount >> ' + totalAmount);
-    	System.debug('##MNE SM_Remboursement executeRefund typeX >> ' + typeX);
-    	System.debug('##MNE SM_Remboursement executeRefund methodType >> ' + methodType);
-    	System.debug('##MNE SM_Remboursement executeRefund reasonCode >> ' + reasonCode);
-    	System.debug('##MNE SM_Remboursement executeRefund zPaymentId >> ' + zPaymentId);
-    	System.debug('##MNE SM_Remboursement executeRefund zEntityId >> ' + zEntityId);
-    	
+    
+    public static WSZ.RefundOut executeRefund(String refundDate, Decimal totalAmount, String typeX, String methodType, String reasonCode, String zPaymentId, String zEntityId, String comment) {
+        System.debug('##MNE SM_Remboursement executeRefund refundDate >> ' + refundDate);
+        System.debug('##MNE SM_Remboursement executeRefund totalAmount >> ' + totalAmount);
+        System.debug('##MNE SM_Remboursement executeRefund typeX >> ' + typeX);
+        System.debug('##MNE SM_Remboursement executeRefund methodType >> ' + methodType);
+        System.debug('##MNE SM_Remboursement executeRefund reasonCode >> ' + reasonCode);
+        System.debug('##MNE SM_Remboursement executeRefund zPaymentId >> ' + zPaymentId);
+        System.debug('##MNE SM_Remboursement executeRefund zEntityId >> ' + zEntityId);
+        
         String endpoint = '/v1/payments/'+zPaymentId+'/refunds';
         String method = 'POST';
         String wsIn = null;
@@ -527,26 +528,26 @@ public with sharing class SM_Remboursement {
     }
     
     public static void executeRefundRejetBred(Decimal totalAmount, String zPaymentId, String zEntityId, String access_token) {
-    	System.debug('##MNE SM_Remboursement executeRefundRejetBred totalAmount >> ' + totalAmount);
-    	System.debug('##MNE SM_Remboursement executeRefundRejetBred zPaymentId >> ' + zPaymentId);
-    	System.debug('##MNE SM_Remboursement executeRefundRejetBred zEntityId >> ' + zEntityId);
-		 
-		String endpoint = '/v1/payments/'+zPaymentId+'/refunds';
-		String method = 'POST';
-		
-		WSZ.RefundlIn wsInObj = new WSZ.RefundlIn();
-		wsInObj.typeX = 'External';
-		wsInObj.methodType = 'Other';
-		wsInObj.reasonCode = 'Payment Rejection';
-		wsInObj.refundDate = Util.zDate(Date.today());
-		wsInObj.totalAmount = totalAmount;
-		wsInObj.comment = 'Gestion Rejet Bred';
-		String wsIn = (String) JSON.serialize(wsInObj);
-		wsIn = wsIn.replace('typeX','type');
-		System.debug('##MNE SM_Remboursement executeRefundRejetBred wsIn >> ' + wsIn);
-		
-		String wsOut = WS001_CallZuora.sendRequest(access_token, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
-		system.debug('##MNE SM_Remboursement executeRefundRejetBred wsOut >> '+wsOut);
+        System.debug('##MNE SM_Remboursement executeRefundRejetBred totalAmount >> ' + totalAmount);
+        System.debug('##MNE SM_Remboursement executeRefundRejetBred zPaymentId >> ' + zPaymentId);
+        System.debug('##MNE SM_Remboursement executeRefundRejetBred zEntityId >> ' + zEntityId);
+         
+        String endpoint = '/v1/payments/'+zPaymentId+'/refunds';
+        String method = 'POST';
+        
+        WSZ.RefundlIn wsInObj = new WSZ.RefundlIn();
+        wsInObj.typeX = 'External';
+        wsInObj.methodType = 'Other';
+        wsInObj.reasonCode = 'Payment Rejection';
+        wsInObj.refundDate = Util.zDate(Date.today());
+        wsInObj.totalAmount = totalAmount;
+        wsInObj.comment = 'Gestion Rejet Bred';
+        String wsIn = (String) JSON.serialize(wsInObj);
+        wsIn = wsIn.replace('typeX','type');
+        System.debug('##MNE SM_Remboursement executeRefundRejetBred wsIn >> ' + wsIn);
+        
+        String wsOut = WS001_CallZuora.sendRequest(access_token, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
+        system.debug('##MNE SM_Remboursement executeRefundRejetBred wsOut >> '+wsOut);
     }
 
 
@@ -603,12 +604,12 @@ public with sharing class SM_Remboursement {
     }
 
     public static void applyCreditMemo(String effectiveDate, Decimal amount, String zInvoiceId, String zCrediMemoId, String zEntityId) {
-     	System.debug('##MNE SM_Remboursement applyCreditMemo effectiveDate >> ' + effectiveDate);
-     	System.debug('##MNE SM_Remboursement applyCreditMemo amount >> ' + amount);
-     	System.debug('##MNE SM_Remboursement applyCreditMemo zInvoiceId >> ' + zInvoiceId);
-     	System.debug('##MNE SM_Remboursement applyCreditMemo zCrediMemoId >> ' + zCrediMemoId);
-     	System.debug('##MNE SM_Remboursement applyCreditMemo zEntityId >> ' + zEntityId);
-     	
+        System.debug('##MNE SM_Remboursement applyCreditMemo effectiveDate >> ' + effectiveDate);
+        System.debug('##MNE SM_Remboursement applyCreditMemo amount >> ' + amount);
+        System.debug('##MNE SM_Remboursement applyCreditMemo zInvoiceId >> ' + zInvoiceId);
+        System.debug('##MNE SM_Remboursement applyCreditMemo zCrediMemoId >> ' + zCrediMemoId);
+        System.debug('##MNE SM_Remboursement applyCreditMemo zEntityId >> ' + zEntityId);
+        
         String endpoint = '/v1/creditmemos/'+zCrediMemoId+'/apply';
         String method = 'PUT';
         String wsIn = '';
@@ -630,7 +631,7 @@ public with sharing class SM_Remboursement {
         System.debug('##MNE SM_Remboursement applyCreditMemo wsIn >> ' + wsIn);
         wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
         System.debug('##MNE SM_Remboursement applyCreditMemo wsOut >> ' + wsOut);
-	}
+    }
 
 
     public static WSZ.InvoiceItemsOut getInvoiceItems(String zInvoiceId, String zEntityId) {
@@ -652,15 +653,15 @@ public with sharing class SM_Remboursement {
         return (WSZ.InvoiceItemsOut) JSON.deserializeStrict(wsOut, WSZ.InvoiceItemsOut.class);
     }
 
-    	
-	private class MyException extends Exception {
-	}
-	
-	public without sharing class WRPInt {
+        
+    private class MyException extends Exception {
+    }
+    
+    public without sharing class WRPInt {
         @AuraEnabled public Boolean showMessage                         { get; set; }
         @AuraEnabled public String  messageToDisplay                    { get; set; }
-        @AuraEnabled public Id  caseIdToRedirect                    	{ get; set; }
-        @AuraEnabled public Id  accountIdToRedirect                    	{ get; set; }
+        @AuraEnabled public Id  caseIdToRedirect                        { get; set; }
+        @AuraEnabled public Id  accountIdToRedirect                     { get; set; }
         
         public WRPInt() {
             this.showMessage            = false;

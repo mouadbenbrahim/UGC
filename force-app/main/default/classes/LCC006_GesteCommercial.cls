@@ -227,7 +227,36 @@ public static void executeGesteCommercialCDD3(Id ddeId) {
                     }
                 }
             }
-        }        
+        }
+    	
+    	String currentSubId=repObj.results.get(0).subscriptionId; //Get last subId
+    
+    	//Update de la souscription avec la date de fin de contrat
+    	//Mise à jour ancienne valeur codefin et date fin.
+            zc_ProxyActionupdateRequest objUpdateReq = new zc_ProxyActionupdateRequest();
+            objUpdateReq.r_type = 'Subscription';
+            zc_ZObjectUpdate zObj = new zc_ZObjectUpdate();
+            zObj.id = currentSubId;
+              		
+    		zObj.dateFinContrat = sub.DateFinContrat__c.addMonths(nbDeMoisRemise); // c les valeur du contrat initial
+            objUpdateReq.objects.add(zObj);
+            System.debug(JSON.serialize(objUpdateReq,true));   
+
+            //Call WS invoice update
+            repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/update', zEntityId, 'POST', objUpdateReq, zc_ProxyActionupdateRequest.class, zc_ProxySaveResult.class, null);
+
+            par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+            repWS = '{"results":'+repWS+'}';
+            repWS = par.serializeWithMapping2(repWS,'zc_ProxySaveResult'); //rename members
+            zc_ProxySaveResult objUpdateRes = (zc_ProxySaveResult)JSON.deserialize(repWS, zc_ProxySaveResult.class);
+
+            success = true;
+            messageError = '';
+            if(objUpdateRes != null && objUpdateRes.results.size() > 0){
+                if(!objUpdateRes.results.get(0).success){                                    
+                    throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_GESTCO_APPLICATION_CDD))+ repWS);             
+                }            
+            }
     }
 
     public static void executeGesteCommercialCDD(Id ddeId) { //non utilise

@@ -557,30 +557,53 @@ public class AP02_Case {
 			                            taskToInsert.add(createTask('courrier', c));
 			                            c.AideReponseClient__c = 'Un courrier a été généré.';
                                         //ECH Flag pour identifier une demande traitée
-            							c.TECH_GeneratedDoc__c = true;
+                            			c.TECH_GeneratedDoc__c = true;
 	                        		}
 	                        	}
+                                
                         	}
                         	if(String.isNotBlank(emailTemplateName)){
 								system.debug('##ECH emailTemplateName 1 :'+emailTemplateName );
-	                        	list<String> listEmailTemplateName = emailTemplateName.split(';');
-	                        	for(String emailTemplateNameTMP : listEmailTemplateName){
-	                        		emailTemplateNameTMP = emailTemplateNameTMP.trim();
-	                        		if(mapNomSdocsIdSdocs.containsKey(emailTemplateNameTMP)){
+	                        	
+                                list<String> listEmailTemplateName = emailTemplateName.split(';');
+	                        	system.debug('##ECH listEmailTemplateName  :'+listEmailTemplateName );
+                                
+                                list<String> listEmailTemplateId = new list<String>();
+                                
+                                for(String s: listEmailTemplateName){
+                                    if(mapNomSdocsIdSdocs.containsKey(s.trim())){
+                                        listEmailTemplateId.add(mapNomSdocsIdSdocs.get(s.trim()));
+                                    }
+                                }
+                                system.debug('##ECH listEmailTemplateId  :'+listEmailTemplateId );
+                                
+                                //listEmailTemplateId.remove(null);
+                                
+                                string listEmailTemplateIdforSDOC = string.join(listEmailTemplateId,',');
+                                
+	                            system.debug('##ECH listEmailTemplateIdforSDOC  :'+listEmailTemplateIdforSDOC );
+                                                                                            
+                                //string emailTemplateNameTMP = string.join(listEmailTemplateName,',');
+                      
+//                                for(String emailTemplateNameTMP : listEmailTemplateName){
+//	                        		emailTemplateNameTMP = emailTemplateNameTMP.trim();
+	                        		if(String.isNotEmpty(listEmailTemplateIdforSDOC)){
 	                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
 	                                		SDOC__Start__c=true, 
 	                                		SDOC__Oid__c=c.Id, 
 	                                		SDOC__ObjApiName__c='Case', 
 	                                		SDOC__SendEmail__c='1',
-	                                		SDOC__Doclist__c= mapNomSdocsIdSdocs.get(emailTemplateNameTMP));
+	                                		SDOC__Doclist__c= listEmailTemplateIdforSDOC);
 	                            		jobList.add(job);
 	                            		taskToInsert.add(createTask('email', c));
 	                            		c.AideReponseClient__c = 'Un email a été envoyé au client.';
                                         //ECH Flag pour identifier une demande traitée
-            							c.TECH_GeneratedDoc__c = true;
+                            			c.TECH_GeneratedDoc__c = true;
 	                        		}
-	                        	}
+//	                        	}
+                                
                         	}
+                            
                         }
 
                         /*if(typeTemplate == 'HTML' && mapNomSdocsIdSdocs.containsKey(emailTemplateName)) {
@@ -608,59 +631,79 @@ public class AP02_Case {
                             c.AideReponseClient__c = 'Un courrier a été généré.';
                         }*/
                         
-                        else if(isHTMLTemplate && String.isNotBlank(emailTemplateName)){
-							system.debug('##ECH emailTemplateName 2 :'+emailTemplateName );
-                        	list<String> listEmailTemplateName = emailTemplateName.split(';');
-                        	for(String emailTemplateNameTMP : listEmailTemplateName){
-                        		emailTemplateNameTMP = emailTemplateNameTMP.trim();
-                        		if(mapNomSdocsIdSdocs.containsKey(emailTemplateNameTMP)){
-                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
-                                		SDOC__Start__c=true, 
-                                		SDOC__Oid__c=c.Id, 
-                                		SDOC__ObjApiName__c='Case', 
-                                		SDOC__SendEmail__c='1',
-                                		SDOC__Doclist__c= mapNomSdocsIdSdocs.get(emailTemplateNameTMP));
-                            		jobList.add(job);
-                            		taskToInsert.add(createTask('email', c));
-                            		c.AideReponseClient__c = 'Un email a été envoyé au client.';
-                                    //ECH Flag pour identifier une demande traitée
-            						c.TECH_GeneratedDoc__c = true;
-                        		}
+                        else {
+                            if(isHTMLTemplate && String.isNotBlank(emailTemplateName)){
+                                
+                                system.debug('##ECH emailTemplateName 2 :'+emailTemplateName );
+                                list<String> listEmailTemplateName = emailTemplateName.split(';');
+	                        	system.debug('##ECH listEmailTemplateName 2  :'+listEmailTemplateName );
+                                
+                                list<String> listEmailTemplateId = new list<String>();
+                                
+                                for(String s: listEmailTemplateName){
+                                    if(mapNomSdocsIdSdocs.containsKey(s.trim())){
+                                        listEmailTemplateId.add(mapNomSdocsIdSdocs.get(s.trim()));
+                                    }
+                                }
+                                system.debug('##ECH listEmailTemplateId 2  :'+listEmailTemplateId );
+                                
+                                //listEmailTemplateId.remove(null);
+                                
+                                string listEmailTemplateIdforSDOC = string.join(listEmailTemplateId,',');
+                                
+	                            system.debug('##ECH listEmailTemplateIdforSDOC 2  :'+listEmailTemplateIdforSDOC );
+                                                                                            
+                                //string emailTemplateNameTMP = string.join(listEmailTemplateName,',');
+                      
+//                                for(String emailTemplateNameTMP : listEmailTemplateName){
+//	                        		emailTemplateNameTMP = emailTemplateNameTMP.trim();
+	                        		if(String.isNotEmpty(listEmailTemplateIdforSDOC)){
+	                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
+	                                		SDOC__Start__c=true, 
+	                                		SDOC__Oid__c=c.Id, 
+	                                		SDOC__ObjApiName__c='Case', 
+	                                		SDOC__SendEmail__c='1',
+	                                		SDOC__Doclist__c= listEmailTemplateIdforSDOC);
+	                            		jobList.add(job);
+	                            		taskToInsert.add(createTask('email', c));
+	                            		c.AideReponseClient__c = 'Un email a été envoyé au client.';
+                                        //ECH Flag pour identifier une demande traitée
+                            			c.TECH_GeneratedDoc__c = true;
+	                        		}
+//	                        	}
+                            }
+                            
+                        	if(isPDFTemplate && String.isNotBlank(courrierTemplateName)){
+                                system.debug('##ECH courrierTemplateName 3:'+courrierTemplateName);
+                                list<String> listCourrierTemplateName = courrierTemplateName.split(';');
+                                for(String courrierTemplateNameTMP : listCourrierTemplateName){
+                                    courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
+                                    if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
+                                        SDOC__SDJob__c job = new SDOC__SDJob__c(
+                                            SDOC__Start__c=true, 
+                                            SDOC__Oid__c=c.Id, 
+                                            SDOC__ObjApiName__c='Case', 
+                                            SDOC__SendEmail__c='0',
+                                            SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
+                                        jobList.add(job);
+                                        taskToInsert.add(createTask('courrier', c));
+                                        c.AideReponseClient__c = 'Un courrier a été généré.';
+                                        system.debug('##ECH courrierTemplateName 4:'+courrierTemplateName);
+                                     	//ECH Flag pour identifier une demande traitée
+                            			c.TECH_GeneratedDoc__c = true;   
+                                    }
+                                }
                         	}
                         	
-                        } else if(isPDFTemplate && String.isNotBlank(courrierTemplateName)){
-							system.debug('##ECH courrierTemplateName 3:'+courrierTemplateName);
-							list<String> listCourrierTemplateName = courrierTemplateName.split(';');
-                        	for(String courrierTemplateNameTMP : listCourrierTemplateName){
-                        		courrierTemplateNameTMP = courrierTemplateNameTMP.trim();
-                        		if(mapNomSdocsIdSdocs.containsKey(courrierTemplateNameTMP)){
-                        			SDOC__SDJob__c job = new SDOC__SDJob__c(
-		                                SDOC__Start__c=true, 
-		                                SDOC__Oid__c=c.Id, 
-		                                SDOC__ObjApiName__c='Case', 
-		                                SDOC__SendEmail__c='0',
-		                                SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
-                            		jobList.add(job);
-		                            taskToInsert.add(createTask('courrier', c));
-		                            c.AideReponseClient__c = 'Un courrier a été généré.';
-									system.debug('##ECH courrierTemplateName 4:'+courrierTemplateName);
-                                    //ECH Flag pour identifier une demande traitée
-            						c.TECH_GeneratedDoc__c = true;
-                        		}
-                        	}
-                        }
-						else
-                        {
+                           	
                             system.debug('##ECH c.TECHIdStatut__c ELSE :'+c.TECHIdStatut__c );
                             system.debug('##ECH emailTemplateName ELSE:'+emailTemplateName);
                             system.debug('##ECH courrierTemplateName ELSE:'+courrierTemplateName);
                             system.debug('##ECH isHTMLTemplate ELSE :'+isHTMLTemplate);
-                            system.debug('##ECH isPDFTemplate ELSE :'+isPDFTemplate);
-                            
-                        }
-                        
-                        
-                    } else if(contacts.Reponse__c == 'Semi-automatique'){
+                            system.debug('##ECH isPDFTemplate ELSE :'+isPDFTemplate);                 
+                       }              
+                    } 
+                    else if(contacts.Reponse__c == 'Semi-automatique'){
                         system.debug('--#### IN SEMI AUTOMATIQUE');
                         /*
                         if(typeTemplate == 'HTML') {

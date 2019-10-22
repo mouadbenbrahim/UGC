@@ -112,6 +112,10 @@ public class zc_CreatePaymentType implements zc_Zuc.MappedProperties { // zc_Pay
      */
     public RTypeEnum r_type { get; set; }
 
+    public String lieu { get; set; }
+    public String methodePaiement { get; set; }
+    public String agent { get; set; }
+
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'IntegrationId__NS' => 'integrationIdNS',
         'IntegrationStatus__NS' => 'integrationStatusNS',
@@ -119,7 +123,10 @@ public class zc_CreatePaymentType implements zc_Zuc.MappedProperties { // zc_Pay
         'SyncDate__NS' => 'syncDateNS',
         'Transaction__NS' => 'transactionNS',
         'type' => 'r_type',
-        'currency' => 'currency2'
+        'currency' => 'currency2',
+        'Lieu__c' => 'lieu',
+        'MethodePaiement__c' => 'methodePaiement',
+        'Agent__c' => 'agent'
     };
 
     public Map<String, String> getPropertyMappings() {
