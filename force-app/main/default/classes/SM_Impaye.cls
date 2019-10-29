@@ -25,6 +25,10 @@ public with sharing class SM_Impaye {
             throw new RTException(RTExceptionCode.ERREUR_IMPAYE_GET_SOUSCRITPION_NON_TROUVE);
         }
 
+        if(sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c != accountID){
+            throw new RTException(RTExceptionCode.ERREUR_IMPAYE_GET_ACCOUNT_NON_TROUVE2);
+        }
+
         // Get Dette echue : Invoices       
         // List<Zuora__ZInvoice__c> invoices = [select Zuora__Zuora_Id__c, Name, Zuora__InvoiceDate__c, Zuora__Balance2__c, Zuora__TotalAmount__c,
         // Tech_CompteurRejet__c,Tech_CodeRejet__c,Tech_DateRejet__c
@@ -50,7 +54,7 @@ public with sharing class SM_Impaye {
                     impayeOut.dateDetteEchue = inv.Zuora__InvoiceDate__c;                    
                     firstInvoice = false;
                 }                
-                impayeOut.montantDetteEchue = impayeOut.montantDetteEchue + inv.Zuora__Balance2__c;
+                impayeOut.montantDetteEchue = (Decimal)impayeOut.montantDetteEchue + inv.Zuora__Balance2__c;
                 // nbrInvoices = nbrInvoices + 1;
             }            
         }
@@ -76,42 +80,40 @@ public with sharing class SM_Impaye {
 
     public static WSZ.ImpayeReglerOut reglerImpaye(WSZ.ImpayeReglerIn impayeRegIn){ //accountId: Zuora, subZID: Zuora
         
-        String repWS;
+        String repWS,messageError,oriCodeFinContrat,invoiceId;
+        Boolean success;        
+        Boolean subActivated = false;
+        Boolean subRecancelled = false;
+        Boolean hasDetteEchue = false;
+        Boolean hasFraisGestion = false;
+        Boolean hasDetteNonEchue = false;
+        Date oriDateFinContrat,dateDebutRemise,invTargetDate;
+        Date targetDate = null;
         ZUC_Parser par;
-        Boolean success;
-        String messageError;
         List<String> detteEchueIds = new List<String>();
         zc_ProxyActionupdateRequest objUpdateReq;
         zc_ProxySaveResult objUpdateRes;
-        zc_ZObjectUpdate zObj;
-        Boolean subActivated = false;
-        Boolean subRecancelled = false;
-        Date targetDate = null;
-        String oriCodeFinContrat;
-        Date oriDateFinContrat;
-      
+        zc_ZObjectUpdate zObj;      
 
         // String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
         String accountID = impayeRegIn.accountId;
         String subZID = impayeRegIn.subscriptionId;        
         Double montantPaye = impayeRegIn.montantPaye;
-
-        
-
         String currentSubId = subZID;
-        
         String accessToken = WS001_CallZuora.access_token;
         
-
-
+        
         Zuora__Subscription__c sub = SM_Subscription.getSubscriptionByZID(subZID);
         if (sub == null ) {
             throw new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_SOUSCRITPION_NON_TROUVE);
         }
 
         String codePays = sub.Zuora__Account__r.CodePays__c;
+        String contactId = sub.Zuora__Account__r.PersonContactId;
+        String accountSID = sub.Zuora__Account__r.Id;
         String zEntityId = WS001_CallZuora.getZuoraEntityId(codePays);
         String pmMethodId =  Utils.getUgcGenericParam('Zuora_PM_'+impayeRegIn.methodPaiement,codePays).ParamValue__c;
+        
         
         if (!String.isEmpty(sub.Tech_DetteTargetDate__c)){
             targetDate = Date.valueOf(sub.Tech_DetteTargetDate__c);
@@ -126,7 +128,12 @@ public with sharing class SM_Impaye {
             throw new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_PAS_DE_DETTE);
         }
 
-        Double montantAregler = impayeOut.montantFrais + impayeOut.montantDetteNonEchue + impayeOut.montantDetteEchue;
+        hasFraisGestion = (impayeOut.montantFrais != 0)?true:false;
+        hasDetteEchue = (impayeOut.montantDetteEchue != 0)?true:false;
+
+
+
+        Double montantAregler = (Decimal)impayeOut.montantFrais + (Decimal)impayeOut.montantDetteNonEchue + (Decimal)impayeOut.montantDetteEchue;
         System.debug('montantAregler: '+montantAregler);
 
         if (montantAregler != montantPaye){
@@ -167,20 +174,7 @@ public with sharing class SM_Impaye {
             previewReq.targetDate = targetDate.addDays(-1);
 
             //Call WS Preview
-            repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/operations/billing-preview', zEntityId, 'POST', previewReq, zc_PostBillingPreviewParam.class, zc_BillingPreviewResult.class, null);
-
-            // Check resultat WS Preview
-            par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
-            repWS = par.serializeWithMapping2(repWS,'zc_BillingPreviewResult'); //rename members
-            zc_BillingPreviewResult previewRes = (zc_BillingPreviewResult)JSON.deserialize(repWS, zc_BillingPreviewResult.class);
-
-            success = true;
-            messageError = '';
-            if(previewRes != null && previewRes.success != null){
-                if(!previewRes.success){                
-                    throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW))+repWS);   
-                }            
-            }
+            zc_BillingPreviewResult previewRes = zc_Api.opeBillingPreviewPOST(accessToken, zEntityId, previewReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW);
 
             System.debug('MBEN: repWS: ' + repWS);
 
@@ -191,12 +185,14 @@ public with sharing class SM_Impaye {
                 Decimal chargeAmountTTC = (Decimal.valueOf(invoice.chargeAmount) * 100 * (1+(tvaZuora/100)));
                 chargeAmountTTC = chargeAmountTTC.round();
                 chargeAmountTTC = (chargeAmountTTC / 100);
-                montantPreview = montantPreview + chargeAmountTTC;
+                montantPreview = (Decimal)montantPreview + chargeAmountTTC;
             }
 
             System.debug('MBEN montantPreview: ' + montantPreview); 
 
         }
+        
+        hasDetteNonEchue = (montantPreview != 0)?true:false;
 
         System.debug('MBEN ERREUR_IMPAYE_REGLER_MONTANT_DNE montantPreview: ' + montantPreview);
         System.debug('MBEN ERREUR_IMPAYE_REGLER_MONTANT_DNE: impayeOut.montantDetteNonEchue' + impayeOut.montantDetteNonEchue);
@@ -205,7 +201,7 @@ public with sharing class SM_Impaye {
             throw new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_MONTANT_DNE);
         }
 
-        if ((montantPreview + impayeOut.montantFrais + impayeOut.montantDetteEchue) != montantPaye){
+        if (((Decimal)montantPreview + (Decimal)impayeOut.montantFrais + (Decimal)impayeOut.montantDetteEchue) != montantPaye){
                 // il faut remettre le cancel si applicable avec le try/catch
             throw new RTException(RTExceptionCode.ERREUR_OFFRE_CYCLE_FERME);                
         }
@@ -213,6 +209,7 @@ public with sharing class SM_Impaye {
 
         // Ajout Frais de gestion avec bill target date
 
+        if (hasFraisGestion){
         String entite = (codePays == '033') ? 'France' : 'Belgique';
         String rpcReference = 'FRAISREACT';
         list<ProdRatePlanCharge__c> listProdRatePlanCharge = new list<ProdRatePlanCharge__c>([SELECT ReferenceCIC__c, zid__c, ProdRatePlan__r.zid__c 
@@ -227,18 +224,8 @@ public with sharing class SM_Impaye {
         //moisDebutRemise = Integer.valueOf(c.Mois_de_d_but_remise__c);
         //dateDebutRemise = SM_Demande.getRemiseDate(moisDebutRemise);
 
-        Date dateDebutRemise;        
-        Date invTargetDate;
-
         invTargetDate=(targetDate == null)?Date.today():targetDate.addDays(-1);
         dateDebutRemise=(Date.today() < targetDate || targetDate == null)?Date.today():targetDate.addDays(-1);
-
-        // if(Date.today() <= targetDate || targetDate == null ){
-        //     dateDebutRemise = Date.today();
-        // }else {
-        //     dateDebutRemise = targetDate;
-        // }
-
         
         // instantiate AmendRequest Instance
         zc_ProxyActionAmendRequest actionAmend = new zc_ProxyActionAmendRequest();
@@ -248,8 +235,8 @@ public with sharing class SM_Impaye {
         zc_Amendment amend1 = new zc_Amendment(); //Add product
         // zc_Amendment amend1 = new zc_Amendment(); 
         previewOptions.enablePreviewMode=false;
-        amendOptions.generateInvoice=true;
-        amendOptions.processPayments=false;
+        amendOptions.generateInvoice = true;
+        amendOptions.processPayments = false;
         zc_InvoiceProcessingOptions invPrc = new zc_InvoiceProcessingOptions();
         invPrc.invoiceDate=Date.today();
         invPrc.invoiceTargetDate=invTargetDate;
@@ -282,27 +269,25 @@ public with sharing class SM_Impaye {
 
 
         //Call WS Ajout FG
-        // String accessToken = WS001_CallZuora.access_token;
-        repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/amend', zEntityId, 'POST', actionAmend, zc_AmendRequest.class, zc_AmendResult.class, null);
+        zc_ProxyActionAmendResponse amendRes = zc_Api.actionAmendPOST(accessToken, zEntityId, actionAmend, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS);
+        currentSubId = amendRes.results.get(0).subscriptionId; //Get last subId
+        invoiceId = amendRes.results.get(0).invoiceId;
 
-        // Check resultat WS
-        par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
-        repWS = par.serializeWithMapping2(repWS,'zc_ProxyActionAmendResponse'); //rename members
-        zc_ProxyActionAmendResponse amendRes = (zc_ProxyActionAmendResponse)JSON.deserialize(repWS, zc_ProxyActionAmendResponse.class);
+        } //hasFG
 
-        success = true;
-        messageError = '';
-        if(amendRes != null && amendRes.results != null  && amendRes.results.size() > 0){
-            for(zc_AmendResult r : amendRes.results){
-                if(!r.success){
-                    if(r.errors != null && r.errors.size() > 0){
-                        throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS)) + r.errors.get(0).message);
-                    }
-                }
-            }
-        }  
-
-        currentSubId=amendRes.results.get(0).subscriptionId; //Get last subId
+        // Generate Account Billing
+        if(!hasFraisGestion && hasDetteNonEchue){
+            invTargetDate=(targetDate == null)?Date.today():targetDate.addDays(-1);
+            zc_PostGenerateBillingDocumentType billReq = new zc_PostGenerateBillingDocumentType();
+            billReq.autoPost =true;
+            billReq.autoRenew = true;
+            billReq.effectiveDate = Date.Today();
+            billReq.subscriptionIds.add(currentSubId);
+            billReq.targetDate =  invTargetDate;
+            zc_GenerateBillingDocumentResponseT billResp = zc_Api.accBillDocGeneratePOST(accessToken, zEntityId, billReq, accountID, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_BILL_DNE);
+            System.debug(JSON.serialize(billResp));
+            invoiceId = billResp.invoices.get(0).id;
+        }
 
 
         // Creation paiement Zuora
@@ -317,9 +302,10 @@ public with sharing class SM_Impaye {
         payment.methodePaiement = impayeRegIn.methodPaiement;
         payment.lieu = impayeRegIn.lieu;
         payment.agent = impayeRegIn.agent;
+        if (impayeRegIn.methodPaiement == 'VIR') {payment.dateVirement = impayeRegIn.dateVirement;}
         zc_PaymentInvoiceApplicationCreateR invoice1 = new zc_PaymentInvoiceApplicationCreateR(); // Invoice Amend : FG + DNE
-        invoice1.amount = montantPreview + impayeOut.montantFrais; //TODO champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes deja calcules
-        invoice1.invoiceId = amendRes.results.get(0).invoiceId;
+        invoice1.amount = (Decimal)montantPreview + (Decimal)impayeOut.montantFrais; //TODO champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes deja calcules
+        invoice1.invoiceId = invoiceId;
         payment.invoices.add(invoice1);
 
         if (impayeOut.detteEchues.size() > 0){
@@ -333,36 +319,7 @@ public with sharing class SM_Impaye {
         }
 
         //Call WS Payment
-        repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/payments', zEntityId, 'POST', payment, zc_CreatePaymentType.class, zc_GETARPaymentType.class, null);
-
-        // Check resultat WS Payment:      //TODO traiter la class retour quand c est une erreur
-        Map<String,Object> mapRes = (Map<String,Object>)JSON.deserializeUntyped(repWS);
-        if (mapRes.containsKey('success') && mapRes.containsKey('processId') && mapRes.containsKey('reasons')){
-            throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT)) + repWS);
-        }
-
-        par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
-        repWS = par.serializeWithMapping2(repWS,'zc_GETARPaymentType'); //rename members
-        zc_GETARPaymentType paymentRes = (zc_GETARPaymentType)JSON.deserialize(repWS, zc_GETARPaymentType.class);
-
-        success = true;
-        messageError = '';
-        if(paymentRes != null && paymentRes.success != null){
-            if(!paymentRes.success){                
-                throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT))+ repWS);   
-            }            
-        }
-
-        /*
-                {
-        "success" : false,
-        "processId" : "F9700ABE3E8CECEC",
-        "reasons" : [ {
-            "code" : 53810021,
-            "message" : "Invalid parameter(s): 'r_type,currency2'."
-        } ]
-        }
-        */
+        zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST(accessToken, zEntityId, payment, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT);
 
 
         // Cancel Subscription si applicable
@@ -388,37 +345,26 @@ public with sharing class SM_Impaye {
         if (subRecancelled) { //contrat initial au status Cancel, active puis recancelle:
             //Mise à jour ancienne valeur codefin et date fin.
             objUpdateReq = new zc_ProxyActionupdateRequest();
-            objUpdateReq.r_type = 'Subscription';
+            objUpdateReq.r_type = 'Subscription';            
             zObj = new zc_ZObjectUpdate();
             zObj.id = currentSubId;
             zObj.codeFinContrat = sub.CodeFinContrat__c; // c les valeur du contrat initial
             zObj.dateFinContrat = sub.DateFinContrat__c; // c les valeur du contrat initial
+            if (hasFraisGestion) {zObj.fieldsToNull.add('Tech_DetteFraisGestion__c');}
+            if (hasDetteNonEchue) {zObj.fieldsToNull.add('Tech_DetteNonEchue__c');zObj.fieldsToNull.add('Tech_DetteTargetDate__c');}
             objUpdateReq.objects.add(zObj);
             System.debug(JSON.serialize(objUpdateReq,true));   
 
             //Call WS invoice update
-            repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/update', zEntityId, 'POST', objUpdateReq, zc_ProxyActionupdateRequest.class, zc_ProxySaveResult.class, null);
+            zc_Api.actionUpdatePOST(accessToken, zEntityId, objUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_SUBSCRIPTION);
 
-            par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
-            repWS = '{"results":'+repWS+'}';
-            repWS = par.serializeWithMapping2(repWS,'zc_ProxySaveResult'); //rename members
-            objUpdateRes = (zc_ProxySaveResult)JSON.deserialize(repWS, zc_ProxySaveResult.class);
-
-            success = true;
-            messageError = '';
-            if(objUpdateRes != null && objUpdateRes.results.size() > 0){
-                if(!objUpdateRes.results.get(0).success){                                    
-                    throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_SUBSCRIPTION))+ repWS);             
-                }            
-            }
         }else {
             //ne rien faire: contrat 
             
         }        
 
 
-
-        //Mise a jour Account        
+        //Mise a jour Account       
         objUpdateReq = new zc_ProxyActionupdateRequest();
         objUpdateReq.r_type = 'Account';
         zObj = new zc_ZObjectUpdate();
@@ -427,27 +373,10 @@ public with sharing class SM_Impaye {
         objUpdateReq.objects.add(zObj);
         System.debug(JSON.serialize(objUpdateReq,true));
 
-
         //Call WS Account update
-        repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/update', zEntityId, 'POST', objUpdateReq, zc_ProxyActionupdateRequest.class, zc_ProxySaveResult.class, null);
-
-        // Pas besoin de class erreur: la meme class: zc_SaveResult traite OK et KO
-
-        par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
-        repWS = '{"results":'+repWS+'}';
-        repWS = par.serializeWithMapping2(repWS,'zc_ProxySaveResult'); //rename members
-        objUpdateRes = (zc_ProxySaveResult)JSON.deserialize(repWS, zc_ProxySaveResult.class);
-
-        success = true;
-        messageError = '';
-        if(objUpdateRes != null && objUpdateRes.results.size() > 0){
-            if(!objUpdateRes.results.get(0).success){                                
-                throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_ACCOUNT))+ repWS);             
-            }            
-        }
+        zc_Api.actionUpdatePOST(accessToken, zEntityId, objUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_ACCOUNT);
 
 
-        
         //Mise a jour invoice        
         if (detteEchueIds.size() > 0) {
             //List<Zuora__ZInvoice__c> invoices2 = SM_Invoice.getInvoiceByIds(detteEchueIds);                        
@@ -466,27 +395,35 @@ public with sharing class SM_Impaye {
         }
         
         //Call WS invoice update
-        repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/update', zEntityId, 'POST', objUpdateReq, zc_ProxyActionupdateRequest.class, zc_ProxySaveResult.class, null);
-
-        par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
-        repWS = '{"results":'+repWS+'}';
-        repWS = par.serializeWithMapping2(repWS,'zc_ProxySaveResult'); //rename members
-        objUpdateRes = (zc_ProxySaveResult)JSON.deserialize(repWS, zc_ProxySaveResult.class);
-
-        success = true;
-        messageError = '';
-        if(objUpdateRes != null && objUpdateRes.results.size() > 0){
-            if(!objUpdateRes.results.get(0).success){                
-                throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_INVOICE))+ repWS);             
-            }            
-        }
+        zc_Api.actionUpdatePOST(accessToken, zEntityId, objUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_INVOICE);
 
         // Create Case ??
-
+        Id caseId = createImpayeCase(accountSID, contactId, codePays, montantPaye);
 
         WSZ.ImpayeReglerOut impayeRegOut = new WSZ.ImpayeReglerOut(accountID, currentSubId, paymentRes.amount, impayeRegIn.referenceId, paymentRes.id);
 
         return impayeRegOut;
+
+    }
+
+    private static Id createImpayeCase(String accountSID, String contactId, String codePays, Double montantPaye){
+        
+        Id impayeRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Impayé').getRecordTypeId();
+        Case c = new Case();
+        c.RecordTypeId = impayeRecordTypeId;
+        c.AccountId = accountSID;
+        c.Famille__c = '7- Finance';
+        c.Motif__c = '02- Impaye';
+        c.SousMotif__c = 'A- Action';
+        c.CommentairesInternes__c = 'Règlement d\'impayé ' + String.valueOf(montantPaye);
+        //c.Payment__c = paymentId;
+        c.Origin = 'Selfcare';
+        c.Status = 'Fermee';
+        c.Reglementdimpaye__c = montantPaye;
+        // c.DemandeRemboursement__c = (codePays=='032')?'UGCUnlimited':'UGCIllimité';
+        c.ContactId = contactId;
+        insert c;
+        return c.Id;
 
     }
 

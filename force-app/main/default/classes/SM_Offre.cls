@@ -347,8 +347,10 @@ public with sharing class SM_Offre {
         //Calculer Une seule Offre prioritaire
         List<Offre__c> offCo2 = new List<Offre__c>();
         System.debug('MBEN: Size: ' + offCo1.size());
-        if (offCo1.size() == 1) {
-            offCo2 = offCo1.clone();
+        if (offCo1.size() == 0){
+            return new List<Offre__c>(); //liste vide
+        }else if (offCo1.size() == 1) {            
+            return offCo1.clone();
         } else {
             offCo2 = [
                     SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
@@ -358,14 +360,18 @@ public with sharing class SM_Offre {
                     Id IN (SELECT Offre__c FROM OffreContrainte__c WHERE ContrainteSur__r.Id IN :offCo1 AND Action__c = 'Non-Prioritaire') AND
                     Id NOT IN (SELECT ContrainteSur__c FROM OffreContrainte__c WHERE Offre__c IN :offCo1 AND Action__c = 'Non-Prioritaire')
             ];
+        
+            System.debug('MBEN: OffreCo Prioritaire: ' + offCo2);
+            if (!offCo1.isEmpty() && offCo2.isEmpty()) {
+                return new List<Offre__c>(); //list vide
+                // ne pas bloque : bug 990
+                // throw new RTException(RTExceptionCode.ERREUR_OFFRE_CYCLE_FERME);
+                // TODO optionnel: concevoir un batch (bouton ou schedule) qui fait les test pour tous les lieux et notifier si incompatibilité (optionnelle)
+            }
+            return offCo2;
         }
 
-        System.debug('MBEN: OffreCo Prioritaire: ' + offCo2);
-        if (!offCo1.isEmpty() && offCo2.isEmpty()) {
-            throw new RTException(RTExceptionCode.ERREUR_OFFRE_CYCLE_FERME);
-            // TODO optionnel: concevoir un batch (bouton ou schedule) qui fait les test pour tous les lieux et notifier si incompatibilité (optionnelle)
-        }
-        return offCo2;
+        //return offCo2;
     }
 
     public static List<Offre__c> offrePromoCodeEligible(String prodRpRef, WSZ.SubOffreIn subIn, List<Offre__c> offCo, WSZ.CouponGeneric couponG) {

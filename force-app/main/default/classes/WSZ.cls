@@ -834,15 +834,17 @@ public with sharing class WSZ {
         public String lieu;
         public String agent;
         public String referenceId;
+        public String dateVirement;
 
-        public ImpayeReglerIn(String accountId, String subscriptionId, Double montantPaye, String methodPaiement, String lieu, String agent, String referenceId){
+        public ImpayeReglerIn(String accountId, String subscriptionId, Double montantPaye, String methodPaiement, String lieu, String agent, String referenceId, String dateVirement){
             this.accountId = accountId;
             this.subscriptionId = subscriptionId;            
             this.montantPaye = montantPaye;            
             this.methodPaiement = methodPaiement;
             this.lieu = lieu;
             this.agent = agent;
-            this.referenceId = referenceId;             
+            this.referenceId = referenceId;
+            this.dateVirement = dateVirement;             
         }
     }
 

@@ -14,3 +14,9 @@ SM_Coupon.generateCouponItem(parentCouponID,'0015E00000lfpvRQAQ',Date.today(),Da
 // Select CodePays__c from Account where Id='0010E00000Voo31QAB'
 
 // Select CouponWelcomeback__c from Case where Id='5000E000009jMGLQA2'
+
+String offreAboTier = Utils.getUgcGenericParam('Abo Tier Offre Name','033').ParamValue__c;
+Integer validiteCoupon_AT = Integer.valueOf(Utils.getUgcGenericParam('Abo Tier Coupon Validite','033').ParamValue__c);
+Id parentCouponID_AT = [Select Coupon__c from Offre__c where Name = :offreAboTier Limit 1].Coupon__c;
+String coupon_AT = SM_Coupon.generateCouponItem(parentCouponID_AT,null,date.Today(),date.Today().addMonths(validiteCoupon_AT));
+

@@ -276,6 +276,116 @@ public with sharing class WS001_CallZuora {
 
     }
 
+    public static String sendRequest4(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, String version){
+        String bodyOutS;       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS;
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            bodyInS = reqParser.serializeWithMapping(bodyIn);
+            req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
+        }    
+        
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+        
+        return bodyOutS;
+
+    }
+
+public static Map<String,Object> sendRequest3(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
+     Type respType, Type respErrorType, String version){
+        String bodyOutS;       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS;
+        Map<String,Object> returnMap = new Map<String,Object>();
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            //reqParser.mapSwap = true;
+            bodyInS = reqParser.serializeWithMapping(bodyIn);
+            req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
+        }    
+        
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+
+        Boolean isErrorClass = false;
+        String respErrorClassName;
+        Object respErrorObject;
+
+        if (respErrorType != null){
+            respErrorClassName = respErrorType.getName();
+            respErrorObject = respErrorType.newInstance();
+        }
+        String respClassName = respType.getName();        
+        Object respObject = respType.newInstance();
+
+        try {
+            if(respErrorType != null){
+                respErrorObject = JSON.deserializeStrict(bodyOutS, respErrorType);
+                isErrorClass = true;
+            }
+        }
+        catch(JSONException e){
+            System.debug('exception catche');
+            isErrorClass = false;    
+        }
+
+        if (isErrorClass){
+            returnMap.put('ERROR_OBJECT', respErrorObject);
+            returnMap.put('ERROR_BODY', bodyOutS);
+        }else{
+            ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+            if (respClassName == 'zc_ProxySaveResult'){ // cas specifique zc_ProxySaveResult class.
+                bodyOutS = '{"results":'+bodyOutS+'}';
+            }
+            String repWS = par.serializeWithMapping2(bodyOutS,respClassName); //rename members
+
+            respObject = JSON.deserialize(repWS, respType);
+            returnMap.put('RESP_OBJECT', respObject);
+            returnMap.put('RESP_BODY', bodyOutS);                        
+        }
+   
+        return returnMap;
+
+    }
+
     public class MyException extends Exception{}
 
     public without sharing class WRPOauthLogin{

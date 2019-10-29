@@ -28,7 +28,7 @@ public with sharing class SM_Subscription {
                         Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__PreviousSubscriptionId__c, Tech_AvecRembouesement__c,
                         Zuora__CustomerAccount__r.Zuora__Balance__c, 
                         Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c,
-                        Zuora__TermSettingType__c, Tech_DetteFraisGestion__c, Tech_DetteNonEchue__c, Tech_DetteTargetDate__c
+                        Zuora__TermSettingType__c, Tech_DetteFraisGestion__c, Tech_DetteNonEchue__c, Tech_DetteTargetDate__c, Marche__c,Zuora__Account__r.PersonContactId 
                 FROM Zuora__Subscription__c
                 WHERE Id = :subId
         ];
@@ -52,7 +52,7 @@ public with sharing class SM_Subscription {
                         Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__PreviousSubscriptionId__c, Tech_AvecRembouesement__c,
                         Zuora__CustomerAccount__r.Zuora__Balance__c, 
                         Zuora__External_Id__c, Zuora__Account__r.CodePays__c, Zuora__CurrentTermPeriodType__c, Zuora__CurrentTerm__c, DateFinContrat__c,
-                        Zuora__TermSettingType__c, Tech_DetteFraisGestion__c, Tech_DetteNonEchue__c, Tech_DetteTargetDate__c
+                        Zuora__TermSettingType__c, Tech_DetteFraisGestion__c, Tech_DetteNonEchue__c, Tech_DetteTargetDate__c, Marche__c,Zuora__Account__r.PersonContactId
                 FROM Zuora__Subscription__c
                 WHERE Zuora__External_Id__c = :subZId
         ];
@@ -78,7 +78,7 @@ public with sharing class SM_Subscription {
                         Zuora__SubscriptionNumber__c,Zuora__Status__c,
                         Zuora__CancelledDate__c,Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,
                         Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,Zuora__NextChargeDate__c,
-                        TypeContrat__c, CodeFinContrat__c
+                        TypeContrat__c, CodeFinContrat__c, Marche__c,Zuora__Account__r.PersonContactId
                 FROM Zuora__Subscription__c
                 WHERE Name = :name
         ];

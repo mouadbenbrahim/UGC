@@ -186,14 +186,23 @@ public without sharing class SM_Desabonnement {
         
             // Create Welcome Back coupon :
             String offreWelcomeBack = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;
-            Integer validiteCoupon = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);
-            Id parentCouponID = [Select Coupon__c from Offre__c where Name = :offreWelcomeBack Limit 1].Coupon__c;
-            String coupon = SM_Coupon.generateCouponItem(parentCouponID,acc.Id,dateCancelContrat,dateCancelContrat.addMonths(validiteCoupon));
+            Integer validiteCoupon_WB = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);
+            Id parentCouponID_WB = [Select Coupon__c from Offre__c where Name = :offreWelcomeBack Limit 1].Coupon__c;
+            if (parentCouponID_WB == null) {throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_WELCOMEBACK);}
+            String coupon_WB = SM_Coupon.generateCouponItem(parentCouponID_WB,acc.Id,dateCancelContrat,dateCancelContrat.addMonths(validiteCoupon_WB));
 
             // TODO Create Abotier coupon
-        
-            // Mise a jour du Case avec le coupon welcomeback
-            dem.CouponWelcomeback__c = coupon;
+            // Create Welcome Back coupon :
+            String offreAboTier = Utils.getUgcGenericParam('Abo Tier Offre Name',acc.CodePays__c).ParamValue__c;
+            Integer validiteCoupon_AT = Integer.valueOf(Utils.getUgcGenericParam('Abo Tier Coupon Validite',acc.CodePays__c).ParamValue__c);
+            Id parentCouponID_AT = [Select Coupon__c from Offre__c where Name = :offreAboTier Limit 1].Coupon__c;
+            if (parentCouponID_AT == null) {throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER);}
+            String coupon_AT = SM_Coupon.generateCouponItem(parentCouponID_AT,null,dateCancelContrat,dateCancelContrat.addMonths(validiteCoupon_AT));
+
+            // Mise a jour du Case avec le coupon welcomeback et Abo Tier
+            dem.CouponWelcomeback__c = coupon_WB;
+            dem.couponAbotiers__c = coupon_AT;
+
             update dem;
 
         }else { //!isDesaboNow            

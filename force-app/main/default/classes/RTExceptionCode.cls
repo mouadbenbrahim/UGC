@@ -33,6 +33,8 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_DESABO_CDD_AVEC_FINCONTRAT = new RTExceptionCode('Ce contrat comprend deja une date fin contrat', 2002);
     public static final RTExceptionCode ERREUR_DESABO_DATE_FINCONTRAT_OBLIGATOIRE = new RTExceptionCode('La date fin contrat est obligatoire', 2003);    
     public static final RTExceptionCode ERREUR_DESABO_BATCH_CASE_ABSENT = new RTExceptionCode('La souscription n a pas de demande desabo rattache', 2003);
+    public static final RTExceptionCode ERREUR_DESABO_COUPON_WELCOMEBACK = new RTExceptionCode('Erreur desabo: configuration coupon/offre welcome back', 2004);
+    public static final RTExceptionCode ERREUR_DESABO_COUPON_ABOTIER = new RTExceptionCode('Erreur desabo: configuration coupon/offre abo tier', 2005);
 
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CONTRAT_DEJA_ACTIF = new RTExceptionCode('Annulation desabo impossible: le contrat est deja actif', 2101);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_PERIODLATENCE_DEPASSE = new RTExceptionCode('Annulation desabo impossible: la periode de latence depasse', 2102);    
@@ -41,8 +43,10 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_STATUT_CONTRAT_NON_VALIDE = new RTExceptionCode('Erreur Annulation desabo: le statut du contrat est non valide', 2105);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CDD_DEJA_INACTIF = new RTExceptionCode('Erreur Annulation desabo: ce CDD est deja inactif', 2106);
     
+    
     public static final RTExceptionCode ERREUR_IMPAYE_GET_SOUSCRITPION_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Contrat absent', 3101);
     public static final RTExceptionCode ERREUR_IMPAYE_GET_ACCOUNT_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Compte absent', 3102);
+    public static final RTExceptionCode ERREUR_IMPAYE_GET_ACCOUNT_NON_TROUVE2 = new RTExceptionCode('Erreur Affichage impaye: Compte absent pour ce contrat', 3103);
     
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_SOUSCRITPION_NON_TROUVE = new RTExceptionCode('Erreur Reglement impaye: Contrat absent', 3201);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_PAS_DE_DETTE = new RTExceptionCode('Erreur Reglement impaye: aucun impaye a regler', 3202);
@@ -58,6 +62,7 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_INVOICE = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour facture', 3212);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_SUBSCRIPTION = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour contrat', 3213);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_INCOHERENCE_DATEFIN = new RTExceptionCode('Erreur Reglement impaye: probleme incoherence dans la date fin du contrat', 3214);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_APPLICATION_BILL_DNE = new RTExceptionCode('Erreur Reglement impaye: probleme billing de la dette non echue', 3215);
     
 
        
