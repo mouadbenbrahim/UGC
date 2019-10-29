@@ -12,8 +12,8 @@ public with sharing class SM_Carte {
         map<Id, Boolean> activationResult = activationByList(setAccountId);
         system.debug ('##MNE SM_Carte activationByListAsynchrone activationResult >> '+activationResult); 
     }
-	
-	public static map<Id, Boolean> activationByList(set<Id> setAccountId) {
+  
+  public static map<Id, Boolean> activationByList(set<Id> setAccountId) {
         system.debug('##MNE SM_Carte activationByList setAccountId >> '+setAccountId);
         map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
         
@@ -55,6 +55,7 @@ public with sharing class SM_Carte {
         system.debug ('##MNE SM_Carte desactivationByListAsynchrone desactivationResult >> '+desactivationResult); 
     }
         
+    
     public static map<Id, Boolean> desactivationByList(set<Id> setAccountId, String code) {
         system.debug('##MNE SM_Carte desactivationByList setAccountId >> '+setAccountId);
         system.debug('##MNE SM_Carte desactivationByList code >> '+code);
@@ -91,12 +92,12 @@ public with sharing class SM_Carte {
         return listResultByCarteId;
     }
 
-	
+  
 
 
-	//ok
-	public static map<Id, Boolean> activation(Id accountId) {
-		system.debug('##MNE SM_Carte activation accountId >> '+accountId);
+  //ok
+  public static map<Id, Boolean> activation(Id accountId) {
+    system.debug('##MNE SM_Carte activation accountId >> '+accountId);
         map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
         
         if(accountId == null){
@@ -131,7 +132,7 @@ public with sharing class SM_Carte {
     }
     
 
-	//ok
+  //ok
     public static map<Id, Boolean> desactivation(Id accountId, String code) {
         system.debug('##MNE SM_Carte desactivation accountId >> '+accountId);
         system.debug('##MNE SM_Carte desactivation code >> '+code);
@@ -170,18 +171,18 @@ public with sharing class SM_Carte {
     
 /////////////////////////////////////////////////////////////////
     
-	public static void activationFromCard(Id cardId) {
-		system.debug('##MNE SM_Carte activationFromCard cardId >> '+cardId);
+  public static void activationFromCard(Id cardId) {
+    system.debug('##MNE SM_Carte activationFromCard cardId >> '+cardId);
         
         if(cardId == null){
-			system.debug('##MNE SM_Carte activationFromCard cardId empty');
-			throw new MyException('ActivateCard impossible : id carte vide');
+      system.debug('##MNE SM_Carte activationFromCard cardId empty');
+      throw new MyException('ActivateCard impossible : id carte vide');
         }
         
         list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Inactive' AND Id = :cardId]);
         if(listCarte.size() == 0){
-			system.debug('##MNE SM_Carte activationFromCard no card fourn or card is already actif');
-			throw new MyException('ActivateCard impossible : pas de carte trouvée ou carte deja Actif ');
+      system.debug('##MNE SM_Carte activationFromCard no card fourn or card is already actif');
+      throw new MyException('ActivateCard impossible : pas de carte trouvée ou carte deja Actif ');
         }
         
         list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
@@ -192,7 +193,7 @@ public with sharing class SM_Carte {
                 listCarteToUpdate.add(c);
             }catch(Exception e){
                 system.debug('##MNE SM_Carte activationFromCard exception >> '+e.getMessage());
-				throw new MyException('ActivateCard Exception : '+e.getMessage());
+        throw new MyException('ActivateCard Exception : '+e.getMessage());
             }
         }
 
@@ -204,20 +205,20 @@ public with sharing class SM_Carte {
     }
     
     
-	public static void desactivationFromCard(Id cardId, String code) {
+  public static void desactivationFromCard(Id cardId, String code) {
         system.debug('##MNE SM_Carte desactivationFromCard cardId >> '+cardId);
         system.debug('##MNE SM_Carte desactivationFromCard code >> '+code);
         map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
         
         if(cardId == null){
             system.debug('##MNE SM_Carte desactivationFromCard cardId empty');
-			throw new MyException('DesactivateCard impossible : id carte vide');
+      throw new MyException('DesactivateCard impossible : id carte vide');
         }
         
         list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Active' AND Id = :cardId]);
         if(listCarte.size() == 0){
-			system.debug('##MNE SM_Carte desactivationFromCard no card fourn or card is already inactif');
-			throw new MyException('DesactivateCard impossible : pas de carte trouvée ou carte deja Inactif ');
+      system.debug('##MNE SM_Carte desactivationFromCard no card fourn or card is already inactif');
+      throw new MyException('DesactivateCard impossible : pas de carte trouvée ou carte deja Inactif ');
         }
         
         list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
@@ -228,7 +229,7 @@ public with sharing class SM_Carte {
                 listCarteToUpdate.add(c);
             }catch(Exception e){
                 system.debug('##MNE SM_Carte desactivationFromCard exception >> '+e.getMessage());
-				throw new MyException('DesactivateCard Exception : '+e.getMessage()); 
+        throw new MyException('DesactivateCard Exception : '+e.getMessage()); 
             }
         }
 
@@ -382,10 +383,10 @@ public with sharing class SM_Carte {
         for(Carte__c c : listCartes){
             File_Impression__c fi   = new File_Impression__c();
             if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.Subscription__c != null){
-                fi.Subscription__c  	= mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
+                fi.Subscription__c    = mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
             }
             if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c != null){
-                fi.SubscriptionZID__c  	= mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c;
+                fi.SubscriptionZID__c    = mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c;
             }
             
             //fi.Subscription__c      = c.Contrat__c;

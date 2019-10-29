@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
+        <fullName>Cine_AUTRES_OffreManagers_BE</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>pour les codes : WEB, CENTR...etc</description>
+        <label>Cine AUTRES OffreManagers BE</label>
+        <sharedTo>
+            <group>Offre_Managers_Belgique</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Cine_AUTRES_OffreManagers_FR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>pour codes WEB, CENTR...etc</description>
+        <label>Cine AUTRES OffreManagers FR</label>
+        <sharedTo>
+            <group>Offre_Managers_France</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Cine_OffreManagers_BE</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Cine OffreManagers BE</label>

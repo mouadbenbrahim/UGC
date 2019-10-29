@@ -5,6 +5,7 @@
     <columns>Promo__c</columns>
     <columns>HermesIntituleOffre__c</columns>
     <columns>HermesIntituleOffreNL__c</columns>
+    <columns>OWNER.ALIAS</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>

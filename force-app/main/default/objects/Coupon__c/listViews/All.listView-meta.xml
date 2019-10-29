@@ -10,6 +10,7 @@
     <columns>QuantiteDisponible__c</columns>
     <columns>QuantiteUtilise__c</columns>
     <columns>RECORDTYPE</columns>
+    <columns>OWNER.ALIAS</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

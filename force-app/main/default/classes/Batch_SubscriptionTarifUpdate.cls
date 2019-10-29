@@ -9,12 +9,14 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
     List<SObject> newScope;
     String codePays;
     Integer partition;
+    String subZID;
 
-    global Batch_SubscriptionTarifUpdate(String codePays, Integer partition){
+    global Batch_SubscriptionTarifUpdate(String codePays, Integer partition, String subZID){
         total = 0;
         newScope = new List<SObject>();
         this.codePays = codePays;
         this.partition = partition;
+        this.subZID = subZID;
     }
 
     global Database.QueryLocator start(Database.BatchableContext BC) {
@@ -37,9 +39,13 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
                 'where Zuora__ProductRatePlanChargeId__c in :rpcSet) ' +
                 'FROM Zuora__Subscription__c WHERE ' +
                 'Zuora__CustomerAccount__r.Zuora__EntityID__c = :zEntityId ' +
-                'AND Partition__c = :partition '
+                'AND Partition__c = :partition ' +
+                'AND Zuora__Status__c != \'Expired\' '               
         ;
 
+        if (subZID != null) {query = query + 'AND Zuora__Zuora_Id__c = :subZID';}
+
+// 'AND Zuora__Zuora_Id__c=\'8adc9a416dd847b0016dde7e2d887c4c\''
 // 'Order by Zuora__Zuora_Id__c '
 // 'limit 10000 '
 // Zuora__Status__c != \'Expired\'

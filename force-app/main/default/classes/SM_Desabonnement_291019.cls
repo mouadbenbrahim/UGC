@@ -3,7 +3,7 @@
  */
 
 
-public without sharing class SM_Desabonnement {
+public without sharing class SM_Desabonnement_291019 {
 
     public static Case dem = new Case();
     public static Zuora__Subscription__c sub = new Zuora__Subscription__c();
@@ -176,15 +176,12 @@ public without sharing class SM_Desabonnement {
                 codeDesaCarte = zSubIn.CodeFinContrat__c;
             }
             
-            Database.setSavepoint();
-
             //S41 ECH Appel de la désactivation de carte asynchrone
-            SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
+            //SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
+            Set<Id> setAccoundId = new Set<Id>();
+            setAccoundId.add(dem.AccountId);
             
-            //Set<Id> setAccoundId = new Set<Id>();
-            //setAccoundId.add(dem.AccountId);
-            
-            //SM_Carte.desactivationByListAsynchrone(setAccoundId, codeDesaCarte);
+            SM_Carte.desactivationByListAsynchrone(setAccoundId, codeDesaCarte);
         
         
             // Create Welcome Back coupon :
@@ -345,11 +342,11 @@ public without sharing class SM_Desabonnement {
         
         
         //S41 ECH Appel de la désactivation de carte asynchrone
-        SM_Carte.desactivation(acc.Id, codeDesaCarte);
-        //Set<Id> setAccoundId = new Set<Id>();
-        //setAccoundId.add(acc.Id);
+        //SM_Carte.desactivation(acc.Id, codeDesaCarte);
+        Set<Id> setAccoundId = new Set<Id>();
+        setAccoundId.add(acc.Id);
             
-        //SM_Carte.desactivationByListAsynchrone(setAccoundId, codeDesaCarte);
+        SM_Carte.desactivationByListAsynchrone(setAccoundId, codeDesaCarte);
         
         // Create Welcome Back coupon :
         String offreWelcomeBack = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;

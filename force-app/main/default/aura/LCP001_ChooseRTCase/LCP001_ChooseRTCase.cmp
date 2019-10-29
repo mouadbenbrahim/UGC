@@ -1,6 +1,8 @@
 <aura:component controller="LCC001_ChooseRTCase" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
 <!--<aura:component controller="LCC001_ChooseRTCase" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">-->
+    
 
+    <lightning:spinner aura:id="Spinner" alternativeText="Loading" size="large" variant="brand" class="slds-hide"/>
     
     <lightning:workspaceAPI aura:id="workspace" />
     

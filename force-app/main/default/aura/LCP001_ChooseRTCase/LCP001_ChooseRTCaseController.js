@@ -4,6 +4,9 @@
    	},
     
 	doValidate: function(component, event, helper) {
+        
+        
+        
 		var valueFamille = component.find("conCountry").get("v.value");
         var valueMotif   = component.find("conState").get("v.value");
         var valueOrigin  = component.get("v.caseRecord.Origin");
@@ -13,6 +16,7 @@
            valueOrigin  == undefined || valueOrigin  ==  '--None--'    || valueOrigin == ''){
 			alert('Tous les champs sont obligatoires.');
         } else {
+            helper.showSpinner(component);
             /*var createRecordEvent = $A.get("e.force:createRecord");
             createRecordEvent.setParams({
                 "entityApiName": "Case",

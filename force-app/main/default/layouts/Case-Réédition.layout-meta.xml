@@ -263,6 +263,21 @@
             <sortOrder>1</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
+            <actionName>NewTask</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>2</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Case.ConsignerUnAppel</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>3</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Case.TicketEnfant</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>4</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>FeedItem.ContentPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>5</sortOrder>
@@ -293,29 +308,9 @@
             <sortOrder>10</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>R_dition</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>11</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
             <actionName>Case.Requalifier_le_ticket</actionName>
             <actionType>QuickAction</actionType>
-            <sortOrder>12</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>NewTask</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>2</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Case.ConsignerUnAppel</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>3</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Case.TicketEnfant</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>4</sortOrder>
+            <sortOrder>11</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
@@ -410,6 +405,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>IsCarte__c</fields>
+        <fields>Subscription__c</fields>
+        <fields>Carte__c</fields>
+        <fields>Statut__c</fields>
         <relatedList>File_Impression__c.Case__c</relatedList>
     </relatedLists>
     <relatedLists>

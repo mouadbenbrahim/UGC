@@ -13,6 +13,11 @@
         <operation>equals</operation>
         <value>en attente</value>
     </filters>
+    <filters>
+        <field>Etat_remboursement__c</field>
+        <operation>notEqual</operation>
+        <value>Refusé</value>
+    </filters>
     <label>Remboursement en attente</label>
     <sharedTo>
         <role>DAF</role>

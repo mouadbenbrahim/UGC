@@ -39,6 +39,10 @@
                 <behavior>Edit</behavior>
                 <field>Nom_du_mod_le_email_UU_n_erlandais__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>AvecCarte__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -49,12 +49,12 @@
             <value>
                 <fullName>02- Reedition payante</fullName>
                 <default>false</default>
-                <label>02- Réédition payante</label>
+                <label>02- Reedition payante</label>
             </value>
             <value>
                 <fullName>03- Reedition gratuite</fullName>
                 <default>false</default>
-                <label>03- Réédition gratuite</label>
+                <label>03- Reedition gratuite</label>
             </value>
             <value>
                 <fullName>04- Desabonnement</fullName>
@@ -199,7 +199,7 @@
             <value>
                 <fullName>02- Impaye</fullName>
                 <default>false</default>
-                <label>02- Impayé</label>
+                <label>02- Impaye</label>
             </value>
             <value>
                 <fullName>03- Facture / attestation de paiement</fullName>
@@ -214,7 +214,7 @@
             <value>
                 <fullName>05- Changement coordonnees bancaires</fullName>
                 <default>false</default>
-                <label>05- Changement coordonnées bancaires</label>
+                <label>05- Changement coordonnees bancaires</label>
             </value>
             <value>
                 <fullName>06- Gestes commerciaux</fullName>

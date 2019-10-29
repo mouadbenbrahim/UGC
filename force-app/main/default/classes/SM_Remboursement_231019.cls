@@ -1,4 +1,4 @@
-public with sharing class SM_Remboursement {
+public with sharing class SM_Remboursement_231019 {
 
     //TODO: Creation Case Remboursement suite a une migration par trigger : cf. Spec API 17.6 et 18.5
     public static void Remboursement(Id ddeId) {
@@ -8,10 +8,6 @@ public with sharing class SM_Remboursement {
 
         if (dem.Subscription__c == null) {
             throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
-        }
-        
-        if (dem.Etat_remboursement__c == 'Rembourse' || dem.Etat_remboursement__c == 'Refusé') {
-            throw new MyException('Le remboursement ne peut pas être réalisé sur demande de remboursement déjà traitée ou refusée.');
         }
         
         executeRemboursement(dem, dem.AccountId, dem.Subscription__c, null, false);
@@ -160,25 +156,12 @@ public with sharing class SM_Remboursement {
             //Get Invoice items for Credit Memo to initialize Credit Memo Items
             WSZ.InvoiceItemsOut gInvoiceItemsOut = getInvoiceItems(invoiceId, zEntityId);
             List<WSZ.CreateCreditMemoInItem> lstCreditMemoInItem = new List<WSZ.CreateCreditMemoInItem>();
-            
+
             for(WSZ.InvoiceItem invoiceItem : gInvoiceItemsOut.invoiceItems){
-                
-               	Double taxAmount1 = 0;
-            
-                //Récupération de la tax
-                for(WSZ.taxationItemsdata invoiceItemData : invoiceItem.taxationItems.data){
-                    system.debug('##ECH SM_Remboursement executeRemboursement chargeAmount >> '+invoiceItem.chargeAmount);    
-                    system.debug('##ECH SM_Remboursement executeRemboursement taxName >> '+invoiceItemData.name);    
-                    system.debug('##ECH SM_Remboursement executeRemboursement taxAmount >> '+invoiceItemData.taxAmount);
-                    taxAmount1 += invoiceItemData.taxAmount;
-                }
-            
-            	Double amt1 = invoiceItem.chargeAmount+taxAmount1;
-                
-                if(amt1 == dem.MontantRembourser__c)
+                if(invoiceItem.chargeAmount == dem.MontantRembourser__c)
                 {
                     WSZ.CreateCreditMemoInItem creditMemoInItem = new WSZ.CreateCreditMemoInItem();
-                    creditMemoInItem.amount = invoiceItem.chargeAmount;
+                    creditMemoInItem.amount = dem.MontantRembourser__c;
                     creditMemoInItem.invoiceItemId = invoiceItem.id;
                     creditMemoInItem.skuName = invoiceItem.chargeName;
 
@@ -214,84 +197,40 @@ public with sharing class SM_Remboursement {
                 Double refundAmount = dem.MontantRembourser__c;
 
                 for(WSZ.InvoiceItem invoiceItem : gInvoiceItemsOut.invoiceItems){
-                    if(refundAmount>0 && invoiceItem.chargeAmount>0)
+                    if(refundAmount>0)
                     {
                         WSZ.CreateCreditMemoInItem creditMemoInItem = new WSZ.CreateCreditMemoInItem();
                         creditMemoInItem.invoiceItemId = invoiceItem.id;
                         creditMemoInItem.skuName = invoiceItem.chargeName;
-                        
-                        Double taxAmount = 0;
-                        
-                        //Récupération de la tax
+                        if (refundAmount>invoiceItem.chargeAmount){
+                            creditMemoInItem.amount = invoiceItem.chargeAmount;
+                            refundAmount = refundAmount - invoiceItem.chargeAmount;
+                        }else{
+                            creditMemoInItem.amount = refundAmount;
+                            refundAmount = 0;
+                        }
+
                         for(WSZ.taxationItemsdata invoiceItemData : invoiceItem.taxationItems.data){
                             system.debug('##ECH SM_Remboursement executeRemboursement chargeAmount >> '+invoiceItem.chargeAmount);    
                             system.debug('##ECH SM_Remboursement executeRemboursement taxName >> '+invoiceItemData.name);    
                             system.debug('##ECH SM_Remboursement executeRemboursement taxAmount >> '+invoiceItemData.taxAmount);
-                            taxAmount += invoiceItemData.taxAmount;
+                            
+                            WSZ.CreditTaxationItemIn creditTaxItemIn = new WSZ.CreditTaxationItemIn();
+                            creditTaxItemIn.amount = invoiceItemData.taxAmount;
+                            creditTaxItemIn.taxName = invoiceItemData.name;
+                            creditTaxItemIn.taxDate = invoiceItemData.taxDate;
+                            creditTaxItemIn.taxRate = invoiceItemData.taxRate;
+                            creditTaxItemIn.taxExemptAmount = invoiceItemData.exemptAmount;
+                            creditTaxItemIn.taxRateType = invoiceItemData.taxRateType;
+                            creditTaxItemIn.taxRateDescription = invoiceItemData.taxRateDescription;
+                            creditTaxItemIn.taxCodeDescription = invoiceItemData.taxCodeDescription;
+                            creditTaxItemIn.taxCode = invoiceItemData.taxCode;
+                            creditTaxItemIn.locationCode = invoiceItemData.locationCode;
+                            creditTaxItemIn.jurisdiction = invoiceItemData.jurisdiction;
+                            creditTaxItemIn.sourceTaxItemId = invoiceItemData.id;
+
+                            creditMemoInItem.taxItems.add(creditTaxItemIn);
                         }
-
-                        Double amt = invoiceItem.chargeAmount+taxAmount;
-                        
-                        if (refundAmount>amt){
-                                                                      
-                            creditMemoInItem.amount = invoiceItem.chargeAmount;
-                            
-                            
-                            //Ajout de la tax pour chaque memoItem
-                            for(WSZ.taxationItemsdata invoiceItemData : invoiceItem.taxationItems.data){
-                                system.debug('##ECH SM_Remboursement executeRemboursement chargeAmount >> '+invoiceItem.chargeAmount);    
-                                system.debug('##ECH SM_Remboursement executeRemboursement taxName >> '+invoiceItemData.name);    
-                                system.debug('##ECH SM_Remboursement executeRemboursement taxAmount >> '+invoiceItemData.taxAmount);
-                                
-                                WSZ.CreditTaxationItemIn creditTaxItemIn = new WSZ.CreditTaxationItemIn();
-                                creditTaxItemIn.amount = invoiceItemData.taxAmount;
-                                creditTaxItemIn.taxName = invoiceItemData.name;
-                                creditTaxItemIn.taxDate = invoiceItemData.taxDate;
-                                creditTaxItemIn.taxRate = invoiceItemData.taxRate;
-                                creditTaxItemIn.taxExemptAmount = invoiceItemData.exemptAmount;
-                                creditTaxItemIn.taxRateType = invoiceItemData.taxRateType;
-                                creditTaxItemIn.taxRateDescription = invoiceItemData.taxRateDescription;
-                                creditTaxItemIn.taxCodeDescription = invoiceItemData.taxCodeDescription;
-                                creditTaxItemIn.taxCode = invoiceItemData.taxCode;
-                                creditTaxItemIn.locationCode = invoiceItemData.locationCode;
-                                creditTaxItemIn.jurisdiction = invoiceItemData.jurisdiction;
-                                creditTaxItemIn.sourceTaxItemId = invoiceItemData.id;
-                                creditMemoInItem.taxItems.add(creditTaxItemIn);                            
-                        	}
-                            
-                            refundAmount = refundAmount - amt;
-                            
-                        }else{
-                           
-                            Decimal ratio = refundAmount/amt;
-                            
-                            creditMemoInItem.amount = (invoiceItem.chargeAmount*ratio).setScale(2);
-                                                       
-                            //Ajout de la tax pour chaque memoItem
-                            for(WSZ.taxationItemsdata invoiceItemData : invoiceItem.taxationItems.data){
-                                system.debug('##ECH SM_Remboursement executeRemboursement chargeAmount >> '+invoiceItem.chargeAmount);    
-                                system.debug('##ECH SM_Remboursement executeRemboursement taxName >> '+invoiceItemData.name);    
-                                system.debug('##ECH SM_Remboursement executeRemboursement taxAmount >> '+invoiceItemData.taxAmount);
-                                
-                                WSZ.CreditTaxationItemIn creditTaxItemIn = new WSZ.CreditTaxationItemIn();
-                                creditTaxItemIn.amount = (invoiceItemData.taxAmount*ratio).setScale(2);
-                                creditTaxItemIn.taxName = invoiceItemData.name;
-                                creditTaxItemIn.taxDate = invoiceItemData.taxDate;
-                                creditTaxItemIn.taxRate = invoiceItemData.taxRate;
-                                creditTaxItemIn.taxExemptAmount = invoiceItemData.exemptAmount;
-                                creditTaxItemIn.taxRateType = invoiceItemData.taxRateType;
-                                creditTaxItemIn.taxRateDescription = invoiceItemData.taxRateDescription;
-                                creditTaxItemIn.taxCodeDescription = invoiceItemData.taxCodeDescription;
-                                creditTaxItemIn.taxCode = invoiceItemData.taxCode;
-                                creditTaxItemIn.locationCode = invoiceItemData.locationCode;
-                                creditTaxItemIn.jurisdiction = invoiceItemData.jurisdiction;
-                                creditTaxItemIn.sourceTaxItemId = invoiceItemData.id;
-                                creditMemoInItem.taxItems.add(creditTaxItemIn);
-    
-                                refundAmount = 0;
-                        	}
-
-                        }  
                         
                         lstCreditMemoInItem.add(creditMemoInItem);
                     }
@@ -452,13 +391,11 @@ public with sharing class SM_Remboursement {
         if(conlst.size()>0){
             c.ContactId =conlst[0].Id;
         }
-        
-		/*        
+                
         List<Zuora__Payment__c> paylst = [SELECT ID from Zuora__Payment__c where Zuora__Account__c=:accountId order by CreatedDate DESC  LIMIT 1];
         if(paylst.size()>0){
             c.Payment__c =paylst[0].Id;
         }
-        */
         
         //c.MontantRembourser__c
         //c.RemboursementValeur__c

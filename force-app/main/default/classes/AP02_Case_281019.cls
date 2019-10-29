@@ -3,7 +3,7 @@
 *                Les nouveaux account crees sont envoye au WS RCU UGC
 * @author yann d'ALMEIDA 
 */
-public class AP02_Case {
+public class AP02_Case_281019 {
     
     public static String TECHIdStatut_007AD = '007AD';  //0- Souscription -> 07- Creation Abonnement    -> AD- Action DRC
     public static String TECHIdStatut_005AD = '005AD';  //0- Souscription -> 05- B2B                    -> AD- Action DRC
@@ -115,7 +115,9 @@ public class AP02_Case {
         map<Id, list<Case>> mapListCaseByAccId = new map<Id, list<Case>>();
         set<Id> setAccId = new set<Id>();
         List<Case> desaboDateCases = new List<Case>();
-               
+        
+        
+
         for(Case caseToUpd : mapNewCases.values()){
             Case oldCase = mapOldCases.get(caseToUpd.Id);
             // Identification des case dont les champs Tech famille, motif et sous motif sont à maj
@@ -163,7 +165,6 @@ public class AP02_Case {
         // Appel de la méthode de maj des champs Tech famille, motif et sous motif
         system.debug ('--#### Nombre de case impactés par les maj de tech famille/motif/sous-motif =' + casesGroupementLst.size()) ;
         if(casesGroupementLst.size() > 0){
-            system.debug('##ECH AP02_Case processTriggerBeforeUpdate updateTechFamMotifSousMotif');
             updateTechFamMotifSousMotif(casesGroupementLst);
         }
 
@@ -281,8 +282,8 @@ public class AP02_Case {
             return false;
         }
         
-        system.debug('--#### Pas d\'envoi email');
-        return null;
+        //system.debug('--#### Pas d\'envoi email');
+        //return null;
     }
     
     private static Boolean isPDFTemplate(Case c, Account account) {
@@ -301,8 +302,8 @@ public class AP02_Case {
             return false;           
         }
         
-        system.debug('--#### Pas d\'envoi courrier');
-        return null;
+        //system.debug('--#### Pas d\'envoi courrier');
+        //return null;
     }
     
     private static String getHelpMsgChooseTemplate(Case c, Account account) {
@@ -351,8 +352,6 @@ public class AP02_Case {
         // maj de case a partir de la Map 
         for (Case c : cases) {
             
-            system.debug('##ECH AO02_Case updateTechFamMotifSousMotif :'+c.Famille__c+' '+c.Motif__c);
-            
             if (c.TECHIdStatut__c != null) {
 
                 Contacts__c contacts = mapIdStatutContacts.get(c.TECHIdStatut__c);
@@ -367,35 +366,6 @@ public class AP02_Case {
                     c.TECH_SousMotifMatrice__c  = null ;                
                     c.AideReponseClient__c = 'Veuillez qualifier le ticket';        
                 }
-                
-                
-                //##ECH 281019 : Récupération du dernier paiement du compte à la création d'une demande de remboursement
-                    system.debug('##ECH AP02_Case updateTechFamMotifSousMotif :'+c.Famille__c+' '+c.Motif__c);
-                    if(c.Famille__c =='7- Finance' && c.Motif__c=='04- Remboursement' && c.AccountId != null && c.Payment__c ==null)
-                    {
-                        List<Zuora__Payment__c> paylst = [SELECT ID from Zuora__Payment__c where Zuora__Account__c=:c.AccountId order by CreatedDate DESC  LIMIT 1];
-        				if(paylst.size()>0){
-            				c.Payment__c =paylst[0].Id;
-        				}
-                    }
-                 
-                //##ECH 281019 : Récupération du marché du contrat pour blocage BTOB
-                /*system.debug('##ECH AP02_Case updateTechFamMotifSousMotif Subscription__c:'+c.Subscription__c);	
-                	if(c.Famille__c =='7- Finance' && c.Motif__c=='04- Remboursement' && c.Subscription__c != null)
-                    {
-                        List<Zuora__Subscription__c> sublst = [SELECT Marche__c from Zuora__Subscription__c where id=:c.Subscription__c LIMIT 1];
-        				system.debug('##ECH AP02_Case updateTechFamMotifSousMotif sublst:'+sublst);	
-                        if(sublst.size()>0){
-            				if(sublst[0].Marche__c=='BTOB' && (c.DemandeRemboursement__c=='UGCIllimité' ||c.DemandeRemboursement__c=='UGCUnlimited'))
-                            {
-                                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.FATAL, 'Il n\'est pas possible d\'effectuer ce type de remboursement pour une souscription BTOB');
-								ApexPages.addMessage(myMsg);
-                            }
-        				}
-                    }*/
-                
-                
-                
                                     
             } else {
                 c.TECH_FamilleMatrice__c    = null  ;
@@ -411,6 +381,7 @@ public class AP02_Case {
     }
     
     public static void makeSdocJobs(List<Case> cases) {
+        map<Id, Integer> mapNbDocTotalByCaseId = new map<Id, Integer>();
         Set<String> statutCaseSet = new Set<String>();
         Set<String> accountIdSet = new Set<String>();
         Map<ID, Case> mapCases = new Map<ID, Case>();
@@ -509,6 +480,13 @@ public class AP02_Case {
                     
                     String courrierTemplateName = '';
                     String emailTemplateName = '';
+                    //Compteur Nb Doc
+                    Integer nbCarte = contacts.AvecCarte__c ? 1 : 0;
+                    if(!mapNbDocTotalByCaseId.containsKey(c.Id)){
+                        mapNbDocTotalByCaseId.put(c.Id, nbCarte);
+                    }
+                    
+                    system.debug('##MNE AP02_Case makeSdocJobs nbCarte >> '+ mapNbDocTotalByCaseId.get(c.Id));
                     
                     system.debug('##ECH acc.CodePays__c :'+acc.CodePays__c);
                     if(acc.CodePays__c == '033'){
@@ -529,46 +507,6 @@ public class AP02_Case {
                     
                     system.debug('##ECH courrierTemplateName 0 :'+courrierTemplateName);
                     system.debug('##ECH emailTemplateName 0 :'+emailTemplateName);
-                    
-                    //BEGIN Compteur Nb Doc
-                    Integer nbCarte = contacts.AvecCarte__c ? 1 : 0;
-                    Integer nbCourrier = 0;
-                    Integer nbCourrierAttachement = 0;
-                    
-                    system.debug('##MNE AP02_Case makeSdocJobs nbCarte >> '+ nbCarte);
-                    system.debug('##MNE AP02_Case makeSdocJobs courrierTemplateName >> '+ courrierTemplateName);
-                    
-                    if(String.isNotBlank(courrierTemplateName)){
-                        list<String> listCourrierTemplateNameTMP = courrierTemplateName.split(';');
-                        nbCourrier = listCourrierTemplateNameTMP.size();
-                    }
-                    
-                    system.debug('##MNE AP02_Case makeSdocJobs nbCourrier >> '+ nbCourrier);
-                    
-                    system.debug('##MNE AP02_Case makeSdocJobs emailTemplateName >> '+ emailTemplateName);
-                    
-                    if(String.isNotBlank(emailTemplateName)){
-                        list<String> listEmailTemplateNameTMP = emailTemplateName.split(';');
-                        if(listEmailTemplateNameTMP.size() > 1){
-                        	Integer cpt = 0;
-                        	for(String s: listEmailTemplateNameTMP){
-                                if(cpt == 0){
-                                	cpt++;
-                                    continue;
-                                } else if (!s.trim().startsWithIgnoreCase('UGC')){
-                                	nbCourrierAttachement++;
-                                }
-                                cpt++;
-                            }
-                        }
-                    }
-                    
-                    system.debug('##MNE AP02_Case makeSdocJobs nbCourrierAttachement >> '+ nbCourrierAttachement);
-                    
-                    Integer cptTotal = nbCarte + nbCourrier + nbCourrierAttachement;
-                    c.TECH_NBPrintFileTotal__c = cptTotal;
-                    system.debug('##MNE AP02_Case makeSdocJobs TECH_NBPrintFileTotal__c >> '+ c.TECH_NBPrintFileTotal__c);
-                    //END Compteur Nb Doc
                     
                     //String typeTemplate = getTypeTemplateUsed(c, acc);
                     
@@ -600,6 +538,10 @@ public class AP02_Case {
                                             SDOC__SendEmail__c='0',
                                             SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
                                         jobList.add(job);
+                                        //Compteur Nb Doc
+                                        Integer compteurTMP = mapNbDocTotalByCaseId.get(c.Id)+1;
+                                        mapNbDocTotalByCaseId.put(c.Id, compteurTMP);
+                                        system.debug('##MNE AP02_Case makeSdocJobs TPName >> '+ courrierTemplateNameTMP);
                                         
                                         taskToInsert.add(createTask('courrier', c));
                                         c.AideReponseClient__c = 'Un courrier a été généré.';
@@ -625,6 +567,10 @@ public class AP02_Case {
                                             SDOC__SendEmail__c='0',
                                             SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
                                         jobList.add(job);
+                                        //Compteur Nb Doc
+                                        Integer compteurTMP = mapNbDocTotalByCaseId.get(c.Id)+1;
+                                        mapNbDocTotalByCaseId.put(c.Id, compteurTMP);
+                                        system.debug('##MNE AP02_Case makeSdocJobs TPName >> '+ courrierTemplateNameTMP);
                                         
                                         taskToInsert.add(createTask('courrier', c));
                                         c.AideReponseClient__c = 'Un courrier a été généré.';
@@ -758,6 +704,10 @@ public class AP02_Case {
                                             SDOC__SendEmail__c='0',
                                             SDOC__Doclist__c= mapNomSdocsIdSdocs.get(courrierTemplateNameTMP));
                                         jobList.add(job);
+                                        //Compteur Nb Doc
+                                        Integer compteurTMP = mapNbDocTotalByCaseId.get(c.Id)+1;
+                                        mapNbDocTotalByCaseId.put(c.Id, compteurTMP);
+                                        system.debug('##MNE AP02_Case makeSdocJobs TPName >> '+ courrierTemplateNameTMP);
                                         
                                         taskToInsert.add(createTask('courrier', c));
                                         c.AideReponseClient__c = 'Un courrier a été généré.';
@@ -812,6 +762,16 @@ public class AP02_Case {
         if(taskToInsert.size() > 0){
             insert taskToInsert; 
         } 
+        
+        if(mapNbDocTotalByCaseId.size() > 0){
+            for(Case c : casesToUpdate) {
+                if(mapNbDocTotalByCaseId.containsKey(c.Id)){
+                    c.TECH_NBPrintFileTotal__c = mapNbDocTotalByCaseId.get(c.Id);
+                } else {
+                    c.TECH_NBPrintFileTotal__c = 0;
+                }
+            }
+        }
             
         update casesToUpdate;
 
@@ -937,7 +897,6 @@ public class AP02_Case {
             }
         }*/
         list<RecordTypeMapping__mdt> rtms = new list<RecordTypeMapping__mdt>([SELECT Id, Famille__c, Motif__c, RecordTypeName__c FROM RecordTypeMapping__mdt]);
-        Id standardRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Standard').getRecordTypeId();
 
         if(cases != null && cases.size() > 0 && rtms != null && rtms.size() > 0){
             map<String, RecordTypeMapping__mdt> mapRecordTypeMappingByFamilleMotif = new map<String, RecordTypeMapping__mdt>();
@@ -962,8 +921,6 @@ public class AP02_Case {
                                 }
                             }
                         }
-                    } else {
-                    	 c.RecordTypeId = standardRecordTypeId;
                     }
                 }
             }
@@ -1112,8 +1069,6 @@ public class AP02_Case {
             if(mapListCaseByAccId.containsKey(zSub.Zuora__Account__r.Id) && !setAccIdAlreadyTreated.contains(zSub.Zuora__Account__r.Id)){
                 list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
                 for(Case c : listCase){
-
-                    system.debug('##ECH AP02_Case initSubscriptionId zSub.Id'+zSub.Id);
                     c.Subscription__c    = zSub.Id;
                     //c.SubscriptionZID__c = zSub.Zuora__Zuora_Id__c;
                     c.SubscriptionZID__c = zSub.Name;
@@ -1176,8 +1131,4 @@ public class AP02_Case {
             update listFIToUpdated;
         }
     }
-    
-    private class MyException extends Exception {
-    }
-    
 }
