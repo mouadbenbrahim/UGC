@@ -196,4 +196,16 @@ public with sharing class Util {
         
     }
 
+    // public static void pLog(WSZ.ProcessLog pLog){
+    //     ProcessLog__c pLog = new ProcessLog__c();
+    //     pLog.Process__c = process;
+    //     pLog.Account__c = accountId;
+    //     pLog.Case__c = caseId;
+    //     pLog.SubscriptionName__c = subscriptionName;
+    //     pLog.AccountZID__c = accountZID;
+    //     pLog.Code__c = code;
+    //     pLog.Message__c = message;
+    //     insert pLog;
+    // }
+
 }

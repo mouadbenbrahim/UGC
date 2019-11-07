@@ -63,6 +63,7 @@
     <tabs>File_Impression__c</tabs>
     <tabs>Zuora__ZInvoice__c</tabs>
     <tabs>BilendiAccounting__c</tabs>
+    <tabs>ProcessLog__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>console_test_admin_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -83,6 +84,9 @@
         </mappings>
         <mappings>
             <tab>Offre__c</tab>
+        </mappings>
+        <mappings>
+            <tab>ProcessLog__c</tab>
         </mappings>
         <mappings>
             <tab>ProdRatePlanCharge__c</tab>

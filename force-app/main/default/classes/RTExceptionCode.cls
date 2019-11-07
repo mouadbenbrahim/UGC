@@ -23,8 +23,13 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_OFFRE_COUPON_NON_VALABLE_CLIENT = new RTExceptionCode('erreur coupon non valable pour ce client', 1013);
     public static final RTExceptionCode ERREUR_OFFRE_AUCUN_COUPON2 = new RTExceptionCode('Aucune offre n est valable avec ce coupon', 1014);
     public static final RTExceptionCode ERREUR_COUPON_MULTIPLE_NON_TROUVE = new RTExceptionCode('erreur coupon multiple non trouve', 1015);
-    public static final RTExceptionCode ERREUR_GESTCO_CDD_PRODUIT_ABSENT = new RTExceptionCode('Pas de Product Rate Plan Charge trouvee pour le geste commercial', 1016);
-    public static final RTExceptionCode ERREUR_GESTCO_APPLICATION_CDD = new RTExceptionCode('Erreur Application du Gestco sur un CDD', 1017);
+
+    public static final RTExceptionCode ERREUR_GESTCO_CDD_PRODUIT_ABSENT = new RTExceptionCode('Pas de Product Rate Plan Charge trouvee pour le geste commercial', 1101);
+    public static final RTExceptionCode ERREUR_GESTCO_APPLICATION_CDD = new RTExceptionCode('Erreur Application du Gestco sur un CDD', 1102);
+    public static final RTExceptionCode ERREUR_GESTCO_CONTRAT_ABSENT_DDE = new RTExceptionCode('Abonnement absent de la demande: pas dabo, plusieurs ou inactif', 1103);
+    //public static final RTExceptionCode ERREUR_GESTCO_APPLICATION_CDD = new RTExceptionCode('Erreur Application du Gestco sur un CDD', 1102);
+    //public static final RTExceptionCode ERREUR_GESTCO_APPLICATION_CDD = new RTExceptionCode('Erreur Application du Gestco sur un CDD', 1102);
+    
 
     public static final RTExceptionCode ERREUR_RETENTION_PRODUIT_ABSENT = new RTExceptionCode('Pas de Product Rate Plan Charge trouvee pour la retention', 1301);
     public static final RTExceptionCode ERREUR_RETENTION_APPLICATION = new RTExceptionCode('Erreur Application de la retention', 1302);    
@@ -32,9 +37,20 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_DESABO_CDI_AVEC_FINCONTRAT = new RTExceptionCode('Ce contrat comprend deja une date fin contrat', 2001);
     public static final RTExceptionCode ERREUR_DESABO_CDD_AVEC_FINCONTRAT = new RTExceptionCode('Ce contrat comprend deja une date fin contrat', 2002);
     public static final RTExceptionCode ERREUR_DESABO_DATE_FINCONTRAT_OBLIGATOIRE = new RTExceptionCode('La date fin contrat est obligatoire', 2003);    
-    public static final RTExceptionCode ERREUR_DESABO_BATCH_CASE_ABSENT = new RTExceptionCode('La souscription n a pas de demande desabo rattache', 2003);
     public static final RTExceptionCode ERREUR_DESABO_COUPON_WELCOMEBACK = new RTExceptionCode('Erreur desabo: configuration coupon/offre welcome back', 2004);
     public static final RTExceptionCode ERREUR_DESABO_COUPON_ABOTIER = new RTExceptionCode('Erreur desabo: configuration coupon/offre abo tier', 2005);
+    public static final RTExceptionCode ERREUR_DESABO_CONTRAT_ABSENT_DDE = new RTExceptionCode('Abonnement absent de la demande: pas dabo, plusieurs ou inactif', 2006);
+    public static final RTExceptionCode ERREUR_DESABO_DDE_DEJA_TRAITE = new RTExceptionCode('Cette demande a deja ete traite', 2007);
+    public static final RTExceptionCode ERREUR_DESABO_SSMOTIF_OBLIGATOIRE = new RTExceptionCode('Sous-Motif obligatoire', 2008);
+    public static final RTExceptionCode ERREUR_DESABO_TYPEDESABO_OBLIGATOIRE = new RTExceptionCode('Type de désabonnement obligatoire', 2009);
+    public static final RTExceptionCode ERREUR_DESABO_ABO_NONACTIF = new RTExceptionCode('L abonnement n est pas actif', 2010);
+    public static final RTExceptionCode ERREUR_DESABO_ABO_NONACTIF2 = new RTExceptionCode('L abonnement n est pas actif', 2011);
+    public static final RTExceptionCode ERREUR_DESABO_DATEDESABO_OBLIGATOIRE = new RTExceptionCode('Veuillez saisir une date de désabonnement', 2012);
+    public static final RTExceptionCode ERREUR_DESABO_CDD_IMPOSSIBLE = new RTExceptionCode('Pas possible de desabonner un contrat CDD, le contrat sera automatique désabonné à la date de fin de contrat', 2013);
+    public static final RTExceptionCode ERREUR_DESABO_SANSCASE_NONACTIF = new RTExceptionCode('Contrat Bilendi: L abonnement n est pas actif', 2014);
+    public static final RTExceptionCode ERREUR_DESABO_SANSCASE_IMPOSSIBLE = new RTExceptionCode('Contrat Bilendi : desabonnement non possible pour les CDD', 2015);
+    public static final RTExceptionCode ERREUR_DESABO_BATCH_NON_CONFORME = new RTExceptionCode('La souscription non conforme: CDI: non bilendi, sans case', 2016);    
+    
 
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CONTRAT_DEJA_ACTIF = new RTExceptionCode('Annulation desabo impossible: le contrat est deja actif', 2101);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_PERIODLATENCE_DEPASSE = new RTExceptionCode('Annulation desabo impossible: la periode de latence depasse', 2102);    
@@ -42,7 +58,7 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_DATEFINCONTRAT_VIDE = new RTExceptionCode('Erreur Annulation desabo: la date fin contrat est vide', 2104);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_STATUT_CONTRAT_NON_VALIDE = new RTExceptionCode('Erreur Annulation desabo: le statut du contrat est non valide', 2105);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CDD_DEJA_INACTIF = new RTExceptionCode('Erreur Annulation desabo: ce CDD est deja inactif', 2106);
-    
+
     
     public static final RTExceptionCode ERREUR_IMPAYE_GET_SOUSCRITPION_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Contrat absent', 3101);
     public static final RTExceptionCode ERREUR_IMPAYE_GET_ACCOUNT_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Compte absent', 3102);
@@ -63,6 +79,15 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_SUBSCRIPTION = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour contrat', 3213);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_INCOHERENCE_DATEFIN = new RTExceptionCode('Erreur Reglement impaye: probleme incoherence dans la date fin du contrat', 3214);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_APPLICATION_BILL_DNE = new RTExceptionCode('Erreur Reglement impaye: probleme billing de la dette non echue', 3215);
+
+    public static final RTExceptionCode ERREUR_ACQUISIT_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Acquisition : probleme get subscription zuora', 4101);
+    public static final RTExceptionCode ERREUR_ACQUISIT_GET_ACCOUNT = new RTExceptionCode('Erreur Acquisition : probleme get account zuora', 4102);
+    public static final RTExceptionCode ERREUR_ACQUISIT_GET_PAYMENTMETHOD = new RTExceptionCode('Erreur Acquisition : probleme get payment method zuora', 4103);    
+    
+    public static final RTExceptionCode ERREUR_MIGRATION_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Migration : probleme get subscription zuora', 4201);
+    public static final RTExceptionCode ERREUR_REEDITION_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Reedition : probleme get subscription zuora', 4301);
+    public static final RTExceptionCode ERREUR_RENOUV_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Renouvellement : probleme get subscription zuora', 4401);
+    public static final RTExceptionCode ERREUR_CHGBANQUE_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Changement Coord Bancaire : probleme get subscription zuora', 4501);
     
 
        

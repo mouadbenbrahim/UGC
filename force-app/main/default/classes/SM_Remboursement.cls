@@ -1,12 +1,17 @@
 public with sharing class SM_Remboursement {
+    
+    public static Zuora__Subscription__c sub = new Zuora__Subscription__c();
+    public static zc_GETSubscriptionTypeWithSuccess subZdoc;
+    public static zc_ProxyGetPaymentMethod pm;
 
     //TODO: Creation Case Remboursement suite a une migration par trigger : cf. Spec API 17.6 et 18.5
     public static void Remboursement(Id ddeId) {
         system.debug('##MNE SM_Remboursement Remboursement ddeId >> '+ddeId);
         
         Case dem = SM_Demande.getDemande(ddeId);
+        sub = SM_Subscription.getActiveSubscriptionByNameORAccId(dem.SubscriptionZName__c, dem.AccountId);
 
-        if (dem.Subscription__c == null) {
+        if (sub == null) {
             throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
         }
         
@@ -14,20 +19,21 @@ public with sharing class SM_Remboursement {
             throw new MyException('Le remboursement ne peut pas être réalisé sur demande de remboursement déjà traitée ou refusée.');
         }
         
-        executeRemboursement(dem, dem.AccountId, dem.Subscription__c, null, false);
+        executeRemboursement(dem, dem.AccountId, null, false);
 
         //Fermeture de la demande
+        Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+        dem.ZDocData__c = zDocId;
         dem.Status = 'Fermee';
         dem.Etat_remboursement__c = 'Rembourse';
         update dem;
-
+        SM_SDoc.makeSdocJobs(new list<Case>{dem});
     }
     
     
-    public static void executeRemboursement(Case dem, Id accId, Id subscriptionId, String zPaymentId, Boolean fromOnglet) {
+    public static void executeRemboursement(Case dem, Id accId, String zPaymentId, Boolean fromOnglet) {
         system.debug('##MNE SM_Remboursement executeRemboursement dem >> '+dem);
         system.debug('##MNE SM_Remboursement executeRemboursement accId >> '+accId);
-        system.debug('##MNE SM_Remboursement executeRemboursement subscriptionId >> '+subscriptionId);
         system.debug('##MNE SM_Remboursement executeRemboursement zPaymentId >> '+zPaymentId);
         system.debug('##MNE SM_Remboursement executeRemboursement fromOnglet >> '+fromOnglet);
         
@@ -41,9 +47,10 @@ public with sharing class SM_Remboursement {
         system.debug('##MNE SM_Remboursement executeRemboursement zuoraPaymentId >> '+zuoraPaymentId);
         
         
-        Zuora__Subscription__c sub = SM_Subscription.getSubscription(subscriptionId);
+        //Zuora__Subscription__c sub = SM_Subscription.getSubscription(subscriptionId);
         Account acc = SM_Account.getAccount(accId);
         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c); 
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'executeRetention', Account__c = accId); 
         
         //WSZ.PaymentPartsOut paymentPart = SM_Payment.getPaymentPart(zuoraPaymentId, zEntityId); 
       
@@ -163,7 +170,7 @@ public with sharing class SM_Remboursement {
             
             for(WSZ.InvoiceItem invoiceItem : gInvoiceItemsOut.invoiceItems){
                 
-               	Double taxAmount1 = 0;
+                Double taxAmount1 = 0;
             
                 //Récupération de la tax
                 for(WSZ.taxationItemsdata invoiceItemData : invoiceItem.taxationItems.data){
@@ -173,7 +180,7 @@ public with sharing class SM_Remboursement {
                     taxAmount1 += invoiceItemData.taxAmount;
                 }
             
-            	Double amt1 = invoiceItem.chargeAmount+taxAmount1;
+                Double amt1 = invoiceItem.chargeAmount+taxAmount1;
                 
                 if(amt1 == dem.MontantRembourser__c)
                 {
@@ -257,7 +264,7 @@ public with sharing class SM_Remboursement {
                                 creditTaxItemIn.jurisdiction = invoiceItemData.jurisdiction;
                                 creditTaxItemIn.sourceTaxItemId = invoiceItemData.id;
                                 creditMemoInItem.taxItems.add(creditTaxItemIn);                            
-                        	}
+                            }
                             
                             refundAmount = refundAmount - amt;
                             
@@ -289,7 +296,7 @@ public with sharing class SM_Remboursement {
                                 creditMemoInItem.taxItems.add(creditTaxItemIn);
     
                                 refundAmount = 0;
-                        	}
+                            }
 
                         }  
                         
@@ -309,6 +316,26 @@ public with sharing class SM_Remboursement {
 
             //Apply Credit Memo
             applyCreditMemo(creditDate, dem.MontantRembourser__c, invoiceId, creditMemoOut.Id, zEntityId);
+            
+            
+            
+            
+            //Debut call out pour ZDOC
+            String accessToken = WS001_CallZuora.access_token;
+            // Get Zuora Data (subscription)
+            subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+            
+            // Get Zuora Data (Account)
+            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+            String payMethodId = zacc.defaultPaymentMethodId;
+            
+            // Get Zuora Data (PaymentMethod)
+            pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+            //Fin call out pour ZDOC
+        
+        
+        
+        
         
         }
         
@@ -323,36 +350,36 @@ public with sharing class SM_Remboursement {
         WRPInt rep = new WRPInt();  
         
         try{
-            Case c = [SELECT Id, AccountId, Subscription__c, DateDemande__c FROM Case WHERE Id = :caseId LIMIT 1];
+            //Case c = [SELECT Id, AccountId, Subscription__c, DateDemande__c FROM Case WHERE Id = :caseId LIMIT 1];
+            Case c = SM_Demande.getDemande(caseId);
             Zuora__Payment__c payment = [SELECT Id, Zuora__EXT_ID__c  FROM Zuora__Payment__c WHERE Id = :caseRecord.Payment__c LIMIT 1];
             Id accId = c.AccountId;
             String zPaymentId = payment.Zuora__EXT_ID__c;
+            
+            sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
+            if (sub == null) {
+                throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
+            }
             
             System.debug('##MNE SM_Remboursement ongletRemboursement Case c >> '+c);
             System.debug('##MNE SM_Remboursement ongletRemboursement payment >> '+payment);
             System.debug('##MNE SM_Remboursement ongletRemboursement zPaymentId >> '+zPaymentId);
             
-            executeRemboursement(caseRecord, accId, c.Subscription__c, zPaymentId, true);
+            executeRemboursement(caseRecord, accId, zPaymentId, true);
             
-            //creataion du nouveau case
-            /*Id remboursementRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Remboursement').getRecordTypeId();
-            Case cTMP = new Case();
-            cTMP.Payment__c = caseRecord.Payment__c;
-            cTMP.MontantRembourser__c = caseRecord.MontantRembourser__c;
-            cTMP.MontantRemboursementCalc__c = caseRecord.MontantRembourser__c;
-            cTMP.DateDeRemboursement__c = caseRecord.DateDeRemboursement__c;
-            cTMP.AccountId = accId;
-            cTMP.ParentId = caseId;
-            cTMP.RemboursementFaire__c = true;
-            cTMP.RecordTypeId = remboursementRecordTypeId;
-            cTMP.Famille__c = '7- Finance';
-            cTMP.Motif__c = '04- Remboursement';
-            insert cTMP; */ 
+            Case newCaseRemboursement = createRebousementCase(caseId, caseRecord.MontantRembourser__c, caseRecord.MontantRembourser__c, accId, null, null, caseRecord.Payment__c, caseRecord.DateDeRemboursement__c, caseRecord.SubscriptionZName__c);   
+            Id caseRemboursementId = newCaseRemboursement.Id;
             
-            Id caseRemboursementId = createRebousementCase(caseId, caseRecord.MontantRembourser__c, caseRecord.MontantRembourser__c, accId, null, null, caseRecord.Payment__c, caseRecord.DateDeRemboursement__c);   
-            //rep.caseIdToRedirect = cTMP.Id;
             rep.caseIdToRedirect = caseRemboursementId;
             rep.accountIdToRedirect = accId;
+            
+            //Fermeture de la demande
+            Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            newCaseRemboursement.ZDocData__c = zDocId;
+            newCaseRemboursement.Status = 'Fermee';
+            newCaseRemboursement.Etat_remboursement__c = 'Rembourse'; 
+            update newCaseRemboursement;
+            SM_SDoc.makeSdocJobs(new list<Case>{newCaseRemboursement});
             
         } catch(Exception e){
             rep.showMessage = true;
@@ -416,8 +443,12 @@ public with sharing class SM_Remboursement {
         
     }
     
-
-    public static Id createRebousementCase(Id originCaseId, Decimal montantARembourser, Decimal montantARembourserFromCreditMemo, Id accountId, String creditMemoId, Date dateResiliation, Id paymentId, Date remboursementDate){
+    
+    /*public static Id createRebousementCase(Id originCaseId, Decimal montantARembourser, Decimal montantARembourserFromCreditMemo, Id accountId, String creditMemoId, Date dateResiliation, Id paymentId, Date remboursementDate){
+        return null;
+    }*/
+    
+    public static Case createRebousementCase(Id originCaseId, Decimal montantARembourser, Decimal montantARembourserFromCreditMemo, Id accountId, String creditMemoId, Date dateResiliation, Id paymentId, Date remboursementDate, String subZName){
         Id remboursementRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Remboursement').getRecordTypeId();
         Case c = new Case();
         c.ParentId = originCaseId;
@@ -434,10 +465,10 @@ public with sharing class SM_Remboursement {
         c.CreditMemoId__c = creditMemoId;
         c.Famille__c = '7- Finance';
         c.Motif__c = '04- Remboursement';
-        //c.DateFinContrat__c = dateResiliation;
         c.Payment__c = paymentId;
         c.DateDeRemboursement__c = remboursementDate;
         c.Origin = 'Interne';
+        c.SubscriptionZName__c = subZName;
         
         List<Account> acclst = [SELECT CodePays__c from Account where Id=:accountId LIMIT 1];
         
@@ -453,19 +484,9 @@ public with sharing class SM_Remboursement {
             c.ContactId =conlst[0].Id;
         }
         
-		/*        
-        List<Zuora__Payment__c> paylst = [SELECT ID from Zuora__Payment__c where Zuora__Account__c=:accountId order by CreatedDate DESC  LIMIT 1];
-        if(paylst.size()>0){
-            c.Payment__c =paylst[0].Id;
-        }
-        */
-        
-        //c.MontantRembourser__c
-        //c.RemboursementValeur__c
-        //c.TypeRemboursement__c
-        //c.DemandeRemboursement__c = VLO || Réservations autres || UGCIllimité || UGCUnlimited 
         insert c;
-        return c.Id;
+        //return c.Id;
+        return c;
     }
     
      public static void unapplyPayment(Decimal amountUnapply, String zInvoiceId, String zPaymentId, String zEntityId, String access_token) {

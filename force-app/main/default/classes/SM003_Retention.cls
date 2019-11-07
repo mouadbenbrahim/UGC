@@ -1,4 +1,8 @@
 public without sharing class SM003_Retention {
+	
+	public static Boolean needCreateDoc = false;
+	public static zc_GETSubscriptionTypeWithSuccess subZdoc;
+	public static zc_ProxyGetPaymentMethod pm;
     
     public static void retention(String caseId){
         System.debug('##MNE SM003_Retention retention caseId >> ' + caseId);
@@ -6,8 +10,11 @@ public without sharing class SM003_Retention {
         if(caseId == null){
             throw new MyException('No Id Case found for Retention');
         }
-        Case c = [SELECT Id, Status, DateDemande__c, AccountId, Offre_de_r_tention__c, Mois_de_d_but_remise__c, Raison_de_d_sabonnement__c, Type_de_d_sabonnement__c, R_sultat_R_tention__c, Date_fin_engagement__c, Subscription__c 
-                    FROM Case WHERE Id =:caseId].get(0);
+        
+        Case c = SM_Demande.getDemande(caseId);
+                    
+        list<Contacts__c> contactsList = new list<Contacts__c>([SELECT Id, name, TypeTemplate__c FROM Contacts__c WHERE TypeTemplate__c = 'ZDocTemplate' AND Name = :c.TECHIdStatut__c]);
+        needCreateDoc = contactsList.size() == 0 ? false : true;
         
         if((c.Offre_de_r_tention__c == null   || c.Offre_de_r_tention__c == '')
         || (c.Raison_de_d_sabonnement__c == null   || c.Raison_de_d_sabonnement__c == '')
@@ -22,20 +29,27 @@ public without sharing class SM003_Retention {
         }
         
         if(c.R_sultat_R_tention__c != null && (c.R_sultat_R_tention__c == 'Refuse sans desabonnement' || c.R_sultat_R_tention__c == 'Client indécis') ){
-            c.Status = 'EnCours';
-            update c;
             System.debug('##MNE SM003_Retention retention case closed EnCours');
-            return;
+            callOutForZDoc(c.AccountId, c.SubscriptionZName__c);
+            Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+			c.ZDocData__c = zDocId;
+            c.Status = 'Fermee';
+        	update c;
+        	SM_SDoc.makeSdocJobs(new list<Case>{c});
         } else if(c.R_sultat_R_tention__c != null && c.R_sultat_R_tention__c == 'Accepté'){
             System.debug('##MNE SM003_Retention retention go to rentention in zuora');
             executeRetention(c);
-            c.Status = 'EnCours';
-            update c;
+			Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+			c.ZDocData__c = zDocId;
+			c.Status = 'Fermee';
+        	update c;
+        	SM_SDoc.makeSdocJobs(new list<Case>{c});
         } else if(c.R_sultat_R_tention__c != null && c.R_sultat_R_tention__c == 'Refuse avec desabonnement'){
             System.debug('##MNE SM003_Retention retention go to desabonnement');
             SM_Desabonnement.desabonner(c.Id,false);
-            c.Status = 'EnCours';
-            update c;
+            //on ferme le ticket dans la methode desabonnement
+            //c.Status = 'Fermee';
+        	//update c;
         }
     }
     
@@ -45,7 +59,9 @@ public without sharing class SM003_Retention {
         Boolean hasRemiseRetention = false;
         Integer moisDebutRemise;
         Date dateDebutRemise, newContractStartDate;
-        String rpId, rpcId;        
+        String rpId, rpcId;  
+        
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'executeRetention', Account__c = c.AccountId);      
         
         //mois obligatoir si l'offre proposé != Points fidélité && != Hausse tarifaire
         if( (c.Mois_de_d_but_remise__c == null || c.Mois_de_d_but_remise__c == '') 
@@ -55,7 +71,12 @@ public without sharing class SM003_Retention {
         }
         
         Id accId = c.AccountId;
-        Zuora__Subscription__c sub = SM_Subscription.getSubscription(c.Subscription__c);
+        //Zuora__Subscription__c sub = SM_Subscription.getSubscription(c.Subscription__c);
+        Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
+        if (sub == null) {
+            throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
+        } 
+
         
         if(sub.TypeContrat__c == 'CDD'){
             system.debug('##MNE SM003_Retention executeRetention Pas possible pour CDD.');
@@ -165,6 +186,22 @@ public without sharing class SM003_Retention {
         ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
         repWS = par.serializeWithMapping2(repWS,'zc_ProxyActionAmendResponse'); //rename members
         zc_ProxyActionAmendResponse repObj = (zc_ProxyActionAmendResponse)JSON.deserialize(repWS, zc_ProxyActionAmendResponse.class);
+        
+        
+        //Debut call out pour ZDOC
+		// Get Zuora Data (subscription)
+		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+		
+		// Get Zuora Data (Account)
+		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+		String payMethodId = zacc.defaultPaymentMethodId;
+		
+		// Get Zuora Data (PaymentMethod)
+		pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+        //Fin call out pour ZDOC
+        
+        
+        
 
         Boolean success = true;
         String messageError = '';
@@ -179,6 +216,31 @@ public without sharing class SM003_Retention {
         }                
         
      }
+     
+     public static void callOutForZDoc(String subName, Id accId){
+		Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(subName, accId);
+        if (sub == null) {
+            throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
+        } 
+		
+		ProcessLog__c pLog = new ProcessLog__c(Process__c = 'executeRetention', Account__c = accId);  
+		//Debut call out pour ZDOC
+		String accessToken = WS001_CallZuora.access_token;
+		String zEntityId = WS001_CallZuora.getZuoraEntityId(sub.Zuora__Account__r.CodePays__c);  
+		
+		// Get Zuora Data (subscription)
+		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+		
+		// Get Zuora Data (Account)
+		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+		String payMethodId = zacc.defaultPaymentMethodId;
+		
+		// Get Zuora Data (PaymentMethod)
+		pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+        //Fin call out pour ZDOC
+     }
+     
+     
      
     private class MyException extends Exception {
     }

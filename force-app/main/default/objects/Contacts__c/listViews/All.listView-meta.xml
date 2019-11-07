@@ -12,6 +12,7 @@
     <columns>NomModeleEmailHTML__c</columns>
     <columns>Reponse__c</columns>
     <columns>ValeurALCMEON__c</columns>
+    <columns>TypeTemplate__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>Reponse__c</field>

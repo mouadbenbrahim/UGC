@@ -870,8 +870,73 @@ public with sharing class WSZ {
 
         }   
              
-    }         
+    }
 
+    public class SubHermesIn {
+        public String accountId; //ID Salesforce : [Obligatoire]
+        public String accountZID; // -- ajoutee. [Obligatoire]
+        public String subscriptionZID; //Id Zuora. [Obligatoire]
+        public String subscriptionOldZID; //ancien contrat si migration. [Obligatoire](migration)
+        public String subscriptionName; // -- ajoutee. [Obligatoire]
+        public String origin; // [Obligatoire]
+        // public String famille; 
+        public String motif; // [Obligatoire](Acquisition, reedition carte)
+        // public String sousMotif; // pas besoin
+        public String lieu; // c est le code complexe(HORIZ, WEB...etc), remplace le champ cinema.
+        public String commentairesInternes;
+        // public String status; // pas besoin
+        public String typeDeMigration;
+        public String creditMemoId;
+        // public String montantRembourser; // a verifier avec kevin
+        // public String remboursementFaire;  // a verifier avec kevin
+        public String dateFinContrat; 
+        // public String montantRemboursementCalc; // a faire en local:creation case remboursement
+        // public String dateDemande; // a faire en local: date du jour (creation case remboursmenet)
+        // public String Account__r.PersonContactId; // -- a faire en local
+        public String numeroCarte;
+    }
+
+    public class SubHermesOut {
+        public String accountId; //ID Salesforce : [Obligatoire]
+        public String accountZID; // -- ajoutee. [Obligatoire]
+        public String subscriptionZID; //Id Zuora. [Obligatoire]
+        public String subscriptionName;
+        public String caseId;
+        public Boolean success;
+        public String message;
+        public Integer errorCode;
+        
+        public SubHermesOut(String accountId, String accountZID, String subscriptionZID, String subscriptionName, String caseId){
+            this.accountId = accountId;
+            this.accountZID = accountZID;
+            this.subscriptionZID = subscriptionZID;
+            this.subscriptionName = subscriptionName;
+            this.caseId = caseId;
+        }
+        
+        public SubHermesOut(){
+
+        }        
+
+    }
+
+    // public class ProcessLog {
+    //     public String process;
+    //     public Id accountId;
+    //     public Id caseId;
+    //     public String subscriptionName;
+    //     public String accountZID;
+    //     public Integer code;
+    //     public String message;
+        
+    //     public ProcessLog(String process, Id accountId, Id caseId, String subscriptionName, String accountZID){
+    //         this.process = process;
+    //         this.accountId = accountId;
+    //         this.caseId = caseId;
+    //         this.subscriptionName = subscriptionName;
+    //         this.accountZID = accountZID;
+    //     }
+    // }
 
 }
 

@@ -198,6 +198,7 @@
     <tabs>File_Impression__c</tabs>
     <tabs>Zuora__ZInvoice__c</tabs>
     <tabs>BilendiAccounting__c</tabs>
+    <tabs>ProcessLog__c</tabs>
     <workspaceConfig>
         <mappings>
             <tab>Abonnement__c</tab>
@@ -231,6 +232,9 @@
         </mappings>
         <mappings>
             <tab>Offre__c</tab>
+        </mappings>
+        <mappings>
+            <tab>ProcessLog__c</tab>
         </mappings>
         <mappings>
             <tab>ProdRatePlanCharge__c</tab>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cinema__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>nom du cinema, complexe:</description>
+    <externalId>false</externalId>
+    <label>Cinéma</label>
+    <referenceTo>Complexe__c</referenceTo>
+    <relationshipLabel>Z Doc Data</relationshipLabel>
+    <relationshipName>Z_Doc_Data</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

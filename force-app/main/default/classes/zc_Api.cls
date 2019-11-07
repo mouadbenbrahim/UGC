@@ -3,19 +3,19 @@ public with sharing class zc_Api {
 
     }
 
-    public static zc_ProxySaveResult actionUpdatePOST(String accessToken, String zEntityId, zc_ProxyActionupdateRequest reqObj, RTExceptionCode rtc){
+    public static zc_ProxySaveResult actionUpdatePOST(String accessToken, String zEntityId, zc_ProxyActionupdateRequest reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_ProxySaveResult respObj = new zc_ProxySaveResult();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/action/update', zEntityId, 'POST', reqObj,zc_ProxySaveResult.class, null, null);
 
 
         if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code));
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
         }else {
             respObj = (zc_ProxySaveResult)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.results.size() > 0){
                 if(!respObj.results.get(0).success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));             
+                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);             
                 }            
             }
         }
@@ -23,18 +23,18 @@ public with sharing class zc_Api {
         return respObj;
     }
 
-    public static zc_GETARPaymentType paymentsPOST(String accessToken, String zEntityId, zc_CreatePaymentType reqObj, RTExceptionCode rtc){
+    public static zc_GETARPaymentType paymentsPOST(String accessToken, String zEntityId, zc_CreatePaymentType reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_GETARPaymentType respObj = new zc_GETARPaymentType();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/payments', zEntityId, 'POST', reqObj,zc_GETARPaymentType.class, zc_CommonResponseType.class, null);
 
         if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code));
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
         }else {
             respObj = (zc_GETARPaymentType)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
                 }            
             }
         }
@@ -42,18 +42,18 @@ public with sharing class zc_Api {
         return respObj;
     }
     
-    public static zc_BillingPreviewResult opeBillingPreviewPOST(String accessToken, String zEntityId, zc_PostBillingPreviewParam reqObj, RTExceptionCode rtc){
+    public static zc_BillingPreviewResult opeBillingPreviewPOST(String accessToken, String zEntityId, zc_PostBillingPreviewParam reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_BillingPreviewResult respObj = new zc_BillingPreviewResult();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/operations/billing-preview', zEntityId, 'POST', reqObj,zc_BillingPreviewResult.class, zc_CommonResponseType.class, null);
 
         if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code));
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
         }else {
             respObj = (zc_BillingPreviewResult)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
                 }            
             }
         }
@@ -61,18 +61,18 @@ public with sharing class zc_Api {
         return respObj;
     }
 
-    public static zc_GenerateBillingDocumentResponseT accBillDocGeneratePOST(String accessToken, String zEntityId, zc_PostGenerateBillingDocumentType reqObj, String accountId, RTExceptionCode rtc){
+    public static zc_GenerateBillingDocumentResponseT accBillDocGeneratePOST(String accessToken, String zEntityId, zc_PostGenerateBillingDocumentType reqObj, String accountId, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_GenerateBillingDocumentResponseT respObj = new zc_GenerateBillingDocumentResponseT();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/accounts/'+accountId+'/billing-documents/generate', zEntityId, 'POST', reqObj,zc_GenerateBillingDocumentResponseT.class, zc_CommonResponseType.class, null);
 
         if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code));
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
         }else {
             respObj = (zc_GenerateBillingDocumentResponseT)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
                 }            
             }
         }
@@ -80,31 +80,126 @@ public with sharing class zc_Api {
         return respObj;
     }
 
-    public static zc_ProxyActionAmendResponse actionAmendPOST(String accessToken, String zEntityId, zc_ProxyActionAmendRequest reqObj, RTExceptionCode rtc){
+    public static zc_ProxyActionAmendResponse actionAmendPOST(String accessToken, String zEntityId, zc_ProxyActionAmendRequest reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_ProxyActionAmendResponse respObj = new zc_ProxyActionAmendResponse();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/action/amend', zEntityId, 'POST', reqObj,zc_ProxyActionAmendResponse.class, null, null);
 
 
         if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code));
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
         }else {
             respObj = (zc_ProxyActionAmendResponse)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.results != null  && respObj.results.size() > 0){
                 for(zc_AmendResult r : respObj.results){
                     if(!r.success){
                         if(r.errors != null && r.errors.size() > 0){
-                            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));
+                            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);
                         }
                     }
                 }
             }
         }
+        return respObj;
+    }
 
+    public static zc_GETSubscriptionTypeWithSuccess subscriptionGET(String accessToken, String zEntityId, String subId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETSubscriptionTypeWithSuccess respObj = new zc_GETSubscriptionTypeWithSuccess();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/subscriptions/'+subId, zEntityId, 'GET', null,zc_GETSubscriptionTypeWithSuccess.class, zc_CommonResponseType.class, null);
 
+        if (respMap.containsKey('ERROR_OBJECT')) {            
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        }else {
+            respObj = (zc_GETSubscriptionTypeWithSuccess)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                }            
+            }
+        }
 
         return respObj;
     }
 
+    public static zc_GETAccountType accountGET(String accessToken, String zEntityId, String accId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETAccountType respObj = new zc_GETAccountType();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/accounts/'+accId, zEntityId, 'GET', null,zc_GETAccountType.class, zc_CommonResponseType.class, null);
+
+        if (respMap.containsKey('ERROR_OBJECT')) {            
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        }else {
+            respObj = (zc_GETAccountType)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
+    public static zc_ProxyGetAccount objectAccountGET(String accessToken, String zEntityId, String accId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_ProxyGetAccount respObj = new zc_ProxyGetAccount();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/account/'+accId, zEntityId, 'GET', null,zc_ProxyGetAccount.class, zc_ProxyActionqueryResponse.class, null);
+
+        if (respMap.containsKey('ERROR_OBJECT')) {            
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        }
+        else {
+            respObj = (zc_ProxyGetAccount)respMap.get('RESP_OBJECT');
+            // if(respObj != null && respObj.success != null){
+            //     if(!respObj.success){                
+            //         throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+            //     }            
+            // }
+        }
+
+        return respObj;
+    }    
+
+    public static zc_ProxyGetPaymentMethod objectPaymentMethodGET(String accessToken, String zEntityId, String pmId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_ProxyGetPaymentMethod respObj = new zc_ProxyGetPaymentMethod();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/payment-method/'+pmId, zEntityId, 'GET', null,zc_ProxyGetPaymentMethod.class, zc_ProxyActionqueryResponse.class, null);
+
+        if (respMap.containsKey('ERROR_OBJECT')) {            
+            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        }
+        else {
+            respObj = (zc_ProxyGetPaymentMethod)respMap.get('RESP_OBJECT');
+            // if(respObj != null && respObj.success != null){
+            //     if(!respObj.success){                
+            //         throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+            //     }            
+            // }
+        }
+
+        return respObj;
+    }  
+
+
+// // NON UTILISE
+// public static zc_GETAccountSummaryType accountSummaryGET(String accessToken, String zEntityId, String accId, RTExceptionCode rtc){
+        
+//         zc_GETAccountSummaryType respObj = new zc_GETAccountSummaryType();
+//         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/subscriptions/'+accId, zEntityId, 'GET', null,zc_GETAccountSummaryType.class, zc_CommonResponseType.class, null);
+
+//         if (respMap.containsKey('ERROR_OBJECT')) {            
+//             throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code));
+//         }else {
+//             respObj = (zc_GETAccountSummaryType)respMap.get('RESP_OBJECT');
+//             if(respObj != null && respObj.success != null){
+//                 if(!respObj.success){                
+//                     throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+//                 }            
+//             }
+//         }
+
+//         return respObj;
+//     }
 
 }

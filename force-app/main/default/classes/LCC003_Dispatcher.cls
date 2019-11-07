@@ -11,26 +11,27 @@ public without sharing class LCC003_Dispatcher {
         Case caseToUpdate = new Case();
         Case caseToUpdateError = new Case();
  
-        // Case demande = getCase(currentId);
         if((bttnOperation == 'Anonymisation' || bttnOperation == 'AnonymisationAbonne') && !confirmationAction){
             return rep;
         }
 
         try{
             switch on bttnOperation {
-                when 'Desabonnement' {
+                when 'Desabonnement' {//DONE
+                	//creer doc
 					SM_Desabonnement.desabonner(currentId,false);
-					caseToUpdate.Status = 'Fermee';
+					//caseToUpdate.Status = 'Fermee';
                 }
-                when 'Resiliation' {
+                when 'Resiliation' { //DONE
+                	//creer doc
 					SM_Resiliation.resiliation(currentId);
-					caseToUpdate.Status = 'Fermee';
+					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'getAccount' {
 					SM_Subscription subscription = new SM_Subscription();
-                    //subscription.getAccount();
                 }
                 when 'Anonymisation' {
+                	//creer doc
 					rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ALL);
 					caseToUpdate.Status = 'Fermee';
                 }
@@ -43,48 +44,52 @@ public without sharing class LCC003_Dispatcher {
                 when 'SyncProduct' {
                     SM_Product.sync();
                 }
-                when 'Retention' {
+                when 'Retention' { //DONE
                     //TO do :
                     //partie Offre de rétention = "hausse tarifaire" => uniquement renouvellement de sub fait
                     // partie envoie de courrier
+                    //creer doc DONE
                     system.debug('##MNE LCC003_Dispatcher initApexMethod process >> Retention');
                     SM003_Retention.retention(currentId);
-					caseToUpdate.Status = 'Fermee';
+					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'AjoutLieux' {
                     SM_Offre.ajoutLieuAll(currentId);
                 }
-                when 'Retractation' {
+                when 'Retractation' { //DONE
+                	//creer doc
                     SM_Retractation.retractation(currentId);
-					caseToUpdate.Status = 'Fermee';
+					//caseToUpdate.Status = 'Fermee';
                 }
-                when 'AnnulationDemande' {
+                when 'AnnulationDemande' {//DONE
+                	//creer doc
                     SM_Desabonnement.desabonner(currentId,false);
-					caseToUpdate.Status = 'Fermee';
+					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'AnonymisationAbonne' {
+                	//creer doc
                     rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ONLY_ZUORA);
 					caseToUpdate.Status = 'Fermee';
                 }
-                when 'Remboursement' {
+                when 'Remboursement' {//DONE
+                	//creer doc DONE
                     SM_Remboursement.Remboursement(currentId); 
                 }
-                when 'AnnulationDesabo' {
+                when 'AnnulationDesabo' {//DONE
+                	//creer doc
                     SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
-					caseToUpdate.Status = 'Fermee';
+					//caseToUpdate.Status = 'Fermee';
                 }
-                /*when 'RejetBRED' {
-                     SM_Rejet.traiterFichier(currentId);  
-                }*/
                 when 'RejetBRED_Parser_STEP1' {
 					SM_Rejet.traiterFichier(currentId);  
                 }
                 when 'RejetBRED_Traiter_STEP2' {
                     SM_Rejet.getZSubRejetBredStep2(currentId);  
                 }
-                when 'GesteCommercial' {
-                    LCC006_GesteCommercial.executeGesteCommercial(currentId);
-					caseToUpdate.Status = 'Fermee';  
+                when 'GesteCommercial' {//DONE
+                	//creer doc
+                    LCC006_GesteCommercial.executeGesteCommercial(currentId, false);
+					//caseToUpdate.Status = 'Fermee';  
                 }
                 when 'DesactiverCarte' {
                     SM_Carte.desactivationFromCard(currentId, null);

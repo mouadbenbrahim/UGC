@@ -7,7 +7,7 @@ public with sharing class SM_Account {
     public static Account getAccount(Id accId){
 
         Account account = [
-                SELECT Id, Name, MauvaisComportement__c, ProduitUGC__c, CodePays__c
+                SELECT Id, Name, MauvaisComportement__c, ProduitUGC__c, CodePays__c, PersonContactId 
                 FROM Account
                 WHERE Id = :accId
         ];

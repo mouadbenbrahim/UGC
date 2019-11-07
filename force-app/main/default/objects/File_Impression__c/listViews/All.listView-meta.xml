@@ -11,12 +11,13 @@
     <columns>OBJECT_ID</columns>
     <columns>SDoc__c</columns>
     <columns>Statut__c</columns>
-    <columns>SubscriptionZID__c</columns>
+    <columns>SubscriptionZName__c</columns>
+    <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>CREATED_DATE</field>
-        <operation>greaterThan</operation>
-        <value>10/1/2019 12:00 AM</value>
+        <operation>greaterOrEqual</operation>
+        <value>11/5/2019 12:00 AM</value>
     </filters>
     <label>Tout</label>
 </ListView>

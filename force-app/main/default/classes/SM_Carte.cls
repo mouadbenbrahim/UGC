@@ -133,40 +133,42 @@ public with sharing class SM_Carte {
     
 
   //ok
-    public static map<Id, Boolean> desactivation(Id accountId, String code) {
+    public static List<Carte__c> desactivation(Id accountId, String code) {
         system.debug('##MNE SM_Carte desactivation accountId >> '+accountId);
         system.debug('##MNE SM_Carte desactivation code >> '+code);
         map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
+        list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
         
         if(accountId == null){
             system.debug('##MNE SM_Carte desactivation accountId empty');
-            return listResultByCarteId;
+            return listCarteToUpdate;
         }
         
         list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Active' AND Abonn__c = :accountId]);
         if(listCarte.size() == 0){
-            return listResultByCarteId;
+            return listCarteToUpdate;
         }
         
-        list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
+        
         for(Carte__c c : listCarte){
             try{
                 deactivateCard(c.Name, code);
                 c.Statut__c = 'Inactive';
                 listCarteToUpdate.add(c);
                 listResultByCarteId.put(c.Id, true);
+
             }catch(Exception e){
                 system.debug('##MNE SM_Carte desactivation exception >> '+e.getMessage());
                 listResultByCarteId.put(c.Id, false);
             }
         }
-
+/*
         if(listCarteToUpdate.size() > 0){
             update listCarteToUpdate;
         }
-        
+*/
         system.debug('##MNE SM_Carte desactivation END');
-        return listResultByCarteId;
+        return listCarteToUpdate;
     }    
     
 /////////////////////////////////////////////////////////////////
@@ -364,7 +366,7 @@ public with sharing class SM_Carte {
     
     
     
-    public static void processTriggerAfterInsert (List<Carte__c> listCartes)  { 
+    /*public static void processTriggerAfterInsert (List<Carte__c> listCartes)  { 
         createFileImpressionRecords (listCartes);
     }
     
@@ -378,15 +380,15 @@ public with sharing class SM_Carte {
         }
 
         list<File_Impression__c> listFileImpressionToIsert = new list<File_Impression__c>();
-        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c, DemandeClient__r.SubscriptionZID__c FROM Carte__c WHERE Id IN :setCarteId]);
+        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c, DemandeClient__r.SubscriptionZName__c FROM Carte__c WHERE Id IN :setCarteId]);
         
         for(Carte__c c : listCartes){
             File_Impression__c fi   = new File_Impression__c();
             if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.Subscription__c != null){
                 fi.Subscription__c    = mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
             }
-            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c != null){
-                fi.SubscriptionZID__c    = mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c;
+            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZName__c != null){
+                fi.SubscriptionZName__c    = mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZName__c;
             }
             
             //fi.Subscription__c      = c.Contrat__c;
@@ -403,7 +405,7 @@ public with sharing class SM_Carte {
             insert listFileImpressionToIsert;
         }
     }
-    
+    */
 
     
     private class MyException extends Exception {

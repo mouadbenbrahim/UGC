@@ -6,7 +6,7 @@ global class Schedule_SubscriptionTarifUpdate implements  Schedulable {
 
     global void execute(SchedulableContext SC) {
 
-        Batch_SubscriptionTarifUpdate batch = new Batch_SubscriptionTarifUpdate('FR',1);
+        Batch_SubscriptionTarifUpdate batch = new Batch_SubscriptionTarifUpdate('FR',1, null);
 
         database.executebatch(batch,2000);
     }

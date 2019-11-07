@@ -1,6 +1,6 @@
 trigger CaseBeforeUpdate on Case (before update) {
 
-	// ne pas decommenter cette ligne !!!
+    // ne pas decommenter cette ligne !!!
     //system.debug('--#### canTrigger AP02_CaseBeforeUpdate = '+PAD.canTrigger('AP02_CaseBeforeUpdate')+', Force By Pass = '+!PAD.ApexForcedBypass.contains('AP02_CaseBeforeUpdate')) ; 
 
     if (PAD.canTrigger('AP02_CaseBeforeUpdate') ) {

@@ -7,8 +7,12 @@ public without sharing class SM005_AnnulationDesabo {
     public static Case dem = new Case();
     public static Account acc = new Account();
     public static Zuora__Subscription__c sub = new Zuora__Subscription__c();
+    
+    public static ProcessLog__c pLog;
+    public static zc_GETSubscriptionTypeWithSuccess subZdoc;
+    public static zc_ProxyGetPaymentMethod pm;
 
-	public static void AnnulerDesabo(Id ddeId) {    	
+    public static void AnnulerDesabo(Id ddeId) {        
 
         WSZ.GenericEmptyFields subEmpty = new WSZ.GenericEmptyFields();
         subEmpty.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
@@ -17,15 +21,15 @@ public without sharing class SM005_AnnulationDesabo {
         //setDem(ddeId);
         dem = SM_Demande.getDemande(ddeId);
         acc = SM_Account.getAccount(dem.AccountId);
-
-        //recuperer la derniere souscription du compte        
-        List<Zuora__Subscription__c> lastSubscription = [Select Id, CancelCaseID__c from Zuora__Subscription__c where Zuora__Account__c =:acc.Id ORDER BY Zuora__OriginalCreated_Date__c DESC NULLS LAST LIMIT 1];
-        if (lastSubscription.size() == 0 ){
-            throw new RTException(RTExceptionCode.ERREUR_ANNUL_DESABO_AUCUN_CONTRAT_TROUVE);
-        }
-        sub = SM_Subscription.getSubscription(lastSubscription[0].Id);
+        
+        //sub = SM_Subscription.getSubscription(lastSubscription[0].Id);
+        sub = SM_Subscription.getActiveSubscriptionByNameORAccId(dem.SubscriptionZName__c, dem.AccountId);
         
         verifAnnulerDesabo();
+        
+        String recordTypeName = Schema.SObjectType.Opportunity.getRecordTypeInfosById().get(dem.RecordTypeId).getname();
+        String process = recordTypeName + '_AnnulerDesabo';
+        pLog = new ProcessLog__c(Process__c = process, Account__c = dem.AccountId, SubscriptionName__c = dem.SubscriptionZName__c, Case__c = ddeId);
         
 
         /** Annuler desabonnement */
@@ -51,23 +55,42 @@ public without sharing class SM005_AnnulationDesabo {
             WSZ.SubOut subOut = SM_Subscription.updateSub(sub.Zuora__PreviousSubscriptionId__c, subEmpty, zEntityId);            
 
         }
+        
+        //Debut call out pour ZDOC
+        String accessToken = WS001_CallZuora.access_token;
+        // Get Zuora Data (subscription)
+        subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+        // Get Zuora Data (Account)
+        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+        String payMethodId = zacc.defaultPaymentMethodId;
+        // Get Zuora Data (PaymentMethod)
+        pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+        //Fin call out pour ZDOC
+        
+        
 
         SM_Carte.activation(dem.AccountId);
 
-        /** cloture de la demande */        
-		dem.Status = 'Fermee';       
+        /** cloture de la demande */ 
+        Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+        dem.ZDocData__c = zDocId;       
+        dem.Status = 'Fermee';       
         update dem;
+        SM_SDoc.makeSdocJobs(new list<Case>{dem});
+            
 
 // ------
-       		
-    	
+            
+        
     }
     
     private static void verifAnnulerDesabo() {
 
         Date dateLatence;
 
-        // if(sub.CancelCaseID__c == null)
+        if (sub == null) {
+            throw new RTException(RTExceptionCode.ERREUR_ANNUL_DESABO_AUCUN_CONTRAT_TROUVE);
+        }
 
         if (dem.Status == SM_Demande.getStatus('Fermee')) {
             throw new MyException('Cette demande a deja ete traite');
@@ -78,15 +101,15 @@ public without sharing class SM005_AnnulationDesabo {
         }
         
         // if(sub.Zuora__PreviousSubscriptionId__c == sub.Zuora__Zuora_Id__c){
-        // 	throw new MyException('La souscription est l\'original, elle ne possède aucun desabonnement.');
+        //  throw new MyException('La souscription est l\'original, elle ne possède aucun desabonnement.');
         // }
         
         if(sub.Zuora__CustomerAccount__r.Zuora__Balance__c != 0){
-        	throw new MyException('La balance du compte zuora n\'est pas à 0');
+            throw new MyException('La balance du compte zuora n\'est pas à 0');
         }
         
         if(sub.Tech_AvecRembouesement__c == 'true'){
-        	throw new MyException('Cet amend est suivie par un besoins de remboursement ou de payment');
+            throw new MyException('Cet amend est suivie par un besoins de remboursement ou de payment');
         }
 
 
@@ -133,7 +156,7 @@ public without sharing class SM005_AnnulationDesabo {
         }        
     }
     
-	
+    
 
     
     private class MyException extends Exception {

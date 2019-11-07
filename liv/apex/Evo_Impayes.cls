@@ -17,6 +17,15 @@ String subZID = '8adc8f996df77509016df7fee48543df';
 WSZ.ImpayeOut imp = SM_Impaye.getImpaye(accountId,subZID);       
 System.debug('impaye: ' + JSON.Serialize(imp));
 
+try{
+WSZ.ImpayeOut imp = SM_Impaye.getImpaye('8adce4216d70ca8a016d8132476a1e02','8adcba9c6e017438016e03ae88d26a90');
+}
+catch(Exception e){
+
+}
+
+
+
 WSZ.ImpayeOut imp = SM_Impaye.getImpaye('8adce4216d70ca8a016d8132476a1e02','8adcba9c6e017438016e03ae88d26a90');       
 System.debug('impaye: ' + JSON.Serialize(imp));
 
@@ -170,8 +179,8 @@ System.debug('MBEN: object result: ' + JSON.deserializeStrict(body,test.class));
 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Offre commerciale'
-                AND DateDebut__c <= 2019-10-28 AND DateFin__c >= 2019-10-28
-                AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = 'UI1CDI')
+                AND DateDebut__c <= 2019-10-29 AND DateFin__c >= 2019-10-29
+                AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = 'UI1CDD')
                 AND Id IN (SELECT Offre__c FROM OffreLieu__c WHERE CodeComplexe2__c = 'WEB')
                 AND Operation__c includes ('Acquisition')
 
@@ -207,3 +216,8 @@ Integer validiteCoupon_AT = Integer.valueOf(Utils.getUgcGenericParam('Abo Tier C
 Id parentCouponID_AT = [Select Coupon__c from Offre__c where Name = :offreAboTier Limit 1].Coupon__c;
 String coupon_AT = SM_Coupon.generateCouponItem(parentCouponID_AT,null,dateCancelContrat,dateCancelContrat.addMonths(validiteCoupon_AT));
 
+ProcessLog__c pLog = new ProcessLog__c(Process__c = 'getImpaye', AccountZID__c = '123', SubscriptionZID__c = '526');
+insert pLog;
+
+ProcessLog__c pLog2 = new ProcessLog__c(Process__c = 'getImpaye', AccountZID__c = '123', SubscriptionZID__c = '526');
+insert pLog2;  

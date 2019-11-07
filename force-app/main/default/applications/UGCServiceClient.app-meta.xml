@@ -206,6 +206,7 @@
     <tabs>Zuora__ZInvoice__c</tabs>
     <tabs>BilendiAccounting__c</tabs>
     <tabs>Payment_Run_Calendar__c</tabs>
+    <tabs>ProcessLog__c</tabs>
     <workspaceConfig>
         <mappings>
             <tab>Abonnement__c</tab>
@@ -242,6 +243,9 @@
         </mappings>
         <mappings>
             <tab>Payment_Run_Calendar__c</tab>
+        </mappings>
+        <mappings>
+            <tab>ProcessLog__c</tab>
         </mappings>
         <mappings>
             <tab>ProdRatePlanCharge__c</tab>

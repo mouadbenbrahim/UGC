@@ -34,4 +34,5 @@
     <tabs>Zuora__ZInvoice__c</tabs>
     <tabs>BilendiAccounting__c</tabs>
     <tabs>Payment_Run_Calendar__c</tabs>
+    <tabs>ProcessLog__c</tabs>
 </CustomApplication>

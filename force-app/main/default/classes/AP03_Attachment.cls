@@ -40,7 +40,7 @@ public class AP03_Attachment {
             setCaseId.add(sDoc.SDOC__ObjectID18__c);
         }
 
-        map<Id, Case> mapCaseById = new map<Id, Case>([SELECT Id, AccountId, Subscription__c, SubscriptionZID__c FROM Case WHERE Id IN : setCaseId]);
+        map<Id, Case> mapCaseById = new map<Id, Case>([SELECT Id, AccountId, Subscription__c, SubscriptionZName__c FROM Case WHERE Id IN : setCaseId]);
         system.debug('##MNE AP03_Attachment createFileImpressionRecords mapCaseById >> '+mapCaseById);
 
         list<File_Impression__c> listFileImpressionToIsert = new list<File_Impression__c>();
@@ -54,7 +54,7 @@ public class AP03_Attachment {
                 Case caseTMP = mapCaseById.get(sDoc.SDOC__ObjectID18__c);
                 fi.Name                 = sDoc.SDOC__Attachment_Name__c;
                 fi.Subscription__c      = caseTMP.Subscription__c;
-                fi.SubscriptionZID__c   = caseTMP.SubscriptionZID__c;
+                fi.SubscriptionZName__c   = caseTMP.SubscriptionZName__c;
                 fi.Account__c           = caseTMP.AccountId;
                 //fi.Attachment_Id__c     = sDoc.SDOC__Attachment_ID__c;
                 fi.Attachment_Id__c     = mapAttachmentBySDocId.get(sDoc.Id).Id;
