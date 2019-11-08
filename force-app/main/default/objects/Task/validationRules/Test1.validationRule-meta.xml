@@ -3,7 +3,11 @@
     <fullName>Test1</fullName>
     <active>false</active>
     <description>Test MAD</description>
-    <errorConditionFormula>AND(ISPICKVAL( Origine__c ,&quot;Appel sortant&quot;) ,  ActivityDate &gt; Today())</errorConditionFormula>
+    <errorConditionFormula>AND(
+NOT($User.ByPassValidationRule__c),
+ISPICKVAL( Origine__c ,&quot;Appel sortant&quot;) ,  
+ActivityDate &gt; Today()
+)</errorConditionFormula>
     <errorDisplayField>ActivityDate</errorDisplayField>
     <errorMessage>La date ne peut pas être supérieure à la date d&#39;aujourd&#39;hui</errorMessage>
 </ValidationRule>

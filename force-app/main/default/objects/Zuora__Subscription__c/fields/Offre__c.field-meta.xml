@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Offre__c</fullName>
     <externalId>false</externalId>
-    <formula>LEFT(TEXT( CodeOffrePrincipale__c ),3)</formula>
+    <formula>IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UI1CDD&#39;),&#39;UI1&#39;, IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UI1CDI&#39;),&#39;UI1&#39;,IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UI2CDD&#39;),&#39;UI2&#39;,IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UI2CDI&#39;),&#39;UI2&#39;,IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UI3CDD&#39;), &#39;UI3&#39;,IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UI3CDI&#39;),&#39;UI3&#39;,IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UUCDI&#39;),&#39;UU&#39;,IF(ISPICKVAL(CodeOffrePrincipale__c, &#39;UUCDD&#39;), &#39;UU&#39;,&#39;null&#39;))))))))</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Offre</label>
     <required>false</required>

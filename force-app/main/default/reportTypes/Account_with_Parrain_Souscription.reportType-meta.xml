@@ -1926,11 +1926,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>lien_porteur_payeur__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>TECH_AnonymizedName__c</field>
             <table>Account</table>
         </columns>
@@ -3854,11 +3849,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>lien_porteur_payeur__c</field>
-            <table>Account.comptes_parraines__r</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>TECH_AnonymizedName__c</field>
             <table>Account.comptes_parraines__r</table>
         </columns>
@@ -4128,11 +4118,6 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>Marche__c</field>
-            <table>Account.comptes_parraines__r.Zuora__Subscriptions__r</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Lieu__c</field>
             <table>Account.comptes_parraines__r.Zuora__Subscriptions__r</table>
         </columns>
         <masterLabel>Subscriptions</masterLabel>

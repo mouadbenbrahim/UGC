@@ -278,11 +278,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Lieu__c</field>
-            <table>Zuora__Subscription__c</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>TECH_Pays__c</field>
             <table>Zuora__Subscription__c</table>
         </columns>

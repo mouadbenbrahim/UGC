@@ -1475,11 +1475,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>SubscriptionZID__c</field>
-            <table>User.Case$CreatedById</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>R_dition_Gratuite__c</field>
             <table>User.Case$CreatedById</table>
         </columns>

@@ -281,11 +281,6 @@
             <field>Marche__c</field>
             <table>Zuora__Subscription__c</table>
         </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Lieu__c</field>
-            <table>Zuora__Subscription__c</table>
-        </columns>
         <masterLabel>Subscriptions</masterLabel>
     </sections>
     <sections>
@@ -297,11 +292,6 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>CodeFinContrat__c_hst</field>
-            <table>Zuora__Subscription__c.Zuora__Subscription__c_hd</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Lieu__c_hst</field>
             <table>Zuora__Subscription__c.Zuora__Subscription__c_hd</table>
         </columns>
         <columns>

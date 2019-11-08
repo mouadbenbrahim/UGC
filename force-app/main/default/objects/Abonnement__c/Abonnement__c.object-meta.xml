@@ -161,7 +161,9 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Abonnements</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchResultsAdditionalFields>CompteClient__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

@@ -1,12 +1,12 @@
 public without sharing class LCC002_BandeauField {
     
     public static final List<String> fieldsForQuerryAccount = new List<String> {
-        'lien_porteur_payeur__c',
         'Note_Client__c',
         'ScoreAntichurn__c'
     };
     
     public static final List<String> fieldsForQuerrySubscription = new List<String> {
+        'lien_porteur_payeur__c',//
         'CodeOffrePrincipale__c',//
         'Zuora__Status__c',//
         'Date_de_debut_de_contrat__c',//
@@ -28,7 +28,7 @@ public without sharing class LCC002_BandeauField {
     /*public static final List<String> fieldsForQuerryCase = new List<String> {
         'AccountId',
         'Subscription__c',
-        'SubscriptionZID__c'
+        'SubscriptionZName__c'
     };*/
     
     

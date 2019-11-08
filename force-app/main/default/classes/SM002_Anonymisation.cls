@@ -3,6 +3,9 @@ public without sharing class SM002_Anonymisation{
    public enum AnonymisationType {ALL, ONLY_ZUORA}
     
     public static String endpoint = '/v1/action/update';
+    public static ProcessLog__c pLog;
+    public static zc_GETSubscriptionTypeWithSuccess subZdoc;
+    public static zc_ProxyGetPaymentMethod pm;
     
     public static LCC003_Dispatcher.MSGRep accountAnonymisationFromQuickAction(String caseId, AnonymisationType AT){
         
@@ -13,14 +16,39 @@ public without sharing class SM002_Anonymisation{
             rep.isWarning           = true;
             return rep;
         }
-        Case c = [SELECT Id, AccountId, Account.Tech_IdMonCompte__c FROM Case WHERE Id =:caseId].get(0);
+        //Case c = [SELECT Id, AccountId, Account.Tech_IdMonCompte__c FROM Case WHERE Id =:caseId].get(0);
+        Case c = SM_Demande.getDemande(caseId);
         Id accId = c.AccountId;
         Account acc = new Account(Id = accId);
         acc.Tech_IdMonCompte__c = c.Account.Tech_IdMonCompte__c;
         list<Account> listAccs = new list<Account>();
         listAccs.add(acc);
         
+        /*pLog = new ProcessLog__c(Process__c = 'Anonymisation', Account__c = dem.AccountId, SubscriptionName__c = dem.SubscriptionZName__c, Case__c = caseId);
+        
+        Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
+        if (sub == null) {
+            throw new RTException(RTExceptionCode.ERREUR_DESABO_CONTRAT_ABSENT_DDE,pLog);
+        }
+        
+        //Debut call out pour ZDOC
+        String accessToken = WS001_CallZuora.access_token;
+        // Get Zuora Data (subscription)
+        subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+        // Get Zuora Data (Account)
+        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+        String payMethodId = zacc.defaultPaymentMethodId;
+        // Get Zuora Data (PaymentMethod)
+        pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+        //Fin call out pour ZDOC*/
+        
         accountAnonymisation(listAccs, AT);
+        
+        Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+		c.ZDocData__c = zDocId;
+		c.Status = 'Fermee';
+    	update c;
+    	SM_SDoc.makeSdocJobs(new list<Case>{c});
         
         return rep;
     }
@@ -52,7 +80,7 @@ public without sharing class SM002_Anonymisation{
                     setContactZId.add(zAcc.Zuora__SoldToId__c);
                 }
                 if(codePays == null && String.isNotBlank(zAcc.Zuora__Account__r.CodePays__c)){
-                	codePays = zAcc.Zuora__Account__r.CodePays__c;
+                    codePays = zAcc.Zuora__Account__r.CodePays__c;
                 }
             }
         }
@@ -90,13 +118,13 @@ public without sharing class SM002_Anonymisation{
             
             //Anonymisation in RCU
             for(Account accTMP : accounts){
-            	if(String.isNotBlank(accTMP.Tech_IdMonCompte__c)){
-            		sendAnonymisationSFDC(accTMP.Tech_IdMonCompte__c);
-            	}
+                if(String.isNotBlank(accTMP.Tech_IdMonCompte__c)){
+                    sendAnonymisationSFDC(accTMP.Tech_IdMonCompte__c);
+                }
             }
             
         } else if (AT == AnonymisationType.ONLY_ZUORA){
-            List<Case> cases = new List<Case>([SELECT Id FROM Case WHERE AccountId IN :accId AND Subscription__c != null]);
+            List<Case> cases = new List<Case>([SELECT Id FROM Case WHERE AccountId IN :accId AND SubscriptionZName__c != null]); 
             if(cases.size() > 0){
                 delete cases;
             }
@@ -191,11 +219,11 @@ public without sharing class SM002_Anonymisation{
     }
     
     
-	public static String sendAnonymisationSFDC (String RCUId){
-		system.debug('##MNE SM002_Anonymisation sendAnonymisationSFDC RCUId >> '+RCUId);
-		
-		String endpoint = '/AnonymesEndormis/PostCompte';
-		AnonymesObj anonymesObjTMP = new AnonymesObj(RCUId);
+    public static String sendAnonymisationSFDC (String RCUId){
+        system.debug('##MNE SM002_Anonymisation sendAnonymisationSFDC RCUId >> '+RCUId);
+        
+        String endpoint = '/AnonymesEndormis/PostCompte';
+        AnonymesObj anonymesObjTMP = new AnonymesObj(RCUId);
         String inBody = JSON.serialize(anonymesObjTMP);
         
         system.debug('##MNE SM002_Anonymisation sendAnonymisationSFDC inBody >> '+inBody);
@@ -316,17 +344,17 @@ public without sharing class SM002_Anonymisation{
     }
     
     public class AnonymesObj {
-		public String Pays;
-		public String CompteID;
-		public String Statut;
-		public String DateChangementStatut;
-		
-		public AnonymesObj (String CompteID){
-			Pays = '033';
-			this.CompteID = CompteID;
-			Statut = 'anonyme';
-			DateChangementStatut = String.valueOf(Date.today());
-		}
+        public String Pays;
+        public String CompteID;
+        public String Statut;
+        public String DateChangementStatut;
+        
+        public AnonymesObj (String CompteID){
+            Pays = '033';
+            this.CompteID = CompteID;
+            Statut = 'anonyme';
+            DateChangementStatut = String.valueOf(Date.today());
+        }
     }
     
 }

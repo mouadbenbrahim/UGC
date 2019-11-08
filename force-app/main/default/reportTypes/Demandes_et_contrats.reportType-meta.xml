@@ -280,11 +280,6 @@
             <field>Marche__c</field>
             <table>Zuora__Subscription__c</table>
         </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Lieu__c</field>
-            <table>Zuora__Subscription__c</table>
-        </columns>
         <masterLabel>Subscriptions</masterLabel>
     </sections>
     <sections>
@@ -1316,11 +1311,6 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>MontantRemboursementCalc__c</field>
-            <table>Zuora__Subscription__c.Cases__r</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>SubscriptionZID__c</field>
             <table>Zuora__Subscription__c.Cases__r</table>
         </columns>
         <columns>

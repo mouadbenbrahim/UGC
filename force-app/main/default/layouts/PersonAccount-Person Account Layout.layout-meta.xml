@@ -20,6 +20,9 @@
         </primaryTabComponents>
     </customConsoleComponents>
     <excludeButtons>ChangeRecordType</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>EnableCustomerPortalUser</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -76,10 +79,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CodeFinContrat__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>lien_porteur_payeur__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -538,6 +537,10 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>File_Impression__c.Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>ProcessLog__c.Account__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
