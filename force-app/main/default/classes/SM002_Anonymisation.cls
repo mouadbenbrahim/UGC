@@ -24,6 +24,12 @@ public without sharing class SM002_Anonymisation{
         list<Account> listAccs = new list<Account>();
         listAccs.add(acc);
         
+        Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
+        Date d1 = Date.today();
+        if (sub != null && (sub.Zuora__SubscriptionEndDate__c > d1 || sub.Zuora__SubscriptionEndDate__c == null) || (sub.DateFinContrat__c != null && sub.DateFinContrat__c > d1) ) {
+            throw new RTException('Anonymisation impossible, la subscription est avtif');
+        }
+        
         /*pLog = new ProcessLog__c(Process__c = 'Anonymisation', Account__c = dem.AccountId, SubscriptionName__c = dem.SubscriptionZName__c, Case__c = caseId);
         
         Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
@@ -44,7 +50,7 @@ public without sharing class SM002_Anonymisation{
         
         accountAnonymisation(listAccs, AT);
         
-        Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+        Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm,'ACC' => acc});
 		c.ZDocData__c = zDocId;
 		c.Status = 'Fermee';
     	update c;

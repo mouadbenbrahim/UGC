@@ -156,7 +156,7 @@
     <gender>Masculine</gender>
     <label>ProcessLog</label>
     <nameField>
-        <displayFormat>{YYYY}{MM}[DD}-{0}</displayFormat>
+        <displayFormat>{YYYY}{MM}{DD}-{0000000}</displayFormat>
         <label>Name</label>
         <type>AutoNumber</type>
     </nameField>

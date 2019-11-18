@@ -21,7 +21,7 @@ public with sharing class RTException extends Exception {
         
         // Insert processLog
         pLog.Code__c = e.code;
-        pLog.Message__c=msg;
+        pLog.Message__c = msg + pLog.Message__c;
         insert pLog;
     }
 

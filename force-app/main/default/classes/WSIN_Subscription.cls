@@ -15,16 +15,16 @@ global with sharing class WSIN_Subscription {
                 acquisition(req,res);
             }
             when 'renouvellement'{
-                //reglerImpaye(req,res);
+                renouvellement(req,res);
             }
             when 'migration'{
-                //reglerImpaye(req,res);
+                migration(req,res);
             }
             when 'changebanque'{
-                //reglerImpaye(req,res);
+                changebanque(req,res);
             }
             when 'reedition'{
-                //reglerImpaye(req,res);
+                reedition(req,res);
             }                          
             when else{
                 wsOut.success = false;
@@ -55,6 +55,9 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = wsIn.accountId, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            insert pLog;
         } finally {
             //return wsOut;
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
@@ -81,6 +84,9 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'renouvellement', Account__c = wsIn.accountId, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            insert pLog;            
         } finally {
             //return wsOut;
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
@@ -107,6 +113,9 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'migration', Account__c = wsIn.accountId, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            insert pLog;
         } finally {
             //return wsOut;
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
@@ -133,6 +142,9 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'changebanque', Account__c = wsIn.accountId, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            insert pLog;            
         } finally {
             //return wsOut;
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
@@ -159,6 +171,9 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'reedition', Account__c = wsIn.accountId, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            insert pLog;             
         } finally {
             //return wsOut;
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));

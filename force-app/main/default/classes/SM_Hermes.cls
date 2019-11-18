@@ -5,8 +5,9 @@ public with sharing class SM_Hermes {
 
     public static WSZ.SubHermesOut acquisition(WSZ.SubHermesIn hermesIn){
         
+        String hermesInStr = JSON.serialize(hermesIn);
         Account acc = SM_Account.getAccount(hermesIn.accountId);
-        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID);
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
 
         // Zuora token
         String accessToken = WS001_CallZuora.access_token;
@@ -23,7 +24,7 @@ public with sharing class SM_Hermes {
         zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
 
         // insert zdocdata subscription
-        Id zDocId = addZdocData(sub,pm);
+        Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
 
         // insert case
         String sousMotif = lieuToSousMotif(hermesIn.lieu);
@@ -49,9 +50,10 @@ public with sharing class SM_Hermes {
 
 public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         
+        String hermesInStr = JSON.serialize(hermesIn);
         Date dateFinContrat = Date.valueOf(hermesIn.dateFinContrat);
         Account acc = SM_Account.getAccount(hermesIn.accountId);
-        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID);
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
 
         // Zuora token
         String accessToken = WS001_CallZuora.access_token;
@@ -68,7 +70,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
 
         // insert zdocdata subscription
-        Id zDocId = addZdocData(sub,pm);
+        Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
 
         // Insert case
         String sousMotif = lieuToSousMotif(hermesIn.lieu);
@@ -108,8 +110,9 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
     public static WSZ.SubHermesOut reedition(WSZ.SubHermesIn hermesIn){
         
+        String hermesInStr = JSON.serialize(hermesIn);
         Account acc = SM_Account.getAccount(hermesIn.accountId);
-        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID);
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
 
         // Zuora token
         String accessToken = WS001_CallZuora.access_token;
@@ -126,7 +129,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
 
         // insert zdocdata subscription
-        Id zDocId = addZdocData(sub,pm);
+        Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
 
         // insert case
         String sousMotif = lieuToSousMotif(hermesIn.lieu);
@@ -155,8 +158,9 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
     public static WSZ.SubHermesOut renouvellement(WSZ.SubHermesIn hermesIn){
         
+        String hermesInStr = JSON.serialize(hermesIn);
         Account acc = SM_Account.getAccount(hermesIn.accountId);
-        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID);
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
 
         // Zuora token
         String accessToken = WS001_CallZuora.access_token;
@@ -173,7 +177,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
 
         // insert zdocdata subscription
-        Id zDocId = addZdocData(sub,pm);
+        Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
 
         // insert case
         String sousMotif = lieuToSousMotif(hermesIn.lieu);
@@ -195,8 +199,9 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
     public static WSZ.SubHermesOut changebanque(WSZ.SubHermesIn hermesIn){
         
+        String hermesInStr = JSON.serialize(hermesIn);
         Account acc = SM_Account.getAccount(hermesIn.accountId);
-            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID);    
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
 
         // Zuora token
         String accessToken = WS001_CallZuora.access_token;
@@ -213,7 +218,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
 
         // insert zdocdata subscription
-        Id zDocId = addZdocData(sub,pm);
+        Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
 
         // insert case
         String sousMotif = lieuToSousMotif(hermesIn.lieu);
@@ -250,7 +255,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         c.CreditMemoId__c = creditMemoId;
         if (dateFinContrat != null ) {c.DateFinContrat__c = Date.valueOf(dateFinContrat);}        
         c.ZDocData__c = zDocId;
-        //c.ContactId = personContactId;
+        c.ContactId = personContactId;
         c.SubscriptionZName__c = subscriptionName;
         insert c;
         return c;
@@ -271,34 +276,52 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         return sousMotif;
     }
 
-    public static Id addZdocData(zc_GETSubscriptionTypeWithSuccess sub, zc_ProxyGetPaymentMethod pm){
-        
+    //public static Id addZdocData(zc_GETSubscriptionTypeWithSuccess sub, zc_ProxyGetPaymentMethod pm){
+    public static Id addZdocData(Map<String,Object> zdd){
+
+        zc_GETSubscriptionTypeWithSuccess zsub;
+        zc_ProxyGetPaymentMethod zpm;
+        Account acc;
         ZDocData__c zDoc = new ZDocData__c();
-        //TODO zDoc.Account__c = ;
-        zDoc.AutoRenew__c = sub.autoRenew;
-        zDoc.BankTransferAccountNumber__c = pm.bankTransferAccountNumber;
-        zDoc.CancelledDate__c = (sub.status=='Cancelled')?sub.termEndDate:null;
-        zDoc.Cinema__r = new Complexe__c(CodeComplexe__c = sub.Lieu); //update the lookup
-        zDoc.CodeFinContrat__c = sub.CodeFinContrat;
-        zDoc.CodeOffrePrincipale__c = sub.CodeOffrePrincipale;
-        zDoc.CodePromo__c = sub.CodePromo;
-        zDoc.ContractEffectiveDate__c = sub.contractEffectiveDate;
-        zDoc.CurrentTerm__c = String.valueOf(sub.currentTerm);
-        zDoc.CurrentTermPeriodType__c = sub.currentTermPeriodType;
-        zDoc.DateFinContrat__c = sub.DateFinContrat;
-        zDoc.Lieu__c = sub.Lieu;
-        zDoc.MandateID__c = pm.mandateID;
-        zDoc.Marche__c = sub.Marche;
-        zDoc.Methodedepaiement__c = sub.MethodePaiement;
-        zDoc.ModeLivraison__c = sub.ModeLivraison;
-        // zDoc.Name = // TODO : par default Id
-        zDoc.PayeurCRMID__c = sub.PayeurCRMID;
-        zDoc.Payeur__c = sub.PayeurCRMID;
-        zDoc.Source__c = sub.Source;
-        zDoc.Status__c = sub.status;
-        zDoc.Subscriptionname__c = sub.subscriptionNumber;
-        zDoc.TermEndDate__c = sub.termEndDate;
-        zDoc.TypeContrat__c = sub.TypeContrat;
+
+        if(zdd.containsKey('ZSUB')){
+            zsub = (zc_GETSubscriptionTypeWithSuccess)zdd.get('ZSUB');
+            zDoc.AutoRenew__c = zsub.autoRenew;
+            zDoc.CancelledDate__c = (zsub.status=='Cancelled')?zsub.termEndDate:null;
+            zDoc.Cinema__r = new Complexe__c(CodeComplexe__c = zsub.Lieu); //update the lookup
+            zDoc.CodeFinContrat__c = zsub.CodeFinContrat;
+            zDoc.CodeOffrePrincipale__c = zsub.CodeOffrePrincipale;
+            zDoc.CodePromo__c = zsub.CodePromo;
+            zDoc.ContractEffectiveDate__c = zsub.contractEffectiveDate;
+            zDoc.CurrentTerm__c = String.valueOf(zsub.currentTerm);
+            zDoc.CurrentTermPeriodType__c = zsub.currentTermPeriodType;
+            zDoc.DateFinContrat__c = zsub.DateFinContrat;
+            zDoc.Lieu__c = zsub.Lieu;
+            zDoc.Marche__c = zsub.Marche;
+            zDoc.Methodedepaiement__c = zsub.MethodePaiement;
+            zDoc.ModeLivraison__c = zsub.ModeLivraison;
+            // zDoc.Name = // TODO : par default Id
+            zDoc.PayeurCRMID__c = zsub.PayeurCRMID;
+            zDoc.Payeur__c = zsub.PayeurCRMID;
+            zDoc.Source__c = zsub.Source;
+            zDoc.Status__c = zsub.status;
+            zDoc.Subscriptionname__c = zsub.subscriptionNumber;
+            zDoc.TermEndDate__c = zsub.termEndDate;
+            zDoc.TypeContrat__c = zsub.TypeContrat;            
+        }
+
+        if(zdd.containsKey('ZPM')){
+            zpm = (zc_ProxyGetPaymentMethod)zdd.get('ZPM');
+            zDoc.BankTransferAccountNumber__c = zpm.bankTransferAccountNumber;
+            zDoc.MandateID__c = zpm.mandateID;
+            
+        }
+
+        if(zdd.containsKey('ACC')){
+            acc = (Account)zdd.get('ACC');
+            zDoc.Account__c = acc.Id;            
+        }
+
         insert zDoc;
         return zDoc.Id;
 

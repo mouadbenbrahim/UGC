@@ -14,8 +14,8 @@ public without sharing class SM005_AnnulationDesabo {
 
     public static void AnnulerDesabo(Id ddeId) {        
 
-        WSZ.GenericEmptyFields subEmpty = new WSZ.GenericEmptyFields();
-        subEmpty.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
+        //WSZ.GenericEmptyFields subEmpty = new WSZ.GenericEmptyFields();
+        //subEmpty.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
 
         /** Initialisation du contexte: dem: (demande), Account */
         //setDem(ddeId);
@@ -34,30 +34,37 @@ public without sharing class SM005_AnnulationDesabo {
 
         /** Annuler desabonnement */
         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
+        zc_ProxyActionupdateRequest reqObj = new zc_ProxyActionupdateRequest();
+        zc_ZObjectUpdate zObj = new zc_ZObjectUpdate();
+        reqObj.r_type = 'Subscription';
+        reqObj.objects.add(zObj);
+        String accessToken = WS001_CallZuora.access_token;
 
-        if (sub.Zuora__Status__c == 'Active') { //contrat en desabo futur            
-            WSZ.SubOut subOut = SM_Subscription.updateSub(sub.Zuora__Zuora_Id__c, subEmpty, zEntityId);  
-        }else {   // contract cancelled                 
 
-            //suppression de l'amend cancel
-            WSZ.AmendOut rep = SM_Amendment.getAmendment(sub.Zuora__Zuora_Id__c, zEntityId);
-            if (rep.typeX != 'Cancellation') {
-                throw new MyException('Le dernier Amend n\'est pas un Amend de type Cancellation');
+        if (sub.Zuora__Status__c == 'Active') { //contrat en desabo futur
+
+            zObj.id = sub.Zuora__Zuora_Id__c;
+            if (sub.TypeContrat__c == 'CDD'){ 
+                zObj.fieldsToNull = new List<String>{'CodeFinContrat__c','CancelCaseID__c'};
+                zObj.dateFinContrat = sub.Zuora__SubscriptionEndDate__c.addDays(-1); //remettre la date fin standard du CDD
+            }else { //CDI
+                zObj.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
             }
-            if (rep.status != 'Completed') {
-                throw new MyException('Le dernier Amend n\'est pas Completed');
-            }
+            
+            zc_ProxySaveResult resObj1 = zc_Api.actionUpdatePOST(accessToken, zEntityId, reqObj, RTExceptionCode.ERREUR_ANNUL_DESABO_UPDATE_SUB, pLog);
 
-            list<String> listAmendId = new list<String>();
-            listAmendId.add(rep.id);
-            list<WSZ.DeleteOut> deleteRep =  SM_Subscription.deleteZObject(listAmendId, 'Amendment', zEntityId);
+        }else {   // contract cancelled (que les CDIs)                
+            // Suppression de la derniere subscription
+            zc_SaveResult resObj2 = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ANNUL_DESABO_DELETE_SUB, pLog);
 
-            WSZ.SubOut subOut = SM_Subscription.updateSub(sub.Zuora__PreviousSubscriptionId__c, subEmpty, zEntityId);            
-
+            // mise a jour subscription
+            zObj.id = sub.Zuora__PreviousSubscriptionId__c;
+            zObj.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
+            zc_ProxySaveResult resObj3 = zc_Api.actionUpdatePOST(accessToken, zEntityId, reqObj, RTExceptionCode.ERREUR_ANNUL_DESABO_UPDATE_SUB2, pLog);
         }
         
         //Debut call out pour ZDOC
-        String accessToken = WS001_CallZuora.access_token;
+        
         // Get Zuora Data (subscription)
         subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
         // Get Zuora Data (Account)
@@ -66,21 +73,15 @@ public without sharing class SM005_AnnulationDesabo {
         // Get Zuora Data (PaymentMethod)
         pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
         //Fin call out pour ZDOC
-        
-        
 
         SM_Carte.activation(dem.AccountId);
 
         /** cloture de la demande */ 
-        Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+        Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm,'ACC' => acc});
         dem.ZDocData__c = zDocId;       
         dem.Status = 'Fermee';       
         update dem;
         SM_SDoc.makeSdocJobs(new list<Case>{dem});
-            
-
-// ------
-            
         
     }
     

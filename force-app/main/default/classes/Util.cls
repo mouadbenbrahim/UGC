@@ -196,6 +196,15 @@ public with sharing class Util {
         
     }
 
+    public static Set<String> mapValToSet(Map<Id,String> mapIn){
+
+        Set<String> r = new Set<String>();
+        for (String key : mapIn.keySet()) {
+            r.add(mapIn.get(key));
+        }
+        return r;
+    }
+
     // public static void pLog(WSZ.ProcessLog pLog){
     //     ProcessLog__c pLog = new ProcessLog__c();
     //     pLog.Process__c = process;

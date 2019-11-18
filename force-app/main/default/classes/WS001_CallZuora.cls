@@ -342,12 +342,16 @@ public static Map<String,Object> sendRequest3(String access_token, String endpoi
         HttpResponse res = null;
         res = h.send(req);
         bodyOutS = res.getBody();
+        Integer httpCode = res.getStatusCode();
+
         
         system.debug('##MBEN responseValue >> '+bodyOutS);
 
         Boolean isErrorClass = false;
         String respErrorClassName;
         Object respErrorObject;
+
+     
 
         if (respErrorType != null){
             respErrorClassName = respErrorType.getName();
@@ -356,6 +360,7 @@ public static Map<String,Object> sendRequest3(String access_token, String endpoi
         String respClassName = respType.getName();        
         Object respObject = respType.newInstance();
 
+        
         try {
             if(respErrorType != null){
                 respErrorObject = JSON.deserializeStrict(bodyOutS, respErrorType);
@@ -367,9 +372,13 @@ public static Map<String,Object> sendRequest3(String access_token, String endpoi
             isErrorClass = false;    
         }
 
-        if (isErrorClass){
+        returnMap.put('RESP_BODY', bodyOutS);
+
+        if (httpCode != 200){
+            returnMap.put('ERROR_HTTP', bodyOutS); //string
+        }else if (isErrorClass){
             returnMap.put('ERROR_OBJECT', respErrorObject);
-            returnMap.put('ERROR_BODY', bodyOutS);
+            //returnMap.put('ERROR_BODY', bodyOutS);
         }else{
             ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
             if (respClassName == 'zc_ProxySaveResult'){ // cas specifique zc_ProxySaveResult class.
@@ -379,7 +388,7 @@ public static Map<String,Object> sendRequest3(String access_token, String endpoi
 
             respObject = JSON.deserialize(repWS, respType);
             returnMap.put('RESP_OBJECT', respObject);
-            returnMap.put('RESP_BODY', bodyOutS);                        
+            //returnMap.put('RESP_BODY', bodyOutS);                        
         }
    
         return returnMap;

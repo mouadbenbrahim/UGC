@@ -49,7 +49,13 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_DESABO_CDD_IMPOSSIBLE = new RTExceptionCode('Pas possible de desabonner un contrat CDD, le contrat sera automatique désabonné à la date de fin de contrat', 2013);
     public static final RTExceptionCode ERREUR_DESABO_SANSCASE_NONACTIF = new RTExceptionCode('Contrat Bilendi: L abonnement n est pas actif', 2014);
     public static final RTExceptionCode ERREUR_DESABO_SANSCASE_IMPOSSIBLE = new RTExceptionCode('Contrat Bilendi : desabonnement non possible pour les CDD', 2015);
-    public static final RTExceptionCode ERREUR_DESABO_BATCH_NON_CONFORME = new RTExceptionCode('La souscription non conforme: CDI: non bilendi, sans case', 2016);    
+    public static final RTExceptionCode ERREUR_DESABO_BATCH_NON_CONFORME = new RTExceptionCode('La souscription non conforme: CDI: non bilendi, sans case', 2016);
+    public static final RTExceptionCode ERREUR_DESABO_APPLICATION_CANCEL1 = new RTExceptionCode('problem cancel de la souscription', 2017);
+    public static final RTExceptionCode ERREUR_DESABO_APPLICATION_CANCEL2 = new RTExceptionCode('problem cancel de la souscription', 2018);
+    public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2019);
+    public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB2 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2020);
+    public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB3 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2021);
+    
     
 
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CONTRAT_DEJA_ACTIF = new RTExceptionCode('Annulation desabo impossible: le contrat est deja actif', 2101);
@@ -58,6 +64,9 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_DATEFINCONTRAT_VIDE = new RTExceptionCode('Erreur Annulation desabo: la date fin contrat est vide', 2104);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_STATUT_CONTRAT_NON_VALIDE = new RTExceptionCode('Erreur Annulation desabo: le statut du contrat est non valide', 2105);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CDD_DEJA_INACTIF = new RTExceptionCode('Erreur Annulation desabo: ce CDD est deja inactif', 2106);
+    public static final RTExceptionCode ERREUR_ANNUL_DESABO_UPDATE_SUB = new RTExceptionCode('Erreur Annulation desabo: pb mise jour contrat', 2107);
+    public static final RTExceptionCode ERREUR_ANNUL_DESABO_UPDATE_SUB2 = new RTExceptionCode('Erreur Annulation desabo: pb mise jour contrat', 2108);    
+    public static final RTExceptionCode ERREUR_ANNUL_DESABO_DELETE_SUB = new RTExceptionCode('Erreur Annulation desabo: pb suppression du cancel', 2109);        
 
     
     public static final RTExceptionCode ERREUR_IMPAYE_GET_SOUSCRITPION_NON_TROUVE = new RTExceptionCode('Erreur Affichage impaye: Contrat absent', 3101);
@@ -79,6 +88,9 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_SUBSCRIPTION = new RTExceptionCode('Erreur Reglement impaye: probleme mise a jour contrat', 3213);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_INCOHERENCE_DATEFIN = new RTExceptionCode('Erreur Reglement impaye: probleme incoherence dans la date fin du contrat', 3214);
     public static final RTExceptionCode ERREUR_IMPAYE_REGLER_APPLICATION_BILL_DNE = new RTExceptionCode('Erreur Reglement impaye: probleme billing de la dette non echue', 3215);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_APPLICATION_CANCEL = new RTExceptionCode('Erreur Reglement impaye: probleme billing de la dette non echue', 3216);
+    public static final RTExceptionCode ERREUR_IMPAYE_REGLER_UPDATE_INVOICE2 = new RTExceptionCode('Erreur Reglement impaye: probleme maj invoice: aucune facture trouve avec une compteur rejet', 3217);    
+    
 
     public static final RTExceptionCode ERREUR_ACQUISIT_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Acquisition : probleme get subscription zuora', 4101);
     public static final RTExceptionCode ERREUR_ACQUISIT_GET_ACCOUNT = new RTExceptionCode('Erreur Acquisition : probleme get account zuora', 4102);

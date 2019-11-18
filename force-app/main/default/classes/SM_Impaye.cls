@@ -109,8 +109,9 @@ public without sharing class SM_Impaye {
         String currentSubId = subZID;
         String accessToken = WS001_CallZuora.access_token;
         
+        String impayeRegInStr = JSON.serialize(impayeRegIn);
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'reglerImpaye', AccountZID__c = accountID, SubscriptionZID__c = subZID, Message__c = impayeRegInStr);
         
-        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'reglerImpaye', AccountZID__c = accountID, SubscriptionZID__c = subZID);
         
         Zuora__Subscription__c sub = SM_Subscription.getSubscriptionByZID(subZID);
         if (sub == null ) {
@@ -163,10 +164,8 @@ public without sharing class SM_Impaye {
 
         // Reactivation du subsctription si est cancelled (pour pouvoir ajouter la charge des FG)
         if (sub.Zuora__Status__c == 'Cancelled'){            
-            WSZ.SubOut res = SM_Subscription.deleteSub(subZID, zEntityId);
-            if (res.Success == false){
-                throw new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_DELETE_SUB,pLog);
-            }
+
+            zc_SaveResult res = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, subZID, RTExceptionCode.ERREUR_IMPAYE_REGLER_DELETE_SUB, pLog);
             subActivated = true;
             currentSubId = sub.Zuora__PreviousSubscriptionId__c;
         }
@@ -335,7 +334,13 @@ public without sharing class SM_Impaye {
         if (subActivated) { //contrat initial au status Cancel
             if (targetDate != null && Date.today() >= targetDate ){
                 //Cancel Contract
-                WSZ.SubCancelOut rCancel = SM_Subscription.cancelSub(Util.zDate(sub.Zuora__CancelledDate__c), 'SpecificDate', currentSubId, false, Util.zDate(sub.Zuora__CancelledDate__c), zEntityId);
+                zc_POSTSubscriptionCancellationType reqObj = new zc_POSTSubscriptionCancellationType();
+                reqObj.cancellationEffectiveDate = sub.Zuora__CancelledDate__c;
+                reqObj.targetDate = sub.Zuora__CancelledDate__c; 
+                reqObj.runBilling = false; 
+                reqObj.cancellationPolicy = 'SpecificDate'; 
+                zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_CANCEL, pLog);
+                //WSZ.SubCancelOut rCancel = SM_Subscription.cancelSub(Util.zDate(sub.Zuora__CancelledDate__c), 'SpecificDate', currentSubId, false, Util.zDate(sub.Zuora__CancelledDate__c), zEntityId);
                 currentSubId = rCancel.subscriptionId;
                 subRecancelled = true;
                 //Update previous subscription values
@@ -393,22 +398,27 @@ public without sharing class SM_Impaye {
         //Mise a jour invoice        
         if (detteEchueIds.size() > 0) {
             //List<Zuora__ZInvoice__c> invoices2 = SM_Invoice.getInvoiceByIds(detteEchueIds);                        
+            objUpdateReq = new zc_ProxyActionupdateRequest();
+            objUpdateReq.r_type = 'Invoice';                 
             for (Zuora__ZInvoice__c inv2 : SM_Invoice.getInvoiceByIds(detteEchueIds) ){
-                if (Integer.valueOf(inv2.Tech_CompteurRejet__c) > 0 ){  // pour isoler juste les factures 
+                if (inv2.Tech_CompteurRejet__c != null && Integer.valueOf(inv2.Tech_CompteurRejet__c) > 0 ){  // pour isoler juste les factures 
                     zObj = new zc_ZObjectUpdate();
                     zObj.id = inv2.Zuora__External_Id__c;
                     zObj.tech_FlagRejetPaye = 'true';
+                    objUpdateReq.objects.add(zObj);
                 }
             }
 
-            objUpdateReq = new zc_ProxyActionupdateRequest();
-            objUpdateReq.r_type = 'Invoice';                     
-            objUpdateReq.objects.add(zObj);
+            if (objUpdateReq.objects.size() == 0 ){
+                throw new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_INVOICE2,pLog);
+            }
             System.debug(JSON.serialize(objUpdateReq,true));
+
+            zc_Api.actionUpdatePOST(accessToken, zEntityId, objUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_INVOICE,pLog);
         }
         
         //Call WS invoice update
-        zc_Api.actionUpdatePOST(accessToken, zEntityId, objUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_INVOICE,pLog);
+        
 
         // Create Case ??
         Id caseId = createImpayeCase(accountSID, contactId, codePays, montantPaye);

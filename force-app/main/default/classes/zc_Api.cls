@@ -8,14 +8,16 @@ public with sharing class zc_Api {
         zc_ProxySaveResult respObj = new zc_ProxySaveResult();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/action/update', zEntityId, 'POST', reqObj,zc_ProxySaveResult.class, null, null);
 
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_ProxySaveResult)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.results.size() > 0){
                 if(!respObj.results.get(0).success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);             
+                    throw new RTException(rtc2,pLog);             
                 }            
             }
         }
@@ -28,13 +30,16 @@ public with sharing class zc_Api {
         zc_GETARPaymentType respObj = new zc_GETARPaymentType();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/payments', zEntityId, 'POST', reqObj,zc_GETARPaymentType.class, zc_CommonResponseType.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_GETARPaymentType)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                    throw new RTException(rtc2,pLog);
                 }            
             }
         }
@@ -47,13 +52,16 @@ public with sharing class zc_Api {
         zc_BillingPreviewResult respObj = new zc_BillingPreviewResult();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/operations/billing-preview', zEntityId, 'POST', reqObj,zc_BillingPreviewResult.class, zc_CommonResponseType.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_BillingPreviewResult)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                    throw new RTException(rtc2,pLog);
                 }            
             }
         }
@@ -66,13 +74,16 @@ public with sharing class zc_Api {
         zc_GenerateBillingDocumentResponseT respObj = new zc_GenerateBillingDocumentResponseT();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/accounts/'+accountId+'/billing-documents/generate', zEntityId, 'POST', reqObj,zc_GenerateBillingDocumentResponseT.class, zc_CommonResponseType.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_GenerateBillingDocumentResponseT)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                    throw new RTException(rtc2,pLog);
                 }            
             }
         }
@@ -86,15 +97,18 @@ public with sharing class zc_Api {
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/action/amend', zEntityId, 'POST', reqObj,zc_ProxyActionAmendResponse.class, null, null);
 
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_ProxyActionAmendResponse)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.results != null  && respObj.results.size() > 0){
                 for(zc_AmendResult r : respObj.results){
                     if(!r.success){
                         if(r.errors != null && r.errors.size() > 0){
-                            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);
+                            throw new RTException(rtc2,pLog);
                         }
                     }
                 }
@@ -108,13 +122,16 @@ public with sharing class zc_Api {
         zc_GETSubscriptionTypeWithSuccess respObj = new zc_GETSubscriptionTypeWithSuccess();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/subscriptions/'+subId, zEntityId, 'GET', null,zc_GETSubscriptionTypeWithSuccess.class, zc_CommonResponseType.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = 'subId: ' + subId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_GETSubscriptionTypeWithSuccess)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                    throw new RTException(rtc2,pLog);
                 }            
             }
         }
@@ -127,13 +144,16 @@ public with sharing class zc_Api {
         zc_GETAccountType respObj = new zc_GETAccountType();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/accounts/'+accId, zEntityId, 'GET', null,zc_GETAccountType.class, zc_CommonResponseType.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = 'accId' + accId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }else {
             respObj = (zc_GETAccountType)respMap.get('RESP_OBJECT');
             if(respObj != null && respObj.success != null){
                 if(!respObj.success){                
-                    throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code),pLog);   
+                    throw new RTException(rtc2,pLog);
                 }            
             }
         }
@@ -146,8 +166,11 @@ public with sharing class zc_Api {
         zc_ProxyGetAccount respObj = new zc_ProxyGetAccount();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/account/'+accId, zEntityId, 'GET', null,zc_ProxyGetAccount.class, zc_ProxyActionqueryResponse.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
+        String reqStr = 'accId' + accId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
         }
         else {
             respObj = (zc_ProxyGetAccount)respMap.get('RESP_OBJECT');
@@ -166,10 +189,12 @@ public with sharing class zc_Api {
         zc_ProxyGetPaymentMethod respObj = new zc_ProxyGetPaymentMethod();
         Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/payment-method/'+pmId, zEntityId, 'GET', null,zc_ProxyGetPaymentMethod.class, zc_ProxyActionqueryResponse.class, null);
 
-        if (respMap.containsKey('ERROR_OBJECT')) {            
-            throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('ERROR_BODY')),rtc.code),pLog);
-        }
-        else {
+        String reqStr = 'pmId' + pmId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
             respObj = (zc_ProxyGetPaymentMethod)respMap.get('RESP_OBJECT');
             // if(respObj != null && respObj.success != null){
             //     if(!respObj.success){                
@@ -181,6 +206,74 @@ public with sharing class zc_Api {
         return respObj;
     }  
 
+    public static zc_POSTSubscriptionCancellationResp subscriptionCancelPUT(String accessToken, String zEntityId, zc_POSTSubscriptionCancellationType reqObj, String subId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_POSTSubscriptionCancellationResp respObj = new zc_POSTSubscriptionCancellationResp();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/subscriptions/'+subId+'/cancel', zEntityId, 'PUT', reqObj, zc_POSTSubscriptionCancellationResp.class, zc_CommonResponseType.class, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_POSTSubscriptionCancellationResp)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }    
+
+    public static zc_SaveResult objectSubscriptionDELETE(String accessToken, String zEntityId, String subId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_SaveResult respObj = new zc_SaveResult();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/subscription/'+subId, zEntityId, 'DELETE', null,zc_SaveResult.class, null, null);
+
+
+        String reqStr = 'subId: ' + subId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_SaveResult)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
+    public static zc_SaveResult objectSubscriptionPUT(String accessToken, String zEntityId, String subId, zc_ProxyModifySubscription reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_SaveResult respObj = new zc_SaveResult();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/subscription/'+subId, zEntityId, 'PUT', reqObj,zc_SaveResult.class, null, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_SaveResult)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
+} // end class
 
 // // NON UTILISE
 // public static zc_GETAccountSummaryType accountSummaryGET(String accessToken, String zEntityId, String accId, RTExceptionCode rtc){
@@ -201,5 +294,3 @@ public with sharing class zc_Api {
 
 //         return respObj;
 //     }
-
-}

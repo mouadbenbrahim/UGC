@@ -22,7 +22,7 @@ public with sharing class SM_Remboursement {
         executeRemboursement(dem, dem.AccountId, null, false);
 
         //Fermeture de la demande
-        Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+        Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});
         dem.ZDocData__c = zDocId;
         dem.Status = 'Fermee';
         dem.Etat_remboursement__c = 'Rembourse';
@@ -374,7 +374,7 @@ public with sharing class SM_Remboursement {
             rep.accountIdToRedirect = accId;
             
             //Fermeture de la demande
-            Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});
             newCaseRemboursement.ZDocData__c = zDocId;
             newCaseRemboursement.Status = 'Fermee';
             newCaseRemboursement.Etat_remboursement__c = 'Rembourse'; 
@@ -469,6 +469,7 @@ public with sharing class SM_Remboursement {
         c.DateDeRemboursement__c = remboursementDate;
         c.Origin = 'Interne';
         c.SubscriptionZName__c = subZName;
+        c.Actions__c = 'En attente retour interne';
         
         List<Account> acclst = [SELECT CodePays__c from Account where Id=:accountId LIMIT 1];
         
@@ -612,22 +613,31 @@ public with sharing class SM_Remboursement {
     }
     
     public static void executeRefundRejetBred(Decimal totalAmount, String zPaymentId, String zEntityId, String access_token) {
+    	
+    }
+    
+    public static void executeRefundRejetBred(Decimal totalAmount, String zPaymentId, String rejetCode, Date rejetDate, String zEntityId, String access_token) {
         System.debug('##MNE SM_Remboursement executeRefundRejetBred totalAmount >> ' + totalAmount);
-        System.debug('##MNE SM_Remboursement executeRefundRejetBred zPaymentId >> ' + zPaymentId);
+        System.debug('##MNE SM_Remboursement executeRefundRejetBred rejetCode >> ' + rejetCode);
+        System.debug('##MNE SM_Remboursement executeRefundRejetBred rejetDate >> ' + rejetDate);
         System.debug('##MNE SM_Remboursement executeRefundRejetBred zEntityId >> ' + zEntityId);
          
         String endpoint = '/v1/payments/'+zPaymentId+'/refunds';
         String method = 'POST';
         
-        WSZ.RefundlIn wsInObj = new WSZ.RefundlIn();
+        WSZ.RefundlIn2 wsInObj = new WSZ.RefundlIn2();
         wsInObj.typeX = 'External';
         wsInObj.methodType = 'Other';
         wsInObj.reasonCode = 'Payment Rejection';
         wsInObj.refundDate = Util.zDate(Date.today());
         wsInObj.totalAmount = totalAmount;
         wsInObj.comment = 'Gestion Rejet Bred';
+        wsInObj.TECH_RefundGatewayResponseCode = rejetCode;
+        wsInObj.DateRejetBanque = Util.zDate(rejetDate);
         String wsIn = (String) JSON.serialize(wsInObj);
         wsIn = wsIn.replace('typeX','type');
+        wsIn = wsIn.replace('TECH_RefundGatewayResponseCode','TECH_RefundGatewayResponseCode__c');
+        wsIn = wsIn.replace('DateRejetBanque','DateRejetBanque__c');
         System.debug('##MNE SM_Remboursement executeRefundRejetBred wsIn >> ' + wsIn);
         
         String wsOut = WS001_CallZuora.sendRequest(access_token, endpoint, zEntityId, method, wsIn, 'type1', '211.0');

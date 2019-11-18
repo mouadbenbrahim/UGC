@@ -7,7 +7,8 @@ public without sharing class SM_Desabonnement {
 
     public static Case dem = new Case();
     public static Zuora__Subscription__c sub = new Zuora__Subscription__c();
-    private static Zuora__Subscription__c zSubIn = new Zuora__Subscription__c();
+    //private static Zuora__Subscription__c zSubIn = new Zuora__Subscription__c();
+    private static zc_ProxyModifySubscription zSubIn = new zc_ProxyModifySubscription();
     public static Account acc = new Account();
     private static Date dateLatence, dateCancelContrat;
     private static Boolean isDesaboNow;
@@ -27,21 +28,15 @@ public without sharing class SM_Desabonnement {
     // Operation desabonnement
     public static void desabonner(Id ddeId, Boolean isBatchCall2) {
         
-        String policy = 'SpecificDate';
         String codeDesaCarte = null;
         String operation = 'desabonnement';
-        WSZ.SubCancelOut rCancel = null;
         String zSubZID = null;
-        String cancellationEffectiveDate;
-        String targetDate;        
         Boolean billRun;
         String amendOperation = null;
         Boolean noRemboursementAFaire = false;
-        WSZ.SubOut zSubUpdateResult = new WSZ.SubOut();
+        zc_SaveResult zSubUpdateResult = new zc_SaveResult();
         
         isBatchCall = isBatchCall2;
-        
-        
         
         dem = SM_Demande.getDemande(ddeId);
         dateCancelContrat = dem.DateFinContrat__c;
@@ -86,46 +81,48 @@ public without sharing class SM_Desabonnement {
         
         // assign zSubIn: Code fin contrat + amendOperation  + date fin contrat  + Id   
         if (dem.RecordTypeId == retractationRecordTypeId || dem.RecordTypeId == annulationContratRecordTypeId){
-            zSubIn.CodeFinContrat__c = 'A';
+            zSubIn.codeFinContrat = 'A';
             amendOperation = 'Retractation';
         }else if (dem.RecordTypeId == resiliationRecordTypeId){
             if(dem.Motif_de_R_siliation__c == 'Code X'){
-                zSubIn.CodeFinContrat__c = 'X';
+                zSubIn.codeFinContrat = 'X';
             } else {
-                zSubIn.CodeFinContrat__c = 'M';
+                zSubIn.codeFinContrat = 'M';
             }
             amendOperation = 'Resiliation';            
         }else {
             if (dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)') {
-                zSubIn.CodeFinContrat__c = 'E';
+                zSubIn.codeFinContrat = 'E';
             } else if (dem.Type_de_d_sabonnement__c == 'Désabonnement avec préavis (L)') {
-                zSubIn.CodeFinContrat__c = 'L';
+                zSubIn.codeFinContrat = 'L';
             }
             amendOperation = 'Desabonnement';          
         }        
-        zSubIn.DateFinContrat__c = dateCancelContrat.addDays(-1);
+        zSubIn.dateFinContrat = dateCancelContrat.addDays(-1);
         //zSubZID = dem.Subscription__r.Zuora__Zuora_Id__c;
         zSubZID = sub.Zuora__Zuora_Id__c;
-        zSubIn.CancelCaseID__c = dem.Id;
+        zSubIn.cancelCaseID = dem.Id;
 
         System.debug('MBEN:desabonner: ' + ' isDesaboNow: '+isDesaboNow+' isBatchCall: '+isBatchCall+' noRemboursementAFaire: '+noRemboursementAFaire);
-        System.debug('MBEN:desabonner: ' + ' dem.DateFinContrat__c: ' + dem.DateFinContrat__c + ' zSubIn.DateFinContrat__c: ' + zSubIn.DateFinContrat__c + 'zSubIn.CancelCaseID__c: ' + zSubIn.CancelCaseID__c);
-        System.debug('MBEN:desabonner: ' + ' amendOperation: ' + amendOperation + ' zSubIn.CodeFinContrat__c: '+zSubIn.CodeFinContrat__c);
-        System.debug('MBEN:desabonner: ' + 'zSubIn.CancelCaseID__c: ' + zSubIn.CancelCaseID__c + 'dem.Id: '+dem.Id);
+        System.debug('MBEN:desabonner: ' + ' dem.DateFinContrat__c: ' + dem.DateFinContrat__c + ' zSubIn.dateFinContrat: ' + zSubIn.dateFinContrat + 'zSubIn.cancelCaseID: ' + zSubIn.cancelCaseID);
+        System.debug('MBEN:desabonner: ' + ' amendOperation: ' + amendOperation + ' zSubIn.codeFinContrat: '+zSubIn.codeFinContrat);
+        System.debug('MBEN:desabonner: ' + 'zSubIn.cancelCaseID: ' + zSubIn.cancelCaseID + 'dem.Id: '+dem.Id);
 
         if (isDesaboNow){
+            
+            // Authentification
+            String accessToken = WS001_CallZuora.access_token;
 
-           
-            
-            
-            
             //Cancel de la subscription
-            cancellationEffectiveDate = Util.zDate(dateCancelContrat);
-            targetDate = Util.zDate(dateCancelContrat);            
             billRun = !noRemboursementAFaire;
-
-            rCancel = SM_Subscription.cancelSub(cancellationEffectiveDate, policy, sub.Zuora__Zuora_Id__c, billRun, targetDate, zEntityId);
+            zc_POSTSubscriptionCancellationType reqObj = new zc_POSTSubscriptionCancellationType();
+            reqObj.cancellationEffectiveDate = dateCancelContrat;
+            reqObj.targetDate = dateCancelContrat; 
+            reqObj.runBilling = billRun; 
+            reqObj.cancellationPolicy = 'SpecificDate'; 
+            zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL1, pLog);
             zSubZID = rCancel.subscriptionId;
+
             // Get Amendment Id: 
             WSZ.AmendOut amend = SM_Amendment.getAmendment(zSubZID, zEntityId);
             WSZ.GenericOut2 amend2 = new WSZ.GenericOut2();
@@ -138,13 +135,14 @@ public without sharing class SM_Desabonnement {
 
             //pour autoriser l'annulation du cancel
             if(String.isBlank(rCancel.creditMemoId) && String.isBlank(rCancel.invoiceId)){  //rCancel.invoiceId
-                zSubIn.Tech_AvecRembouesement__c = 'false';
+                zSubIn.tech_AvecRembouesement = 'false';
             } else {
-                zSubIn.Tech_AvecRembouesement__c = 'true';
+                zSubIn.tech_AvecRembouesement = 'true';
             }
             
             // Mise a jour souscription dans Zuora: DateFinContrat__c, CodeFinContrat__c, Tech_AvecRembouesement__c
-            zSubUpdateResult = SM_Subscription.updateSub(zSubZID, zSubIn, zEntityId);
+            zSubUpdateResult = zc_Api.objectSubscriptionPUT(accessToken, zEntityId, zSubZID, zSubIn, RTExceptionCode.ERREUR_DESABO_APPLICATION_UPDATESUB, pLog);
+            // zSubUpdateResult = SM_Subscription.updateSub(zSubZID, zSubIn, zEntityId);
        
          
             //Run Bill Run asynchron si remboursement a faire (totalDeltaTcv != 0)
@@ -169,33 +167,25 @@ public without sharing class SM_Desabonnement {
             }
             
             
-            //Debut call out pour ZDOC
-            String accessToken = WS001_CallZuora.access_token;
-            // Get Zuora Data (subscription)
+            // Get Zuora Doc Data (subscription)
             subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, zSubZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
-            // Get Zuora Data (Account)
+            // Get Zuora Doc Data (Account)
             zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
             String payMethodId = zacc.defaultPaymentMethodId;
-            // Get Zuora Data (PaymentMethod)
+            // Get Zuora Doc Data (PaymentMethod)
             pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
-            //Fin call out pour ZDOC
             
-                
-            //ECH START 30102019
-            if(String.isBlank(zSubIn.CodeFinContrat__c)) {
+
+            //Desactivation de carte synchrone
+            if(String.isBlank(zSubIn.codeFinContrat)) {
                 codeDesaCarte = null;
             } else {
-                codeDesaCarte = zSubIn.CodeFinContrat__c;
-            }
-            
-            //S41 ECH Appel de la désactivation de carte synchrone
+                codeDesaCarte = zSubIn.codeFinContrat;
+            }            
             List<Carte__c> listCarteToUpdate = SM_Carte.desactivation(dem.AccountId, codeDesaCarte);
-            
             update listCarteToUpdate;
 
-            //ECH END 30102019
-          
-            
+
             //Remboursement
             if(dem.RemboursementFaire__c && createCaseRemboursement){
                 SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, amountToRefundRoundFromCreditMemo, dem.AccountId, rCancel.creditMemoId, dateResiliation, null, Date.today(), dem.SubscriptionZName__c);
@@ -206,23 +196,21 @@ public without sharing class SM_Desabonnement {
             else if(dem.RemboursementFaire__c){
                 SM_Remboursement.createRebousementCase(dem.Id, dem.MontantRembourser__c, dem.MontantRembourser__c, dem.AccountId, null, dateResiliation, null, Date.today(), dem.SubscriptionZName__c);
             }
-            
       
         }else { //!isDesaboNow            
+            
             //Mise a jour Subscription Zuora: Date fin contrat + code fin contrat 
-            zSubUpdateResult = SM_Subscription.updateSub(zSubZID, zSubIn, zEntityId); 
-            
-            
-            //Debut call out pour ZDOC
             String accessToken = WS001_CallZuora.access_token;
-            // Get Zuora Data (subscription)
+            zSubUpdateResult = zc_Api.objectSubscriptionPUT(accessToken, zEntityId, zSubZID, zSubIn, RTExceptionCode.ERREUR_DESABO_APPLICATION_UPDATESUB2, pLog);
+            //zSubUpdateResult = SM_Subscription.updateSub(zSubZID, zSubIn, zEntityId); 
+            
+            // Get Zuora Data (subscription)          
             subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, zSubZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
             // Get Zuora Data (Account)
             zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
             String payMethodId = zacc.defaultPaymentMethodId;
             // Get Zuora Data (PaymentMethod)
             pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
-            //Fin call out pour ZDOC
         }
 
         if (!isBatchCall) {
@@ -245,7 +233,7 @@ public without sharing class SM_Desabonnement {
             dem.CouponWelcomeback__c = coupon_WB;
             dem.couponAbotiers__c = coupon_AT;
 			
-			Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm,'ACC' => acc});
 			dem.ZDocData__c = zDocId;
 	        dem.Status = 'Fermee';
             update dem;
@@ -284,8 +272,6 @@ public without sharing class SM_Desabonnement {
         }
 
         //Check Souscription Status
-        // TODO Date.today() a creuser et aligner avec AP02Case..
-        // tout depend quel datefincontrat on stock dans le case et dans la souscription 
         if (!isBatchCall){
             if (sub.Zuora__Status__c != 'Active'){
                 throw new RTException(RTExceptionCode.ERREUR_DESABO_ABO_NONACTIF,pLog);
@@ -322,16 +308,11 @@ public without sharing class SM_Desabonnement {
     // Operation desabonnement: Contrats Sans Case: (Bilendi(CDD+CDI) ou CDD(sans code Fin))
     public static void desabonner_SansCase(Id subId) {
         
-        WSZ.SubOut zSubUpdateResult = new WSZ.SubOut();
-        String policy = 'SpecificDate';
+        zc_SaveResult zSubUpdateResult = new zc_SaveResult();
         String codeDesaCarte = null;
         String operation = 'desabonnement';
-        WSZ.SubCancelOut rCancel = null;  
-        String cancellationEffectiveDate;
-        String targetDate;        
         Boolean billRun;
         String amendOperation = null;
-        // Date dateFinContrat;
         Boolean noRemboursementAFaire = false;              
 
         System.debug('MBEN:desabonner_SansCase: DEBUT');
@@ -365,13 +346,20 @@ public without sharing class SM_Desabonnement {
         System.debug('MBEN:desabonner_SansCase: ' + ' amendOperation: ' + amendOperation + ' sub.CodeFinContrat__c: '+sub.CodeFinContrat__c);        
 
         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
-        //Cancel de la subscription
-        cancellationEffectiveDate = Util.zDate(dateCancelContrat);
-        targetDate = Util.zDate(dateCancelContrat);            
-        billRun = !noRemboursementAFaire;
 
-        rCancel = SM_Subscription.cancelSub(cancellationEffectiveDate, policy, sub.Zuora__Zuora_Id__c, billRun, targetDate, zEntityId);
+        // Auth
+        String accessToken = WS001_CallZuora.access_token;
+
+        // Cancel Subscription
+        billRun = !noRemboursementAFaire;
+        zc_POSTSubscriptionCancellationType reqObj = new zc_POSTSubscriptionCancellationType();
+        reqObj.cancellationEffectiveDate = dateCancelContrat;
+        reqObj.targetDate = dateCancelContrat; 
+        reqObj.runBilling = billRun; 
+        reqObj.cancellationPolicy = 'SpecificDate'; 
+        zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL2, pLog);
         String newSubId = rCancel.subscriptionId;
+
         // Get Amendment Id: 
         WSZ.AmendOut amend = SM_Amendment.getAmendment(newSubId, zEntityId);
         WSZ.GenericOut2 amend2 = new WSZ.GenericOut2();
@@ -383,8 +371,9 @@ public without sharing class SM_Desabonnement {
 
         // update subscription (code fin pour les CDD sans code fin)
         if (sub.CodeFinContrat__c == null && sub.TypeContrat__c == 'CDD') {
-            zSubIn.CodeFinContrat__c = 'L';
-            zSubUpdateResult = SM_Subscription.updateSub(newSubId, zSubIn, zEntityId);
+            zSubIn.codeFinContrat = 'L';
+            zSubUpdateResult = zc_Api.objectSubscriptionPUT(accessToken, zEntityId, newSubId, zSubIn, RTExceptionCode.ERREUR_DESABO_APPLICATION_UPDATESUB3, pLog);
+            //zSubUpdateResult = SM_Subscription.updateSub(newSubId, zSubIn, zEntityId);
         }
         
         //Desactivation de la carte
@@ -403,8 +392,6 @@ public without sharing class SM_Desabonnement {
 
     private static void verifDesabo_SansCase() {
 
-        //Integer preavis = Util.PREAVIS(acc.CodePays__c);
-                
         if (dateCancelContrat == null) { 
             throw new RTException(RTExceptionCode.ERREUR_DESABO_DATE_FINCONTRAT_OBLIGATOIRE,pLog);            
         }        
@@ -423,8 +410,4 @@ public without sharing class SM_Desabonnement {
         
     }
 
-    //Annulation du desabonnement: dans SM005_AnnulationDesabo
-
-    private class MyException extends Exception {
-    }
 }

@@ -265,6 +265,7 @@ public with sharing class SM_Subscription {
     	system.debug('##MNE SM_Subscription SubscriptionBeforeInsert listSubscriptions >> '+listSubscriptions);
     	if(listSubscriptions != null && listSubscriptions.size() > 0){
     		checkPayeurSubscription(null, listSubscriptions);
+            updateCancelCaseId(null, listSubscriptions);
     	}
     }
     
@@ -274,6 +275,7 @@ public with sharing class SM_Subscription {
     	system.debug('##MNE SM_Subscription SubscriptionBeforeUpdate listSubscriptions >> '+listSubscriptions);
     	if(listSubscriptions != null && listSubscriptions.size() > 0){
     		checkPayeurSubscription(mapOldSubscriptions, listSubscriptions);
+            updateCancelCaseId(mapOldSubscriptions, listSubscriptions);
     	} 
     }
     
@@ -342,6 +344,48 @@ public with sharing class SM_Subscription {
 		    	} 
     		}
     	}
+    }
+
+    /**
+     * updateCancelCaseId ; met a jour dans sub.cancelCase__c depuis sub.cancelCaseId__c (contient CaseExtId du case)
+     * @param  mapOldSubscriptions mapOldSubscriptions description
+     * @param  listSubscriptions   listSubscriptions description
+     */
+    public static void updateCancelCaseId (map<Id, Zuora__Subscription__c> mapOldSubscriptions, List<Zuora__Subscription__c> listSubscriptions)  {
+    	
+        if(listSubscriptions == null || listSubscriptions.size() == 0){
+    		return;
+    	} 
+
+        //Map<Id,Zuora__Subscription__c> subToUpdate = new Map<Id,Zuora__Subscription__c>();
+        Map<Id,String> subToUpdate = new Map<Id,String>(); //subId, CaseExtId__c
+
+        for(Zuora__Subscription__c sub : listSubscriptions){
+            if (mapOldSubscriptions != null && mapOldSubscriptions.get(sub.Id).CancelCaseID__c != sub.CancelCaseID__c){
+                //sub.CancelCase__r = new Case(CaseExtId__c=sub.CancelCaseID__c); // KO on constitue une map separe pour un SQOL sur le set.
+                subToUpdate.put(sub.Id, sub.CancelCaseID__c); 
+            }else if (mapOldSubscriptions == null && sub.CancelCaseID__c != null){
+                subToUpdate.put(sub.Id, sub.CancelCaseID__c);
+            }
+        }
+
+        if (subToUpdate != null && subToUpdate.size() > 0){
+            Set<String> sofCaseExtId = Util.mapValToSet(subToUpdate);
+            Map<String,Id> cases = new Map<String,Id>();
+            for(Case c : [Select Id, CaseExtId__c from Case where CaseExtId__c in :sofCaseExtId]){
+                cases.put(c.CaseExtId__c, c.Id);
+            }
+
+            for(Zuora__Subscription__c sub : listSubscriptions){
+                if (subToUpdate.containsKey(sub.Id)){
+                    String caseExtId = subToUpdate.get(sub.Id);
+                    if (cases.containsKey(caseExtId)){ // au cas ou on recupere un extid depuis sub et qui n existe pas dans case
+                        sub.CancelCase__c = cases.get(caseExtId);
+                    }
+                }
+            }
+        }
+
     }
     
 

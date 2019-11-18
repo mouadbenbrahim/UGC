@@ -123,7 +123,8 @@ public with sharing class SM_Offre {
 
             List<OffreContrainte__c> contraintes = new List<OffreContrainte__c>();
             List<OffreContrainte__c> tgtContraintes = new List<OffreContrainte__c>();
-            System.debug('MBEN offreSet: ' + lieuSet);
+            System.debug('MBEN lieuSet: ' + lieuSet);
+            System.debug('MBEN pdtSet: ' + pdtSet);
 
             for (Offre__c tgtOffre : tgtOffres) {
 
@@ -131,7 +132,8 @@ public with sharing class SM_Offre {
                 Date minDateFin = Util.minDate(tgtOffre.DateFin__c, offre.DateFin__c);
                 Set<Id> lieuTgtSet = new Set<Id>();
                 Set<Id> pdtTgtSet = new Set<Id>();
-
+                Set<Id> lieuSet2 = lieuSet.clone();
+                Set<Id> pdtSet2 = pdtSet.clone();
                 System.debug('MBEN tgt1: ' + tgtOffre.Id);
 
                 //verifier s'ils offre et tgtOffre n ont pas des dates de chevauchement
@@ -142,17 +144,18 @@ public with sharing class SM_Offre {
                         lieuTgtSet.add(offreLieu.Complexe__c);
                     }
                     System.debug('MBEN lieuTgtSet: ' + lieuTgtSet);
-                    lieuSet.retainAll(lieuTgtSet);
+                    lieuSet2.retainAll(lieuTgtSet);
+                    System.debug('MBEN lieuSet2: ' + lieuSet2);
 
                     for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :tgtOffre.Promo__c]) {
                         pdtTgtSet.add(promoProduit.Produit__c);
                     }
-
-                    pdtSet.retainAll(pdtTgtSet);
-
+                    System.debug('MBEN pdtTgtSet: ' + pdtTgtSet);
+                    pdtSet2.retainAll(pdtTgtSet);
+                    System.debug('MBEN pdtSet2: ' + pdtSet2);
 
                     //verifier s'ils offre et tgtOffre n ont pas des lieux cinema en commun : pas de contraintes
-                    if (!lieuSet.isEmpty() &&  !pdtSet.isEmpty() ) {
+                    if (!lieuSet2.isEmpty() &&  !pdtSet2.isEmpty() ) {
                         System.debug('MBEN tgt3: ' + tgtOffre.Id);
                     OffreContrainte__c co = new OffreContrainte__c();
                     OffreContrainte__c tgtco = new OffreContrainte__c();
@@ -174,9 +177,11 @@ public with sharing class SM_Offre {
             }
             if (!contraintes.isEmpty()) {
                 insert contraintes;
+                System.debug('MBEN insert contrainte: ' + String.valueOf(contraintes));
             }
             if (!tgtContraintes.isEmpty()) {
                 insert tgtContraintes;
+                System.debug('MBEN insert contrainte: ' + String.valueOf(tgtContraintes));
             }
         }
     }
@@ -184,7 +189,9 @@ public with sharing class SM_Offre {
     // Recupere toutes les remises (OffBase, OffCo, OffPromoCode de tous les produits)
     public static List<WSZ.SubProduct> getSubOffres(WSZ.SubOffreIn subIn) {
 
-        subIn.dateSubscription = Date.valueOf(subIn.dateSub);
+        //subIn.dateSubscription = Date.valueOf(subIn.dateSub);
+        subIn.dateSubscription = Date.today(); //14112019: tout les contrats sont considrerer le jour de la souscription.
+
         List<WSZ.SubProduct> subProducts = new List<WSZ.SubProduct>();
 
 
@@ -219,9 +226,9 @@ public with sharing class SM_Offre {
             if (!offChargeBase.isEmpty()) {
                 ratePlansChargeBase = getRemisesRatePlans(offChargeBase.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansChargeBase);
-                subProd.HermesIntituleOffre = offChargeBase.get(0).HermesIntituleOffre__c;
-                subProd.HermesIntituleOffreNL = offChargeBase.get(0).HermesIntituleOffreNL__c;
-                subProd.CodeOffreCo = offChargeBase.get(0).Reference__c;
+                //subProd.HermesIntituleOffre = offChargeBase.get(0).HermesIntituleOffre__c;
+                //subProd.HermesIntituleOffreNL = offChargeBase.get(0).HermesIntituleOffreNL__c;
+                //subProd.CodeOffreCo = offChargeBase.get(0).Reference__c;
             }
 
             // Recupere le RP de la remise en debut de periode de l'abonnement
@@ -241,7 +248,11 @@ public with sharing class SM_Offre {
                 subProd.subscribeToRatePlans.addAll(ratePlansCom);
                 subProd.HermesIntituleOffre += '|' + offCo.get(0).HermesIntituleOffre__c;
                 subProd.HermesIntituleOffreNL += '|' + offCo.get(0).HermesIntituleOffreNL__c;
-                subProd.CodeOffreCo = offCo.get(0).Reference__c;
+                if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
+                    subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offCo.get(0).Reference__c;
+                }else {
+                    subProd.CodeOffreCo = offCo.get(0).Reference__c;
+                }
             }
 
             // Recupere le RP associe au coupon: BtoC ou BtoB
@@ -255,7 +266,12 @@ public with sharing class SM_Offre {
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
                         subProd.HermesIntituleOffre += '|' + offPc.get(0).HermesIntituleOffre__c;
                         subProd.HermesIntituleOffreNL += '|' + offPc.get(0).HermesIntituleOffreNL__c;
-                        subProd.CodeOffreCo = offPc.get(0).Reference__c;
+                        //subProd.CodeOffreCo = offPc.get(0).Reference__c;
+                        if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
+                            subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offPc.get(0).Reference__c;
+                        }else {
+                            subProd.CodeOffreCo = offPc.get(0).Reference__c;
+                        }
                     }
                     if (offPc.get(0).RecordType.Name == 'Offre BTOB') {
                         System.debug('MBEN: Offre BtoB: couponG15: ' + couponG);
@@ -263,11 +279,16 @@ public with sharing class SM_Offre {
                         subProd.Marche = 'BTOB';
                         subProd.HermesIntituleOffre = offPc.get(0).HermesIntituleOffre__c;
                         subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
-                        subProd.CodeOffreCo =  offPc.get(0).Reference__c;
+                        //subProd.CodeOffreCo =  offPc.get(0).Reference__c;
                         subProd.subscribeToRatePlans.clear(); //supprimer les anciens Rateplans si BtoB
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
                         subProd.IsB2B = true;
                         subProd.IsPrepaid = true;
+                        if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
+                            subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offPc.get(0).Reference__c;
+                        }else {
+                            subProd.CodeOffreCo = offPc.get(0).Reference__c;
+                        }                        
                     }
                 }
             }

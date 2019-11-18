@@ -31,7 +31,7 @@ public without sharing class SM003_Retention {
         if(c.R_sultat_R_tention__c != null && (c.R_sultat_R_tention__c == 'Refuse sans desabonnement' || c.R_sultat_R_tention__c == 'Client indécis') ){
             System.debug('##MNE SM003_Retention retention case closed EnCours');
             callOutForZDoc(c.AccountId, c.SubscriptionZName__c);
-            Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});        
 			c.ZDocData__c = zDocId;
             c.Status = 'Fermee';
         	update c;
@@ -39,7 +39,7 @@ public without sharing class SM003_Retention {
         } else if(c.R_sultat_R_tention__c != null && c.R_sultat_R_tention__c == 'Accepté'){
             System.debug('##MNE SM003_Retention retention go to rentention in zuora');
             executeRetention(c);
-			Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});
 			c.ZDocData__c = zDocId;
 			c.Status = 'Fermee';
         	update c;

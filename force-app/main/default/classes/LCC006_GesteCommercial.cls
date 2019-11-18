@@ -29,7 +29,7 @@ public without sharing class LCC006_GesteCommercial {
         }
         
         if(!fromOnglet){
-            Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm,'ACC' => acc});           
             dem.ZDocData__c = zDocId;       
             dem.Status = 'Fermee';       
             update dem;  
@@ -305,8 +305,7 @@ public without sharing class LCC006_GesteCommercial {
             dem = cTMP;
             
             executeGesteCommercial(caseId, true);
-            
-            Id zDocId = SM_Hermes.addZdocData(subZdoc,pm);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});
             dem.ZDocData__c = zDocId;       
             dem.Status = 'Fermee';       
             insert dem;  
