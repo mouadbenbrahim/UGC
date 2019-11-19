@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>VR02_Bloquage_MAJ_email_si_RCU</fullName>
-    <active>true</active>
+    <active>false</active>
     <description>Lorsque la fiche client a été MAJ par le RCU, alors il est impossible de modifier l&#39;adresse email</description>
     <errorConditionFormula>AND ( 
 NOT($User.ByPassValidationRule__c),

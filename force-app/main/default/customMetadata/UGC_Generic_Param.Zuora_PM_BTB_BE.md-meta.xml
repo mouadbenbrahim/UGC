@@ -16,6 +16,6 @@
     </values>
     <values>
         <field>ParamValue__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">8adc8f9963f7b7290164191241f76795</value>
     </values>
 </CustomMetadata>

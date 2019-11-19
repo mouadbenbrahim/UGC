@@ -27,7 +27,7 @@ hermesIn.lieu = 'WEB';
 hermesIn.origin='Selfcare';
 hermesIn.numeroCarte = '17100188300';
 hermesIn.typeDeMigration = 'UI 1 > UI 2';
-hermesIn.dateFinContrat = String.valueOf(Date.today());
+//hermesIn.dateFinContrat = String.valueOf(Date.today());
 WSZ.SubHermesOut acquOut = SM_Hermes.migration(hermesIn);
 
 
@@ -59,3 +59,5 @@ Database.executeBatch(batch,50);
 
 
 select Id, EventType, LogDate, LogFileLength from EventLogFile where EventType = 'API' limit 10 //and LogDate = 2019-11-04T00:00:00.000Z
+
+Select Lieu__c from Zuora__Subscription__c

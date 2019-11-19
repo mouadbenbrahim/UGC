@@ -120,7 +120,7 @@ public class AP02_Case {
               (caseToUpd.SousMotif__c!=null && !caseToUpd.SousMotif__c.equals(oldCase.SousMotif__c)) ){
                casesGroupementLst.add(caseToUpd);                
             }
-			if(!caseToUpd.Famille__c.equals(oldCase.Famille__c) || !caseToUpd.Motif__c.equals(oldCase.Motif__c)){
+			if((caseToUpd.Famille__c!=null && !caseToUpd.Famille__c.equals(oldCase.Famille__c)) || (caseToUpd.Motif__c!=null && !caseToUpd.Motif__c.equals(oldCase.Motif__c))){
 				listCaseChangeCaseRecordType.add(caseToUpd);
 			}
             // Identification des cases à transférer

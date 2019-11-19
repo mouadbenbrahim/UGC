@@ -39,7 +39,10 @@ public class BotTest {
     }
 
     static testMethod void testFindAccount() {
-		Account a = new Account(Name='TestAccount');
+		/*Account a = new Account(Name='TestAccount');
+		a.RecordTypeId = Utils.getComptePersonelAccountRecordType().Id;*/
+		Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
 		insert a;
         BotHandler handler = new HandlerFindAccount();
         BotResponse response = handler.handle('', new String[]{'Test'}, null, null, null);
@@ -88,7 +91,10 @@ public class BotTest {
     }
 
 	static testMethod void testTopOpportunities() {
-		Account a = new Account(Name='TestAccount');
+		/*Account a = new Account(Name='TestAccount');
+		a.RecordTypeId = Utils.getComptePersonelAccountRecordType().Id;*/
+		Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
 		insert a;
 		Opportunity o = new Opportunity(Name='TestOpportunity', AccountId=a.id, StageName='Prospecting', CloseDate=System.today().addMonths(1));
 		insert o;
@@ -122,7 +128,10 @@ public class BotTest {
     }
 
     static testMethod void testNext() {
-		Account a = new Account(Name='TestAccount');
+		/*Account a = new Account(Name='TestAccount');
+		a.RecordTypeId = Utils.getComptePersonelAccountRecordType().Id;*/
+		Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
 		insert a;
 		Opportunity o = new Opportunity(Name='TestOpportunity', AccountId=a.id, StageName='Prospecting', CloseDate=System.today().addMonths(1));
 		insert o;
@@ -134,7 +143,10 @@ public class BotTest {
     }
 
     static testMethod void testSOQL() {
-		Account a = new Account(Name='TestAccount');
+		/*Account a = new Account(Name='TestAccount');
+		a.RecordTypeId = Utils.getComptePersonelAccountRecordType().Id;*/
+		Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
 		insert a;
         BotHandler handler = new HandlerSOQL();
         BotResponse response = handler.handle('select id from account', null, null, null, null);

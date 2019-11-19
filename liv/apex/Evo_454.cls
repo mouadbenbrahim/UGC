@@ -7,18 +7,39 @@ String subNumber = 'F-S00009546';
 
 ID batchprocessid = Database.executeBatch(new Batch_SubscriptionCancel(dateFinContrat,subNumber),50); // a terme scope = 50
 
-Date dateFinContrat = date.newInstance(2019,10,17);
-// String subNumber = 'F-S00008422';
+Date dateFinContrat = date.newInstance(2019,10,31);
+//String subNumber = 'SUF00055310';
 String subNumber = null;
 Batch_SubscriptionCancel batch = new Batch_SubscriptionCancel(dateFinContrat,subNumber);
-Database.executeBatch(batch,50);
+Database.executeBatch(batch,1);
 
 Date dateFinContrat = date.newInstance(2019,10,31);
 
-Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, 
+Select DateFinContrat__c, Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, 
 TypeContrat__c, CodeFinContrat__c From Zuora__Subscription__c 
-where Zuora__Status__c='Active' and DateFinContrat__c=2019-10-31 limit 15
+where Zuora__Status__c='Active' 
+and CancelCaseID__c != null 
+and TypeContrat__c = 'CDI' and Source__c != 'Bilendi'
+and Zuora__CustomerAccount__r.Zuora__EntityID__c='8adc8f99690e257001690e9c372515fe'
+and DateFinContrat__c != null
+order by DateFinContrat__c
+//and DateFinContrat__c=2019-10-31 
 
+
+noCase + noBilendi + CDD = 0 records
+noCase + noBilendi + CDI = 88 : (Err 2106)
+noCase + Bilendi + CDD = 104 : OK
+noCase + Bilendi + CDI = 0
+case + Bilendi + CDI = 0
+case + Bilendi + CDD = SUF00055310 : OK
+case + noBilendi + CDI = 9 : OK
+case + noBilendi + CDD = 0
+
+
+
+Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and CancelCaseID__c = null and TypeContract__c = \'CDD\' and Source != \'Bilendi\' limit 50
+
+Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and CancelCaseID__c = null limit 10
 
 
 // Desabo E

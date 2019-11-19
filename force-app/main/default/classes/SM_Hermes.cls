@@ -133,7 +133,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
         // insert case
         String sousMotif = lieuToSousMotif(hermesIn.lieu);
-        String commentairesInternes = (hermesIn.motif == '02- Réédition payante')?'réédition payante':'réédition gratuite'; //03- Réédition gratuite
+        String commentairesInternes = (hermesIn.motif == '02- Reedition payante')?'réédition payante':'réédition gratuite'; //03- Réédition gratuite
         
         Case c = newCase(zDocId, hermesIn.subscriptionName, acc.PersonContactId, hermesIn.origin, '1- Vie de l\'abonnement', hermesIn.motif, sousMotif, 'Fermee', 
         hermesIn.lieu, commentairesInternes, hermesIn.accountId,hermesIn.typeDeMigration,hermesIn.creditMemoId,hermesIn.dateFinContrat);

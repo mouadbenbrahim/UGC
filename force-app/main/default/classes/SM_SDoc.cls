@@ -1,14 +1,14 @@
 public class SM_SDoc {
 
-    public static String TECHIdStatut_007AD = '007AD';  //0- Souscription 	-> 07- Creation Abonnement    	-> AD- Action DRC
-    public static String TECHIdStatut_005AD = '005AD';  //0- Souscription 	-> 05- B2B                    	-> AD- Action DRC
-    public static String TECHIdStatut_005AH = '005AH';  //0- Souscription 	-> 05- B2B                    	-> AH- Action Selfcare
-    public static String TECHIdStatut_007AH = '007AH';  //0- Souscription 	-> 07- Creation Abonnement    	-> AH- Action Selfcare
-    public static String TECHIdStatut_007AS = '007AS';  //0- Souscription 	-> 07- Creation Abonnement    	-> AS- Action Stand
-    public static String TECHIdStatut_106A  = '106A';   //1- Vie de l'abo 	-> 06- Migration  				-> A- Action
-    public static String TECHIdStatut_106AD = '106AD';  //1- Vie de l'abo 	-> 06- Migration  				-> AD- Action DRC
-    public static String TECHIdStatut_106AS = '106AS';  //1- Vie de l'abo 	-> 06- Migration  				-> AS- Action Stand
-    public static String TECHIdStatut_106AH = '106AH';  //1- Vie de l'abo 	-> 06- Migration  				-> AH- Action Selfcare 
+    public static String TECHIdStatut_007AD = '007AD';  //0- Souscription   -> 07- Creation Abonnement      -> AD- Action DRC
+    public static String TECHIdStatut_005AD = '005AD';  //0- Souscription   -> 05- B2B                      -> AD- Action DRC
+    public static String TECHIdStatut_005AH = '005AH';  //0- Souscription   -> 05- B2B                      -> AH- Action Selfcare
+    public static String TECHIdStatut_007AH = '007AH';  //0- Souscription   -> 07- Creation Abonnement      -> AH- Action Selfcare
+    public static String TECHIdStatut_007AS = '007AS';  //0- Souscription   -> 07- Creation Abonnement      -> AS- Action Stand
+    public static String TECHIdStatut_106A  = '106A';   //1- Vie de l'abo   -> 06- Migration                -> A- Action
+    public static String TECHIdStatut_106AD = '106AD';  //1- Vie de l'abo   -> 06- Migration                -> AD- Action DRC
+    public static String TECHIdStatut_106AS = '106AS';  //1- Vie de l'abo   -> 06- Migration                -> AS- Action Stand
+    public static String TECHIdStatut_106AH = '106AH';  //1- Vie de l'abo   -> 06- Migration                -> AH- Action Selfcare 
     
     
     public static void makeSdocJobs(List<Case> cases) {
@@ -360,7 +360,7 @@ public class SM_SDoc {
         update casesToUpdate;
         
         system.debug('--#### OUT OF CASE BOUCLE'); 
-	}
+    }
     
     private static Boolean isHTMLTemplate(Case c, Account account) {
         if(account == null) {
@@ -396,7 +396,7 @@ public class SM_SDoc {
         }
         
     }
-	
+    
     public static Task createTask(String canal, Case c){
         Task t = new Task();
         t.ActivityDate = Date.Today();

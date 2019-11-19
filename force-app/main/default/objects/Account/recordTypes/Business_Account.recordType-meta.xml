@@ -308,6 +308,17 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Langue__c</picklist>
+        <values>
+            <fullName>FR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Langue_parl_e_par_le_client__c</picklist>
         <values>
             <fullName>Français</fullName>

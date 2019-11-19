@@ -82,15 +82,44 @@ zc_Api.paymentsPOST(accessToken, zEntityId, payment, RTExceptionCode.ERREUR_IMPA
 
 
 //Billing Preview
+ProcessLog__c pLog = null;
 String accessToken = WS001_CallZuora.access_token;
 String zEntityId = WS001_CallZuora.getZuoraEntityId('033');
 zc_PostBillingPreviewParam previewReq = new zc_PostBillingPreviewParam();
-previewReq.accountId = '8adce4216d70ca8a016d8132476a1e0z'; //02
+previewReq.accountId = '8adc9a416dd847b0016dda63faca2f3c'; //02
 previewReq.assumeRenewal = 'All';
 //prev.chargeTypeToExclude = '';
 previewReq.includingEvergreenSubscription = true;
-previewReq.targetDate = Date.today().addMonths(1);
-zc_Api.opeBillingPreviewPOST(accessToken, zEntityId, previewReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW);
+previewReq.targetDate =  date.newInstance(2020,11,01).addDays(-1);
+zc_BillingPreviewResult previewRes = zc_Api.opeBillingPreviewPOST(accessToken, zEntityId, previewReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog);
+
+Decimal tvaZuora = Decimal.valueOf(Utils.getUgcGenericParam('TVA Zuora','033').ParamValue__c); 
+Decimal montantPreview = 0;
+for (zc_POSTBillingPreviewInvoiceItem invoice : previewRes.invoiceItems){
+Decimal chargeAmountTTC = (Decimal.valueOf(invoice.chargeAmount) * 100 * (1+(tvaZuora/100)));
+chargeAmountTTC = chargeAmountTTC.round();
+chargeAmountTTC = (chargeAmountTTC / 100);
+montantPreview = (Decimal)montantPreview + chargeAmountTTC;
+}
+
+
+// update sub (via object/subscriptionPUT)
+try{
+String accessToken = WS001_CallZuora.access_token;
+String zEntityId = WS001_CallZuora.getZuoraEntityId('033');
+zc_ProxyModifySubscription reqObj = new zc_ProxyModifySubscription();
+String zSubZID = '8adc9a416e16dc1c016e1c70821733ed';
+ProcessLog__c pLog = new ProcessLog__c(Process__c='objectSubscriptionPUT', Message__c='objectSubscriptionPUT');
+reqObj.codeFinContrat = 'L';
+reqObj.dateFinContrat = date.newInstance(2020,11,01);
+reqObj.tech_AvecRembouesement = 'true';
+reqObj.cancelCaseID = '5000E000009hSL0QAM';
+zc_SaveResult zSubUpdateResult = zc_Api.objectSubscriptionPUT(accessToken, zEntityId, zSubZID, reqObj, RTExceptionCode.ERREUR_DESABO_APPLICATION_UPDATESUB, pLog);
+System.debug('MBEN objectSubscriptionPUT: done' ); 
+}
+catch(Exception e){
+        System.debug('MBEN: exception');
+}
 
 
 Date targetDate; // = null;
@@ -221,3 +250,178 @@ insert pLog;
 
 ProcessLog__c pLog2 = new ProcessLog__c(Process__c = 'getImpaye', AccountZID__c = '123', SubscriptionZID__c = '526');
 insert pLog2;  
+
+String toto = '1';
+if (toto != null && Integer.valueOf(toto) > 0 ){
+        System.debug('MBEN: OK pas null');
+}else {
+        System.debug('MBEN: OK null');
+}
+
+
+// Attachment att = [Select Id from Attachment where What.Type IN ('Case') and ParentId ='5005E000005sYUoQAM']
+
+List<Carte__c> att = [Select Id from Carte__c]
+
+// Select TYPEOF Parent WHEN Case THEN Subscription__c, Date_de_creation__c, CreditMemoId__c END
+
+Select TYPEOF Parent WHEN Case THEN Account.Name END
+from Attachment 
+where Id='00P0E0000037rffUAA' and Parent.Type='Case'
+
+select Id,Parent.Type from Attachment
+Select Id, (select Id, Body from Attachments) from Case limit 1
+
+
+try {
+ProcessLog__c pLog = new ProcessLog__c(Message__c='test');
+String accessToken = WS001_CallZuora.access_token;
+String zEntityId = WS001_CallZuora.getZuoraEntityId('033');
+List<String> detteEchueIds = new List<String>{'x8adce4216e5e529f016e60a7396e0ede','x8adc9a416d82e2de016d8ba109d657c4'};
+zc_ProxyActionupdateRequest objUpdateReq  = new zc_ProxyActionupdateRequest();
+zc_ZObjectUpdate zObj;  
+if (detteEchueIds.size() > 0) {
+            //List<Zuora__ZInvoice__c> invoices2 = SM_Invoice.getInvoiceByIds(detteEchueIds);                        
+            objUpdateReq = new zc_ProxyActionupdateRequest();
+            objUpdateReq.r_type = 'Invoice';                 
+            for (Zuora__ZInvoice__c inv2 : SM_Invoice.getInvoiceByIds(detteEchueIds) ){
+                if (inv2.Tech_CompteurRejet__c != null && Integer.valueOf(inv2.Tech_CompteurRejet__c) > 5 ){  // pour isoler juste les factures 
+                    zObj = new zc_ZObjectUpdate();
+                    zObj.id = inv2.Zuora__External_Id__c;
+                    zObj.tech_FlagRejetPaye = 'true';
+                    objUpdateReq.objects.add(zObj);
+                }
+            }
+
+            System.debug(JSON.serialize(objUpdateReq,true));
+
+            zc_Api.actionUpdatePOST(accessToken, zEntityId, objUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_INVOICE,pLog);
+}
+}
+catch(Exception e){
+        System.debug('MBEN:ERREUR');
+}
+//objUpdateReq = new zc_ProxyActionupdateRequest();
+//objUpdateReq.r_type = 'Invoice';      
+
+
+
+
+     List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id='5005E000005t82pQAA'];
+     SM_SDoc.makeSdocJobs(cs);
+
+
+SELECT Id, name, FamilleMatrice__c, MotifMatrice__c, SousMotifMatrice__c, 
+                                         Reponse__c, 
+                                         NomModeleCourrierEmail__c, NomModeleEmailHTML__c,
+                                         Nom_du_mod_le_courrier_UU_fran_ais_pdf__c, Nom_du_mod_le_email_UU_fran_ais_HTML__c,
+                                         Nom_du_mod_le_courrier_UU_n_erlandais__c, Nom_du_mod_le_email_UU_n_erlandais__c, AvecCarte__c
+                                         FROM Contacts__c
+                                         WHERE Name IN ('007AH')
+
+
+zc_ProxyActionupdateRequest reqObj = new zc_ProxyActionupdateRequest();
+zc_ZObjectUpdate zObj = new zc_ZObjectUpdate();
+reqObj.r_type = 'Subscription';
+zObj.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
+zObj.id = '111';
+reqObj.objects.add(zObj);
+zObj.id = '222';
+System.debug('MBEN' + String.valueOf(reqObj));
+
+// --- OFFRE
+
+        String offId = 'a1D0E0000022GnwUAE';
+       Offre__c offre = [SELECT Id, DateDebut__c, DateFin__c, RecordType.Name, Promo__c FROM Offre__c WHERE Id = :offId];
+        // Map<Id, String> lieus = new Map<Id, Id>([SELECT Complexe__c, Complexe__r.CodeComplexe__c FROM OffreLieu__c
+        //WHERE Offre__c = :offId]);
+        Set<Id> lieuSet = new Set<Id>();
+        Set<Id> pdtSet = new Set<Id>();
+
+        for (OffreLieu__c offreLieu : [SELECT Complexe__c FROM OffreLieu__c WHERE Offre__c = :offId]) {
+            lieuSet.add(offreLieu.Complexe__c);
+        }
+
+        for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :offre.Promo__c]) {
+            pdtSet.add(promoProduit.Produit__c);
+        }
+
+        if (offre.RecordType.Name == 'Offre commerciale' || offre.RecordType.Name == 'Offre coupon') {
+            List<Offre__c> tgtOffres = [
+                    SELECT Id, DateDebut__c, DateFin__c, Promo__c
+                    FROM Offre__c
+                    WHERE Id != :offId
+                    AND (RecordType.Name = 'Offre commerciale' OR RecordType.Name = 'Offre coupon')
+            ];
+
+            List<OffreContrainte__c> contraintes = new List<OffreContrainte__c>();
+            List<OffreContrainte__c> tgtContraintes = new List<OffreContrainte__c>();
+            System.debug('MBEN lieuSet: ' + lieuSet);
+            System.debug('MBEN pdtSet: ' + pdtSet);
+
+            for (Offre__c tgtOffre : tgtOffres) {
+
+                Date maxDateDebut = Util.maxDate(tgtOffre.DateDebut__c, offre.DateDebut__c);
+                Date minDateFin = Util.minDate(tgtOffre.DateFin__c, offre.DateFin__c);
+                Set<Id> lieuTgtSet = new Set<Id>();
+                Set<Id> pdtTgtSet = new Set<Id>();
+                Set<Id> lieuSet2 = lieuSet.clone();
+                Set<Id> pdtSet2 = pdtSet.clone();
+                System.debug('MBEN tgt1: ' + tgtOffre.Id);
+
+                //verifier s'ils offre et tgtOffre n ont pas des dates de chevauchement
+                if (maxDateDebut <= minDateFin) {
+                    System.debug('MBEN tgt2: ' + tgtOffre.Id);
+
+                    for (OffreLieu__c offreLieu : [SELECT Complexe__c FROM OffreLieu__c WHERE Offre__c = :tgtOffre.Id]) {
+                        lieuTgtSet.add(offreLieu.Complexe__c);
+                    }
+                    System.debug('MBEN lieuTgtSet: ' + lieuTgtSet);
+                    lieuSet2.retainAll(lieuTgtSet);
+                    System.debug('MBEN lieuSet2: ' + lieuSet2);
+
+                    for (PromoProduit__c promoProduit : [SELECT Produit__c FROM PromoProduit__c where Promo__c = :tgtOffre.Promo__c]) {
+                        pdtTgtSet.add(promoProduit.Produit__c);
+                    }
+                    System.debug('MBEN pdtTgtSet: ' + pdtTgtSet);
+                    pdtSet2.retainAll(pdtTgtSet);
+                    System.debug('MBEN pdtSet2: ' + pdtSet2);
+
+                    //verifier s'ils offre et tgtOffre n ont pas des lieux cinema en commun : pas de contraintes
+                    if (!lieuSet2.isEmpty() &&  !pdtSet2.isEmpty() ) {
+                        System.debug('MBEN tgt3: ' + tgtOffre.Id);
+                    OffreContrainte__c co = new OffreContrainte__c();
+                    OffreContrainte__c tgtco = new OffreContrainte__c();
+
+                    co.Offre__c = offre.Id;
+                    co.ContrainteSur__c = tgtOffre.Id;
+                    co.DateDebut__c = maxDateDebut;
+                    co.DateFin__c = minDateFin;
+                    contraintes.add(co);
+
+                    tgtco.Offre__c = tgtOffre.Id;
+                    tgtco.ContrainteSur__c = offre.Id;
+                    tgtco.DateDebut__c = maxDateDebut;
+                    tgtco.DateFin__c = minDateFin;
+                    tgtContraintes.add(tgtco);
+
+                    }
+                }
+            }
+            if (!contraintes.isEmpty()) {
+                //insert contraintes;
+                System.debug('MBEN insert contrainte: ' + String.valueOf(contraintes));
+            }
+            if (!tgtContraintes.isEmpty()) {
+                //insert tgtContraintes;
+                System.debug('MBEN insert contrainte: ' + String.valueOf(tgtContraintes));
+            }
+        }
+        
+
+Map<String,Zuora__Subscription__c> subs = new map<String,Zuora__Subscription__c>([Select Adresse_livraison_1__c, Id from Zuora__Subscription__c limit 5]);
+System.debug(String.valueOf(subs));
+System.debug(subs.get('a0y0E0000013ODlQAM'));
+
+Account acc = new Account();
+Map<String,Object> mp = new Map<String, Object>{'ACC' => acc};

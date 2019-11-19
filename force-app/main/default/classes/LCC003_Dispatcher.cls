@@ -17,21 +17,16 @@ public without sharing class LCC003_Dispatcher {
 
         try{
             switch on bttnOperation {
-                when 'Desabonnement' {//DONE
-                	//creer doc
+                when 'Desabonnement' {
 					SM_Desabonnement.desabonner(currentId,false);
-					//caseToUpdate.Status = 'Fermee';
                 }
-                when 'Resiliation' { //DONE
-                	//creer doc
+                when 'Resiliation' {
 					SM_Resiliation.resiliation(currentId);
-					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'getAccount' {
 					SM_Subscription subscription = new SM_Subscription();
                 }
                 when 'Anonymisation' {
-                	//creer doc
 					rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ALL);
 					caseToUpdate.Status = 'Fermee';
                 }
@@ -44,41 +39,28 @@ public without sharing class LCC003_Dispatcher {
                 when 'SyncProduct' {
                     SM_Product.sync();
                 }
-                when 'Retention' { //DONE
-                    //TO do :
-                    //partie Offre de rétention = "hausse tarifaire" => uniquement renouvellement de sub fait
-                    // partie envoie de courrier
-                    //creer doc DONE
+                when 'Retention' {
                     system.debug('##MNE LCC003_Dispatcher initApexMethod process >> Retention');
                     SM003_Retention.retention(currentId);
-					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'AjoutLieux' {
                     SM_Offre.ajoutLieuAll(currentId);
                 }
-                when 'Retractation' { //DONE
-                	//creer doc
+                when 'Retractation' {
                     SM_Retractation.retractation(currentId);
-					//caseToUpdate.Status = 'Fermee';
                 }
-                when 'AnnulationDemande' {//DONE
-                	//creer doc
+                when 'AnnulationDemande' {
                     SM_Desabonnement.desabonner(currentId,false);
-					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'AnonymisationAbonne' {
-                	//creer doc
                     rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ONLY_ZUORA);
 					caseToUpdate.Status = 'Fermee';
                 }
-                when 'Remboursement' {//DONE
-                	//creer doc DONE
+                when 'Remboursement' {
                     SM_Remboursement.Remboursement(currentId); 
                 }
-                when 'AnnulationDesabo' {//DONE
-                	//creer doc
+                when 'AnnulationDesabo' {
                     SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
-					//caseToUpdate.Status = 'Fermee';
                 }
                 when 'RejetBRED_Parser_STEP1' {
 					SM_Rejet.traiterFichier(currentId);  
@@ -86,10 +68,8 @@ public without sharing class LCC003_Dispatcher {
                 when 'RejetBRED_Traiter_STEP2' {
                     SM_Rejet.getZSubRejetBredStep2(currentId);  
                 }
-                when 'GesteCommercial' {//DONE
-                	//creer doc
+                when 'GesteCommercial' {
                     LCC006_GesteCommercial.executeGesteCommercial(currentId, false);
-					//caseToUpdate.Status = 'Fermee';  
                 }
                 when 'DesactiverCarte' {
                     SM_Carte.desactivationFromCard(currentId, null);
@@ -114,12 +94,16 @@ public without sharing class LCC003_Dispatcher {
                 Datetime dNow = Datetime.now();
                 caseToUpdateError.Id = currentId;
                 String sDate = String.valueOf(dNow);
-                String current_ExecMessage = [Select ExecMessage__c from Case where Id=:currentId].ExecMessage__c;
+                Case cs = SM_Demande.getDemande(currentId);
+                String current_ExecMessage = cs.ExecMessage__c;
                 String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
                 caseToUpdateError.ExecMessage__c = sDate + fullMessage + '\n' + current_ExecMessage;
                 caseToUpdateError.ExecStatus__c = 'Erreur';
                 caseToUpdateError.ExecDate__c = dNow;
                 update caseToUpdateError;
+                
+                ProcessLog__c pLog = new ProcessLog__c(Process__c = bttnOperation, Account__c = cs.AccountId, SubscriptionName__c = cs.SubscriptionZName__c , Message__c = fullMessage);
+                insert pLog;
             }
             return rep;
         }

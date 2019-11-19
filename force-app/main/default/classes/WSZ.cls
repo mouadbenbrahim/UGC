@@ -389,6 +389,17 @@ public with sharing class WSZ {
         //public FinanceInformation financeInformation;
     }
     
+	public class RefundlIn2 {
+        public String refundDate;
+        public Decimal totalAmount;
+        public String typeX;
+        public String methodType;
+        public String reasonCode;
+        public String comment;
+        public String TECH_RefundGatewayResponseCode;
+        public String DateRejetBanque;
+    }
+    
     public class RefundOut {
         public String id;
         public String numberX;                  //number
