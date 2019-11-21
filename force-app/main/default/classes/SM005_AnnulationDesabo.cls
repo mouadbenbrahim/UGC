@@ -27,7 +27,7 @@ public without sharing class SM005_AnnulationDesabo {
         
         verifAnnulerDesabo();
         
-        String recordTypeName = Schema.SObjectType.Opportunity.getRecordTypeInfosById().get(dem.RecordTypeId).getname();
+        String recordTypeName = Schema.SObjectType.Case.getRecordTypeInfosById().get(dem.RecordTypeId).getname();
         String process = recordTypeName + '_AnnulerDesabo';
         pLog = new ProcessLog__c(Process__c = process, Account__c = dem.AccountId, SubscriptionName__c = dem.SubscriptionZName__c, Case__c = ddeId);
         

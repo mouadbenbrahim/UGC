@@ -218,7 +218,7 @@ public with sharing class SM_Offre {
                 subProd.subscribeToRatePlans.addAll(ratePlansAboBase);
                 subProd.HermesIntituleOffre = offAboBase.get(0).HermesIntituleOffre__c;
                 subProd.HermesIntituleOffreNL = offAboBase.get(0).HermesIntituleOffreNL__c;                
-                subProd.CodeOffreCo = offAboBase.get(0).Reference__c;
+                // subProd.CodeOffreCo = offAboBase.get(0).Reference__c; Ano: 1017
             }
 
             // Recupere le RP de la Frais de base: Frais dossier de l'abonnement
@@ -238,7 +238,7 @@ public with sharing class SM_Offre {
                 subProd.subscribeToRatePlans.addAll(ratePlansBase);
                 subProd.HermesIntituleOffre = offBase.get(0).HermesIntituleOffre__c;
                 subProd.HermesIntituleOffreNL = offBase.get(0).HermesIntituleOffreNL__c;
-                subProd.CodeOffreCo = offBase.get(0).Reference__c;
+                // subProd.CodeOffreCo = offBase.get(0).Reference__c;
             }
 
             // Recupere le RP de l offre commerciale
@@ -248,11 +248,13 @@ public with sharing class SM_Offre {
                 subProd.subscribeToRatePlans.addAll(ratePlansCom);
                 subProd.HermesIntituleOffre += '|' + offCo.get(0).HermesIntituleOffre__c;
                 subProd.HermesIntituleOffreNL += '|' + offCo.get(0).HermesIntituleOffreNL__c;
-                if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
-                    subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offCo.get(0).Reference__c;
-                }else {
-                    subProd.CodeOffreCo = offCo.get(0).Reference__c;
-                }
+                subProd.CodeOffreCo = offCo.get(0).Reference__c;
+                // if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
+                //     subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offCo.get(0).Reference__c;
+                // }else {
+                //     subProd.CodeOffreCo = offCo.get(0).Reference__c;
+                // }
+                
             }
 
             // Recupere le RP associe au coupon: BtoC ou BtoB
@@ -267,8 +269,8 @@ public with sharing class SM_Offre {
                         subProd.HermesIntituleOffre += '|' + offPc.get(0).HermesIntituleOffre__c;
                         subProd.HermesIntituleOffreNL += '|' + offPc.get(0).HermesIntituleOffreNL__c;
                         //subProd.CodeOffreCo = offPc.get(0).Reference__c;
-                        if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
-                            subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offPc.get(0).Reference__c;
+                        if (subProd.CodeOffreCo !=  null) {
+                            subProd.CodeOffreCo = subProd.CodeOffreCo + '-' + offPc.get(0).Reference__c;
                         }else {
                             subProd.CodeOffreCo = offPc.get(0).Reference__c;
                         }
@@ -284,8 +286,8 @@ public with sharing class SM_Offre {
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
                         subProd.IsB2B = true;
                         subProd.IsPrepaid = true;
-                        if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
-                            subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offPc.get(0).Reference__c;
+                        if (subProd.CodeOffreCo !=  null) {
+                            subProd.CodeOffreCo = subProd.CodeOffreCo + '-' + offPc.get(0).Reference__c;
                         }else {
                             subProd.CodeOffreCo = offPc.get(0).Reference__c;
                         }                        

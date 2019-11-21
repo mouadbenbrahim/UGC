@@ -5,6 +5,6 @@ global with sharing class Schedule_SubscriptionCancel implements  Schedulable {
         String subNumber = null;
 
         Batch_SubscriptionCancel batch = new Batch_SubscriptionCancel(dateFinContrat,subNumber);
-        Database.executeBatch(batch,50);
+        Database.executeBatch(batch,1);
     }
 }

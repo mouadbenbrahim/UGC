@@ -209,7 +209,7 @@ public with sharing class zc_Api {
     public static zc_POSTSubscriptionCancellationResp subscriptionCancelPUT(String accessToken, String zEntityId, zc_POSTSubscriptionCancellationType reqObj, String subId, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_POSTSubscriptionCancellationResp respObj = new zc_POSTSubscriptionCancellationResp();
-        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/subscriptions/'+subId+'/cancel', zEntityId, 'PUT', reqObj, zc_POSTSubscriptionCancellationResp.class, zc_CommonResponseType.class, null);
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/subscriptions/'+subId+'/cancel', zEntityId, 'PUT', reqObj, zc_POSTSubscriptionCancellationResp.class, zc_CommonResponseType.class, '211.0');
 
         String reqStr = JSON.serialize(reqObj);
         RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);

@@ -267,12 +267,11 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
         String sousMotif;
         if (lieu == 'WEB') {
            sousMotif = 'AH- Action Selfcare';
-        }else if (lieu == 'HORIZ') {
+        }else if (lieu == 'DRC') {
             sousMotif = 'AD- Action DRC';
         }else {
             sousMotif = 'AS- Action Stand';
         } // 'A- Action'; // AS- Action Stand // AH- Action Selfcare // AD- Action DRC
-
         return sousMotif;
     }
 
@@ -290,6 +289,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
             zDoc.CancelledDate__c = (zsub.status=='Cancelled')?zsub.termEndDate:null;
             zDoc.Cinema__r = new Complexe__c(CodeComplexe__c = zsub.Lieu); //update the lookup
             zDoc.CodeFinContrat__c = zsub.CodeFinContrat;
+            zDoc.CodeOffreCo__c = zsub.CodeOffreCo;
             zDoc.CodeOffrePrincipale__c = zsub.CodeOffrePrincipale;
             zDoc.CodePromo__c = zsub.CodePromo;
             zDoc.ContractEffectiveDate__c = zsub.contractEffectiveDate;
@@ -301,6 +301,17 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
             zDoc.Methodedepaiement__c = zsub.MethodePaiement;
             zDoc.ModeLivraison__c = zsub.ModeLivraison;
             // zDoc.Name = // TODO : par default Id
+
+            if (zsub.CodeOffreCo != null){
+                List<String> offresCo = zsub.CodeOffreCo.split('-');
+                if (offresCo.get(0) != null) {
+                    zDoc.Offre1__r = new Offre__c(Reference__c = offresCo.get(0));
+                }
+                if (offresCo.size() > 1 && offresCo.get(1) != null) {
+                    zDoc.Offre2__r = new Offre__c(Reference__c = offresCo.get(1));
+                } 
+            }
+
             zDoc.PayeurCRMID__c = zsub.PayeurCRMID;
             zDoc.Payeur__c = zsub.PayeurCRMID;
             zDoc.Source__c = zsub.Source;
@@ -312,7 +323,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
         if(zdd.containsKey('ZPM')){
             zpm = (zc_ProxyGetPaymentMethod)zdd.get('ZPM');
-            zDoc.BankTransferAccountNumber__c = zpm.bankTransferAccountNumber;
+            zDoc.BankTransferAccountNumber__c = zpm.BankTransferAccountNumberMask;
             zDoc.MandateID__c = zpm.mandateID;
             
         }

@@ -71,8 +71,8 @@ public class zc_POSTSubscriptionCancellationType {
     }
 
     public zc_POSTSubscriptionCancellationType() {
-        r_collect = false;
-        invoiceCollect = false;
+        //r_collect = false;
+        //invoiceCollect = false;
         runBilling = false;
     }
 

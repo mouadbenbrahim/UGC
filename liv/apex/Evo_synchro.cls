@@ -61,3 +61,32 @@ Database.executeBatch(batch,50);
 select Id, EventType, LogDate, LogFileLength from EventLogFile where EventType = 'API' limit 10 //and LogDate = 2019-11-04T00:00:00.000Z
 
 Select Lieu__c from Zuora__Subscription__c
+
+Map<String,Zuora__Subscription__c> mp = new Map<String,Zuora__Subscription__c>();
+mp.put('AAA',new Zuora__Subscription__c());
+mp.put('BBB',new Zuora__Subscription__c());
+System.debug(mp.size());
+mp.put('AAA',new Zuora__Subscription__c());
+System.debug(mp.size());
+
+Set<String> st = new Set<String>();
+st.add('AAA');
+st.add('BBB');
+System.debug(st.size());
+st.add('AAAA');
+System.debug(st.size());
+
+List<Offre__c> offs = [Select Reference__c from Offre__c];
+System.debug(offs.contains(new Offre__c(Reference__c='OFRHIVER2019')));
+//System.assertEquals(true,offs.contains(new Offre__c(Reference__c='OFRHIVER2019')));
+
+String str = 'ABO-ITA';
+List<String> codeOffreCo = str.split('-');
+System.debug(codeOffreCo);
+System.debug(codeOffreCo[0]);
+System.debug(codeOffreCo.size());
+//System.debug(codeOffreCo.get(1));
+
+
+
+

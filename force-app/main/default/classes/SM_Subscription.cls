@@ -266,6 +266,7 @@ public with sharing class SM_Subscription {
     	if(listSubscriptions != null && listSubscriptions.size() > 0){
     		checkPayeurSubscription(null, listSubscriptions);
             updateCancelCaseId(null, listSubscriptions);
+            updateOffreLookup(null, listSubscriptions);
     	}
     }
     
@@ -276,6 +277,7 @@ public with sharing class SM_Subscription {
     	if(listSubscriptions != null && listSubscriptions.size() > 0){
     		checkPayeurSubscription(mapOldSubscriptions, listSubscriptions);
             updateCancelCaseId(mapOldSubscriptions, listSubscriptions);
+            //updateOffreLookup(mapOldSubscriptions, listSubscriptions);
     	} 
     }
     
@@ -387,6 +389,56 @@ public with sharing class SM_Subscription {
         }
 
     }
+
+    public static void updateOffreLookup (map<Id, Zuora__Subscription__c> mapOldSubscriptions, List<Zuora__Subscription__c> listSubscriptions)  {
+    	
+        if(listSubscriptions == null || listSubscriptions.size() == 0){
+    		return;
+    	} 
+
+        Map<Id,Zuora__Subscription__c> subToUpdate = new Map<Id,Zuora__Subscription__c>(); //subId, CaseExtId__c
+        Set<String> offreRefs = new Set<String>(); //subId, CaseExtId__c
+
+        for(Zuora__Subscription__c sub : listSubscriptions){
+            if ((mapOldSubscriptions != null && mapOldSubscriptions.get(sub.Id).CodeOffreCo__c != sub.CodeOffreCo__c) || (mapOldSubscriptions == null && sub.CodeOffreCo__c != null)) { 
+                System.debug('MBEN:sub.CodeOffreCo__c:'+sub.CodeOffreCo__c);
+                List<String> codeOffreCo = sub.CodeOffreCo__c.split('-');
+                if (codeOffreCo.get(0) != null) {
+                    subToUpdate.put(sub.Id,sub);
+                    offreRefs.add(codeOffreCo.get(0));
+                }
+                if (codeOffreCo.size() > 1 && codeOffreCo.get(1) != null) {
+                    //subToUpdate.put(sub.Id,sub);
+                    offreRefs.add(codeOffreCo.get(1));
+                }                
+            }
+        }
+        System.debug('MBEN:offreRefs:'+offreRefs);
+        System.debug('MBEN:subToUpdate:'+subToUpdate);
+        
+
+        Map<String,Offre__c> offs = new Map<String,Offre__c>(); // = new Map<Id,Offre__c>([Select Reference__c from Offre__c where Reference__c in :offreRefs]);
+        if (offreRefs.size() > 0) {
+            for(Offre__c ref: [Select Id,Reference__c from Offre__c where Reference__c in :offreRefs]){
+                offs.put(ref.Reference__c, ref); //ca suppose que Reference__c est unique
+            }
+            System.debug('MBEN:offs'+offs);
+        }
+
+        for(Id key : subToUpdate.keySet()){
+                List<String> codeOffreCo = subToUpdate.get(key).CodeOffreCo__c.split('-');
+                if (codeOffreCo.get(0) != null && offs.containsKey(codeOffreCo.get(0))) {
+                    System.debug('MBEN:codeOffreCo.get(0)'+codeOffreCo.get(0));
+                    // subToUpdate.get(key).Offre1__r = new Offre__c(Reference__c=codeOffreCo.get(0)); // KO ne fonctionne pas
+                    subToUpdate.get(key).Offre1__c=offs.get(codeOffreCo.get(0)).Id;
+                }
+                if (codeOffreCo.size() > 1 && codeOffreCo.get(1) != null && offs.containsKey(codeOffreCo.get(1))) {
+                    // subToUpdate.get(key).Offre2__r = new Offre__c(Reference__c=codeOffreCo.get(1)); // KO ne fonctionne pas
+                    subToUpdate.get(key).Offre2__c=offs.get(codeOffreCo.get(1)).Id;
+                }                
+        }
+    }
+    
     
 
 	/*//Non utilisé
