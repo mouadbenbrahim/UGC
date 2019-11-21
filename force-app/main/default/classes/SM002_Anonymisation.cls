@@ -27,7 +27,7 @@ public without sharing class SM002_Anonymisation{
         Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
         Date d1 = Date.today();
         if (sub != null && (sub.Zuora__SubscriptionEndDate__c > d1 || sub.Zuora__SubscriptionEndDate__c == null) || (sub.DateFinContrat__c != null && sub.DateFinContrat__c > d1) ) {
-            throw new RTException('Anonymisation impossible, la subscription est avtif');
+            throw new RTException('Anonymisation impossible, la souscription est active');
         }
         
         /*pLog = new ProcessLog__c(Process__c = 'Anonymisation', Account__c = dem.AccountId, SubscriptionName__c = dem.SubscriptionZName__c, Case__c = caseId);

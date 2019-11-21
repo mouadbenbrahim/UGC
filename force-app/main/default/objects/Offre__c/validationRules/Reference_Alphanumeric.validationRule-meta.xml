@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reference_Alphanumeric</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+  AND(
+     ISNEW(),
+     NOT(ISBLANK(Reference__c)),
+     NOT(REGEX(Reference__c,&quot;^[a-zA-Z0-9_]*$&quot;))
+   )
+)</errorConditionFormula>
+    <errorMessage>La reference doit contenir des lettres et/ou chiffres seulement.</errorMessage>
+</ValidationRule>

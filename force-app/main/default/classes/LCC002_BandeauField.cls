@@ -13,7 +13,7 @@ public without sharing class LCC002_BandeauField {
         'Zuora__ContractEffectiveDate__c',//
         'DateFinContrat__c',//
         'CodeFinContrat__c',//
-        'Zuora__TermEndDate__c',//
+        'Marche__c',//
         'Lieu__c',//
         'TypeContrat__c',
         'Zuora__ContractAcceptanceDate__c'
