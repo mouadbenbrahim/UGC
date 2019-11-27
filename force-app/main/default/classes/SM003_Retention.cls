@@ -85,7 +85,6 @@ public without sharing class SM003_Retention {
         
         String zuoraSubId = sub.Zuora__External_Id__c;
         String zEntityId = WS001_CallZuora.getZuoraEntityId(sub.Zuora__Account__r.CodePays__c);        
-        list<SM001_GesteCommercial.Amendment> listAmendment = new list<SM001_GesteCommercial.Amendment>();
         
         // determiner si application de remise + produit remise
         if(c.Offre_de_r_tention__c != 'Points fidélité'){        	

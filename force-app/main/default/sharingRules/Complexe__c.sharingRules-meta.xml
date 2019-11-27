@@ -8,10 +8,16 @@
         <sharedTo>
             <group>Offre_Managers_Belgique</group>
         </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
         <criteriaItems>
             <field>CodePays__c</field>
             <operation>notEqual</operation>
             <value>032,033,034,039</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>equals</operation>
+            <value>032</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
@@ -22,32 +28,31 @@
         <sharedTo>
             <group>Offre_Managers_France</group>
         </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
         <criteriaItems>
             <field>CodePays__c</field>
             <operation>notEqual</operation>
             <value>032,033,034,039</value>
         </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Cine_OffreManagers_BE</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Cine OffreManagers BE</label>
-        <sharedTo>
-            <group>Offre_Managers_Belgique</group>
-        </sharedTo>
         <criteriaItems>
             <field>CodePays__c</field>
             <operation>equals</operation>
-            <value>032</value>
+            <value>033</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Cine_OffreManagers_FR</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Cine OffreManagers FR</label>
+        <fullName>CinemaFR</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Cinéma FR</label>
         <sharedTo>
-            <group>Offre_Managers_France</group>
+            <roleAndSubordinatesInternal>Directeur_Service_Client</roleAndSubordinatesInternal>
         </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
         <criteriaItems>
             <field>CodePays__c</field>
             <operation>equals</operation>

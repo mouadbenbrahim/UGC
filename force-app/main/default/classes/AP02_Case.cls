@@ -527,14 +527,16 @@ public class AP02_Case {
                 Date now = c.DateDemande__c;
                 Integer nowYear = now.year();
                 Integer nowMonth = now.month();
+                Date todayDay = Date.today();
                 system.debug('##MNE initDesaboDate CodePays__c >> '+sub.Zuora__Account__r.CodePays__c);
                 Integer preavis = Util.PREAVIS(sub.Zuora__Account__r.CodePays__c);
                 if (c.RecordTypeId == retractationRecordTypeId || c.RecordTypeId == annulationContratRecordTypeId ) {
-                    //c.Type_de_d_sabonnement__c = 'Désabonnement avec justificatif (E)';
-                    //c.Date_de_D_sabonnement__c = c.DateDemande__c;
-                    c.DateFinContrat__c = c.DateDemande__c;
-                    // c.DateFinContrat__c = c.DateFinContrat__c.addDays(1);
-                    c.DateFinContrat__c = c.DateFinContrat__c;
+                	if(startSub > todayDay){
+                		c.DateFinContrat__c = startSub;
+                	}else{
+                		c.DateFinContrat__c = c.DateDemande__c;
+                	}
+                    //c.DateFinContrat__c = c.DateFinContrat__c;
                 }
                 else if (c.RecordTypeId == resiliationRecordTypeId) {
                     //c.Type_de_d_sabonnement__c = 'Désabonnement avec justificatif (E)';

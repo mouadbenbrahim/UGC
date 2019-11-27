@@ -6,6 +6,8 @@ public without sharing class LCC006_GesteCommercial {
     public static ProcessLog__c pLog;
     public static zc_GETSubscriptionTypeWithSuccess subZdoc;
     public static zc_ProxyGetPaymentMethod pm;
+    public static String prodRatePlanChargeReferenceGesteCommercialCDI = 'REMMONT';
+    public static String prodRatePlanChargeReferenceGesteCommercialCDD = 'REMMENS';
     
     public static void executeGesteCommercial(Id ddeId, Boolean fromOnglet) {
         system.debug('##MNE LCC006_GesteCommercial executeGesteCommercial ddeId >> '+ddeId);
@@ -44,7 +46,7 @@ public without sharing class LCC006_GesteCommercial {
         String entite = (acc.CodePays__c == '033') ? 'France' : 'Belgique';
         Integer currentTerm = Integer.valueOf(sub.Zuora__CurrentTerm__c.split(' ').get(0));
         Integer nbDeMoisRemise = Integer.valueOf(dem.NombreDeMoisRemise__c);
-        String rpcReference = SM001_GesteCommercial.prodRatePlanChargeReferenceGesteCommercialCDD;
+        String rpcReference = prodRatePlanChargeReferenceGesteCommercialCDD;
         String accessToken = WS001_CallZuora.access_token;
         String currentTermPeriodType = sub.Zuora__CurrentTermPeriodType__c;
         Integer newCurrentTerm;
@@ -154,14 +156,17 @@ public without sharing class LCC006_GesteCommercial {
         String zuoraSubId = sub.Zuora__External_Id__c;
         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
         String entite = (acc.CodePays__c == '033') ? 'France' : 'Belgique';
-        String rpcReference = SM001_GesteCommercial.prodRatePlanChargeReferenceGesteCommercialCDI;
+        String rpcReference = prodRatePlanChargeReferenceGesteCommercialCDI;
         String accessToken = WS001_CallZuora.access_token;
 
         String moisDebutRemise = dem.Mois_de_d_but_remise__c;
         Double montantRemise = dem.MontantRemise__c;
         Integer nbDeMoisRemise = Integer.valueOf(dem.NombreDeMoisRemise__c);
-        Date dateDebutRemise = SM_Demande.getRemiseDate(Integer.valueOf(moisDebutRemise));
+        Date dateDebutRemise = SM_Demande.getRemiseDate(Integer.valueOf(moisDebutRemise),sub.Zuora__ContractEffectiveDate__c);
         String pallier = dem.Pallier__c;
+
+        System.debug('##ECH LCC006_GesteCommercial executeGesteCommercialCDI2 sub.Zuora__ContractEffectiveDate__c :'+sub.Zuora__ContractEffectiveDate__c);
+        System.debug('##ECH LCC006_GesteCommercial executeGesteCommercialCDI2 dateDebutRemise :'+dateDebutRemise);
 
         list<ProdRatePlanCharge__c> listProdRatePlanCharge = new list<ProdRatePlanCharge__c>([SELECT ReferenceCIC__c, zid__c, ProdRatePlan__r.zid__c 
         FROM ProdRatePlanCharge__c WHERE ReferenceCIC__c = :rpcReference and Entite__c = :entite]);        
@@ -183,7 +188,11 @@ public without sharing class LCC006_GesteCommercial {
         amendOptions.generateInvoice=false;
 
         // Add remise
-        amend1.contractEffectiveDate=dem.DateDemande__c;        
+        if(dem.DateDemande__c>sub.Zuora__ContractEffectiveDate__c)
+        amend1.contractEffectiveDate=dem.DateDemande__c;
+        else
+        amend1.contractEffectiveDate=sub.Zuora__ContractEffectiveDate__c;         
+        
         amend1.name='Geste Commercial';
         amend1.status='Completed';
         amend1.subscriptionId=sub.Zuora__External_Id__c;
