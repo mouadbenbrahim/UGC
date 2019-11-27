@@ -55,7 +55,9 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2019);
     public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB2 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2020);
     public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB3 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2021);
-    
+    public static final RTExceptionCode ERREUR_DESABO_BTOB_IMPOSSIBLE = new RTExceptionCode('Pas possible de desabonner un contrat BtoB', 2022);
+    public static final RTExceptionCode ERREUR_DESABO_COUPON_WELCOMEBACK2 = new RTExceptionCode('Erreur desabo: configuration coupon/offre welcome back', 2023);
+    public static final RTExceptionCode ERREUR_DESABO_COUPON_ABOTIER2 = new RTExceptionCode('Erreur desabo: configuration coupon/offre abo tier', 2023);
     
 
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CONTRAT_DEJA_ACTIF = new RTExceptionCode('Annulation desabo impossible: le contrat est deja actif', 2101);

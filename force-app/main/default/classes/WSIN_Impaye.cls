@@ -8,6 +8,9 @@ global with sharing class WSIN_Impaye {
         RestResponse res = RestContext.response;
         WSZ.GenericOut wsOut = new WSZ.GenericOut();
 
+        Datetime startTime = System.now();
+        Boolean enableResponseTime = Boolean.valueOf(Utils.getUgcGenericParam('Enable Response Time Log',null).ParamValue__c);
+
         switch on req.params.get('action') {
             when 'getimpaye'{
                 getImpaye(req,res);
@@ -21,6 +24,13 @@ global with sharing class WSIN_Impaye {
                 res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, true));
             }
         }
+
+        if (enableResponseTime){
+            Datetime endTime = System.now();
+            ProcessLog__c pLog2 = new ProcessLog__c(Process__c = 'ResponseTime_'+req.params.get('action'), StartTime__c = startTime, EndTime__c = endTime);
+            insert pLog2;
+        }
+
     }
 
     public static void getImpaye(RestRequest req, RestResponse res) {
@@ -29,6 +39,7 @@ global with sharing class WSIN_Impaye {
         Blob body = req.requestBody;
         String respBodyStr = null;
         WSZ.ImpayeIn wsIn = new WSZ.ImpayeIn();
+
         try {
             wsIn = (WSZ.ImpayeIn) JSON.deserializeStrict(body.toString(), WSZ.ImpayeIn.class);
             wsOut = SM_Impaye.getImpaye(wsIn.accountId,wsIN.subscriptionId);

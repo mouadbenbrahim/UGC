@@ -304,7 +304,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
             if (zsub.CodeOffreCo != null){
                 List<String> offresCo = zsub.CodeOffreCo.split('-');
-                if (offresCo.get(0) != null) {
+                if (offresCo.size() > 0 && offresCo.get(0) != null) {
                     zDoc.Offre1__r = new Offre__c(Reference__c = offresCo.get(0));
                 }
                 if (offresCo.size() > 1 && offresCo.get(1) != null) {

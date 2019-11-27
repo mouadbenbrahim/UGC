@@ -273,6 +273,28 @@ public with sharing class zc_Api {
         return respObj;
     }
 
+    public static zc_GETInvoiceItemsResponse invoicesItemsGET(String accessToken, String zEntityId, String invId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETInvoiceItemsResponse respObj = new zc_GETInvoiceItemsResponse();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/invoices/'+invId+'/items', zEntityId, 'GET', null,zc_GETInvoiceItemsResponse.class, zc_CommonResponseType.class, null);
+
+        String reqStr = 'invId' + invId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETInvoiceItemsResponse)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
 } // end class
 
 // // NON UTILISE

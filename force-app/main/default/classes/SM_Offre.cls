@@ -4,6 +4,10 @@
  */
 
 public with sharing class SM_Offre {
+
+    public static Date dateSouscription;
+    public static Date dateEligOffre;
+
 //TODO SF:Offre:Operation : renommer les valeurs des API multipicklist
     public static void Trig_ContrainteAfterInsert(List<OffreContrainte__c> contraintes) {
     }
@@ -190,7 +194,9 @@ public with sharing class SM_Offre {
     public static List<WSZ.SubProduct> getSubOffres(WSZ.SubOffreIn subIn) {
 
         //subIn.dateSubscription = Date.valueOf(subIn.dateSub);
-        subIn.dateSubscription = Date.today(); //14112019: tout les contrats sont considrerer le jour de la souscription.
+        //subIn.dateSubscription = Date.today(); //14112019: tout les contrats sont considrerer le jour de la souscription.
+        dateSouscription = subIn.dateSubscription;
+        dateEligOffre = Date.today();
 
         List<WSZ.SubProduct> subProducts = new List<WSZ.SubProduct>();
 
@@ -310,7 +316,7 @@ public with sharing class SM_Offre {
                 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Remise de base'
-                AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
+                AND DateDebut__c <= :dateEligOffre AND DateFin__c >= :dateEligOffre
                 AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = :rpReference)
                 AND Operation__c includes (:subIn.operation)
                 LIMIT 1
@@ -325,7 +331,7 @@ public with sharing class SM_Offre {
                 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Abonnement de base'
-                AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
+                AND DateDebut__c <= :dateEligOffre AND DateFin__c >= :dateEligOffre
                 AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = :rpReference)
                 LIMIT 1
         ];
@@ -340,7 +346,7 @@ public with sharing class SM_Offre {
                 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Frais de base'
-                AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
+                AND DateDebut__c <= :dateEligOffre AND DateFin__c >= :dateEligOffre
                 AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = :rpReference)
                 AND Operation__c includes (:subIn.operation)
                 LIMIT 1
@@ -357,7 +363,7 @@ public with sharing class SM_Offre {
                 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Reference__c
                 FROM Offre__c
                 WHERE RecordType.Name = 'Offre commerciale'
-                AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
+                AND DateDebut__c <= :dateEligOffre AND DateFin__c >= :dateEligOffre
                 AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = :prodRpRef)
                 AND Id IN (SELECT Offre__c FROM OffreLieu__c WHERE CodeComplexe2__c = :subIn.lieu)
                 AND Operation__c includes (:subIn.operation)
@@ -415,7 +421,7 @@ public with sharing class SM_Offre {
             throw new RTException(RTExceptionCode.ERREUR_OFFRE_COUPON_DEJA_UTILISE);
         }
         // Verifier date du coupon
-        if (!(couponG.DateDebut <= subIn.dateSubscription && couponG.DateFin >= subIn.dateSubscription)) {
+        if (!(couponG.DateDebut <= dateEligOffre && couponG.DateFin >= dateEligOffre)) {
             throw new RTException(RTExceptionCode.ERREUR_OFFRE_COUPON_EXPIRE);
         }
         //Verifier l agent
@@ -432,7 +438,7 @@ public with sharing class SM_Offre {
                 SELECT Id, Name, Intitule__c, HermesIntituleOffre__c, HermesIntituleOffreNL__c, RecordType.Name, Promo__c, Reference__c
                 FROM Offre__c
                 WHERE Coupon__c = :couponG.Id
-                AND DateDebut__c <= :subIn.dateSubscription AND DateFin__c >= :subIn.dateSubscription
+                AND DateDebut__c <= :dateEligOffre AND DateFin__c >= :dateEligOffre
                 AND Promo__c IN (SELECT Promo__c FROM PromoProduit__c WHERE Produit__r.Reference__c = :prodRpRef)
                 AND Id IN (SELECT Offre__c FROM OffreLieu__c WHERE CodeComplexe2__c = :subIn.lieu)
                 AND Operation__c includes (:subIn.operation)
@@ -506,7 +512,7 @@ public with sharing class SM_Offre {
             if (rem.Charge__r.FamilleRPC__c == 'ABOREM') {
                 ch.discountAmount = rem.Montant__c;
                 ch.endDateCondition = 'Specific_End_Date';
-                ch.specificEndDate = Util.zDate((Util.finMois(subIn.dateSubscription) + 1).addYears(1));
+                ch.specificEndDate = Util.zDate((Util.finMois(dateSouscription) + 1).addYears(1));
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMMENS') { //OK
@@ -514,7 +520,7 @@ public with sharing class SM_Offre {
                 ch.endDateCondition = 'Fixed_Period';
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
-                ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
+                ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
                 //ch.triggerDate = rem.DebuteXmois__c;
             }
 
@@ -523,8 +529,8 @@ public with sharing class SM_Offre {
                 // ch.endDateCondition = 'Fixed_Period';
                 // ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
-                ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth());
-                //ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
+                ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth());
+                //ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMMONT') {
@@ -532,7 +538,7 @@ public with sharing class SM_Offre {
                 ch.endDateCondition = 'Fixed_Period';
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
-                ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
+                ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMFRAISDOS') {
@@ -540,17 +546,17 @@ public with sharing class SM_Offre {
                 // ch.endDateCondition = 'Fixed_Period';
                 // ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 // ch.triggerEvent = 'USD';
-                // ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
+                // ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMFRAISDOSRED') {
                 ch.triggerEvent = 'USD';
-                ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth());                
+                ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth());                
                 ch.discountAmount = rem.Montant__c;
                 // ch.endDateCondition = 'Fixed_Period';
                 // ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 // ch.triggerEvent = 'USD';
-                // ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
+                // ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
             }
 
 /*            if (rem.Charge__r.FamilleRPC__c == 'ABO') {   //Abonnement B2B ce n est pas une remise
@@ -558,7 +564,7 @@ public with sharing class SM_Offre {
                 ch.endDateCondition = 'Fixed_Period';
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
-                ch.triggerDate = Util.zDate(subIn.dateSubscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
+                ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
             }*/
             rp.chargeOverrides.add(ch);
             rps.add(rp);

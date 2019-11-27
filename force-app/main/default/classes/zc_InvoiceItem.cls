@@ -126,6 +126,10 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
      */
     public String unitOfMeasure { get; set; }
 
+    public zc_InvoiceItem(){
+        taxationItems = new zc_InvoiceItemTaxationItems();
+    }
+
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'IntegrationId__NS' => 'integrationIdNS',
         'IntegrationStatus__NS' => 'integrationStatusNS',

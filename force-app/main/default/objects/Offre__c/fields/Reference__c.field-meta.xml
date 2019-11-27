@@ -4,7 +4,7 @@
     <externalId>true</externalId>
     <label>Reference</label>
     <length>15</length>
-    <required>false</required>
+    <required>true</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>false</unique>

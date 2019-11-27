@@ -66,7 +66,7 @@ public without sharing class SM005_AnnulationDesabo {
         //Debut call out pour ZDOC
         
         // Get Zuora Data (subscription)
-        subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+        subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, zObj.id, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
         // Get Zuora Data (Account)
         zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
         String payMethodId = zacc.defaultPaymentMethodId;

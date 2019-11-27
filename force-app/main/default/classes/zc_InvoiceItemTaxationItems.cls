@@ -12,8 +12,13 @@ public class zc_InvoiceItemTaxationItems {
     public String nextPage { get; set; }
 
     public zc_InvoiceItemTaxationItems() {
-        data = new List<zc_GETInvoiceTaxItemType>();
+        data = new List<zc_GETInvoiceTaxItemType>{new zc_GETInvoiceTaxItemType()};
     }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaa' => 'aaa',
+        'Bbb' => 'bbb'
+    };
 
     public static zc_InvoiceItemTaxationItems getExample() {
         zc_InvoiceItemTaxationItems invoiceItemTaxationItems = new zc_InvoiceItemTaxationItems();

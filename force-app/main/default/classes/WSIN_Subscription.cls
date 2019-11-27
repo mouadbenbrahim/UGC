@@ -8,6 +8,9 @@ global with sharing class WSIN_Subscription {
         RestResponse res = RestContext.response;
         WSZ.GenericOut wsOut = new WSZ.GenericOut();
 
+        Datetime startTime = System.now();
+        Boolean enableResponseTime = Boolean.valueOf(Utils.getUgcGenericParam('Enable Response Time Log',null).ParamValue__c);
+
         String uri = req.requestURI.substring(req.requestURI.lastIndexOf('/')+1);
 
         switch on uri {
@@ -32,6 +35,13 @@ global with sharing class WSIN_Subscription {
                 res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, true));
             }
         }
+        
+        if (enableResponseTime){
+            Datetime endTime = System.now();
+            ProcessLog__c pLog2 = new ProcessLog__c(Process__c = 'ResponseTime_'+uri, StartTime__c = startTime, EndTime__c = endTime);
+            insert pLog2;
+        }
+
     }
     
     

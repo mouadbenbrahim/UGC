@@ -58,7 +58,7 @@ Batch_SubscriptionCancel batch = new Batch_SubscriptionCancel(dateFinContrat,sub
 Database.executeBatch(batch,50);
 
 
-select Id, EventType, LogDate, LogFileLength from EventLogFile where EventType = 'API' limit 10 //and LogDate = 2019-11-04T00:00:00.000Z
+select Id, EventType, LogDate, LogFileLength from EventLogFile where EventType not in ('Login','Logout') //= 'API' limit 10 //and LogDate = 2019-11-04T00:00:00.000Z
 
 Select Lieu__c from Zuora__Subscription__c
 
@@ -90,3 +90,38 @@ System.debug(codeOffreCo.size());
 
 
 
+String offreAboTier = Utils.getUgcGenericParam('Abo Tier Offre Name','032').ParamValue__c;
+Integer validiteCoupon_AT = Integer.valueOf(Utils.getUgcGenericParam('Abo Tier Coupon Validite','032').ParamValue__c);
+Id parentCouponID_AT = [Select Coupon__c from Offre__c where Name = :offreAboTier Limit 1].Coupon__c;
+if (parentCouponID_AT == null) {throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,new ProcessLog__c());}
+String coupon_AT = SM_Coupon.generateCouponItem(parentCouponID_AT,null,Date.today(),Date.today().addMonths(validiteCoupon_AT));
+
+System.debug('MBEN:coupon_AT:'+coupon_AT);
+
+Date dt = null;
+
+//If(Date.today() < dt){
+    System.debug('MBEN:'+ (Date.today() != dt));
+//}
+
+
+String accessToken = WS001_CallZuora.access_token;
+String zEntityId = WS001_CallZuora.getZuoraEntityId('033');
+zc_GETInvoiceItemsResponse resp = zc_Api.invoicesItemsGET(accessToken, zEntityId, '8adcfb506c7497ee016c76ac8d8e710b', RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER, new ProcessLog__c());
+System.debug(JSON.serialize(resp));
+
+Boolean hasDetteTech = SM_Impaye.hasDetteTechnique(new List<String>{'8adcfb506c7497ee016c76ac8d8e710b','8adcfb506c7497ee016c76ac8d8e710b'});
+System.debug('MBEN:'+hasDetteTech);
+
+Date dd = Date.newInstance(2016, 01, 03).adddays(1490);  // 01/02/2020 --> 
+System.debug(dd);
+
+
+Datetime d1 = System.now()
+System.debug('MBEN:'+System.now().getTime());
+
+Boolean enableResponseTime = Boolean.valueOf(Utils.getUgcGenericParam('Enable Response Time Log',null).ParamValue__c);
+System.debug('MBEN:'+!enableResponseTime);
+
+
+select StartTime__c, EndTime__c from ProcessLog__c where Process__c = 'ResponseTime_acquisition'

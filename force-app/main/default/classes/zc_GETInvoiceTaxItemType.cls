@@ -103,6 +103,11 @@ public class zc_GETInvoiceTaxItemType {
      */
     public TaxRateTypeEnum taxRateType { get; set; }
 
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaa' => 'aaa',
+        'Bbb' => 'bbb'
+    };    
+
     public static zc_GETInvoiceTaxItemType getExample() {
         zc_GETInvoiceTaxItemType geTInvoiceTaxItemType = new zc_GETInvoiceTaxItemType();
         geTInvoiceTaxItemType.availableToCreditAmount = 1.3579;

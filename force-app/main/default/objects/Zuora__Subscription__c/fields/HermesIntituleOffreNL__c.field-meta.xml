@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>HermesIntituleOffreNL__c</fullName>
     <externalId>false</externalId>
-    <formula>IF (ISBLANK(Offre2__r.HermesIntituleOffreNL__c),Offre1__r.HermesIntituleOffreNL__c,Offre1__r.HermesIntituleOffreNL__c + &#39;-&#39; + Offre2__r.HermesIntituleOffreNL__c)</formula>
+    <formula>IF(ISBLANK(Offre2__r.HermesIntituleOffreNL__c),IF(ISBLANK(Offre1__r.HermesIntituleOffreNL__c),&#39;Geen&#39;,Offre1__r.HermesIntituleOffreNL__c),Offre1__r.HermesIntituleOffreNL__c + &#39;-&#39; + Offre2__r.HermesIntituleOffreNL__c)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>HermesIntituleOffreNL</label>
     <required>false</required>

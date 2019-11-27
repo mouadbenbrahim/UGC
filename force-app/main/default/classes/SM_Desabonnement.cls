@@ -67,10 +67,15 @@ public without sharing class SM_Desabonnement {
             noRemboursementAFaire = true;
         }
         
+        Boolean isFuturSub = sub.Zuora__ContractEffectiveDate__c > Date.today();
+        
 
         // Call depuis l'UI: decision Desabo Futur 
         if (!isBatchCall){ // UI Call
-            if (dateCancelContrat <= Date.today().addDays(1)) { // Decider si desabonner dans le futur ou pas ? autres criteres date fin contrat
+        	if((dem.RecordTypeId == retractationRecordTypeId || dem.RecordTypeId == annulationContratRecordTypeId) && isFuturSub){
+        		isDesaboNow = true;
+        	}
+            else if (dateCancelContrat <= Date.today().addDays(1)) { // Decider si desabonner dans le futur ou pas ? autres criteres date fin contrat
                 isDesaboNow = true;
             }else {
                 isDesaboNow = false;
@@ -101,12 +106,12 @@ public without sharing class SM_Desabonnement {
         zSubIn.dateFinContrat = dateCancelContrat.addDays(-1);
         //zSubZID = dem.Subscription__r.Zuora__Zuora_Id__c;
         zSubZID = sub.Zuora__Zuora_Id__c;
-        zSubIn.cancelCaseID = dem.Id;
+        zSubIn.cancelCaseID = dem.CaseExtId__c;
 
         System.debug('MBEN:desabonner: ' + ' isDesaboNow: '+isDesaboNow+' isBatchCall: '+isBatchCall+' noRemboursementAFaire: '+noRemboursementAFaire);
         System.debug('MBEN:desabonner: ' + ' dem.DateFinContrat__c: ' + dem.DateFinContrat__c + ' zSubIn.dateFinContrat: ' + zSubIn.dateFinContrat + 'zSubIn.cancelCaseID: ' + zSubIn.cancelCaseID);
         System.debug('MBEN:desabonner: ' + ' amendOperation: ' + amendOperation + ' zSubIn.codeFinContrat: '+zSubIn.codeFinContrat);
-        System.debug('MBEN:desabonner: ' + 'zSubIn.cancelCaseID: ' + zSubIn.cancelCaseID + 'dem.Id: '+dem.Id);
+        System.debug('MBEN:desabonner: ' + 'zSubIn.cancelCaseID: ' + zSubIn.cancelCaseID + 'dem.CaseExtId__c: '+dem.CaseExtId__c);
 
         if (isDesaboNow){
             
@@ -250,6 +255,44 @@ public without sharing class SM_Desabonnement {
         if (sub == null) {
             throw new RTException(RTExceptionCode.ERREUR_DESABO_CONTRAT_ABSENT_DDE,pLog);
         }
+        
+        if(sub.Marche__c == 'BTOB' && dem.RecordTypeId != resiliationRecordTypeId){
+        	throw new RTException(RTExceptionCode.ERREUR_DESABO_BTOB_IMPOSSIBLE,pLog);
+        }
+        
+        //Verif Welcome Back Offre Name
+        String offreWelcomeBack_TMP = Utils.getUgcGenericParam('Welcome Back Offre Name',acc.CodePays__c).ParamValue__c;
+		if(String.isBlank(offreWelcomeBack_TMP)){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_WELCOMEBACK2,pLog);
+		} 
+		Integer validiteCoupon_WB_TMP = Integer.valueOf(Utils.getUgcGenericParam('Welcome Back Coupon Validite',acc.CodePays__c).ParamValue__c);
+		if(validiteCoupon_WB_TMP == null){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_WELCOMEBACK2,pLog);
+		} 
+		list<Offre__c> parentCouponID_WB_TMP = new list<Offre__c>([Select Coupon__c from Offre__c where Name = :offreWelcomeBack_TMP Limit 1]);
+		if(parentCouponID_WB_TMP.size() == 0){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_WELCOMEBACK2,pLog);
+		}
+		if(parentCouponID_WB_TMP.get(0).Coupon__c == null){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_WELCOMEBACK2,pLog);
+		}
+		
+		//Verif Abo Tier Offre Name
+		String offreAboTier_TMP = Utils.getUgcGenericParam('Abo Tier Offre Name',acc.CodePays__c).ParamValue__c;
+		if(String.isBlank(offreAboTier_TMP)){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER2,pLog);
+		} 
+		Integer validiteCoupon_AT_TMP = Integer.valueOf(Utils.getUgcGenericParam('Abo Tier Coupon Validite',acc.CodePays__c).ParamValue__c);
+		if(validiteCoupon_AT_TMP == null){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER2,pLog);
+		} 
+		list<Offre__c> parentCouponID_AT_TMP = new list<Offre__c>([Select Coupon__c from Offre__c where Name = :offreAboTier_TMP Limit 1]);
+		if(parentCouponID_AT_TMP.size() == 0){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER2,pLog);
+		}
+		if(parentCouponID_AT_TMP.get(0).Coupon__c == null){
+			throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER2,pLog);
+		}
         
         if (dateCancelContrat == null) { 
             throw new RTException(RTExceptionCode.ERREUR_DESABO_DATE_FINCONTRAT_OBLIGATOIRE,pLog);            

@@ -128,7 +128,7 @@ public with sharing class SM_Invoice {
 	        c.RecordTypeId = impayeRecordTypeId;
 	        c.AccountId = inv.Zuora__Account__c;
 	        c.Famille__c = '7- Finance';
-	 		c.Motif__c = '02- Impayé';
+	 		c.Motif__c = '02- Impaye';
 	 		c.CommentairesInternes__c = inv.Tech_CodeRejet__c+' / '+inv.Tech_DateRejet__c;
 	 		c.Origin = 'Interne';
 	 		

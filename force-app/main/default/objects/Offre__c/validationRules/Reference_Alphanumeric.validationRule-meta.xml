@@ -4,10 +4,9 @@
     <active>true</active>
     <errorConditionFormula>OR(
   AND(
-     ISNEW(),
      NOT(ISBLANK(Reference__c)),
      NOT(REGEX(Reference__c,&quot;^[a-zA-Z0-9_]*$&quot;))
    )
 )</errorConditionFormula>
-    <errorMessage>La reference doit contenir des lettres et/ou chiffres seulement.</errorMessage>
+    <errorMessage>La reference doit contenir des lettres, chiffres et underscore seulement. example: NOEL_2019_FD_50PC</errorMessage>
 </ValidationRule>
