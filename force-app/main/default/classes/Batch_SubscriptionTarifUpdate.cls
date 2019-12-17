@@ -23,7 +23,7 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
 
         // KO: aggregate KO: String query = 'Select Zuora__Subscription__c, Zuora__Subscription__r.TarifFacture__c, sum(PriceCalc__c) newTarif from Zuora__SubscriptionProductCharge__c ' +
         // 'group by Zuora__Subscription__c, Zuora__Subscription__r.TarifFacture__c';
-        // Zuora__Subscription__r.Zuora__Zuora_Id__c in('8adc9a416a57f1e8016a692354c6605e','8adc8f996a06ca08016a21a3c6b66e61')
+        // Zuora__Subscription__r.Zuora__External_Id__c in('8adc9a416a57f1e8016a692354c6605e','8adc8f996a06ca08016a21a3c6b66e61')
         String zEntityId = WS001_CallZuora.getZuoraEntityId(codePays).replace('-','');
         Set<String> rpcSet = new Set<String>();
         // String sToday = Util.zDate(Date.Today());
@@ -33,7 +33,7 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
             rpcSet.add(prodRatePlanCharge.zid__c);
         }
         // Tous les contrats et leurs charges effectives aujourdhui
-        String query = 'Select Id,Zuora__Zuora_Id__c,Name,TarifFacture__c, DateTarifFacture__c,TypeContrat__c, ' +
+        String query = 'Select Id,Zuora__External_Id__c,Name,TarifFacture__c, DateTarifFacture__c,TypeContrat__c, ' +
                 '(select Id, Name, Zuora__Price__c, PriceCalc__c,Zuora__EffectiveStartDate__c, Zuora__EffectiveEndDate__c ' +
                 'from Zuora__Subscription_Product_Charges__r ' +
                 'where Zuora__ProductRatePlanChargeId__c in :rpcSet) ' +
@@ -43,14 +43,14 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
                 'AND Zuora__Status__c != \'Expired\' '               
         ;
 
-        if (subZID != null) {query = query + 'AND Zuora__Zuora_Id__c = :subZID';}
+        if (subZID != null) {query = query + 'AND Zuora__External_Id__c = :subZID';}
 
-// 'AND Zuora__Zuora_Id__c=\'8adc9a416dd847b0016dde7e2d887c4c\''
-// 'Order by Zuora__Zuora_Id__c '
+// 'AND Zuora__External_Id__c=\'8adc9a416dd847b0016dde7e2d887c4c\''
+// 'Order by Zuora__External_Id__c '
 // 'limit 10000 '
 // Zuora__Status__c != \'Expired\'
 // 'order by CreatedDate desc limit 20'
-//        + 'AND Zuora__Zuora_Id__c=\'8adcd9eb6b695a45016b6b6cd28f2f8e\' limit 1'  CDI
+//        + 'AND Zuora__External_Id__c=\'8adcd9eb6b695a45016b6b6cd28f2f8e\' limit 1'  CDI
 //8adcd9eb6b695a45016b6b6cd28f2f8e ou 8adc8f996a06ca08016a21a3c6b66e61 CDD
         System.debug('MBEN-start zEntityId: ' + zEntityId);
         System.debug('MBEN-start query: ' + Database.getQueryLocator(query).getQuery());
@@ -77,7 +77,7 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
             Map<Date, WSZ.price> prices = new Map<Date, WSZ.price>();
 
             createPrices(prices,charges); //in : charges, out : prices(KEYS: Date, VALUES: tarif, dateTarif, type(D/F))
-            System.debug('MBEN-Sub prices: ' + sub.Zuora__Zuora_Id__c + ' ' + prices.values());
+            System.debug('MBEN-Sub prices: ' + sub.Zuora__External_Id__c + ' ' + prices.values());
 
             if (prices.size() > 0){ // existe des prices pour la souscription, pour eviter des dereferenced null error
 
@@ -96,9 +96,9 @@ global class Batch_SubscriptionTarifUpdate implements Database.Batchable<sObject
                         Zuora__Subscription__c sub2 = new Zuora__Subscription__c();
                         sub2.TarifFacture__c = String.valueOf(dernierTarif);
                         sub2.DateTarifFacture__c = dateDernierTarif;
-                        sub2.Zuora__Zuora_Id__c = sub.Zuora__Zuora_Id__c;
+                        sub2.Zuora__External_Id__c = sub.Zuora__External_Id__c;
                         newScope.add(sub2);
-                        // System.debug('MBEN-execute-addsub2: '+ sub2.get('Zuora__Zuora_Id__c').toString());
+                        // System.debug('MBEN-execute-addsub2: '+ sub2.get('Zuora__External_Id__c').toString());
                     }
                 }
 

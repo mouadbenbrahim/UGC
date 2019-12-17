@@ -23,7 +23,8 @@ public with sharing class SM_Demande {
                         RecordTypeId, Date_de_R_siliation__c, Motif_de_R_siliation__c,Moyen_de_paiement_souhait__c,Raison_remboursement__c,
                         DateDeRemboursement__c, CreditMemoId__c, Payment__c, Payment__r.Id, Payment__r.Zuora__EXT_ID__c,
                         Mois_de_d_but_remise__c, MontantRemise__c, NombreDeMoisRemise__c, Pallier__c, CouponWelcomeback__c,Subscription__r.Zuora__Zuora_Id__c,Etat_remboursement__c,
-                        Offre_de_r_tention__c, Raison_de_d_sabonnement__c, R_sultat_R_tention__c, TECHIdStatut__c, Account.Tech_IdMonCompte__c, ExecMessage__c, CaseExtId__c
+                        Offre_de_r_tention__c, Raison_de_d_sabonnement__c, R_sultat_R_tention__c, TECHIdStatut__c, Account.Tech_IdMonCompte__c, ExecMessage__c, CaseExtId__c,
+                        Subscription__r.Zuora__External_Id__c
                 FROM Case
                 WHERE Id = :ddeId
         ];

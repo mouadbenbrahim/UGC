@@ -18,7 +18,7 @@ public class zc_ProxyActionqueryResponse {
      * 
      * @return records
      */
-    public List<zc_ZObject> records { get; set; }
+    public List<zc_GETSubscriptionTypeWithSuccess> records { get; set; }
 
     /**
      * 
@@ -27,8 +27,13 @@ public class zc_ProxyActionqueryResponse {
     public Integer size { get; set; }
 
     public zc_ProxyActionqueryResponse() {
-        records = new List<zc_ZObject>();
+        records = new List<zc_GETSubscriptionTypeWithSuccess>{new zc_GETSubscriptionTypeWithSuccess()};
     }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaa' => 'aaa',
+        'Bbb' => 'bbb'
+    }; 
 
     // public static zc_ProxyActionqueryResponse getExample() {
     //     zc_ProxyActionqueryResponse proxyActionqueryResponse = new zc_ProxyActionqueryResponse();

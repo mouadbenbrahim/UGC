@@ -143,6 +143,8 @@ public with sharing class WSZ {
         public Double discountPercentage;
         public Double discountAmount;
         public Double price;
+        public String HermesIntituleOffre;
+        public String HermesIntituleOffreNL;
     }
 
     public class SubProduct {
@@ -931,151 +933,60 @@ public with sharing class WSZ {
 
     }
 
-    // public class ProcessLog {
-    //     public String process;
-    //     public Id accountId;
-    //     public Id caseId;
-    //     public String subscriptionName;
-    //     public String accountZID;
-    //     public Integer code;
-    //     public String message;
-        
-    //     public ProcessLog(String process, Id accountId, Id caseId, String subscriptionName, String accountZID){
-    //         this.process = process;
-    //         this.accountId = accountId;
-    //         this.caseId = caseId;
-    //         this.subscriptionName = subscriptionName;
-    //         this.accountZID = accountZID;
-    //     }
-    // }
+    public class HermesAuthorizeIn {
+        public String accountSFID;
+        public String accountRCID;
+        public String lieu;
+    }
+
+    public class HermesAuthorizeOut {
+        public String subscriptionName;
+        public String subscriptionZID;
+        public String accountZID;
+        public String accountSFID;
+        public String payeurSFID;
+        public String accountRCID;
+        public String payeurRCID;
+        public Boolean compteBloque; // (si un probleme precedent qui necessite un blocage de toutes les operations Abonné sur ce compte: flag sur le compte)
+        public String messageCompteBloque;
+        public Integer codeBlocage;
+        public List<OpeAuthtorize> opeAuth;
+        public Boolean success;
+        public String message;
+        public Integer errorCode;        
+
+        public HermesAuthorizeOut(){
+            this.opeAuth = new List<OpeAuthtorize>();
+        }
+
+    }
+
+    public class OpeAuthtorize {
+        public String operation; //migration,acquisition,renouvellement,
+        public Boolean authorize;
+        public Boolean visible;
+        public Integer code;
+        public String message;
+        public List<String> produiteligible; // "produiteligible":["UI2CDI","UI3CDI"]	(produit eligible à la migration)
+    }
+
+    public class ContratFileIn {
+        //public String accountZID;
+        public String accountSFID;        
+        public String subscriptionName;
+        public String subscriptionNameAvenir;
+    }
+
+    public class ContratFileOut {
+        //public String accountZID;
+        public String accountSFID;        
+        public String subscriptionName;
+        public String subscriptionNameAvenir;
+        public String contratFile;
+        public String contratFileAvenir;
+        public Boolean success;
+        public String message;
+        public Integer errorCode;          
+    }
 
 }
-
-
-//CancelSubsctipion
-/*    "success": true,
-    "subscriptionId": "8adcc59c658a22b70165a9cfc966690a",
-    "cancelledDate": "2018-12-15",
-            "totalDeltaMrr": 0,
-            "totalDeltaTcv": -208.779999993,
-    "creditMemoId": "8adcc59c658a22b70165a9cfcab5691d"
-
-    OU
-
-
-{
-    "success": true,
-    "subscriptionId": "8adcc59c658a22b70165a9aabd9e3fce",
-    "cancelledDate": "2018-12-15",
-    "totalDeltaMrr": 0,
-    "totalDeltaTcv": -208.779999993,
-    "invoiceId": "8adcc59c658a22b70165a9aabe933fed"
-}
-    */
-
-
-
-//Debit Memo output
-/*
-{
-"id": "8adcc59c658a22b70165aa1ee57755df",
-"number": "FDM00000006",
-"accountId": "8adce42165650a1b01658a0b3e1d1d5d",
-"debitMemoDate": "2018-12-15",
-"currency": "EUR",
-"targetDate": null,
-"dueDate": "2018-12-15",
-"postedOn": null,
-"postedById": null,
-"status": "Draft",
-"amount": 13,
-"taxAmount": 0.68,
-"totalTaxExemptAmount": 0,
-"balance": 13,
-"beAppliedAmount": 0,
-"autoPay": false,
-"comment": "pour ajutser un credit memo automatique",
-"referredInvoiceId": null,
-"transferredToAccounting": "No",
-"reasonCode": "Correcting invoice error",
-"createdDate": "2018-09-05 16:24:36",
-"createdById": "8adc8f996445f87c0164602944942186",
-"updatedDate": "2018-09-05 16:24:36",
-"updatedById": "8adc8f996445f87c0164602944942186",
-"cancelledOn": null,
-"cancelledById": null,
-"latestPDFFileId": null,
-"success": true
-}*/
-
-
-//Post debitmemo
-/*{
-    "id": "8adcc59c658a22b70165aa1ee57755df",
-    "number": "FDM00000006",
-    "accountId": "8adce42165650a1b01658a0b3e1d1d5d",
-    "debitMemoDate": "2018-12-15",
-    "currency": "EUR",
-    "targetDate": null,
-    "dueDate": "2018-12-15",
-    "postedOn": "2018-09-05 16:31:09",
-    "postedById": "8adc8f996445f87c0164602944942186",
-    "status": "Posted",
-    "amount": 13,
-    "taxAmount": 0.68,
-    "totalTaxExemptAmount": 0,
-    "balance": 13,
-    "beAppliedAmount": 0,
-    "autoPay": false,
-    "comment": "pour ajutser un credit memo automatique",
-    "referredInvoiceId": null,
-    "transferredToAccounting": "No",
-    "reasonCode": "Correcting invoice error",
-    "createdDate": "2018-09-05 16:24:36",
-    "createdById": "8adc8f996445f87c0164602944942186",
-    "updatedDate": "2018-09-05 16:31:09",
-    "updatedById": "8adc8f996445f87c0164602944942186",
-    "cancelledOn": null,
-    "cancelledById": null,
-    "latestPDFFileId": null,
-    "success": true
-}
-*/
-
-
-// Apply Credit memo to a debit memo:
-/*
-{
-    "id": "8adc9a41658a0b810165a9fbea981d27",
-    "number": "FCM00000007",
-    "accountId": "8adce42165650a1b01658a0b3e1d1d5d",
-    "currency": "EUR",
-    "creditMemoDate": "2018-12-15",
-    "targetDate": "2018-12-15",
-    "postedById": "8adc8f996445f87c0164602944942186",
-    "postedOn": "2018-09-05 15:46:23",
-    "status": "Posted",
-    "amount": 12.01,
-    "taxAmount": 0,
-    "totalTaxExemptAmount": 0,
-    "unappliedAmount": 6.01,
-    "refundAmount": 0,
-    "appliedAmount": 6,
-    "comment": null,
-    "source": "ApiAmend",
-    "sourceId": null,
-    "referredInvoiceId": null,
-    "reasonCode": "Correcting invoice error",
-    "createdDate": "2018-09-05 15:46:23",
-    "createdById": "8adc8f996445f87c0164602944942186",
-    "updatedDate": "2018-09-05 16:48:42",
-    "updatedById": "8adc8f996445f87c0164602944942186",
-    "cancelledOn": null,
-    "cancelledById": null,
-    "latestPDFFileId": "8adcb9fe658a09170165a9fbec12325a",
-    "transferredToAccounting": "No",
-    "excludeFromAutoApplyRules": false,
-    "autoApplyUponPosting": false,
-    "success": true
-}
- */

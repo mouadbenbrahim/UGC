@@ -97,11 +97,12 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_ACQUISIT_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Acquisition : probleme get subscription zuora', 4101);
     public static final RTExceptionCode ERREUR_ACQUISIT_GET_ACCOUNT = new RTExceptionCode('Erreur Acquisition : probleme get account zuora', 4102);
     public static final RTExceptionCode ERREUR_ACQUISIT_GET_PAYMENTMETHOD = new RTExceptionCode('Erreur Acquisition : probleme get payment method zuora', 4103);    
-    
     public static final RTExceptionCode ERREUR_MIGRATION_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Migration : probleme get subscription zuora', 4201);
     public static final RTExceptionCode ERREUR_REEDITION_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Reedition : probleme get subscription zuora', 4301);
     public static final RTExceptionCode ERREUR_RENOUV_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Renouvellement : probleme get subscription zuora', 4401);
     public static final RTExceptionCode ERREUR_CHGBANQUE_GET_ZSUBSCRIPTION = new RTExceptionCode('Erreur Changement Coord Bancaire : probleme get subscription zuora', 4501);
+    public static final RTExceptionCode ERREUR_CONTRATFILE_CASE_NONTROUVE = new RTExceptionCode('Erreur recuperation contratfile : aucun case record trouve avec attachementid', 4601);
+    public static final RTExceptionCode ERREUR_CONTRATFILE_ATTACHMENT_NONTROUVE = new RTExceptionCode('Erreur recuperation contratfile : attachment record non trouve', 4602);
     
 
        

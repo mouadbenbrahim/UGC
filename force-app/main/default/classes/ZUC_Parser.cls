@@ -38,11 +38,30 @@ public String serializeWithMapping(Object lc1){
     JSONGenerator gen = JSON.createGenerator(true);
     System.debug('MBEN:serializeWithMapping: ORI JSON:' + bodyStr);
 
-    parser.nextToken();
-    gen.writeStartObject();
-    runParse(parser, gen, currMap);
-    
-    return gen.getAsString();
+	try {
+
+		parser.nextToken();
+		gen.writeStartObject();
+		runParse(parser, gen, currMap);
+		
+		
+		
+	 } catch (Exception e) {
+		String dataValues = gen.getAsString();
+	 	System.debug('MBEN: catchparser: '+ dataValues);
+		String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
+		//String dataValues = '\n currMap:' + String.valueOf(currMap) + '\n newMap:' + String.valueOf(newMap) + '\n emptyMap:' + String.valueOf(emptyMap) + '\n currItemJson:' +  String.valueOf(currItemJson) + '\n currItemObj:' + String.valueOf(currItemObj) + '\n empObj:' + String.valueOf(empObj) + '\n emptyJson:' + String.valueOf(emptyJson);
+		fullMessage += dataValues;
+		fullMessage += '\n JSON request';
+		fullMessage += bodyStr;
+		throw new RTException(new RTExceptionCode(fullMessage,801));
+
+
+	 }
+
+	return gen.getAsString();
+
+
 
 }
 
@@ -105,7 +124,7 @@ public void runParse(JSONParser myParser, JSONGenerator gen, Map<String,Object> 
 	System.debug('CURRMAP_OBJ' +String.valueOf(JSON.serialize(currMap,true)));
 	// System.debug('Run myMethod');
 	Integer i = 0;
-	while ((myParser.nextToken() != null) && (gToken != 'END_OBJECT') && (i < 50) ) {	
+	while ((gToken != 'END_OBJECT') && (myParser.nextToken() != null) && (i < 150) ) {	
 		gToken = String.valueOf(myParser.getCurrentToken());
 		gName = myParser.getCurrentName();
 		gText = myParser.getText();
@@ -170,9 +189,11 @@ public void runParse(JSONParser myParser, JSONGenerator gen, Map<String,Object> 
 				List<Object> listObj = (List<Object>)currMap.get(gName);			 				
 			 	for (Object obj1 : listObj){										
 			 		gen.writeStartObject();
+					 //myParser.nextToken();
 			 		runParse(myParser, gen, untypeObj(obj1,true)); //recursive
+					//gen.writeEndObject(); 
 			 	}
-				 gen.writeEndArray();			 	
+				gen.writeEndArray();	//MBEN: commented on   16122019		 	
 			}
 		
 		}else if (gToken == 'END_OBJECT') {
@@ -341,5 +362,208 @@ System.debug('jsonStr' + jsonStr);
 	return JSON.serialize(newMap,false);
 }
 
+
+public void runParse3(JSONGenerator gen, Object obj1) {
+
+	//System.debug('AA:obj1: ' + JSON.serialize(obj1,true));
+	String sType2 = getObjectType(obj1);
+	// System.debug('PP:sType2: ' + sType2 + ' item: ' + String.valueOf(obj1) );
+
+	if (sType2 == 'String' ) { //primitifs
+		gen.writeString(String.valueOf(obj1));
+	}else if(sType2 == 'Boolean'){
+		gen.writeBoolean(Boolean.valueOf(obj1));
+	}else if(sType2 == 'Integer'){
+		gen.writeNumber(Integer.valueOf(obj1));
+
+	}else if (sType2 == 'List<ANY>'){ // List d objets
+		List<Object> obj5 = (List<Object>)obj1;
+		gen.writeStartArray();
+		for (Object obj6 : obj5) {
+			runParse3(gen, obj6);
+		}
+		gen.writeEndArray();
+
+	}else if (sType2 =='Map<String,ANY>' ){ //&& item != 'propertyMappings'
+		Map<String,Object> obj4 = (Map<String,Object>)obj1;
+
+		Object propObj = obj4.get('propertyMappings');	
+		Map<String,Object> propMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(propObj));
+
+		gen.writeStartObject();
+		for (String key : obj4.keySet()) {
+			
+			if (key != 'propertyMappings') {
+				System.debug('AB:key: ' + key);
+				String keyTrans = getMapVal(propMap,key);
+				gen.writeFieldName(keyTrans);
+				//gen.writeStartObject();
+				runParse3(gen, obj4.get(key));
+				//gen.writeEndObject();
+			}
+		}
+		gen.writeEndObject();
+				
+	}else { // Object
+		Map<String,Object> currMap = untypeObj(obj1,true);
+		//String bodyStr = JSON.serialize(obj1,true);
+		//JSONParser myParser = JSON.createParser(bodyStr);
+		//gen.writeStartObject();
+		runParse3(gen, currMap);
+		//gen.writeEndObject();
+
+		System.debug('ZZZ: '+ sType2);
+	} //end if
+
+		
+
+/*
+	String gToken = String.valueOf(myParser.getCurrentToken());
+	String gName = myParser.getCurrentName();
+	String gText = myParser.getText();	
+	Object propObj = currMap.get('propertyMappings');	
+	Map<String,Object> propMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(propObj));
+	System.debug('MBEN:runParse:propMap: '+JSON.serialize(propObj));
+	System.debug('STARTMETH: '+gToken+'-'+gName+'-'+gText);	
+	System.debug('CURRMAP_OBJ' +String.valueOf(JSON.serialize(currMap,true)));
+	Integer i = 0;
+	while ((gToken != 'END_OBJECT') && (myParser.nextToken() != null) && (i < 150) ) {	
+		gToken = String.valueOf(myParser.getCurrentToken());
+		gName = myParser.getCurrentName();
+		gText = myParser.getText();
+		System.debug('PARSER: ' +gToken+'-'+gName+'-'+gText);
+		
+		if (gToken == 'VALUE_STRING') {			
+			if (gName != null){ //cas des Array list
+				//if (currMap.containsKey(gName)){newName=String.valueOf(propMap.get(gName));} else {newName=gName;}
+				//newName = getMapVal(propMap,gName);
+				gen.writeStringField(getMapVal(propMap,gName), gText);
+			}else{
+				gen.writeString(gText);
+			}
+
+		}else if (gToken == 'VALUE_TRUE') {
+			if (gName != null){gen.writeBooleanField(getMapVal(propMap,gName), myParser.getBooleanValue());} else{gen.writeBoolean(myParser.getBooleanValue());}		
+
+		}else if (gToken == 'VALUE_FALSE') {
+			if (gName != null){gen.writeBooleanField(getMapVal(propMap,gName), myParser.getBooleanValue());} else{gen.writeBoolean(myParser.getBooleanValue());}		
+
+		}else if (gToken == 'VALUE_NUMBER_FLOAT') {
+			if (gName != null){gen.writeNumberField(getMapVal(propMap,gName), myParser.getDoubleValue());} else{gen.writeNumber(myParser.getDoubleValue());}		
+
+		}else if (gToken == 'VALUE_NUMBER_INT') {
+			if (gName != null){gen.writeNumberField(getMapVal(propMap,gName), myParser.getIntegerValue());} else{gen.writeNumber(myParser.getIntegerValue());}		
+
+		}else if (gToken == 'VALUE_NULL') {	System.debug('valeur null');			
+
+		}else if (gToken == 'START_OBJECT' && gName != 'propertyMappings') {			
+			if (gName != null) {
+				//if (currMap.containsKey(gName)){newName=String.valueOf(propMap.get(gName));} else {newName=gName;}
+				gen.writeFieldName(getMapVal(propMap,gName));
+				gen.writeStartObject();
+				runParse(myParser, gen,untypeObj(currMap.get(gName),true)); //recursive
+			}		
+		}else if (gToken == 'START_OBJECT' && gName == 'propertyMappings') {
+				myParser.skipChildren();
+		
+		
+		}else if (gToken == 'START_ARRAY') {
+            System.debug('MBENTGT: '+String.valueOf(currMap.get(gName)));
+			if (currMap.get(gName) == null) {
+                System.debug('MBEN: Cas non traite dans ARRAY');
+            }else if (!String.valueOf(currMap.get(gName)).contains('{')) { // List simple:  pas d objet
+			// 	//Type t1 = Type.forName('c1.'+gName);		
+			 	//System.debug('START_ARRAY: ' +gToken+'-'+gName+'-'+gText);
+			 	// if (currMap.containsKey(gName)) {newName=String.valueOf(propMap.get(gName));} else {newName=gName;}
+			 	gen.writeFieldName(gName);
+			 	gen.writeStartArray();		
+				List<Object> listObj = (List<Object>)currMap.get(gName);			 				
+			 	for (Object obj1 : listObj){					
+					myParser.nextToken();
+					gen.writeString(String.valueOf(obj1));
+					//gen.writeEndObject();
+			 	}
+				 gen.writeEndArray();
+				 myParser.nextToken();				 
+			 }else {			 // Une liste d objets
+			 	gen.writeFieldName(getMapVal(propMap,gName));
+			 	gen.writeStartArray();
+				// myParser.nextToken();		
+				List<Object> listObj = (List<Object>)currMap.get(gName);			 				
+			 	for (Object obj1 : listObj){										
+			 		gen.writeStartObject();
+					 //myParser.nextToken();
+			 		runParse(myParser, gen, untypeObj(obj1,true)); //recursive
+					//gen.writeEndObject(); 
+			 	}
+				gen.writeEndArray();	//MBEN: commented on   16122019		 	
+			}
+		
+		}else if (gToken == 'END_OBJECT') {
+			gen.writeEndObject();
+		
+		
+		}else if (gToken == 'END_ARRAY') {
+			gen.writeEndArray();
+		}
+				
+		i++;
+	}
+*/
+}
+
+
+public String serializeWithMapping3(Object lc1){
+
+    //Map<String,Object> currMap = untypeObj(lc1,true);
+    String bodyStr = JSON.serialize(lc1,true);
+
+    //JSONParser parser = JSON.createParser(bodyStr);
+    JSONGenerator gen = JSON.createGenerator(true);
+    //System.debug('MBEN:serializeWithMapping: ORI JSON:' + bodyStr);
+
+	try {
+
+		//parser.nextToken();
+		//gen.writeStartObject();
+		runParse3(gen, lc1);
+		
+		
+		
+	 } catch (Exception e) {
+		String dataValues = gen.getAsString();
+	 	System.debug('MBEN: catchparser: '+ dataValues);
+		String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
+		//String dataValues = '\n currMap:' + String.valueOf(currMap) + '\n newMap:' + String.valueOf(newMap) + '\n emptyMap:' + String.valueOf(emptyMap) + '\n currItemJson:' +  String.valueOf(currItemJson) + '\n currItemObj:' + String.valueOf(currItemObj) + '\n empObj:' + String.valueOf(empObj) + '\n emptyJson:' + String.valueOf(emptyJson);
+		fullMessage += dataValues;
+		//fullMessage += '\n JSON request';
+		//fullMessage += bodyStr;
+		System.debug('ZZ: fullMessage:' + fullMessage);
+		throw new RTException(new RTExceptionCode(fullMessage,801));
+
+
+	 }
+	 
+
+	return gen.getAsString();
+
+
+
+}
+
+public static String getObjectType(Object obj){
+
+    String result = 'DateTime';
+    try{
+        DateTime typeCheck = (DateTime)obj;
+    }
+    catch(System.TypeException te){
+
+        String message = te.getMessage().substringAfter('Invalid conversion from runtime type ');
+        result = message.substringBefore(' to Datetime');
+    }
+
+    return result;
+}
 
 }

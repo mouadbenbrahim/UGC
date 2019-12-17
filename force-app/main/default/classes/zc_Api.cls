@@ -295,6 +295,51 @@ public with sharing class zc_Api {
         return respObj;
     }
 
+    public static zc_ProxyActionqueryResponse actionQueryPOST(String accessToken, String zEntityId, zc_ProxyActionqueryRequest reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_ProxyActionqueryResponse respObj = new zc_ProxyActionqueryResponse();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/action/query', zEntityId, 'POST', reqObj,zc_ProxyActionqueryResponse.class, null, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_ProxyActionqueryResponse)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.records.size() == 0){
+                    throw new RTException(rtc2,pLog);
+            }
+        }
+
+        //{"queryString": "Select Id, AccountId,  AutoRenew, CancelledDate, ContractAcceptanceDate, ContractEffectiveDate, CreatedById, CreatedDate, CreatorAccountId, CreatorInvoiceOwnerId, CurrentTerm, CurrentTermPeriodType, InitialTerm, InitialTermPeriodType, InvoiceOwnerId, IsInvoiceSeparate, Name, Notes, OriginalCreatedDate, OriginalId, PreviousSubscriptionId, RenewalSetting, RenewalTerm, RenewalTermPeriodType, ServiceActivationDate, Status, SubscriptionEndDate, SubscriptionStartDate, TermEndDate, TermStartDate, TermType, UpdatedById, UpdatedDate, Version, DateDebutContratReel__c From Subscription where AccountId='8adce4216cccb721016ccebbbc0f55ce'"}
+
+        return respObj;
+    }
+
+    public static zc_ProxySubscribeResult actionSubscribePOST(String accessToken, String zEntityId, zc_ProxyActionsubscribeRequest reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_ProxySubscribeResult respObj = new zc_ProxySubscribeResult();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest5(accessToken, '/v1/action/subscribe', zEntityId, 'POST', reqObj,zc_ProxySubscribeResult.class, null, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_ProxySubscribeResult)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.results.size() > 0){
+                if(!respObj.results.get(0).success){                
+                    throw new RTException(rtc2,pLog);             
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
+
 } // end class
 
 // // NON UTILISE

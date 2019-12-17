@@ -40,20 +40,20 @@ public without sharing class SM_Impaye {
             //throw new RTException(RTExceptionCode.ERREUR_IMPAYE_GET_SOUSCRITPION_NON_TROUVE);
         }
 
-        if(sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c != accountID){
+        if(sub.Zuora__CustomerAccount__r.Zuora__External_Id__c != accountID){
             throw new RTException(RTExceptionCode.ERREUR_IMPAYE_GET_ACCOUNT_NON_TROUVE2,pLog);
         }
 
         // Get Dette echue : Invoices       
-        // List<Zuora__ZInvoice__c> invoices = [select Zuora__Zuora_Id__c, Name, Zuora__InvoiceDate__c, Zuora__Balance2__c, Zuora__TotalAmount__c,
+        // List<Zuora__ZInvoice__c> invoices = [select Zuora__External_Id__c, Name, Zuora__InvoiceDate__c, Zuora__Balance2__c, Zuora__TotalAmount__c,
         // Tech_CompteurRejet__c,Tech_CodeRejet__c,Tech_DateRejet__c
         // FROM Zuora__ZInvoice__c 
-        // WHERE Zuora__Balance2__c > 0 AND Zuora__BillingAccount__r.Zuora__Zuora_Id__c = :accountID order by Name];
+        // WHERE Zuora__Balance2__c > 0 AND Zuora__BillingAccount__r.Zuora__External_Id__c = :accountID order by Name];
         // //AND Tech_CompteurRejet__c != null
         List<Zuora__ZInvoice__c> invoices = SM_Invoice.getInvoiceImpaye(accountID);
             
         impayeOut.accountId = accountID;
-        impayeOut.subscriptionId = sub.Zuora__Zuora_Id__c;
+        impayeOut.subscriptionId = sub.Zuora__External_Id__c;
         impayeOut.subscriptionName = sub.Name;
         impayeOut.montantDetteEchue = 0;
         impayeOut.montantDetteNonEchue = 0;
@@ -62,7 +62,7 @@ public without sharing class SM_Impaye {
 
         if (invoices.size() > 0){
             for(Zuora__ZInvoice__c inv : invoices){
-                WSZ.DetteEchue detteEchue = new WSZ.DetteEchue(inv.Zuora__Zuora_Id__c,  inv.Zuora__InvoiceDate__c, (Double)inv.Zuora__Balance2__c, (Double)inv.Zuora__TotalAmount__c);
+                WSZ.DetteEchue detteEchue = new WSZ.DetteEchue(inv.Zuora__External_Id__c,  inv.Zuora__InvoiceDate__c, (Double)inv.Zuora__Balance2__c, (Double)inv.Zuora__TotalAmount__c);
                 impayeOut.detteEchues.add(detteEchue);
                 
                 if (firstInvoice) {  //prendre la date de la premiere facture impayés si plusieurs factures

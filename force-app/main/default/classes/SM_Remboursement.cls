@@ -323,10 +323,10 @@ public with sharing class SM_Remboursement {
             //Debut call out pour ZDOC
             String accessToken = WS001_CallZuora.access_token;
             // Get Zuora Data (subscription)
-            subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+            subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
             
             // Get Zuora Data (Account)
-            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
             String payMethodId = zacc.defaultPaymentMethodId;
             
             // Get Zuora Data (PaymentMethod)

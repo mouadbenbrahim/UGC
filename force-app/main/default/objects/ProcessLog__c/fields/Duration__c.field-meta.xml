@@ -2,12 +2,12 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Duration__c</fullName>
     <externalId>false</externalId>
-    <formula>SECOND( TIMEVALUE(EndTime__c ) ) - SECOND( TIMEVALUE(StartTime__c ) )</formula>
+    <formula>(TIMEVALUE(EndTime__c ) - TIMEVALUE(StartTime__c ))/1000</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Duration</label>
     <precision>18</precision>
     <required>false</required>
-    <scale>2</scale>
+    <scale>0</scale>
     <trackTrending>false</trackTrending>
     <type>Number</type>
     <unique>false</unique>

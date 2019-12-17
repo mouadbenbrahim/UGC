@@ -100,7 +100,7 @@ public without sharing class SM003_Retention {
             rpId = listProdRatePlanCharge.get(0).ProdRatePlan__r.zid__c;
 		    rpcId = listProdRatePlanCharge.get(0).zid__c;
             moisDebutRemise = Integer.valueOf(c.Mois_de_d_but_remise__c);
-            dateDebutRemise = SM_Demande.getRemiseDate(moisDebutRemise);
+            dateDebutRemise = SM_Demande.getRemiseDate(moisDebutRemise,sub.Zuora__ContractEffectiveDate__c);
             
             hasRemiseRetention = true;
         }
@@ -189,10 +189,10 @@ public without sharing class SM003_Retention {
         
         //Debut call out pour ZDOC
 		// Get Zuora Data (subscription)
-		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
 		
 		// Get Zuora Data (Account)
-		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
 		String payMethodId = zacc.defaultPaymentMethodId;
 		
 		// Get Zuora Data (PaymentMethod)
@@ -228,10 +228,10 @@ public without sharing class SM003_Retention {
 		String zEntityId = WS001_CallZuora.getZuoraEntityId(sub.Zuora__Account__r.CodePays__c);  
 		
 		// Get Zuora Data (subscription)
-		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
 		
 		// Get Zuora Data (Account)
-		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
 		String payMethodId = zacc.defaultPaymentMethodId;
 		
 		// Get Zuora Data (PaymentMethod)

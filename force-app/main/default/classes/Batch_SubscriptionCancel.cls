@@ -16,13 +16,13 @@ global class Batch_SubscriptionCancel implements Database.Batchable<sObject>, Da
 
         // String query = 'Select Id From Case where Subscription__r.DateFinContrat__c= :cancelDate and Id = \'5000E000009jn2WQAQ\'';
         //String query = 'Select Id, CancelCaseID__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and CancelCaseID__c = \'5000E000009jn2WQAQ\'';
-        // ORI query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat';
+        // ORI query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__External_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat';
         String query;
         if (subNumber == null) {
-            query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat';
-            //query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and CancelCaseID__c != null and TypeContrat__c = \'CDI\' and Source__c != \'Bilendi\' and Zuora__CustomerAccount__r.Zuora__EntityID__c=\'8adc8f99690e257001690e9c372515fe\' limit 1';
+            query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__External_Id__c, CancelCaseID__c, Source__c, TypeContrat__c, CancelCase__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat';
+            //query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__External_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and CancelCaseID__c != null and TypeContrat__c = \'CDI\' and Source__c != \'Bilendi\' and Zuora__CustomerAccount__r.Zuora__EntityID__c=\'8adc8f99690e257001690e9c372515fe\' limit 1';
         }else {
-            query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, CancelCaseID__c, Source__c, TypeContrat__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and Zuora__SubscriptionNumber__c = :subNumber limit 1';
+            query = 'Select Id, Name, Zuora__External_Id__c, Zuora__Account__r.Id, Zuora__CustomerAccount__r.Zuora__External_Id__c, CancelCaseID__c, Source__c, TypeContrat__c, CancelCase__c From Zuora__Subscription__c where Zuora__Status__c=\'Active\' and DateFinContrat__c=:dateFinContrat and Zuora__SubscriptionNumber__c = :subNumber limit 1';
         }
         system.debug('##MNE Batch_SubscriptionCancel start query >> '+query);
         return Database.getQueryLocator(query); 
@@ -40,8 +40,8 @@ global class Batch_SubscriptionCancel implements Database.Batchable<sObject>, Da
         for (Zuora__Subscription__c sub: scope){
             try {
 
-                if (sub.CancelCaseID__c != null){ // contrats avec caseID (desabonner depuis un case saleforce)
-                    caseId = sub.CancelCaseID__c;
+                if (sub.CancelCase__c != null){ // contrats avec caseID (desabonner depuis un case saleforce)
+                    caseId = sub.CancelCase__c;
                     currentId = caseId;
                     System.debug('MBEN: Batch_SubscriptionCancel: Case: '+ caseId);
                     SM_Desabonnement.desabonner(caseId,true);
@@ -57,7 +57,7 @@ global class Batch_SubscriptionCancel implements Database.Batchable<sObject>, Da
                     SM_Desabonnement.desabonner_SansCase(subId);
                 }else {
                     System.debug('MBEN: Batch_SubscriptionCancel: Subscriptionbatch cas non conforme: '+ sub.Id);
-                    pLog = new ProcessLog__c(Process__c = 'desabonner__isBatchCall', Account__c = sub.Zuora__Account__r.Id, AccountZID__c = sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name);
+                    pLog = new ProcessLog__c(Process__c = 'desabonner__isBatchCall', Account__c = sub.Zuora__Account__r.Id, AccountZID__c = sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name);
                     throw new RTException(RTExceptionCode.ERREUR_DESABO_BATCH_NON_CONFORME,pLog);
                 }
 
@@ -89,13 +89,13 @@ global class Batch_SubscriptionCancel implements Database.Batchable<sObject>, Da
                     c.ExecStatus__c = 'Erreur';
                     c.ExecDate__c = dNow;                    
                     update c;
-                    pLog = new ProcessLog__c(Process__c = 'desabonner__isBatchCall_Exception', Case__c = caseId, Account__c = sub.Zuora__Account__r.Id, AccountZID__c = sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name ,Message__c = fullMessage);
+                    pLog = new ProcessLog__c(Process__c = 'desabonner__isBatchCall_Exception', Case__c = caseId, Account__c = sub.Zuora__Account__r.Id, AccountZID__c = sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name ,Message__c = fullMessage);
                     insert pLog;
 
                 }else {
                     String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
                     System.debug('MBEN: Batch_SubscriptionCancel: '+ fullMessage); //TODO il faut tracer dans un autre objet
-                    pLog = new ProcessLog__c(Process__c = 'desabonner__isBatchCall_Exception', Account__c = sub.Zuora__Account__r.Id, AccountZID__c = sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name ,Message__c = fullMessage);
+                    pLog = new ProcessLog__c(Process__c = 'desabonner__isBatchCall_Exception', Account__c = sub.Zuora__Account__r.Id, AccountZID__c = sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name ,Message__c = fullMessage);
                     insert pLog;
                     //throw new RTException(RTExceptionCode.ERREUR_RETENTION_PRODUIT_ABSENT,pLog);
                     //throw new MyException(e);

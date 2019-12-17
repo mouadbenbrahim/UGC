@@ -8,7 +8,7 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
                 FROM Zuora__Subscription__c
                 WHERE Id = :subId
         ];
@@ -27,7 +27,7 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__External_Id__c = :subZId
         ];
@@ -50,7 +50,7 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__Account__r.Id = :accId
                 AND ( Zuora__SubscriptionEndDate__c > :d1 OR Zuora__SubscriptionEndDate__c = NULL )
@@ -61,7 +61,7 @@ public with sharing class SM_Subscription {
         if (subscriptions.isEmpty()) {
             return null;
         } else {
-            return new WRPRep(subscriptions[0].Id, subscriptions[0].Zuora__Zuora_Id__c, subscriptions[0].Name);
+            return new WRPRep(subscriptions[0].Id, subscriptions[0].Zuora__External_Id__c, subscriptions[0].Name);
         }
     }
     
@@ -75,7 +75,7 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__Account__r.Id IN :setAccId
                 AND ( Zuora__SubscriptionEndDate__c > :d1 OR Zuora__SubscriptionEndDate__c = NULL )
@@ -94,7 +94,7 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__SubscriptionNumber__c IN :setName
                 ORDER BY CreatedDate DESC
@@ -114,7 +114,7 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__SubscriptionNumber__c IN :setName
 				OR (Zuora__Account__r.Id IN :setAccId AND (Zuora__SubscriptionEndDate__c > :d1 OR Zuora__SubscriptionEndDate__c = NULL))
@@ -146,65 +146,31 @@ public with sharing class SM_Subscription {
     
 
     // method updateWS
-    public static WSZ.SubOut updateSub(String subId, Object sub, String zEntityId) {
-        System.debug('##MBEN: updateWS');
-        String endpoint = '/v1/object/subscription/' + subId;
-        String method = 'PUT';
-        String wsIn = '';
-        String wsOut = '';
-        String accessToken = WS001_CallZuora.access_token;
-        wsIn = Util.serializeSobject(sub);
-        System.debug('##MBEN7: |' + wsIn + '|');
-        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn,'type1', null);
-        return (WSZ.SubOut) JSON.deserializeStrict(wsOut, WSZ.SubOut.class);
-    }
-    
-    
-    // method cancelWS
-    public static WSZ.SubCancelOut cancelSub(String cancellationEffectiveDate, String policy, String subId, Boolean runBilling, String targetDate, String zEntityId) {
-        System.debug('##MBEN: cancelWS');
-        system.debug('##MNE SM_Subscription cancelSub cancellationEffectiveDate >> '+cancellationEffectiveDate);
-        system.debug('##MNE SM_Subscription cancelSub policy >> '+policy);
-        system.debug('##MNE SM_Subscription cancelSub subId >> '+subId);
-        system.debug('##MNE SM_Subscription cancelSub runBilling >> '+runBilling);
-        system.debug('##MNE SM_Subscription cancelSub targetDate >> '+targetDate);
-        
-        String endpoint = '/v1/subscriptions/' + subId + '/cancel';
-        String method = 'PUT';
-        String wsIn = '';
-        String wsOut = '';
-        String accessToken = WS001_CallZuora.access_token;
-
-        WSZ.SubCancelIn wsInObj = new WSZ.SubCancelIn();
-        if(policy == 'EndOfLastInvoicePeriod'){
-        	wsInObj.cancellationPolicy = policy;
-        } else {
-        	wsInObj.cancellationEffectiveDate = cancellationEffectiveDate;
-	        wsInObj.cancellationPolicy = policy;
-	        wsInObj.runBilling = runBilling;
-        }
-        wsInObj.targetDate = targetDate;
-        
-        System.debug('##MBEN6: |' + wsInObj.cancellationEffectiveDate + '|' + wsInObj.cancellationPolicy);
-        wsIn = (String) JSON.serialize(wsInObj);
-        System.debug('##MBEN7: |' + wsIn + '|');
-        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
-        System.debug('##MBEN7: cancel executed |' + wsIn + '|');
-        return (WSZ.SubCancelOut) JSON.deserializeStrict(wsOut, WSZ.SubCancelOut.class);
-    }
-    
+    // public static WSZ.SubOut updateSub(String subId, Object sub, String zEntityId) {
+    //     System.debug('##MBEN: updateWS');
+    //     String endpoint = '/v1/object/subscription/' + subId;
+    //     String method = 'PUT';
+    //     String wsIn = '';
+    //     String wsOut = '';
+    //     String accessToken = WS001_CallZuora.access_token;
+    //     wsIn = Util.serializeSobject(sub);
+    //     System.debug('##MBEN7: |' + wsIn + '|');
+    //     wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn,'type1', null);
+    //     return (WSZ.SubOut) JSON.deserializeStrict(wsOut, WSZ.SubOut.class);
+    // }
+   
     
     // method deleteWS: Annuler un desabonnement
-    public static WSZ.SubOut deleteSub(String subId, String zEntityId) {
-        String endpoint = '/v1/object/subscription/' + subId;
-        String method = 'DELETE';
-        String wsIn = null;
-        String wsOut = '';
-        String accessToken = WS001_CallZuora.access_token;
+    // public static WSZ.SubOut deleteSub(String subId, String zEntityId) {
+    //     String endpoint = '/v1/object/subscription/' + subId;
+    //     String method = 'DELETE';
+    //     String wsIn = null;
+    //     String wsOut = '';
+    //     String accessToken = WS001_CallZuora.access_token;
 
-        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', null);
-        return (WSZ.SubOut) JSON.deserializeStrict(wsOut, WSZ.SubOut.class);
-    }
+    //     wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', null);
+    //     return (WSZ.SubOut) JSON.deserializeStrict(wsOut, WSZ.SubOut.class);
+    // }
     
     
     public without sharing class WRPRep {
@@ -439,8 +405,52 @@ public with sharing class SM_Subscription {
         }
     }
     
-    
+    public static WSZ.ContratFileOut getContratFile(WSZ.ContratFileIn wsIn){
 
+        WSZ.ContratFileOut contratFileOut = new WSZ.ContratFileOut();
+        String wsInStr = JSON.serialize(wsIn);
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'contratfile', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName, Message__c = wsInStr);
+
+        contratFileOut.subscriptionName = wsIn.subscriptionName;
+        if (wsIn.subscriptionNameAvenir != null) contratFileOut.subscriptionNameAvenir = wsIn.subscriptionNameAvenir;
+        contratFileOut.accountSFID = wsIn.accountSFID;
+        //contratFileOut.accountZID = wsIn.accountZID;
+
+        // contrat file actuel
+        List<Case> cases= [Select Id, Attachment_Id_Contrat__c from Case where AccountId = :wsIn.accountSFID AND SubscriptionZName__c = :wsIn.subscriptionName 
+        AND Attachment_Id_Contrat__c != null order by CreatedDate DESC limit 1];
+
+        if (cases.size() == 0){
+            throw new RTException(RTExceptionCode.ERREUR_CONTRATFILE_CASE_NONTROUVE,pLog); 
+        }
+
+        List<Attachment> atts = [Select Id, Body from Attachment where Id = :cases.get(0).Attachment_Id_Contrat__c];
+        if (atts.size() == 0){
+            throw new RTException(RTExceptionCode.ERREUR_CONTRATFILE_ATTACHMENT_NONTROUVE,pLog); 
+        }        
+
+        String contratBody = EncodingUtil.base64Encode(atts.get(0).Body);
+        contratFileOut.contratFile = contratBody;
+
+        // contrat file a venir
+        if (wsIn.subscriptionNameAvenir != null){
+            List<Case> cases2 = [Select Id, Attachment_Id_Contrat__c from Case where AccountId = :wsIn.accountSFID AND SubscriptionZName__c = :wsIn.subscriptionNameAvenir 
+            AND Attachment_Id_Contrat__c != null order by CreatedDate DESC limit 1];
+
+            if (cases2.size() > 0){
+                List<Attachment> att2s = [Select Id, Body from Attachment where Id = :cases.get(0).Attachment_Id_Contrat__c];
+                if (att2s.size() == 0){
+                    throw new RTException(RTExceptionCode.ERREUR_DESABO_DATE_FINCONTRAT_OBLIGATOIRE,pLog); 
+                }else {   
+                    String contratBody2 = EncodingUtil.base64Encode(att2s.get(0).Body);
+                    contratFileOut.contratFileAvenir = contratBody2; 
+                } 
+            }
+
+        }
+        return contratFileOut;
+    }
+}
 	/*//Non utilisé
     public static Zuora__Subscription__c getSubscriptionByName(String name) {
         //TODO: dans le cas ou la demande doit traiter une souscription non active ou ex. client qui a plusieurs subscriptions (doublons à traiter)
@@ -562,4 +572,3 @@ public with sharing class SM_Subscription {
     public static void syncCancelCaseId (map<Id, Zuora__Subscription__c> mapOldSubscriptions, List<Zuora__Subscription__c> listSubscriptions)  {
             //TODO   Sync du CancelCaseID et CancelCase__c
     }*/
-}

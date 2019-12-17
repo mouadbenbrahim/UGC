@@ -155,9 +155,9 @@ public with sharing class SM_Invoice {
 	public static List<Zuora__ZInvoice__c> getInvoiceImpaye(String accountID){
 
 		List<Zuora__ZInvoice__c> invoices = [select Zuora__Zuora_Id__c, Name, Zuora__InvoiceDate__c, Zuora__Balance2__c, Zuora__TotalAmount__c,
-        Tech_CompteurRejet__c,Tech_CodeRejet__c,Tech_DateRejet__c
+        Tech_CompteurRejet__c,Tech_CodeRejet__c,Tech_DateRejet__c, Zuora__External_Id__c
         FROM Zuora__ZInvoice__c 
-        WHERE Zuora__Balance2__c > 0 AND Zuora__BillingAccount__r.Zuora__Zuora_Id__c = :accountID order by Name];
+        WHERE Zuora__Balance2__c > 0 AND Zuora__BillingAccount__r.Zuora__External_Id__c = :accountID order by Name];
 
 		return invoices;
 
@@ -167,7 +167,7 @@ public with sharing class SM_Invoice {
 	public static List<Zuora__ZInvoice__c> getInvoiceByIds(List<String> ids){
 
 		List<Zuora__ZInvoice__c> invoices = [select Zuora__Zuora_Id__c, Name, Zuora__InvoiceDate__c, Zuora__Balance2__c, Zuora__TotalAmount__c,
-        Tech_CompteurRejet__c,Tech_CodeRejet__c,Tech_DateRejet__c,Zuora__External_Id__c
+        Tech_CompteurRejet__c,Tech_CodeRejet__c,Tech_DateRejet__c, Zuora__External_Id__c
         FROM Zuora__ZInvoice__c 
         WHERE Zuora__External_Id__c in :ids];
 

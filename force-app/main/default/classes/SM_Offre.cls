@@ -7,6 +7,7 @@ public with sharing class SM_Offre {
 
     public static Date dateSouscription;
     public static Date dateEligOffre;
+    public static Boolean isContratFutur;
 
 //TODO SF:Offre:Operation : renommer les valeurs des API multipicklist
     public static void Trig_ContrainteAfterInsert(List<OffreContrainte__c> contraintes) {
@@ -195,8 +196,14 @@ public with sharing class SM_Offre {
 
         //subIn.dateSubscription = Date.valueOf(subIn.dateSub);
         //subIn.dateSubscription = Date.today(); //14112019: tout les contrats sont considrerer le jour de la souscription.
-        dateSouscription = subIn.dateSubscription;
+        
+        dateSouscription = Date.valueOf(subIn.dateSub);
         dateEligOffre = Date.today();
+        isContratFutur = false;
+
+        if(dateSouscription > Date.today()){
+            isContratFutur = true;
+        }
 
         List<WSZ.SubProduct> subProducts = new List<WSZ.SubProduct>();
 
@@ -504,6 +511,8 @@ public with sharing class SM_Offre {
             rp.productRatePlanId = rem.Charge__r.ProdRatePlan__r.zid__c;
             ch.productRatePlanChargeId = rem.Charge__r.zid__c;
             ch.intitule_c = offre.Intitule__c;
+            //ch.HermesIntituleOffre = offre.HermesIntituleOffre__c;
+            //ch.HermesIntituleOffreNL = offre.HermesIntituleOffreNL__c;
             ch.agent_c = subIn.agent;
             ch.lieu_c = subIn.lieu;
 
@@ -511,12 +520,14 @@ public with sharing class SM_Offre {
             // Remise d abonnement sur les 12 premier mois
             if (rem.Charge__r.FamilleRPC__c == 'ABOREM') {
                 ch.discountAmount = rem.Montant__c;
+                // ch.endDateCondition = (isContratFutur)?'SpecificEndDate':'Specific_End_Date'; //
                 ch.endDateCondition = 'Specific_End_Date';
                 ch.specificEndDate = Util.zDate((Util.finMois(dateSouscription) + 1).addYears(1));
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMMENS') { //OK
                 ch.discountPercentage = rem.Montant__c;
+                // ch.endDateCondition = (isContratFutur)?'FixedPeriod':'Fixed_Period';
                 ch.endDateCondition = 'Fixed_Period';
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
@@ -535,6 +546,7 @@ public with sharing class SM_Offre {
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMMONT') {
                 ch.discountAmount = rem.Montant__c;
+                //ch.endDateCondition = (isContratFutur)?'FixedPeriod':'Fixed_Period';
                 ch.endDateCondition = 'Fixed_Period';
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
@@ -591,6 +603,8 @@ public with sharing class SM_Offre {
             rp.productRatePlanId = charge.ProductRatePlanZID__c;
             ch.productRatePlanChargeId = charge.zid__c;
             ch.intitule_c = offre.Intitule__c;
+            //ch.HermesIntituleOffre = offre.HermesIntituleOffre__c;
+            //ch.HermesIntituleOffreNL = offre.HermesIntituleOffreNL__c;
             ch.agent_c = subIn.agent;
             ch.lieu_c = subIn.lieu;
             ch.price = couponG.PrixVente;

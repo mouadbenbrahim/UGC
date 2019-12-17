@@ -35,6 +35,15 @@ public without sharing class LCC002_BandeauField {
     @AuraEnabled 
     public static List<WRPFieldValues> getFieldValuesInAccout(Id accId){
         system.debug('##MNE getFieldValuesInAccout accId >> '+accId);
+        
+        //Clacule de la note client
+        Double noteClient = SM_Account.getNoteClient(accId);
+        if(noteClient != null){
+        	Account accTMP = new Account();
+        	accTMP.Id = accId;
+        	accTMP.Note_Client__c = noteClient;
+        	update accTMP;
+        }
      
         String query = 'SELECT Id, '+String.join(fieldsForQuerryAccount, ', ')+ ' FROM Account WHERE Id = \'' + accId+ '\'';
         system.debug('##MNE getFieldValuesInAccout query >> '+query);

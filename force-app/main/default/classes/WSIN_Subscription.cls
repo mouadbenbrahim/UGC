@@ -28,7 +28,13 @@ global with sharing class WSIN_Subscription {
             }
             when 'reedition'{
                 reedition(req,res);
-            }                          
+            }
+            when 'opeauthorize'{
+                opeauthorize(req,res);
+            }            
+            when 'contratfile'{
+                contratfile(req,res);
+            }                                       
             when else{
                 wsOut.success = false;
                 wsOut.message = 'Requette inconnue, verifiez les parametres';
@@ -190,5 +196,69 @@ global with sharing class WSIN_Subscription {
         }
     } 
 
+    public static void opeauthorize(RestRequest req, RestResponse res) {
+
+        WSZ.HermesAuthorizeOut wsOut = new WSZ.HermesAuthorizeOut();
+        WSZ.HermesAuthorizeIn wsIn; // = new WSZ.HermesAuthorizeIn();
+        Blob body = req.requestBody;
+        String respBodyStr = null;
+        
+        try {
+            wsIn = (WSZ.HermesAuthorizeIn) JSON.deserializeStrict(body.toString(), WSZ.HermesAuthorizeIn.class);
+            //wsOut = SM_Hermes.reedition(wsIn);
+            wsOut.success = true;
+            wsOut.message = null;
+            //wsOut = subProducts.clone();
+        } catch (RTException e) {
+            wsOut.success = false;
+            wsOut.message = e.getMessage();
+            wsOut.errorCode = e.Code;
+        } catch (Exception e) {
+            wsOut.success = false;
+            wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            //ProcessLog__c pLog = new ProcessLog__c(Process__c = 'opeauthorize', Account__c = wsIn.accountSFID, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'opeauthorize', Account__c = wsIn.accountSFID, Message__c = fullMessage);
+            insert pLog;             
+        } finally {
+            //return wsOut;
+            res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
+        }
+    }
+
+    public static void contratfile(RestRequest req, RestResponse res) {
+
+        WSZ.ContratFileOut wsOut = new WSZ.ContratFileOut();
+        WSZ.ContratFileIn wsIn; // = new WSZ.SubHermesIn();
+        Blob body = req.requestBody;
+        String respBodyStr = null;
+        
+        try {
+            wsIn = (WSZ.ContratFileIn) JSON.deserializeStrict(body.toString(), WSZ.ContratFileIn.class);
+            wsOut = SM_Subscription.getContratFile(wsIn);
+            wsOut.success = true;
+            wsOut.message = null;
+            //wsOut = subProducts.clone();
+        } catch (RTException e) {
+            wsOut.success = false;
+            wsOut.message = e.getMessage();
+            wsOut.errorCode = e.Code;
+        } catch (Exception e) {
+            wsOut.success = false;
+            wsOut.message = e.getMessage() + e.getStackTraceString();
+            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            ProcessLog__c pLog;
+            if (wsIn == null) { // pb deserialization
+                pLog = new ProcessLog__c(Process__c = 'contratfile', Message__c = fullMessage);
+            }else {
+                pLog = new ProcessLog__c(Process__c = 'contratfile', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName, Message__c = fullMessage);
+            }
+            //
+            insert pLog;             
+        } finally {
+            //return wsOut;
+            res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
+        }
+    }     
 
 }

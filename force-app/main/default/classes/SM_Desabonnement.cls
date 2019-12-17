@@ -104,8 +104,8 @@ public without sharing class SM_Desabonnement {
             amendOperation = 'Desabonnement';          
         }        
         zSubIn.dateFinContrat = dateCancelContrat.addDays(-1);
-        //zSubZID = dem.Subscription__r.Zuora__Zuora_Id__c;
-        zSubZID = sub.Zuora__Zuora_Id__c;
+        //zSubZID = dem.Subscription__r.Zuora__External_Id__c;
+        zSubZID = sub.Zuora__External_Id__c;
         zSubIn.cancelCaseID = dem.CaseExtId__c;
 
         System.debug('MBEN:desabonner: ' + ' isDesaboNow: '+isDesaboNow+' isBatchCall: '+isBatchCall+' noRemboursementAFaire: '+noRemboursementAFaire);
@@ -125,7 +125,7 @@ public without sharing class SM_Desabonnement {
             reqObj.targetDate = dateCancelContrat; 
             reqObj.runBilling = billRun; 
             reqObj.cancellationPolicy = 'SpecificDate'; 
-            zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL1, pLog);
+            zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL1, pLog);
             zSubZID = rCancel.subscriptionId;
 
             // Get Amendment Id: 
@@ -175,7 +175,7 @@ public without sharing class SM_Desabonnement {
             // Get Zuora Doc Data (subscription)
             subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, zSubZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
             // Get Zuora Doc Data (Account)
-            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
             String payMethodId = zacc.defaultPaymentMethodId;
             // Get Zuora Doc Data (PaymentMethod)
             pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
@@ -212,7 +212,7 @@ public without sharing class SM_Desabonnement {
             // Get Zuora Data (subscription)          
             subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, zSubZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
             // Get Zuora Data (Account)
-            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+            zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
             String payMethodId = zacc.defaultPaymentMethodId;
             // Get Zuora Data (PaymentMethod)
             pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
@@ -400,7 +400,7 @@ public without sharing class SM_Desabonnement {
         reqObj.targetDate = dateCancelContrat; 
         reqObj.runBilling = billRun; 
         reqObj.cancellationPolicy = 'SpecificDate'; 
-        zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL2, pLog);
+        zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL2, pLog);
         String newSubId = rCancel.subscriptionId;
 
         // Get Amendment Id: 

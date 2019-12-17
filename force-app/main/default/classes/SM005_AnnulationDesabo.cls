@@ -43,7 +43,7 @@ public without sharing class SM005_AnnulationDesabo {
 
         if (sub.Zuora__Status__c == 'Active') { //contrat en desabo futur
 
-            zObj.id = sub.Zuora__Zuora_Id__c;
+            zObj.id = sub.Zuora__External_Id__c;
             if (sub.TypeContrat__c == 'CDD'){ 
                 zObj.fieldsToNull = new List<String>{'CodeFinContrat__c','CancelCaseID__c'};
                 zObj.dateFinContrat = sub.Zuora__SubscriptionEndDate__c.addDays(-1); //remettre la date fin standard du CDD
@@ -55,7 +55,7 @@ public without sharing class SM005_AnnulationDesabo {
 
         }else {   // contract cancelled (que les CDIs)                
             // Suppression de la derniere subscription
-            zc_SaveResult resObj2 = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ANNUL_DESABO_DELETE_SUB, pLog);
+            zc_SaveResult resObj2 = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ANNUL_DESABO_DELETE_SUB, pLog);
 
             // mise a jour subscription
             zObj.id = sub.Zuora__PreviousSubscriptionId__c;
@@ -68,7 +68,7 @@ public without sharing class SM005_AnnulationDesabo {
         // Get Zuora Data (subscription)
         subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, zObj.id, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
         // Get Zuora Data (Account)
-        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
         String payMethodId = zacc.defaultPaymentMethodId;
         // Get Zuora Data (PaymentMethod)
         pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
@@ -101,7 +101,7 @@ public without sharing class SM005_AnnulationDesabo {
             throw new MyException('Sous-Motif obligatoire');
         }
         
-        // if(sub.Zuora__PreviousSubscriptionId__c == sub.Zuora__Zuora_Id__c){
+        // if(sub.Zuora__PreviousSubscriptionId__c == sub.Zuora__External_Id__c){
         //  throw new MyException('La souscription est l\'original, elle ne possède aucun desabonnement.');
         // }
         

@@ -40,9 +40,9 @@ public without sharing class SM002_Anonymisation{
         //Debut call out pour ZDOC
         String accessToken = WS001_CallZuora.access_token;
         // Get Zuora Data (subscription)
-        subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+        subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
         // Get Zuora Data (Account)
-        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
         String payMethodId = zacc.defaultPaymentMethodId;
         // Get Zuora Data (PaymentMethod)
         pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
@@ -68,7 +68,7 @@ public without sharing class SM002_Anonymisation{
             accId.add(acc.Id);
         }
         
-        List<Zuora__CustomerAccount__c> billingAccounts = new List<Zuora__CustomerAccount__c>([SELECT Id, Zuora__Zuora_Id__c, Zuora__BillToId__c, Zuora__SoldToId__c, Zuora__Account__r.ProduitUGC__c, Zuora__Account__r.CodePays__c FROM Zuora__CustomerAccount__c WHERE Zuora__Account__c IN :accId]);
+        List<Zuora__CustomerAccount__c> billingAccounts = new List<Zuora__CustomerAccount__c>([SELECT Id, Zuora__Zuora_Id__c, Zuora__BillToId__c, Zuora__SoldToId__c, Zuora__Account__r.ProduitUGC__c, Zuora__Account__r.CodePays__c, Zuora__External_Id__c FROM Zuora__CustomerAccount__c WHERE Zuora__Account__c IN :accId]);
         set<String> setBillingAccountZId = new set<String>();
         set<String> setContactZId = new set<String>();
         String codePays = null;
@@ -76,8 +76,8 @@ public without sharing class SM002_Anonymisation{
         
         if(billingAccounts.size() > 0){
             for(Zuora__CustomerAccount__c zAcc : billingAccounts){
-                if(zAcc.Zuora__Zuora_Id__c != null){
-                    setBillingAccountZId.add(zAcc.Zuora__Zuora_Id__c);
+                if(zAcc.Zuora__External_Id__c != null){
+                    setBillingAccountZId.add(zAcc.Zuora__External_Id__c);
                 }
                 if(zAcc.Zuora__BillToId__c != null){
                     setContactZId.add(zAcc.Zuora__BillToId__c);
