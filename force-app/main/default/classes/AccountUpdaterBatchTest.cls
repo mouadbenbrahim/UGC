@@ -34,7 +34,59 @@ public class AccountUpdaterBatchTest {
        // System.assertEquals('', acc.FirstName);
    }*/
    
-   static testMethod void runTest01() {
+   	static testMethod void testAttachmentAfterInsert() {
+   		Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
+        
+        insert a;						  
+   		
+		Attachment attachment = new Attachment();
+        attachment.ContentType = 'text/html';
+        attachment.body = Blob.valueOf('hhhhh');
+        attachment.ParentId = a.Id;
+        attachment.Name = 'toto';
+        insert attachment;
+   	}
+   	
+   	static testMethod void testOffreBeforeDeleteANDAfterInsert() {
+   		Offre__c o = new Offre__c();
+   		o.Reference__c = 'toto';
+   		insert o;
+   		delete o;
+   		
+   	}
+   	
+   	static testMethod void testInvoiceTrigger() {
+   		Zuora__ZInvoice__c inv = new Zuora__ZInvoice__c();
+   		insert inv;
+   	}
+   	
+   	static testMethod void testOffreContrainteTrigger() {
+
+		Id offreCouponRecordTypeId = Schema.SObjectType.Offre__c.getRecordTypeInfosByName().get('Offre coupon').getRecordTypeId();   		
+   		Offre__c o = new Offre__c();
+   		o.Reference__c = 'toto';
+   		o.RecordTypeId = offreCouponRecordTypeId; 
+   		insert o;
+   		
+   		system.debug('##MNE offre >> '+o);
+   		system.debug('##MNE recordType >> '+o.RecordTypeId);
+   		
+   		OffreContrainte__c chezPas = new OffreContrainte__c();
+   		chezPas.Offre__c = o.Id;
+   		chezPas.Action__c = 'A Qualifier';
+   		chezPas.DateDebut__c = Date.today().addDays(-30);
+   		chezPas.DateFin__c = Date.today().addDays(30);
+   		chezPas.IncludeOffreCoupon__c = false;
+   		insert chezPas;
+   		//chezPas.Action__c = 'Ignorer';
+   		//update chezPas;
+   	}
+   	
+   	
+   	
+   
+	static testMethod void runTest01() {
 		scheduledAccountUpdaterBatch.Global_TEST_01 c = new scheduledAccountUpdaterBatch.Global_TEST_01 ();
 		c.inflateTest();
 		c.inflateTest1();

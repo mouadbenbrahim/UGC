@@ -1181,6 +1181,22 @@
         <name>et4ae5__TITLE</name>
     </customLabels>
     <customLabels>
+        <label><!-- TSQ error for deleted triggered sends --></label>
+        <name>et4ae5__TSQDeletedTriggeredSendMessage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TSQ error for inactive triggered sends --></label>
+        <name>et4ae5__TSQInactiveTriggeredSendMessage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TSQ unexpected error --></label>
+        <name>et4ae5__TSQUnexpectedError</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TSQ unexpected error --></label>
+        <name>et4ae5__TSQUnexpectedErrorTryAgain</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TrackingRequestedCallFailedForTriggeredSend --></label>
         <name>et4ae5__TrackingRequestedCallFailedForTriggeredSend</name>
     </customLabels>
@@ -1919,6 +1935,14 @@
     <customLabels>
         <label><!-- deprecateSendDefinitionJSComponents --></label>
         <name>et4ae5__deprecateSendDefinitionJSComponents</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- deprecateVisualforcePageBody --></label>
+        <name>et4ae5__deprecateVisualforcePageBody</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- deprecateVisualforcePageTitle --></label>
+        <name>et4ae5__deprecateVisualforcePageTitle</name>
     </customLabels>
     <customLabels>
         <label><!-- description --></label>
@@ -5563,6 +5587,10 @@
     <customLabels>
         <label><!-- unReqd --></label>
         <name>et4ae5__unReqd</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- unableToGetBuI --></label>
+        <name>et4ae5__unableToGetBuId</name>
     </customLabels>
     <customLabels>
         <label><!-- undo --></label>
