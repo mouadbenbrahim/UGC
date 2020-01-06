@@ -46,7 +46,29 @@ public with sharing class zc_Api {
 
         return respObj;
     }
-    
+
+    public static zc_GETARPaymentType paymentsPOST2(String accessToken, String zEntityId, zc_CreatePaymentType reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETARPaymentType respObj = new zc_GETARPaymentType();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest5(accessToken, '/v1/payments', zEntityId, 'POST', reqObj,zc_GETARPaymentType.class, zc_CommonResponseType.class, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETARPaymentType)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
     public static zc_BillingPreviewResult opeBillingPreviewPOST(String accessToken, String zEntityId, zc_PostBillingPreviewParam reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
         
         zc_BillingPreviewResult respObj = new zc_BillingPreviewResult();
@@ -332,6 +354,51 @@ public with sharing class zc_Api {
             if(respObj != null && respObj.results.size() > 0){
                 if(!respObj.results.get(0).success){                
                     throw new RTException(rtc2,pLog);             
+                }            
+            }
+        }
+
+        return respObj;
+    }
+
+    public static zc_ProxyGetInvoice objectInvoiceGET(String accessToken, String zEntityId, String invId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_ProxyGetInvoice respObj = new zc_ProxyGetInvoice();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/invoice/'+invId+'?fields=id,amount', zEntityId, 'GET', null,zc_ProxyGetInvoice.class, zc_ProxyActionqueryResponse.class, null);
+
+        String reqStr = 'invId' + invId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }
+        else {
+            respObj = (zc_ProxyGetInvoice)respMap.get('RESP_OBJECT');
+            // if(respObj != null && respObj.success != null){
+            //     if(!respObj.success){                
+            //         throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+            //     }            
+            // }
+        }
+
+        return respObj;
+    } 
+
+    public static zc_GETInvoiceFilesResponse  invoicesFilesGET(String accessToken, String zEntityId, String invId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETInvoiceFilesResponse  respObj = new zc_GETInvoiceFilesResponse ();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/invoices/'+invId+'/files', zEntityId, 'GET', null,zc_GETInvoiceFilesResponse .class, zc_CommonResponseType.class, null);
+
+        String reqStr = 'invId' + invId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETInvoiceFilesResponse )respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
                 }            
             }
         }

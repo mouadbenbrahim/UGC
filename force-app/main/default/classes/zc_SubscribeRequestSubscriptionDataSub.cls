@@ -272,6 +272,20 @@ public class zc_SubscribeRequestSubscriptionDataSub {
      */
     public Integer version { get; set; }
 
+    // MBEN 20191223
+    public String codeOffrePrincipale { get; set; }
+    public String modeLivraison { get; set; }
+    public String marche { get; set; }
+    public String codePromo { get; set; }
+    public String methodePaiement { get; set; }
+    public String codeOffreCo { get; set; }
+    public String payeurCRMID { get; set; }
+    public String lieu { get; set; }
+    public String agent { get; set; }
+    public String typeContrat { get; set; }
+    public String numCarteParrain { get; set; }
+
+
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'CpqBundleJsonId__QT' => 'cpqBundleJsonIdQT',
         'OpportunityCloseDate__QT' => 'opportunityCloseDateQT',
@@ -317,8 +331,20 @@ public class zc_SubscribeRequestSubscriptionDataSub {
         'TermType' => 'termType',
         'UpdatedById' => 'updatedById',
         'UpdatedDate' => 'updatedDate',
-        'Version' => 'version'
+        'Version' => 'version',
+        'CodeOffrePrincipale__c' => 'codeOffrePrincipale',
+        'ModeLivraison__c' => 'modeLivraison',
+        'Marche__c' => 'marche',
+        'CodePromo__c' => 'codePromo',
+        'MethodePaiement__c' => 'methodePaiement',
+        'CodeOffreCo__c' => 'codeOffreCo',
+        'PayeurCRMID__c' => 'payeurCRMID',
+        'Lieu__c' => 'lieu',
+        'Agent__c' => 'agent',
+        'TypeContrat__c' => 'typeContrat',
+        'NumCarteParrain__c' => 'numCarteParrain'
     };
+
 
     public Map<String, String> getPropertyMappings() {
         return propertyMappings;

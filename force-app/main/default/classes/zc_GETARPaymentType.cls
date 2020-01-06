@@ -239,7 +239,8 @@ public class zc_GETARPaymentType implements zc_Zuc.MappedProperties { // zc_Paym
      * The date and time when the payment was submitted, in `yyyy-mm-dd hh:mm:ss` format.\n
      * @return submittedOn
      */
-    public Datetime submittedOn { get; set; }
+    // MBEN ORI: public Datetime submittedOn { get; set; }
+    public String submittedOn { get; set; }
 
     /**
      * Returns `true` if the request was processed successfully.

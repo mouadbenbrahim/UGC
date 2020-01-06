@@ -375,6 +375,10 @@ public void runParse3(JSONGenerator gen, Object obj1) {
 		gen.writeBoolean(Boolean.valueOf(obj1));
 	}else if(sType2 == 'Integer'){
 		gen.writeNumber(Integer.valueOf(obj1));
+	}else if(sType2 == 'Decimal'){
+		gen.writeNumber(Double.valueOf(obj1));
+	}else if(sType2 == 'Double'){
+		gen.writeNumber(Double.valueOf(obj1));					
 
 	}else if (sType2 == 'List<ANY>'){ // List d objets
 		List<Object> obj5 = (List<Object>)obj1;

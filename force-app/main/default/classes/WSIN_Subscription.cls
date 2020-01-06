@@ -29,7 +29,7 @@ global with sharing class WSIN_Subscription {
             when 'reedition'{
                 reedition(req,res);
             }
-            when 'opeauthorize'{
+            when 'opeautorise'{
                 opeauthorize(req,res);
             }            
             when 'contratfile'{

@@ -216,4 +216,16 @@ public with sharing class SM_Account {
     	return ScoreFinal;
     }
 
+	public static Account getAccountData(Id accId){
+
+        Account account = [
+                SELECT Id, Name, LastName, FirstName, PersonBirthdate, IdMonCompte__c, PersonEmail, NoVoie__c, TypeVoie__c, NomVoie__c, 
+				CodePostal__c, Ville__r.Name, Ville__r.Pays__c, Ville__r.CodePostal__c, ClientResident__c, CodePays__c, AdressePostale__c, MauvaisComportement__c, ProduitUGC__c, PersonContactId 
+                FROM Account
+                WHERE Id = :accId
+        ];
+        return account;
+
+    }
+
 }

@@ -1,75 +1,5 @@
-public with sharing class SM_Renouvellement {
-
-    public final static Set<String> FAMILLE_REMISES = new Set<String>{'REMFRAIDOSS', 'REMMENS', 'REMMONT'};
-    public static boolean isPreview = false;
-    
-    public SM_Renouvellement() {
-
-    }
-
-    public static zc_ProxySubscribeResult newAbo(WSZ.AcquisitionIn acqIn){
-
-        isPreview = false;
-
-        //WSZ.Preview preview = new WSZ.Preview();
-        String intituleOffreFR,intituleOffreNL;
-        //Decimal abonnement=0,montantInitial=0,fraisAdhesion=0,fraisAdhesionRemise=0,fraisAdhesionApresRemise=0,prorata=0;
-
-        String produit = acqIn.produit.get(0);
-        String typeContrat = (produit.contains('CDI')?'CDI':'CDD');
-        Boolean isFutur = (acqIn.dateDebutContrat == Date.today())?false:true;
-
-        // get subOffres
-        WSZ.SubProduct subOffre = SM_Offre.getSubOffres(new WSZ.SubOffreIn(acqIn.dateDebutContrat, acqIn.lieu, acqIn.agent, acqIn.coupon,acqIn.accountSFID, 'acquisition', produit)).get(0);
-        List<zc_AmendmentRatePlanData> subOffreRatePlans = SM_Offre.convertRatePlan(subOffre.subscribeToRatePlans);
-        System.debug('MBEN:subOffreRatePlanConverted' + JSON.serialize(subOffreRatePlans));
-        
-        // get AccountData
-        Account porteur = SM_Account.getAccountData(acqIn.accountSFID);
-        Account payeur = SM_Account.getAccountData(acqIn.payeurSFID);
-        
-        // check:
-        if (acqIn.codeOffreCo != null && acqIn.codeOffreCo != subOffre.CodeOffreCo) {
-            throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,new ProcessLog__c());
-        }
-
-        //token/entity
-        String accessToken = WS001_CallZuora.access_token;
-        String zEntityId = WS001_CallZuora.getZuoraEntityId('033');  
-
-        // subscribe
-        Map<String,Object> customSub = new Map<String,Object>{'IsB2B'=>subOffre.IsB2B};
-        //customSub.put('IsB2B', subOffre.IsB2B);
-        SubscribeIn subIn = mapToSubscribeIn(acqIn);
-        zc_ProxyActionsubscribeRequest subscribeReq = subscribe(subIn, isPreview, porteur, payeur, subOffreRatePlans, customSub);
-        
-        // Call Zuora actionSubscribe 
-        zc_ProxySubscribeResult resObj = zc_Api.actionSubscribePOST(accessToken, zEntityId, subscribeReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, new ProcessLog__c());
-        System.debug('MBEN:resObj: ' + JSON.serialize(resObj,true));
-        String accountZID = resObj.results.get(0).accountId;
-        String invoiceId = resObj.results.get(0).invoiceId;
-
-        // get invoice
-        zc_ProxyGetInvoice invRes = zc_Api.objectInvoiceGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, new ProcessLog__c());
-        Double invAmount = invRes.amount;
-        
-
-        // Creation paiement Zuora
-         WSZ.Paiement paymentIn;
-         zc_CreatePaymentType paymentReq;
-        if (acqIn.paiement != null) {
-            if (acqIn.paiement.montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,new ProcessLog__c());
-            paymentIn = new WSZ.Paiement(acqIn.paiement.montant, acqIn.paiement.refPaiement, acqIn.paiement.methodePaiement, acqIn.paiement.lieu, acqIn.paiement.agent, acqIn.paiement.dateVirement);
-            paymentReq = SM_Payment.createExtPayment(invoiceId, accountZID, paymentIn);
-        }else {
-            paymentIn = new WSZ.Paiement(invAmount, null, null, null, null, null);
-            paymentReq = SM_Payment.createElecPayment(invoiceId, accountZID, paymentIn);
-        }
-
-        //Call WS Payment     
-        zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,new ProcessLog__c());
-
-        return resObj;
+public with sharing class SM_Subscribe {
+    public SM_Subscribe() {
 
     }
 
@@ -118,94 +48,7 @@ public with sharing class SM_Renouvellement {
         return subscribeReq;
     }
 
-    public static WSZ.Preview getPreview(WSZ.PreviewIn previewIn){
-
-        isPreview = true;
-
-        WSZ.Preview preview = new WSZ.Preview();
-        String intituleOffreFR,intituleOffreNL;
-        Decimal abonnement=0,montantInitial=0,fraisAdhesion=0,fraisAdhesionRemise=0,fraisAdhesionApresRemise=0,prorata=0;
-
-        String produit = previewIn.produit.get(0);
-        String typeContrat = (produit.contains('CDI')?'CDI':'CDD');
-        Boolean isFutur = (previewIn.dateDebutContrat == Date.today())?false:true;
-
-        // get subOffres
-        WSZ.SubProduct subOffre = SM_Offre.getSubOffres(new WSZ.SubOffreIn(previewIn.dateDebutContrat, previewIn.lieu, previewIn.agent, previewIn.coupon,previewIn.accountSFID, previewIn.operation,produit)).get(0);
-        List<zc_AmendmentRatePlanData> subOffreRatePlans = SM_Offre.convertRatePlan(subOffre.subscribeToRatePlans);
-        
-
-        // get AccountData
-        Account porteur = SM_Account.getAccountData(previewIn.accountSFID);
-        Account payeur = SM_Account.getAccountData(previewIn.payeurSFID);
-
-        //token/entity
-        String accessToken = WS001_CallZuora.access_token;
-        String zEntityId = WS001_CallZuora.getZuoraEntityId('033');  
-
-        // subscribe
-        //zc_ProxySubscribeResult resObj = subscribe(previewIn, isPreview, porteur, payeur, subOffreRatePlans);
-        //Map<String,Object> inMap = untypeObj(previewIn, true);
-        SubscribeIn subIn = mapToSubscribeIn(previewIn);
-        Map<String,Object> customSub = new Map<String,Object>();
-        zc_ProxyActionsubscribeRequest subscribeReq = subscribe(subIn, isPreview, porteur, payeur, subOffreRatePlans, customSub);
-        // Call Zuora actionSubscribe 
-        zc_ProxySubscribeResult resObj = zc_Api.actionSubscribePOST(accessToken, zEntityId, subscribeReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, new ProcessLog__c());
-        System.debug('MBEN:resObj: ' + JSON.serialize(resObj,true));        
-
-        //Parse zuora preview result: invoiceitems, prorata, montants.etc
-        List<zc_InvoiceItem> invItems = resObj.results.get(0).invoiceData.get(0).invoiceItem;
-        zc_InvoiceDataInvoice invoice = resObj.results.get(0).invoiceData.get(0).invoice;
-            System.debug('MBEN:invItems: ' + JSON.serialize(invItems));
-            System.debug('MBEN:invoice: ' + JSON.serialize(invoice));
-        List<String> rpcIds = new List<String>();
-        for (zc_InvoiceItem invItem : invItems) {
-            System.debug('MBEN:invItem: ' + JSON.serialize(invItem));
-            rpcIds.add(invItem.productRatePlanChargeId);
-        }
-        Map<String,ProdRatePlanCharge__c> rpcs = new Map<String,ProdRatePlanCharge__c>();
-        for(ProdRatePlanCharge__c item : [Select Id, zid__c, Reference__c, FamilleRPC__c, Name from ProdRatePlanCharge__c where zid__c in :rpcIds])
-        rpcs.put(item.zid__c, item);
-
-        for (zc_InvoiceItem invItem : invItems) {
-            //rpcIds.add(invItem.productRatePlanChargeId);
-            String rpcZid = invItem.productRatePlanChargeId;
-            if (rpcs.get(rpcZid).FamilleRPC__c == 'ABO'  ) abonnement += (Decimal)invItem.unitPrice;
-            if (rpcs.get(rpcZid).FamilleRPC__c == 'FRAIDOSS') fraisAdhesion += (Decimal)invItem.TaxAmount + (Decimal)invItem.ChargeAmount;
-            if (rpcs.get(rpcZid).FamilleRPC__c == 'REMFRAIDOSS') fraisAdhesionRemise += invItem.TaxAmount + invItem.ChargeAmount;
-            if (rpcs.get(rpcZid).FamilleRPC__c == 'ABO' && produit.contains('CDI') && invItem.serviceStartDate.toStartOfMonth() != invItem.serviceStartDate) prorata += (Decimal)invItem.TaxAmount + (Decimal)invItem.ChargeAmount;
-            // if(rpcs.get(rpcZid).FamilleRPC__c == 'REMFRAIDOSS', 'REMMENS', 'REMMONT')
-        }
-        fraisAdhesionApresRemise = fraisAdhesion + fraisAdhesionRemise;
-
-        preview.abonnement = abonnement;
-        preview.montantInitial = invoice.amount;
-        preview.fraisAdhesion = fraisAdhesion;
-        preview.fraisAdhesionApresRemise = fraisAdhesionApresRemise;
-        preview.prorata = prorata;
-        preview.intituleOffreFR = subOffre.HermesIntituleOffre;
-        preview.intituleOffreNL = subOffre.HermesIntituleOffreNL;
-        preview.isB2B = subOffre.IsB2B;
-        preview.isPrepaid = subOffre.IsPrepaid;
-        preview.produit = subOffre.Reference;
-        preview.codeOffreCo = subOffre.CodeOffreCo;        
-
-        // Parse les offre commerciales(offreDetail): (depuis suboffre)
-        for (zc_AmendmentRatePlanData ratePlanData : subOffreRatePlans){
-            zc_RatePlanChargeInRatePlanChargeData rpc2 = ratePlanData.ratePlanChargeData.get(0).ratePlanCharge;
-            String rpcZid2 = rpc2.productRatePlanChargeId;
-            String familleRPC = rpcs.get(rpcZid2).FamilleRPC__c;
-            if (FAMILLE_REMISES.contains(familleRPC)) {
-                preview.offreDetail.add(new WSZ.PreviewOffreDetail(rpc2.name, rpc2.name)); //TODO a remplace par intitule qui doit etre calcule dans SM_Offre dynamiquement.
-            }
-        }
-
-
-        return preview;
-
-    }
-
-    public static zc_SubscribeRequestSubscriptionDataSub subTerm(String typeContrat, Date dateDebutContrat, SubscribeIn subIn, Map<String,Object> customSub){
+    private static zc_SubscribeRequestSubscriptionDataSub subTerm(String typeContrat, Date dateDebutContrat, SubscribeIn subIn, Map<String,Object> customSub){
         
         zc_SubscribeRequestSubscriptionDataSub sub = new zc_SubscribeRequestSubscriptionDataSub();
         Boolean isFutur = (dateDebutContrat == Date.today())?false:true;
@@ -248,7 +91,7 @@ public with sharing class SM_Renouvellement {
         }
 
         sub.modeLivraison = subIn.modeLivraison;
-        sub.codeOffreCo = subIn.codeOffreCo;
+        sub.codeOffreCo = (String)customSub.get('codeOffreCo');
         sub.codePromo = subIn.coupon;
         sub.lieu = subIn.lieu;
         sub.agent = subIn.agent;
@@ -279,9 +122,11 @@ public with sharing class SM_Renouvellement {
         return sub;
     }
 
-    public static zc_SubscribeRequestAccount subAccount(String typeContrat, Account acc, Map<String,Object> customSub){
+    private static zc_SubscribeRequestAccount subAccount(String typeContrat, Account acc, Map<String,Object> customSub){
 
         zc_SubscribeRequestAccount subAcc = new zc_SubscribeRequestAccount();
+        Boolean isPreview = (Boolean)customSub.get('isPreview');
+
 
         if (typeContrat == 'CDI') {
             //subAcc.id='8adce4216787fdf0016788ffa3cf4110';
@@ -317,10 +162,9 @@ public with sharing class SM_Renouvellement {
         // Id, Name, LastName, FirstName, PersonBirthdate, IdMonCompte__c, PersonEmail, NoVoie__c, TypeVoie__c, NomVoie__c, 
 		//		CodePostal__c, Ville__r.Name, ClientResident__c, CodePays__c, 
 
-    }    
+    }   
 
-
-    public static zc_SubscribeRequestBillToContact billToContact(Account acc){
+    private static zc_SubscribeRequestBillToContact billToContact(Account acc){
             
             zc_SubscribeRequestBillToContact billTo = new zc_SubscribeRequestBillToContact();
             
@@ -340,7 +184,7 @@ public with sharing class SM_Renouvellement {
     }  
 
 
-    public static zc_SubscribeRequestSoldToContact soldToContact(Account acc){
+    private static zc_SubscribeRequestSoldToContact soldToContact(Account acc){
 
             zc_SubscribeRequestSoldToContact soldTo = new zc_SubscribeRequestSoldToContact();
             soldTo.address1 = acc.NoVoie__c + ' ' + acc.TypeVoie__c + ' ' + acc.NomVoie__c;
@@ -357,7 +201,7 @@ public with sharing class SM_Renouvellement {
 
     } 
 
-    public static zc_SubscribeRequestPaymentMethod paymentMethod(String typeContrat, Account acc, String iban, String mandateId, Map<String,Object> customSub){
+    private static zc_SubscribeRequestPaymentMethod paymentMethod(String typeContrat, Account acc, String iban, String mandateId, Map<String,Object> customSub){
 
         zc_SubscribeRequestPaymentMethod pm = new zc_SubscribeRequestPaymentMethod();
         if (typeContrat == 'CDI'){
@@ -403,23 +247,6 @@ public with sharing class SM_Renouvellement {
 
     }
 
-    // // si besoin de faire du mapping champ par champ
-    // public static WSZ.Paiement mapToPaymentIn(Object objIn){
-        
-    //     WSZ.Paiement paymentIn;
-    //     if (objIn instanceof WSZ.Paiement) {
-    //         //paymentIn = (WSZ.Paiement)objIn;
-    //         paymentIn = (WSZ.Paiement)JSON.deserialize(JSON.serialize(objIn,true), WSZ.Paiement.class);
-    //         // champ1..
-    //         // champ2...etc.
-
-    //     }
-
-    //     return paymentIn;
-
-    // }
-
-
     public class SubscribeIn {
         public Date dateDebutContrat;
         public String lieu;
@@ -452,44 +279,6 @@ public with sharing class SM_Renouvellement {
         //     this.paiement = paiement;    
         //     //this.payeurSFID = payeurSFID;        
         // }        
-    }
-
-    public static Map<String,Object> untypeObj(Object currObj, Boolean ignoreEmpty) {
-	    Map<String,Object> map1 = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(currObj,ignoreEmpty));
-	    return map1;
-    } 
-
-
+    }    
 
 }
-
-/*
-        //produit 1
-        zc_AmendmentRatePlanData rpdata1 = new zc_AmendmentRatePlanData();
-        zc_RatePlanChargeDataInRatePlanData rpc = new zc_RatePlanChargeDataInRatePlanData();
-        
-        rpdata1.ratePlan = new zc_RatePlan();
-        rpdata1.ratePlan.productRatePlanId = '8adce42167366ee301675487512231d7';
-        rpc.ratePlanCharge = new zc_RatePlanChargeInRatePlanChargeData(); 
-        rpc.ratePlanCharge.productRatePlanChargeId = '8adce42167366ee301675487514831d9';
-        rpdata1.ratePlanChargeData.add(rpc);
-
-        //produit 2
-        zc_AmendmentRatePlanData rpdata2 = new zc_AmendmentRatePlanData();
-        zc_RatePlanChargeDataInRatePlanData rpc2 = new zc_RatePlanChargeDataInRatePlanData();
-
-        rpdata2.ratePlan = new zc_RatePlan();
-        rpdata2.ratePlan.productRatePlanId = '8adc8f996532f2c801655b7d2cfe0f22';
-        rpc2.ratePlanCharge = new zc_RatePlanChargeInRatePlanChargeData(); 
-        rpc2.ratePlanCharge.productRatePlanChargeId = '8adce4216532fbf601655b7d957947f1';
-        rpdata2.ratePlanChargeData.add(rpc2);
-        
-        sub.subscriptionData.ratePlanData.add(rpdata2);
-        sub.subscriptionData.ratePlanData.add(rpdata1);
-        */
-
-        // if (produit.contains('CDI') && invoice.amount && invItem.serviceStartDate.toStartOfMonth() != invItem.serviceStartDate != (fraisAdhesionApresRemise + prorata)) {
-        //     throw RTException(RTExceptionCode.ERREUR_RETENTION_APPLICATION);
-        // }else if (produit.contains('CDD')) {
-        //     preview.montantInitial = invoice.amount;
-        // }

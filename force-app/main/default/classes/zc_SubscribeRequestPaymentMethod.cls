@@ -485,7 +485,8 @@ public class zc_SubscribeRequestPaymentMethod {
      * The type of payment method. If you want to create an Amazon Pay payment method, specify `CreditCardReferenceTransaction` for this field.
      * @return r_type
      */
-    public RTypeEnum r_type { get; set; }
+     // MBEN: RTypeEnum to String 
+    public String r_type { get; set; }
 
     /**
      *  The ID of the user who last updated the payment method.\n\n\n**Character limit**: 32\n\n\n**Values**: automatically generated 

@@ -116,7 +116,7 @@ public class zc_CreatePaymentType implements zc_Zuc.MappedProperties { // zc_Pay
     public String lieu { get; set; }
     public String methodePaiement { get; set; }
     public String agent { get; set; }
-    public String dateVirement { get; set; }
+    public Date dateVirement { get; set; }
 
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'IntegrationId__NS' => 'integrationIdNS',

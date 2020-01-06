@@ -21,7 +21,8 @@ public class zc_InvoiceData implements zc_Zuc.MappedProperties {
     }
 
     public zc_InvoiceData() {
-        invoiceItem = new List<zc_InvoiceItem>();
+        invoiceItem = new List<zc_InvoiceItem>{new zc_InvoiceItem()};
+        invoice = new zc_InvoiceDataInvoice();
     }
 
     public static zc_InvoiceData getExample() {

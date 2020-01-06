@@ -120,7 +120,18 @@ public with sharing class WSZ {
         public String coupon = null;
         public String crmId;
         public String operation;
-        public List<String> references;
+        public List<String> references = new List<String>();
+
+        public SubOffreIn(Date dateSubscription, String lieu, String agent, String coupon,String crmId, String operation,String produit){
+            this.dateSubscription = dateSubscription;
+            this.dateSub = String.valueOf(dateSubscription);
+            this.lieu = lieu;
+            this.agent = agent;
+            this.coupon = coupon;
+            this.crmId = crmId;
+            this.operation = operation;
+            this.references.add(produit);
+        }
     }
 
     public class SubOffreOut {
@@ -145,6 +156,7 @@ public with sharing class WSZ {
         public Double price;
         public String HermesIntituleOffre;
         public String HermesIntituleOffreNL;
+        public String name;
     }
 
     public class SubProduct {
@@ -847,9 +859,9 @@ public with sharing class WSZ {
         public String lieu;
         public String agent;
         public String referenceId;
-        public String dateVirement;
+        public Date dateVirement;
 
-        public ImpayeReglerIn(String accountId, String subscriptionId, Double montantPaye, String methodPaiement, String lieu, String agent, String referenceId, String dateVirement){
+        public ImpayeReglerIn(String accountId, String subscriptionId, Double montantPaye, String methodPaiement, String lieu, String agent, String referenceId, Date dateVirement){
             this.accountId = accountId;
             this.subscriptionId = subscriptionId;            
             this.montantPaye = montantPaye;            
@@ -988,5 +1000,124 @@ public with sharing class WSZ {
         public String message;
         public Integer errorCode;          
     }
+
+    public virtual class PreviewIn {
+        public Date dateDebutContrat;
+        public String lieu;
+        public String agent;
+        public String coupon;
+        public String operation;
+        public String accountSFID;
+        public String accountRCUID;
+        public String payeurSFID;
+        public String payeurRCUID;
+        public List<String> produit = new List<String>();
+        
+    }
+
+    public class ProxyPreviewOut {
+        public Boolean success;
+        public String message;
+        public Integer errorCode; 
+        public List<Preview> preview = new List<Preview>();
+    }
+
+    public class Preview {
+        public String produit;
+        public String intituleOffreFR;
+        public String intituleOffreNL;
+        public Double abonnement;
+        public Double montantInitial;
+        public Double fraisAdhesion;
+        public Double fraisAdhesionApresRemise;
+        public Double prorata;
+        public String codeOffreCo;
+        public Boolean isB2B;
+        public Boolean isPrepaid;
+        public List<PreviewOffreDetail> offreDetail = new List<PreviewOffreDetail>();
+    }
+
+    public class PreviewOffreDetail {
+        public String intituleRemiseFR;
+        public String intituleRemiseNL;
+
+        public PreviewOffreDetail(String intituleRemiseFR, String intituleRemiseNL){
+            this.intituleRemiseFR = intituleRemiseFR;
+            this.intituleRemiseNL = intituleRemiseNL;
+        }
+    }
+
+    public class AcquisitionIn extends PreviewIn{
+        // public Date dateDebutContrat;
+        // public String lieu;
+        // public String agent;
+        // public String coupon;
+        // //public String operation;
+        // public String accountSFID;
+        // public String accountRCUID;
+        // public String payeurSFID;
+        // public String payeurRCUID;
+        // public String produit;
+        public String codeOffreCo;
+        public String modeLivraison;
+        public String numCarteParrain;
+        public String iban;
+        public String mandateId;
+        public Paiement paiement;
+    }
+
+    public class Paiement {
+        public Double montant;
+        public String refPaiement;
+        public String methodePaiement;
+        public String lieu;
+        public String agent;
+        public Date dateVirement;
+
+        public Paiement(){
+
+        }
+
+        public Paiement(Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date dateVirement){
+            this.montant = montant;
+            this.refPaiement = refPaiement;
+            this.methodePaiement = methodePaiement;
+            this.lieu = lieu;
+            this.agent = agent;
+            this.dateVirement = dateVirement;
+        }
+    }
+
+    public class AcquisitionOut {
+        public String accountSFID; //ID Salesforce : [Obligatoire]
+        public String accountZID; // -- ajoutee. [Obligatoire]
+        public String accountRCUID;
+        public String subscriptionZID; //Id Zuora. [Obligatoire]
+        public String subscriptionName;
+        public Boolean compteBloque;
+        //public String caseId;
+        public String invoiceFileUrl;
+        public Boolean rembourser;
+        public Boolean success;
+        public String message;
+        public Integer errorCode;
+        
+        public AcquisitionOut(String accountSFID, String accountZID, String accountRCUID, String subscriptionZID, String subscriptionName, Boolean compteBloque,
+        String invoiceFileUrl, Boolean rembourser){
+            this.accountSFID = accountSFID;
+            this.accountZID = accountZID;
+            this.accountRCUID =  accountRCUID;
+            this.subscriptionZID = subscriptionZID;
+            this.subscriptionName = subscriptionName;
+            this.compteBloque =  compteBloque;
+            this.invoiceFileUrl =  invoiceFileUrl;
+            this.rembourser =  rembourser;
+        }
+        
+        public AcquisitionOut(){
+
+        }        
+
+    }    
 
 }

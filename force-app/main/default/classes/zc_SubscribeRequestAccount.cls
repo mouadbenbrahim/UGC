@@ -276,6 +276,11 @@ public class zc_SubscribeRequestAccount {
      */
     public String vaTId { get; set; }
 
+    //MBEN: 20191222
+    public String idMoncompte { get; set; }
+    public Date dateNaissance { get; set; }
+
+
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'Class__NS' => 'classNS',
         'CustomerType__NS' => 'customerTypeNS',
@@ -320,7 +325,8 @@ public class zc_SubscribeRequestAccount {
         'TaxExemptStatus' => 'taxExemptStatus',
         'TotalInvoiceBalance' => 'totalInvoiceBalance',
         'VATId' => 'vaTId',
-        'Aaaa' => 'vaTaaaId'
+        'DateNaissance__c' => 'dateNaissance',
+        'Id_MonCompte__c' => 'idMoncompte'
     };
 
     public Map<String, String> getPropertyMappings() {

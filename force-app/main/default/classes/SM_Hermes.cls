@@ -239,7 +239,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
     }
 
 
-    private static Case newCase(Id zDocId, String subscriptionName, Id personContactId, String origin, String famille, String motif, String sousMotif, String status, String lieu, 
+    public static Case newCase(Id zDocId, String subscriptionName, Id personContactId, String origin, String famille, String motif, String sousMotif, String status, String lieu, 
     String commentairesInternes, String accountId, String typeDeMigration, String creditMemoId, String dateFinContrat){
 
         Case c = new Case();
@@ -262,7 +262,7 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
 
     }
     
-    private static String lieuToSousMotif(String lieu){
+    public static String lieuToSousMotif(String lieu){
                 
         String sousMotif;
         if (lieu == 'WEB') {
@@ -273,6 +273,32 @@ public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
             sousMotif = 'AS- Action Stand';
         } // 'A- Action'; // AS- Action Stand // AH- Action Selfcare // AD- Action DRC
         return sousMotif;
+    }
+
+    public static String lieuToMotif(String lieu, Boolean isB2B){
+                
+        String motif;
+        if (lieu == 'DRC') {
+           motif = '06- VPC';
+        }else if (isB2B == true) {
+            motif = '05- B2B';
+        }else {
+            motif = '07- Création abonnement';
+        } // 'A- Action'; // AS- Action Stand // AH- Action Selfcare // AD- Action DRC
+        return motif;
+    }    
+
+    public static String lieuToOrigin(String lieu){
+                
+        String origin;
+        if (lieu == 'WEB') {
+           origin = 'Selfcare';
+        }else if (lieu == 'DRC') {
+            origin = 'Courrier entrant';
+        }else {
+            origin = 'Salle';
+        } // 'A- Action'; // AS- Action Stand // AH- Action Selfcare // AD- Action DRC
+        return origin;
     }
 
     //public static Id addZdocData(zc_GETSubscriptionTypeWithSuccess sub, zc_ProxyGetPaymentMethod pm){

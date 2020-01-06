@@ -515,7 +515,7 @@ public with sharing class SM_Offre {
             //ch.HermesIntituleOffreNL = offre.HermesIntituleOffreNL__c;
             ch.agent_c = subIn.agent;
             ch.lieu_c = subIn.lieu;
-
+            ch.name = rem.Charge__r.Name;
 
             // Remise d abonnement sur les 12 premier mois
             if (rem.Charge__r.FamilleRPC__c == 'ABOREM') {
@@ -531,6 +531,7 @@ public with sharing class SM_Offre {
                 ch.endDateCondition = 'Fixed_Period';
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
+                if (dateSouscription.toStartOfMonth() == dateSouscription) rem.DebuteXmois__c = rem.DebuteXmois__c - 1;
                 ch.triggerDate = Util.zDate(dateSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
                 //ch.triggerDate = rem.DebuteXmois__c;
             }
@@ -554,7 +555,7 @@ public with sharing class SM_Offre {
             }
 
             if (rem.Charge__r.ReferenceCIC__c == 'REMFRAISDOS') {
-                ch.discountAmount = rem.Montant__c;
+                ch.discountPercentage = rem.Montant__c;
                 // ch.endDateCondition = 'Fixed_Period';
                 // ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 // ch.triggerEvent = 'USD';
@@ -608,6 +609,7 @@ public with sharing class SM_Offre {
             ch.agent_c = subIn.agent;
             ch.lieu_c = subIn.lieu;
             ch.price = couponG.PrixVente;
+            ch.name = charge.Name;
             rp.chargeOverrides.add(ch);
             rps.add(rp);
         }
@@ -643,4 +645,49 @@ if (gpName == 'Offre_Managers_France')  {
         delete [SELECT Id FROM OffreLieu__c WHERE Offre__c = :offId];
         insert offreLieux;
     }
+
+    public static List<zc_AmendmentRatePlanData> convertRatePlan(List<WSZ.SubscribeToRatePlan> ratePlans1){
+
+        List<zc_AmendmentRatePlanData> ratePlans2 = new  List<zc_AmendmentRatePlanData>();
+
+        for (WSZ.SubscribeToRatePlan ratePlan1 : ratePlans1) {
+
+            System.debug('MBEN:convertItem:'+JSON.serialize(ratePlan1,true));
+            System.debug('MBEN:convertItemdiscountPercentage:'+ratePlan1.chargeOverrides.get(0).discountPercentage);
+            
+            
+            zc_AmendmentRatePlanData ratePlan2 = new zc_AmendmentRatePlanData();
+            ratePlan2.ratePlan = new zc_RatePlan();
+            ratePlan2.ratePlan.productRatePlanId = ratePlan1.productRatePlanId;
+            ratePlan2.ratePlanChargeData.add(new zc_RatePlanChargeDataInRatePlanData());
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge = new zc_RatePlanChargeInRatePlanChargeData();
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.productRatePlanChargeId = ratePlan1.chargeOverrides.get(0).productRatePlanChargeId;
+            //ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.discountPercentage = Double.valueOf(ratePlan1.chargeOverrides.get(0).discountPercentage);
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.discountPercentage = ratePlan1.chargeOverrides.get(0).discountPercentage;
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.endDateCondition = ratePlan1.chargeOverrides.get(0).endDateCondition;
+            if (!String.isEmpty(ratePlan1.chargeOverrides.get(0).specificEndDate)) ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.specificEndDate=Date.valueOf(ratePlan1.chargeOverrides.get(0).specificEndDate);
+            //ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.lieu_c = ratePlan1.chargeOverrides.get(0).lieu_c;
+            //ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.agent_c = ratePlan1.chargeOverrides.get(0).agent_c;
+            //ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.intitule_c = ratePlan1.chargeOverrides.get(0).intitule_c;
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.upToPeriods = ratePlan1.chargeOverrides.get(0).upToPeriods;
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.triggerEvent = ratePlan1.chargeOverrides.get(0).triggerEvent;
+            if (!String.isEmpty(ratePlan1.chargeOverrides.get(0).triggerDate)) ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.triggerDate = Date.valueOf(ratePlan1.chargeOverrides.get(0).triggerDate);
+            
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.discountAmount = ratePlan1.chargeOverrides.get(0).discountAmount;
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.price = ratePlan1.chargeOverrides.get(0).price;
+            ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.name = ratePlan1.chargeOverrides.get(0).name;
+            //ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.HermesIntituleOffre = ratePlan1.chargeOverrides.get(0).HermesIntituleOffre;
+            //ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.HermesIntituleOffreNL = ratePlan1.chargeOverrides.get(0).HermesIntituleOffreNL;
+            System.debug('MBEN:convertItemdiscountPercentage2:'+ratePlan2.ratePlanChargeData.get(0).ratePlanCharge.discountPercentage);
+            ratePlans2.add(ratePlan2);
+
+        }
+
+        System.debug('MBEN:subOffreRatePlanConverted' + JSON.serialize(ratePlans2));
+
+        return ratePlans2;
+
+
+    }
+    
 }

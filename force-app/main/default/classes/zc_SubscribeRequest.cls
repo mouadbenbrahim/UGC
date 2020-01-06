@@ -12,25 +12,25 @@ public class zc_SubscribeRequest {
      * Get billToContact
      * @return billToContact
      */
-    //public zc_SubscribeRequestBillToContact billToContact { get; set; }
+    public zc_SubscribeRequestBillToContact billToContact { get; set; }
 
     // /**
     //  * Get paymentMethod
     //  * @return paymentMethod
     //  */
-    // public zc_SubscribeRequestPaymentMethod paymentMethod { get; set; }
+    public zc_SubscribeRequestPaymentMethod paymentMethod { get; set; }
 
     // /**
     //  * Get previewOptions
     //  * @return previewOptions
     //  */
-    // public zc_SubscribeRequestPreviewOptions previewOptions { get; set; }
+    public zc_SubscribeRequestPreviewOptions previewOptions { get; set; }
 
     // /**
     //  * Get soldToContact
     //  * @return soldToContact
     //  */
-    // public zc_SubscribeRequestSoldToContact soldToContact { get; set; }
+    public zc_SubscribeRequestSoldToContact soldToContact { get; set; }
 
     // /**
     //  * Get subscribeOptions

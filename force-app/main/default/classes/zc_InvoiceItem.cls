@@ -40,7 +40,7 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
      * The amount of the charge. This amount does not include taxes regardless if the charge\'s tax mode is inclusive or exclusive.
      * @return chargeAmount
      */
-    public String chargeAmount { get; set; }
+    public Double chargeAmount { get; set; }
 
     /**
      * Description of the charge.
@@ -112,7 +112,7 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
      * Tax applied to the charge.
      * @return taxAmount
      */
-    public String taxAmount { get; set; }
+    public Double taxAmount { get; set; }
 
     /**
      * Get taxationItems
@@ -126,6 +126,13 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
      */
     public String unitOfMeasure { get; set; }
 
+    // MBEN Add
+    public Double unitPrice { get; set; }
+
+    public String productRatePlanChargeId { get; set; }
+
+    public String productId { get; set; }
+
     public zc_InvoiceItem(){
         taxationItems = new zc_InvoiceItemTaxationItems();
     }
@@ -133,7 +140,10 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'IntegrationId__NS' => 'integrationIdNS',
         'IntegrationStatus__NS' => 'integrationStatusNS',
-        'SyncDate__NS' => 'syncDateNS'
+        'SyncDate__NS' => 'syncDateNS',
+        'UnitPrice' => 'unitPrice',
+        'ProductRatePlanChargeId' => 'productRatePlanChargeId',
+        'ProductId' => 'productId'
     };
 
     public Map<String, String> getPropertyMappings() {
@@ -148,7 +158,7 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
         invoiceItem.appliedToItemId = 'aeiou';
         invoiceItem.availableToCreditAmount = 1.3579;
         invoiceItem.balance = 'aeiou';
-        invoiceItem.chargeAmount = 'aeiou';
+        invoiceItem.chargeAmount = 11;
         invoiceItem.chargeDescription = 'aeiou';
         invoiceItem.chargeId = 'aeiou';
         invoiceItem.chargeName = 'aeiou';
@@ -160,7 +170,7 @@ public class zc_InvoiceItem implements zc_Zuc.MappedProperties {
         invoiceItem.subscriptionId = 'aeiou';
         invoiceItem.subscriptionName = 'aeiou';
         invoiceItem.success = true;
-        invoiceItem.taxAmount = 'aeiou';
+        invoiceItem.taxAmount =1;
         invoiceItem.taxationItems = zc_InvoiceItemTaxationItems.getExample();
         invoiceItem.unitOfMeasure = 'aeiou';
         return invoiceItem;
