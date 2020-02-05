@@ -34,6 +34,8 @@ public class AP02_Case {
                 setAccId.add(caseToCre.AccountId);
             }
             if(caseToCre.SubscriptionZName__c != null){
+                system.debug ('##ECH AP02_Case processTriggerBeforeInsert caseToCre.SubscriptionZName__c >> ' + caseToCre.SubscriptionZName__c) ;
+                
                 if(!mapListCaseBySubName.containsKey(caseToCre.SubscriptionZName__c)){
                      mapListCaseBySubName.put(caseToCre.SubscriptionZName__c, new list<Case>());
                 }
@@ -643,10 +645,21 @@ public class AP02_Case {
         /*ECH 04/02 New Version */
 
         for (Zuora__Subscription__c zSub : listSub){
+            
+            system.debug('## AP02_Case initSubscriptionId zSub.Name >> '+zSub.Name);
+            
             list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
+
+            system.debug('## AP02_Case initSubscriptionId listCase >> '+listCase);
             
             for(Case fCase : listCase){
+
+                system.debug('## AP02_Case initSubscriptionId fCase.Motif__c >> '+fCase.Motif__c);
+
                 if(fCase.SubscriptionZName__c!=null){
+
+                    system.debug('## AP02_Case initSubscriptionId fCase.SubscriptionZName__c >> '+fCase.SubscriptionZName__c);
+
                     if(fCase.SubscriptionZName__c == zSub.Name){
                         fCase.Subscription__c    	= zSub.Id;
                         fCase.SubscriptionZName__c 	= zSub.Name;
@@ -655,31 +668,43 @@ public class AP02_Case {
                 else{
                     if(fCase.Subscription__c==null){
                         if(fCase.RecordTypeId==CaseAnnulationMigrationRTid){
+                            system.debug('## AP02_Case initSubscriptionId AnnulationMigration >> '+'AnnulationMigration');
+                            system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
+
                             if(zSub.Zuora__Status__c =='Pending Activation'){
                                 fCase.Subscription__c    	= zSub.Id;
                                 fCase.SubscriptionZName__c 	= zSub.Name;
                             }
                         }
                         else if(fCase.RecordTypeId==CaseRemboursementRTId){
+                            system.debug('## AP02_Case initSubscriptionId Remboursement >> '+'Remboursement');
+
                             if(zSub.Zuora__Status__c =='Active'){
+                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
                                 fCase.Subscription__c    	= zSub.Id;
                                 fCase.SubscriptionZName__c 	= zSub.Name;
                             }
                             if(zSub.Zuora__Status__c =='Cancelled' && fCase.Subscription__c==null){
+                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
                                 fCase.Subscription__c    	= zSub.Id;
                                 fCase.SubscriptionZName__c 	= zSub.Name;
                             }
                             if(zSub.Zuora__Status__c =='Pending Activation' && fCase.Subscription__c==null){
+                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
                                 fCase.Subscription__c    	= zSub.Id;
                                 fCase.SubscriptionZName__c 	= zSub.Name;
                             }
 
                         }else{
+                            system.debug('## AP02_Case initSubscriptionId Autre recordtype >> '+'Autre recordtype');
+                            
                             if(zSub.Zuora__Status__c =='Active'){
+                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
                                 fCase.Subscription__c    	= zSub.Id;
                                 fCase.SubscriptionZName__c 	= zSub.Name;
                             }
                             if(zSub.Zuora__Status__c =='Pending Activation' && fCase.Subscription__c==null){
+                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
                                 fCase.Subscription__c    	= zSub.Id;
                                 fCase.SubscriptionZName__c 	= zSub.Name;
                             }

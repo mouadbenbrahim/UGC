@@ -56,22 +56,6 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <assignments>
-        <name>myVariable_waitStartTimeAssignment</name>
-        <label>myVariable_waitStartTimeAssignment</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>isChangedDecision2_myRule_1_DateDebut_c</targetReference>
-        </connector>
-    </assignments>
     <decisions>
         <name>isChangedDecision2_myRule_1_DateDebut_c</name>
         <label>isChangedDecision2_myRule_1_DateDebut_c</label>
@@ -223,13 +207,13 @@
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>Date</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>Date</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -254,13 +238,13 @@
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>Date</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>Date</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -282,7 +266,7 @@
         </rules>
     </decisions>
     <description>Reinitialsation des contraintes si modification de la date de l offre</description>
-    <interviewLabel>Offre_Contrainte_Refresh-2_InterviewLabel</interviewLabel>
+    <interviewLabel>Offre_Contrainte_Refresh-4_InterviewLabel</interviewLabel>
     <label>Offre_Contrainte_Refresh</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -309,7 +293,7 @@
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
-    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
+    <startElementReference>isChangedDecision2_myRule_1_DateDebut_c</startElementReference>
     <status>Active</status>
     <variables>
         <name>myVariable_current</name>
@@ -326,15 +310,5 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>Offre__c</objectType>
-    </variables>
-    <variables>
-        <name>myVariable_waitStartTimeVariable</name>
-        <dataType>DateTime</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Flow.CurrentDateTime</elementReference>
-        </value>
     </variables>
 </Flow>
