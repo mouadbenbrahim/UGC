@@ -19,6 +19,7 @@ public without sharing class SM_Desabonnement {
     public static Id retentionRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Rétention').getRecordTypeId();
     public static Id retractationRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Rétractation').getRecordTypeId();
     public static Id annulationContratRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Annulation contrat').getRecordTypeId();
+    public static Id migrationContratRecordTypeId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Migration').getRecordTypeId();
     
     public static ProcessLog__c pLog;
     public static zc_GETSubscriptionTypeWithSuccess subZdoc;
@@ -95,6 +96,9 @@ public without sharing class SM_Desabonnement {
                 zSubIn.codeFinContrat = 'M';
             }
             amendOperation = 'Resiliation';            
+        }else if (dem.RecordTypeId == migrationContratRecordTypeId) {
+            zSubIn.codeFinContrat = 'L';
+            amendOperation = 'Migration';
         }else {
             if (dem.Type_de_d_sabonnement__c == 'Désabonnement avec justificatif (E)') {
                 zSubIn.codeFinContrat = 'E';
@@ -127,6 +131,7 @@ public without sharing class SM_Desabonnement {
             reqObj.cancellationPolicy = 'SpecificDate'; 
             zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL1, pLog);
             zSubZID = rCancel.subscriptionId;
+            //TODO TRACKING AMEND
 
             // Get Amendment Id: 
             WSZ.AmendOut amend = SM_Amendment.getAmendment(zSubZID, zEntityId);
@@ -167,6 +172,9 @@ public without sharing class SM_Desabonnement {
             } else if(String.isNotBlank(rCancel.creditMemoId)  && noRemboursementAFaire) {
                 //pas de rembooursement si resiliation, retractation ou annulationContrat
                 //normalement on rentre pas ici car cancel a invoice term
+                //TODO: remplacer ces calls, car au prochain bill run le CM est recree:
+                // Solution: Cancel + BillRun + CM(automatique) + Refund External ( avec reason code specifique).
+                // Exclusion du CM et du Refund de Totem (custom field).
                 SM_CreditMemo.unpost(rCancel.creditMemoId, zEntityId);
                 SM_CreditMemo.cancel(rCancel.creditMemoId, zEntityId);
             }
@@ -250,7 +258,7 @@ public without sharing class SM_Desabonnement {
 
     private static void verifDesabo() {
         //Integer preavis = Util.PREAVIS(acc.CodePays__c);       
-        Boolean isResiliationOrRetractationOrAnnulation = dem.RecordTypeId == resiliationRecordTypeId || dem.RecordTypeId == retractationRecordTypeId || dem.RecordTypeId == annulationContratRecordTypeId;
+        Boolean isResiliationOrRetractationOrAnnulation = dem.RecordTypeId == resiliationRecordTypeId || dem.RecordTypeId == retractationRecordTypeId || dem.RecordTypeId == annulationContratRecordTypeId || dem.RecordTypeId == migrationContratRecordTypeId;
         
         if (sub == null) {
             throw new RTException(RTExceptionCode.ERREUR_DESABO_CONTRAT_ABSENT_DDE,pLog);
@@ -402,6 +410,7 @@ public without sharing class SM_Desabonnement {
         reqObj.cancellationPolicy = 'SpecificDate'; 
         zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_DESABO_APPLICATION_CANCEL2, pLog);
         String newSubId = rCancel.subscriptionId;
+        //TODO TRACKING AMEND
 
         // Get Amendment Id: 
         WSZ.AmendOut amend = SM_Amendment.getAmendment(newSubId, zEntityId);

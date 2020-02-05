@@ -14,6 +14,10 @@ public class zc_GatewayOption {
      */
     public String value { get; set; }
 
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaaa' => 'aaaa'
+    };
+
     // public static zc_GatewayOption getExample() {
     //     zc_GatewayOption gatewayOption = new zc_GatewayOption();
     //     gatewayOption.name = 'aeiou';

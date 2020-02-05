@@ -75,8 +75,8 @@ public class AccountUpdaterBatchTest {
    		OffreContrainte__c chezPas = new OffreContrainte__c();
    		chezPas.Offre__c = o.Id;
    		chezPas.Action__c = 'A Qualifier';
-   		chezPas.DateDebut__c = Date.today().addDays(-30);
-   		chezPas.DateFin__c = Date.today().addDays(30);
+   		chezPas.DateDebut2__c = Datetime.now().addDays(-30);
+   		chezPas.DateFin2__c = Datetime.now().addDays(30);
    		chezPas.IncludeOffreCoupon__c = false;
    		insert chezPas;
    		//chezPas.Action__c = 'Ignorer';

@@ -56,6 +56,7 @@ public without sharing class SM005_AnnulationDesabo {
         }else {   // contract cancelled (que les CDIs)                
             // Suppression de la derniere subscription
             zc_SaveResult resObj2 = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ANNUL_DESABO_DELETE_SUB, pLog);
+            //TODO TRACKING AMEND
 
             // mise a jour subscription
             zObj.id = sub.Zuora__PreviousSubscriptionId__c;

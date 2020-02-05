@@ -100,7 +100,7 @@ public class zc_AmendResult implements zc_Zuc.MappedProperties {
     public zc_AmendResult() {
         amendmentIds = new List<String>();
         errors = new List<zc_ActionsErrorResponse>{new zc_ActionsErrorResponse()};
-        invoiceDatas = new List<zc_InvoiceData>();
+        invoiceDatas = new List<zc_InvoiceData>{new zc_InvoiceData()};
     }
 
     // public static zc_AmendResult getExample() {

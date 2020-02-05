@@ -35,4 +35,5 @@ public with sharing class SM_Amendment {
         return (WSZ.GenericOut2) JSON.deserializeStrict(wsOut, WSZ.GenericOut2.class);
     }
 
+
 }

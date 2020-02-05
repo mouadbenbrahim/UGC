@@ -4,15 +4,26 @@
 
 public with sharing class SM_Account {
 
-    public static Account getAccount(Id accId){
-
+    /*public static Account getAccount(Id accId){
         Account account = [
-                SELECT Id, Name, MauvaisComportement__c, ProduitUGC__c, CodePays__c, PersonContactId 
+                SELECT Id, Name, MauvaisComportement__c, ProduitUGC__c, CodePays__c, PersonContactId,
+                Payeur__c, IdMonCompte__c, PersonBirthdate
                 FROM Account
                 WHERE Id = :accId
         ];
         return account; //TODO 5 voir si c une passage en reference ou en valeur ?
-
+    }*/
+    
+    public static Account getAccount(Id accId){
+        list<Account> listAccount = new list<Account> ([
+                SELECT Id, Name, MauvaisComportement__c, ProduitUGC__c, CodePays__c, PersonContactId,
+                Payeur__c, IdMonCompte__c, PersonBirthdate
+                FROM Account
+                WHERE Id = :accId]);
+        if(listAccount.size() == 0){
+        	return null;
+        }
+        return listAccount.get(0); 
     }
     
     public static Account getAccountForScorClient(Id accId){
@@ -220,7 +231,8 @@ public with sharing class SM_Account {
 
         Account account = [
                 SELECT Id, Name, LastName, FirstName, PersonBirthdate, IdMonCompte__c, PersonEmail, NoVoie__c, TypeVoie__c, NomVoie__c, 
-				CodePostal__c, Ville__r.Name, Ville__r.Pays__c, Ville__r.CodePostal__c, ClientResident__c, CodePays__c, AdressePostale__c, MauvaisComportement__c, ProduitUGC__c, PersonContactId 
+				CodePostal__c, Ville__r.Name, Ville__r.Pays__c, Ville__r.CodePostal__c, ClientResident__c, CodePays__c, AdressePostale__c, 
+				MauvaisComportement__c, ProduitUGC__c, PersonContactId, Pays__c, Langue_parl_e_par_le_client__c
                 FROM Account
                 WHERE Id = :accId
         ];

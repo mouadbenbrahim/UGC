@@ -9,6 +9,11 @@ public class zc_ProxyActionamendResponse {
         results = new List<zc_AmendResult>{new zc_AmendResult()};
     }
 
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaa' => 'aaa',
+        'Bbb' => 'bbb'
+    }; 
+    
     // public static zc_ProxyActionamendResponse getExample() {
     //     zc_ProxyActionamendResponse proxyActionamendResponse = new zc_ProxyActionamendResponse();
     //     proxyActionamendResponse.results = new List<zc_AmendResult>{zc_AmendResult.getExample()};

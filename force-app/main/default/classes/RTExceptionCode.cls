@@ -104,7 +104,11 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_CONTRATFILE_CASE_NONTROUVE = new RTExceptionCode('Erreur recuperation contratfile : aucun case record trouve avec attachementid', 4601);
     public static final RTExceptionCode ERREUR_CONTRATFILE_ATTACHMENT_NONTROUVE = new RTExceptionCode('Erreur recuperation contratfile : attachment record non trouve', 4602);
     
-
+	//public static final RTExceptionCode ERREUR_AUTORISATION_WSIN_MANQUANT = new RTExceptionCode('Erreur autorisation : donnée en entrée non valide', 4701);	
+	//public static final RTExceptionCode ERREUR_AUTORISATION_ACCOUNTMANQUANT = new RTExceptionCode('Erreur autorisation : pas de compte SFDC trouvé pour le compte renseigné', 4702);	
+	//public static final RTExceptionCode ERREUR_AUTORISATION_MULTIPLE_BILL_ACCOUNT = new RTExceptionCode('Erreur autorisation : plusieur billing account trouvé', 4703);	
+	public static final RTExceptionCode ERREUR_AUTORISATION_GET_ACCOUNTSUMMARY = new RTExceptionCode('Erreur autorisation : probleme get account summary zuora', 4704);	
+	
        
 
     //'Aucune offre n est valable avec ce coupon', 'ERREUR_COUPON_AUCUNE_OFFRE_VALABLE'

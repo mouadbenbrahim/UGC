@@ -178,6 +178,7 @@ public without sharing class SM_Impaye {
             zc_SaveResult res = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, subZID, RTExceptionCode.ERREUR_IMPAYE_REGLER_DELETE_SUB, pLog);
             subActivated = true;
             currentSubId = sub.Zuora__PreviousSubscriptionId__c;
+            //TODO TRACKING AMEND
         }
 
         Double montantPreview = 0; //dette non echue
@@ -508,6 +509,7 @@ public without sharing class SM_Impaye {
         zc_POSTSubscriptionCancellationResp rCancel = zc_Api.subscriptionCancelPUT(accessToken, zEntityId, reqObj, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_CANCEL, pLog);
         currentSubId = rCancel.subscriptionId;
         subRecancelled = true;
+        //TODO TRACKING AMEND
     }
 
 }

@@ -1,7 +1,7 @@
 /**
  * zc_ProxyCreateOrModifyResponse
  */
-public class zc_ProxyCreateOrModifyResponse implements zc_Zuc.MappedProperties {
+public class zc_ProxyCreateOrModifyResponse {
     /**
      * 
      * @return id
@@ -14,7 +14,7 @@ public class zc_ProxyCreateOrModifyResponse implements zc_Zuc.MappedProperties {
      */
     public Boolean success { get; set; }
 
-    private static final Map<String, String> propertyMappings = new Map<String, String>{
+    private final Map<String, String> propertyMappings = new Map<String, String>{
         'Id' => 'id',
         'Success' => 'success'
     };

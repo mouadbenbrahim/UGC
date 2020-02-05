@@ -64,18 +64,18 @@ public class AP03_Attachment {
                 
                 if(fi.Name.containsIgnoreCase('contrat')){
                 	//Sur Account
-                	Account acc = new Account();
+                	/*Account acc = new Account();
                 	acc.Id 							= fi.Account__c;
                 	acc.Attachment_Body_Contrat__c 	= fi.Attachment_Body__c;
                 	acc.Attachment_Id_Contrat__c	= fi.Attachment_Id__c;
                 	if(acc.Id != null){
                 		mapAccountByIdToUpdate.put(acc.Id, acc);
-                	}
+                	}*/
                 	
                 	//Sur Case
                 	Case c = new Case();
                 	c.Id 							= fi.Case__c;
-                	c.Attachment_Body_Contrat__c 	= fi.Attachment_Body__c;
+                	//c.Attachment_Body_Contrat__c 	= fi.Attachment_Body__c;
                 	c.Attachment_Id_Contrat__c 		= fi.Attachment_Id__c;
                 	if(c.Id != null){
                 		mapCaseByIdToUpdate.put(c.Id, c); 
@@ -90,10 +90,10 @@ public class AP03_Attachment {
             insert listFileImpressionToIsert;
         }
         
-        if(!mapAccountByIdToUpdate.isEmpty()){
+        /*if(!mapAccountByIdToUpdate.isEmpty()){
             system.debug('##MNE AP03_Attachment createFileImpressionRecords hello5');
             update mapAccountByIdToUpdate.values();
-        }
+        }*/
         
         if(!mapCaseByIdToUpdate.isEmpty()){
             system.debug('##MNE AP03_Attachment createFileImpressionRecords hello6');

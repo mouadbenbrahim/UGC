@@ -30,6 +30,10 @@
                 <behavior>Edit</behavior>
                 <field>ByPassDuplicateRule__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>AgentExtRef__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

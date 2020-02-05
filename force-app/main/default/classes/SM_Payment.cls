@@ -110,15 +110,60 @@ public with sharing class SM_Payment {
         zc_PaymentInvoiceApplicationCreateR invoice1 = new zc_PaymentInvoiceApplicationCreateR(); // Invoice Amend : FG + DNE
         invoice1.amount = pa.montant; //TODO champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes du acqIn
         invoice1.invoiceId = invoiceId;
-        payment.invoices.add(invoice1);
+            payment.invoices.add(invoice1);
 
-        //Call WS Payment
-        // String accessToken = WS001_CallZuora.access_token;
-        // String zEntityId = WS001_CallZuora.getZuoraEntityId('033');        
-        // zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, payment, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,new ProcessLog__c());
+            //Call WS Payment
+            // String accessToken = WS001_CallZuora.access_token;
+            // String zEntityId = WS001_CallZuora.getZuoraEntityId('033');        
+            // zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, payment, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,new ProcessLog__c());
 
-        return payment;
+            return payment;
 
+        }
+
+    public static zc_ProxyCreatePaymentMethod paymentMethodElec(String accountZID, String iban, String mandateId, Account payeur) {
+        
+        zc_ProxyCreatePaymentMethod pm = new zc_ProxyCreatePaymentMethod();
+        pm.accountId=accountZID;
+        pm.r_type='BankTransfer';
+        pm.bankTransferType='SEPA';
+        //reqObj.IBAN
+        pm.bankTransferAccountNumber=iban;
+        pm.mandateReceived='Yes';
+        pm.mandateID=mandateId;
+        pm.existingMandate='Yes';
+        pm.country = payeur.Pays__c; //'FR', 'FRANCE', 'France' : OK
+        pm.firstName = payeur.FirstName;
+        pm.lastName = payeur.LastName;
+        pm.streetName = payeur.TypeVoie__c + ' ' + payeur.NomVoie__c;
+        pm.streetNumber = payeur.NoVoie__c;
+        pm.postalCode = payeur.Ville__r.CodePostal__c;
+        pm.city = payeur.Ville__r.Name;    
+        
+        return pm;
+        
+    }
+
+
+    public static zc_CreatePaymentType paymentReq(String invoiceId, String accountZID, Double invAmount, Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date  dateVirement) {
+        WSZ.Paiement paymentIn;
+        zc_CreatePaymentType paymentReq;
+        // if (renouvIn.paiement != null ) { // TODOFUTUR:  si on traite les B2B : || subOffre.IsB2B == true
+        if (montant != null ) { // External : // TODOFUTUR:  si on traite les B2B : || subOffre.IsB2B == true
+            //if (montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,new ProcessLog__c());
+            paymentIn = new WSZ.Paiement(montant, refPaiement, methodePaiement, lieu, agent, dateVirement);
+            paymentReq = createExtPayment(invoiceId, accountZID, paymentIn);
+        }else { // Electronic
+            paymentIn = new WSZ.Paiement(invAmount, null, null, null, null, null);
+            paymentReq = createElecPayment(invoiceId, accountZID, paymentIn);
+        }
+
+        return paymentReq;
+
+        // //###### Call WS Payment ######   
+        // zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,new ProcessLog__c());
+        // String payMethodId = paymentRes.paymentMethodId;
+        // return payMethodId;
     }
 
 }

@@ -8,7 +8,7 @@ public class zc_ProxyCreatePaymentGatewayOptionD implements zc_Zuc.MappedPropert
      */
     public List<zc_GatewayOption> gatewayOption { get; set; }
 
-    private static final Map<String, String> propertyMappings = new Map<String, String>{
+    private final Map<String, String> propertyMappings = new Map<String, String>{
         'GatewayOption' => 'gatewayOption'
     };
 

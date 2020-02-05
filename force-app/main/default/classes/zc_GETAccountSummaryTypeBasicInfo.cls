@@ -82,7 +82,7 @@ public class zc_GETAccountSummaryTypeBasicInfo {
      * A list of additional email addresses to receive emailed invoices.\n
      * @return additionalEmailAddresses
      */
-    // MBEN public List<String> additionalEmailAddresses { get; set; }
+    public List<String> additionalEmailAddresses { get; set; }
 
     /**
      * Current outstanding balance.\n
@@ -168,7 +168,15 @@ public class zc_GETAccountSummaryTypeBasicInfo {
      */
     public String tags { get; set; }
 
-    private static final Map<String, String> propertyMappings = new Map<String, String>{
+    //MBEN:
+    public String source { get; set; }
+    
+    //MNE
+    public String LegacyExternalID { get; set; }
+    public String Id_MonCompte { get; set; }
+	public String DateNaissance { get; set; }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
         'Class__NS' => 'classNS',
         'CustomerType__NS' => 'customerTypeNS',
         'Department__NS' => 'departmentNS',
@@ -178,7 +186,12 @@ public class zc_GETAccountSummaryTypeBasicInfo {
         'Subsidiary__NS' => 'subsidiaryNS',
         'SyncDate__NS' => 'syncDateNS',
         'SynctoNetSuite__NS' => 'synctoNetSuiteNS',
-        'currency' => 'currency2'
+        'currency' => 'currency2',
+        'Source__c' => 'source',
+        'LegacyExternalID' => 'LegacyExternalID__c',
+        'Id_MonCompte' => 'Id_MonCompte__c',
+		'DateNaissance' => 'DateNaissance__c'
+        
     };
 
     public Map<String, String> getPropertyMappings() {
@@ -186,7 +199,8 @@ public class zc_GETAccountSummaryTypeBasicInfo {
     }
 
     public zc_GETAccountSummaryTypeBasicInfo() {
-        // MBEN additionalEmailAddresses = new List<String>();
+        additionalEmailAddresses = new List<String>();
+        defaultPaymentMethod = new zc_GETAccountSummaryTypeBasicInfoDe();
     }
 
     // public static zc_GETAccountSummaryTypeBasicInfo getExample() {
@@ -232,7 +246,7 @@ public class zc_GETAccountSummaryTypeBasicInfo {
                 && this.syncDateNS == geTAccountSummaryTypeBasicInfo.syncDateNS
                 && this.synctoNetSuiteNS == geTAccountSummaryTypeBasicInfo.synctoNetSuiteNS
                 && this.accountNumber == geTAccountSummaryTypeBasicInfo.accountNumber
-                // MBEN && this.additionalEmailAddresses == geTAccountSummaryTypeBasicInfo.additionalEmailAddresses
+                && this.additionalEmailAddresses == geTAccountSummaryTypeBasicInfo.additionalEmailAddresses
                 && this.balance == geTAccountSummaryTypeBasicInfo.balance
                 && this.batch == geTAccountSummaryTypeBasicInfo.batch
                 && this.billCycleDay == geTAccountSummaryTypeBasicInfo.billCycleDay
@@ -263,7 +277,7 @@ public class zc_GETAccountSummaryTypeBasicInfo {
         hashCode = (17 * hashCode) + (syncDateNS == null ? 0 : System.hashCode(syncDateNS));
         hashCode = (17 * hashCode) + (synctoNetSuiteNS == null ? 0 : System.hashCode(synctoNetSuiteNS));
         hashCode = (17 * hashCode) + (accountNumber == null ? 0 : System.hashCode(accountNumber));
-        // MBEN  hashCode = (17 * hashCode) + (additionalEmailAddresses == null ? 0 : System.hashCode(additionalEmailAddresses));
+        hashCode = (17 * hashCode) + (additionalEmailAddresses == null ? 0 : System.hashCode(additionalEmailAddresses));
         hashCode = (17 * hashCode) + (balance == null ? 0 : System.hashCode(balance));
         hashCode = (17 * hashCode) + (batch == null ? 0 : System.hashCode(batch));
         hashCode = (17 * hashCode) + (billCycleDay == null ? 0 : System.hashCode(billCycleDay));

@@ -15,13 +15,46 @@ public class zc_ZObjectUpdate implements zc_Zuc.MappedProperties { //zc_ZObject,
     public String tech_FlagRejetPaye;
     public String codeFinContrat;
     public Date dateFinContrat;
+    public String operation;
+    public String codeOffrePrincipale { get; set; }
+    public String modeLivraison { get; set; }
+    public String marche { get; set; }
+    public String codePromo { get; set; }
+    public String methodePaiement { get; set; }
+    public String codeOffreCo { get; set; }
+    public String payeurCRMID { get; set; }
+    public String lieu { get; set; }
+    public String agent { get; set; }
+    public String typeContrat { get; set; }
+    public String numCarteParrain { get; set; }
+    public String idContratPrecedent { get; set; }
+    public Boolean autoPay { get; set; }
+    public String defaultPaymentMethodId { get; set; }
+    public String cancelCaseId { get; set; }
+    
 
     private final Map<String, String> propertyMappings = new Map<String, String>{
         'Id' => 'id',
         'Batch' => 'batch',
         'Tech_FlagRejetPaye__c' => 'tech_FlagRejetPaye',
         'CodeFinContrat__c' => 'codeFinContrat',
-        'DateFinContrat__c' => 'dateFinContrat'      
+        'DateFinContrat__c' => 'dateFinContrat',
+        'Operation__c' => 'operation',
+        'CodeOffrePrincipale__c' => 'codeOffrePrincipale',
+        'ModeLivraison__c' => 'modeLivraison',
+        'Marche__c' => 'marche',
+        'CodePromo__c' => 'codePromo',
+        'MethodePaiement__c' => 'methodePaiement',
+        'CodeOffreCo__c' => 'codeOffreCo',
+        'PayeurCRMID__c' => 'payeurCRMID',
+        'Lieu__c' => 'lieu',
+        'Agent__c' => 'agent',
+        'TypeContrat__c' => 'typeContrat',
+        'NumCarteParrain__c' => 'numCarteParrain',
+        'IdContratPrecedent__c' => 'idContratPrecedent',
+        'AutoPay' => 'autoPay',
+        'DefaultPaymentMethodId' => 'defaultPaymentMethodId',
+        'CancelCaseID__c' => 'cancelCaseId'
     };
 
     public Map<String, String> getPropertyMappings() {

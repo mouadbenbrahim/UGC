@@ -3,7 +3,7 @@ public with sharing class SM_FileImpression {
 
     }
 
-    public static void createFileImpressionCarte 
+    public static String createFileImpressionCarte 
     (String numeroCarte, Id accountId, Id carteId, Id caseId, String subscriptionName, String codeOffrePrincipale, String payeurFirst, String payeurLast)  
     { 
 
@@ -21,6 +21,7 @@ public with sharing class SM_FileImpression {
         fi.PayeurLastName__c    = payeurLast;
 
         insert fi;
+        return fi.Id;
 
     }
 

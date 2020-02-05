@@ -13,31 +13,31 @@ public class zc_GETAccountSummaryType {
      * Get billToContact
      * @return billToContact
      */
-    // MBEN public zc_GETAccountSummaryTypeBillToConta billToContact { get; set; }
+    public zc_GETAccountSummaryTypeBillToConta billToContact { get; set; }
 
     /**
      * Container for invoices. Only returns the last 6 invoices.\n
      * @return invoices
      */
-    // MBEN public List<zc_GETAccountSummaryInvoiceType> invoices { get; set; }
+    public List<zc_GETAccountSummaryInvoiceType> invoices { get; set; }
 
     /**
      * Container for payments. Only returns the last 6 payments.\n
      * @return payments
      */
-    // MBEN public List<zc_GETAccountSummaryPaymentType> payments { get; set; }
+    public List<zc_GETAccountSummaryPaymentType> payments { get; set; }
 
     /**
      * Get soldToContact
      * @return soldToContact
      */
-    // MBEN public zc_GETAccountSummaryTypeSoldToConta soldToContact { get; set; }
+    public zc_GETAccountSummaryTypeSoldToConta soldToContact { get; set; }
 
     /**
      * Container for subscriptions.\n
      * @return subscriptions
      */
-    // MBEN public List<zc_GETAccountSummarySubscriptionTyp> subscriptions { get; set; }
+    public List<zc_GETAccountSummarySubscriptionTyp> subscriptions { get; set; }
 
     /**
      * Returns `true` if the request was processed successfully.\n
@@ -49,7 +49,7 @@ public class zc_GETAccountSummaryType {
      * Get taxInfo
      * @return taxInfo
      */
-    // MBEN public zc_GETAccountSummaryTypeTaxInfo taxInfo { get; set; }
+    public zc_GETAccountSummaryTypeTaxInfo taxInfo { get; set; }
 
     /**
      * Container for usage data. Only returns the last 6 months of usage.\n\n**Note:** If the [Active Rating](https://knowledgecenter.zuora.com/CB_Billing/J_Billing_Operations/H_Active_Rating) feature is enabled, no usage data is returned in the response body field. To retrive usage data information, you can use the [Usage (with Active Rating)](https://www.zuora.com/developer/active-rating-api/#tag/Usage-(with-Active-Rating)) operations.\n
@@ -58,11 +58,21 @@ public class zc_GETAccountSummaryType {
     // MBEN public List<zc_GETAccountSummaryUsageType> usage { get; set; }
 
     public zc_GETAccountSummaryType() {
-        // MBEN invoices = new List<zc_GETAccountSummaryInvoiceType>();
-        // MBEN payments = new List<zc_GETAccountSummaryPaymentType>();
-        // MBEN subscriptions = new List<zc_GETAccountSummarySubscriptionTyp>();
-        // MBEN usage = new List<zc_GETAccountSummaryUsageType>();
+        basicInfo = new zc_GETAccountSummaryTypeBasicInfo();
+        billToContact = new zc_GETAccountSummaryTypeBillToConta();
+        soldToContact = new zc_GETAccountSummaryTypeSoldToConta(); 
+        invoices = new List<zc_GETAccountSummaryInvoiceType>{new zc_GETAccountSummaryInvoiceType()};
+        payments = new List<zc_GETAccountSummaryPaymentType>{new zc_GETAccountSummaryPaymentType()};
+        subscriptions = new List<zc_GETAccountSummarySubscriptionTyp>{new zc_GETAccountSummarySubscriptionTyp()};
+        taxInfo = new zc_GETAccountSummaryTypeTaxInfo();
+        // usage = new List<zc_GETAccountSummaryUsageType>();
     }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaaa' => 'aaaa',
+        'Baaa' => 'bbbb'   
+    };
+
 
     // public static zc_GETAccountSummaryType getExample() {
     //     zc_GETAccountSummaryType geTAccountSummaryType = new zc_GETAccountSummaryType();

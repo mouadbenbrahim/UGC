@@ -31,6 +31,15 @@ public class zc_GETAccountSummaryTypeBasicInfoDe {
      * @return id
      */
     public String id { get; set; }
+    
+    private final Map<String, String> propertyMappings = new Map<String, String>{
+        'Aaaa' => 'aaaa',
+        'Baaa' => 'bbbb'  
+    };
+
+    public Map<String, String> getPropertyMappings() {
+        return propertyMappings;
+    }
 
     /**
      * 

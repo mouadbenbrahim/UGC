@@ -284,6 +284,7 @@ public class zc_SubscribeRequestSubscriptionDataSub {
     public String agent { get; set; }
     public String typeContrat { get; set; }
     public String numCarteParrain { get; set; }
+    public Date dateFinContrat { get; set; }
 
 
     private final Map<String, String> propertyMappings = new Map<String, String>{
@@ -342,7 +343,8 @@ public class zc_SubscribeRequestSubscriptionDataSub {
         'Lieu__c' => 'lieu',
         'Agent__c' => 'agent',
         'TypeContrat__c' => 'typeContrat',
-        'NumCarteParrain__c' => 'numCarteParrain'
+        'NumCarteParrain__c' => 'numCarteParrain',
+        'DateFinContrat__c' => 'dateFinContrat'
     };
 
 

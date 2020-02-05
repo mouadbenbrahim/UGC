@@ -5,6 +5,9 @@
 */
 public class AP02_Case {
     
+    public static final Id CaseAnnulationMigrationRTid = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Annulation Migration').getRecordTypeId();
+    public static final Id CaseRemboursementRTId = Schema.SObjectType.Case.getRecordTypeInfosByName().get('Remboursement').getRecordTypeId();
+
     public static void processTriggerBeforeInsert (List<Case> cases)  {   
         system.debug ('##MNE AP02_Case processTriggerBeforeInsert cases.size() >> ' + cases.size()) ; 
         List<Case> casesGroupementLst = new List<Case>();
@@ -610,7 +613,8 @@ public class AP02_Case {
         if (listSub.isEmpty()) {
             return;
         }
-        
+
+        /* ECH 04/02 Old Version
         set<Id> setAccIdAlreadyTreated = new set<Id>();
         set<String> setSubNameAlreadyTreated = new set<String>();
         for(Zuora__Subscription__c zSub : listSub) {
@@ -635,7 +639,57 @@ public class AP02_Case {
                 }
            	}
         }
+        */
+        /*ECH 04/02 New Version */
+
+        for (Zuora__Subscription__c zSub : listSub){
+            list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
+            
+            for(Case fCase : listCase){
+                if(fCase.SubscriptionZName__c!=null){
+                    if(fCase.SubscriptionZName__c == zSub.Name){
+                        fCase.Subscription__c    	= zSub.Id;
+                        fCase.SubscriptionZName__c 	= zSub.Name;
+                    }
+                }
+                else{
+                    if(fCase.Subscription__c==null){
+                        if(fCase.RecordTypeId==CaseAnnulationMigrationRTid){
+                            if(zSub.Zuora__Status__c =='Pending Activation'){
+                                fCase.Subscription__c    	= zSub.Id;
+                                fCase.SubscriptionZName__c 	= zSub.Name;
+                            }
+                        }
+                        else if(fCase.RecordTypeId==CaseRemboursementRTId){
+                            if(zSub.Zuora__Status__c =='Active'){
+                                fCase.Subscription__c    	= zSub.Id;
+                                fCase.SubscriptionZName__c 	= zSub.Name;
+                            }
+                            if(zSub.Zuora__Status__c =='Cancelled' && fCase.Subscription__c==null){
+                                fCase.Subscription__c    	= zSub.Id;
+                                fCase.SubscriptionZName__c 	= zSub.Name;
+                            }
+                            if(zSub.Zuora__Status__c =='Pending Activation' && fCase.Subscription__c==null){
+                                fCase.Subscription__c    	= zSub.Id;
+                                fCase.SubscriptionZName__c 	= zSub.Name;
+                            }
+
+                        }else{
+                            if(zSub.Zuora__Status__c =='Active'){
+                                fCase.Subscription__c    	= zSub.Id;
+                                fCase.SubscriptionZName__c 	= zSub.Name;
+                            }
+                            if(zSub.Zuora__Status__c =='Pending Activation' && fCase.Subscription__c==null){
+                                fCase.Subscription__c    	= zSub.Id;
+                                fCase.SubscriptionZName__c 	= zSub.Name;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+    
         
 
     /*public static void createReboursementCase(Case demande){

@@ -1,4 +1,4 @@
-public with sharing class SM_Subscription {
+public without sharing class SM_Subscription {
 	
     public static Zuora__Subscription__c getSubscription(Id subId) {
     	system.debug('##MNE SM_Subscription getSubscription subId >> '+subId);
@@ -94,7 +94,8 @@ public with sharing class SM_Subscription {
 						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
-						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c,
+                        Zuora__RenewalTerm__c,Zuora__RenewalTermPeriodType__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__SubscriptionNumber__c IN :setName
                 ORDER BY CreatedDate DESC
@@ -103,7 +104,7 @@ public with sharing class SM_Subscription {
         return listSub;
     }
     
-    
+    /* ECG 04/02/2020 Old version
     public static list<Zuora__Subscription__c> getActiveSubscriptionBySetNameORSetAccId(set<String> setName, set<Id> setAccId) {
     	system.debug('##MNE SM_Subscription getActiveSubscriptionBySetAccIdAndSetName setName >> '+setName);
     	system.debug('##MNE SM_Subscription getActiveSubscriptionBySetAccIdAndSetName setAccId >> '+setAccId);
@@ -119,6 +120,27 @@ public with sharing class SM_Subscription {
                 WHERE Zuora__SubscriptionNumber__c IN :setName
 				OR (Zuora__Account__r.Id IN :setAccId AND (Zuora__SubscriptionEndDate__c > :d1 OR Zuora__SubscriptionEndDate__c = NULL))
                 ORDER BY CreatedDate DESC
+        ]);
+		system.debug('##MNE SM_Subscription getActiveSubscriptionBySetAccIdAndSetName listSub >> '+listSub);
+        return listSub;
+    }*/
+
+    /* ECG 04/02/2020 New version with all subscriptions */
+    public static list<Zuora__Subscription__c> getActiveSubscriptionBySetNameORSetAccId(set<String> setName, set<Id> setAccId) {
+    	system.debug('##MNE SM_Subscription getActiveSubscriptionBySetAccIdAndSetName setName >> '+setName);
+    	system.debug('##MNE SM_Subscription getActiveSubscriptionBySetAccIdAndSetName setAccId >> '+setAccId);
+        Date d1 = Date.today();
+        list<Zuora__Subscription__c> listSub = new list<Zuora__Subscription__c>([
+                SELECT  Id,Name,TypeContrat__c,CodeFinContrat__c,Tech_AvecRembouesement__c,DateFinContrat__c,Marche__c,Tech_DetteFraisGestion__c,
+						Tech_DetteNonEchue__c,Tech_DetteTargetDate__c,Zuora__SubscriptionNumber__c,Zuora__Status__c,Zuora__CancelledDate__c,
+						Zuora__TermEndDate__c,Zuora__SubscriptionEndDate__c,Zuora__TermStartDate__c,Zuora__SubscriptionStartDate__c,Zuora__ContractEffectiveDate__c,
+						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
+						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
+						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c
+                FROM Zuora__Subscription__c
+                WHERE Zuora__SubscriptionNumber__c IN :setName
+				OR (Zuora__Account__r.Id IN :setAccId )
+                ORDER BY CreatedDate DESC 
         ]);
 		system.debug('##MNE SM_Subscription getActiveSubscriptionBySetAccIdAndSetName listSub >> '+listSub);
         return listSub;

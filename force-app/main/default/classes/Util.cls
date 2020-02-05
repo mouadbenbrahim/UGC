@@ -54,6 +54,14 @@ public with sharing class Util {
         if (aDate < bDate) { return aDate;} else { return bDate;}
     }
 
+    public static Datetime maxDatetime(Datetime aDate, Datetime bDate) {
+        if (aDate > bDate) { return aDate;} else { return bDate;}
+    }
+
+    public static Datetime minDatetime(Datetime aDate, Datetime bDate) {
+        if (aDate < bDate) { return aDate;} else { return bDate;}
+    }
+
     public static String oppositeAction(String action) {
         String oppAction = '';
         if (action == 'Prioritaire') {oppAction = 'Non-Prioritaire';}
@@ -203,6 +211,14 @@ public with sharing class Util {
             r.add(mapIn.get(key));
         }
         return r;
+    }
+
+    public static Date endOfMonth(Date mDate) {
+        return mDate.toStartOfMonth().addMonths(1).addDays(-1);
+    }
+
+    public static Date firstOfNextMonth(Date mDate) {
+        return mDate.toStartOfMonth().addMonths(1);
     }
 
     // public static void pLog(WSZ.ProcessLog pLog){
