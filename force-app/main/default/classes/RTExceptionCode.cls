@@ -55,10 +55,14 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2019);
     public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB2 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2020);
     public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB3 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2021);
+    public static final RTExceptionCode ERREUR_DESABO_APPLICATION_UPDATESUB4 = new RTExceptionCode('Erreur desabo: problem mise a jour de la souscription', 2025);
     public static final RTExceptionCode ERREUR_DESABO_BTOB_IMPOSSIBLE = new RTExceptionCode('Pas possible de desabonner un contrat BtoB', 2022);
     public static final RTExceptionCode ERREUR_DESABO_COUPON_WELCOMEBACK2 = new RTExceptionCode('Erreur desabo: configuration coupon/offre welcome back', 2023);
-    public static final RTExceptionCode ERREUR_DESABO_COUPON_ABOTIER2 = new RTExceptionCode('Erreur desabo: configuration coupon/offre abo tier', 2023);
-    
+    public static final RTExceptionCode ERREUR_DESABO_COUPON_ABOTIER2 = new RTExceptionCode('Erreur desabo: configuration coupon/offre abo tier', 2024);
+    public static final RTExceptionCode ERREUR_DESABO_GATEWAY_ZUORA = new RTExceptionCode('Erreur desabo: problème de connexion sur la gateway Zuora', 2025);
+    public static final RTExceptionCode ERREUR_DESABO_UPDATE_CREDIT_MEMO = new RTExceptionCode('Erreur desabo: problème mise a jour du credit memo', 2026);
+    public static final RTExceptionCode ERREUR_DESABO_REFUND_CREDIT_MEMO = new RTExceptionCode('Erreur desabo: problème de remboursement du credit memo', 2027);
+
 
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_CONTRAT_DEJA_ACTIF = new RTExceptionCode('Annulation desabo impossible: le contrat est deja actif', 2101);
     public static final RTExceptionCode ERREUR_ANNUL_DESABO_PERIODLATENCE_DEPASSE = new RTExceptionCode('Annulation desabo impossible: la periode de latence depasse', 2102);    
@@ -104,10 +108,26 @@ public with sharing class RTExceptionCode {
     public static final RTExceptionCode ERREUR_CONTRATFILE_CASE_NONTROUVE = new RTExceptionCode('Erreur recuperation contratfile : aucun case record trouve avec attachementid', 4601);
     public static final RTExceptionCode ERREUR_CONTRATFILE_ATTACHMENT_NONTROUVE = new RTExceptionCode('Erreur recuperation contratfile : attachment record non trouve', 4602);
     
-	//public static final RTExceptionCode ERREUR_AUTORISATION_WSIN_MANQUANT = new RTExceptionCode('Erreur autorisation : donnée en entrée non valide', 4701);	
-	//public static final RTExceptionCode ERREUR_AUTORISATION_ACCOUNTMANQUANT = new RTExceptionCode('Erreur autorisation : pas de compte SFDC trouvé pour le compte renseigné', 4702);	
-	//public static final RTExceptionCode ERREUR_AUTORISATION_MULTIPLE_BILL_ACCOUNT = new RTExceptionCode('Erreur autorisation : plusieur billing account trouvé', 4703);	
 	public static final RTExceptionCode ERREUR_AUTORISATION_GET_ACCOUNTSUMMARY = new RTExceptionCode('Erreur autorisation : probleme get account summary zuora', 4704);	
+	
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_MANQUANT 						= new RTExceptionCode('Erreur change banque : donnée en entrée non valide', 4801);	
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_ACCOUNTSFID_MANQUANT 			= new RTExceptionCode('Erreur change banque : champ accountSFID non valid', 4802);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_PAYEURSFID_MANQUANT 			= new RTExceptionCode('Erreur change banque : champ payeurSFID non valid', 4803);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_MANDATEID_MANQUANT 			= new RTExceptionCode('Erreur change banque : champ mandateId non valid', 4804);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_iIBAN_MANQUANT 				= new RTExceptionCode('Erreur change banque : champ iban non valid', 4805);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_SUBSCRIPTIONNAME_MANQUANT 		= new RTExceptionCode('Erreur change banque : champ subscriptionName non valid', 4806);
+	//public static final RTExceptionCode ERREUR_CHANGEBANQUE_WSIN_LIEU_MANQUANT 					= new RTExceptionCode('Erreur change banque : champ lieu non valid', 4807);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_SUB_NON_TROUVE						= new RTExceptionCode('Erreur change banque : pas de contract trouvé', 4808);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_BILL_ACC_NON_TROUVE					= new RTExceptionCode('Erreur change banque : pas de billing account trouvé', 489);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_PORTEUR_NON_TROUVE					= new RTExceptionCode('Erreur change banque : pas de porteur trouvé', 4810);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_PAYEUR_NON_TROUVE					= new RTExceptionCode('Erreur change banque : pas de payeur trouvé', 4811);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_CREATION_ZPAYMENT_METHOD			= new RTExceptionCode('Erreur change banque : erreur lors de la creation du zPaymentMethod', 4812);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_UPDATE_ZCOMPTE						= new RTExceptionCode('Erreur change banque : erreur lors de la mise à jour du zCompte', 4813);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_UPDATE_ZCONTACT						= new RTExceptionCode('Erreur change banque : erreur lors de la mise à jour du zContact', 4814);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_UPDATE_ZSUBSCRIPTION				= new RTExceptionCode('Erreur change banque : erreur lors de la mise à jour du zSouscription', 4815);
+	public static final RTExceptionCode EERREUR_CHANGEBANQUE_GET_ZSUBSCRIPTION 					= new RTExceptionCode('Erreur change banque : erreur get subscription zuora', 4116);
+	public static final RTExceptionCode EERREUR_CHANGEBANQUE_GET_ACCOUNT 						= new RTExceptionCode('Erreur change banque : erreur get account zuora', 4117);
+	public static final RTExceptionCode ERREUR_CHANGEBANQUE_GET_PAYMENTMETHOD 					= new RTExceptionCode('Erreur change banque : erreur get payment method zuora', 4118);  
 	
        
 

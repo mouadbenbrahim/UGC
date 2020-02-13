@@ -24,7 +24,7 @@ public with sharing class SM_ReeditionCarte {
 
         //token/entity
         String accessToken = WS001_CallZuora.access_token;
-        String zEntityId = WS001_CallZuora.getZuoraEntityId(porteur.CodePays__c);  
+        String zEntityId = WS001_CallZuora.getZuoraEntityId(porteur.CodePays__c);
 
 
         // Initialisation date facture, gratuite...etc
@@ -128,7 +128,8 @@ public with sharing class SM_ReeditionCarte {
         
         // Paiement
         if (invoiceDate != null && !isGratuit && redIn.paiement.refPaiement != null){ //external payment
-            zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, redIn.paiement.montant, redIn.paiement.refPaiement, redIn.paiement.methodePaiement, redIn.lieu, redIn.agent, redIn.paiement.dateVirement);
+            zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, redIn.paiement.montant, redIn.paiement.refPaiement, 
+            redIn.paiement.methodePaiement, redIn.lieu, redIn.agent, redIn.paiement.dateVirement, porteur.CodePays__c);
             zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,new ProcessLog__c());
             //payMethodId = paymentRes.paymentMethodId; //TODO:OK il faut prendre celle du contrat
             paymentId = paymentRes.id;

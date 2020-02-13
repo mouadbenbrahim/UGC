@@ -1,6 +1,8 @@
 public with sharing class SM_Subscribe {
 
-    public final static Set<String> FAMILLE_REMISES = new Set<String>{'REMFRAIDOSS', 'REMMENS', 'REMMONT'};
+    private final static Set<String> FAMILLE_REMISES = new Set<String>{'REMFRAIDOSS', 'REMMENS', 'REMMONT'};
+    private static Map<String,WSZ.Paiement> mapPaiements;
+
 
     public SM_Subscribe() {
 
@@ -13,9 +15,20 @@ public with sharing class SM_Subscribe {
         String produit = subIn.produit;
         String typeContrat = (produit.contains('CDI')?'CDI':'CDD');
 
+
         // Zuora subscribeRequest
         zc_ProxyActionsubscribeRequest subscribeReq = new zc_ProxyActionsubscribeRequest();
         zc_SubscribeRequest sub = new zc_SubscribeRequest();
+
+        // parse mapPaiements
+        
+        if (!isPreview && subIn.paiements.size() > 0){
+            mapPaiements = new Map<String,WSZ.Paiement>();
+            //List<Paiement> paiements = acqIn.paiements;
+            for (WSZ.Paiement item:subIn.paiements){
+                mapPaiements.put(item.refCharge,item);         
+            }
+        }        
 
         sub.account = subAccount(typeContrat, porteur,customSub);
         sub.billToContact = billToContact(payeur);
@@ -97,7 +110,7 @@ public with sharing class SM_Subscribe {
             sub.lieu = subIn.lieu;
             sub.agent = subIn.agent;
             sub.payeurCRMID = subIn.payeurSFID;
-            sub.numCarteParrain = subIn.numCarteParrain;
+            sub.parrainSFID = subIn.parrainSFID;
             sub.typeContrat = typeContrat;
             if (customSub.containsKey('IsB2B') && customSub.get('IsB2B') == true ) {
                 sub.marche = 'BTOB';
@@ -108,7 +121,7 @@ public with sharing class SM_Subscribe {
             if (typeContrat == 'CDI') { 
                 sub.methodePaiement = 'PRE';
             }else {
-                sub.methodePaiement = subIn.paiement.methodePaiement; //TODO si besoin de mapping
+                sub.methodePaiement = mapPaiements.get('ABO').methodePaiement;
             }
             // TODO sub.idContratPrecedent a remplir pour la migration/renouvellement: de preference le nom de la souscription, car la souscription sera cancelle dans le futur
         }
@@ -142,11 +155,11 @@ public with sharing class SM_Subscribe {
             subAcc.batch = 'Batch21';
             subAcc.paymentTerm = 'Due Upon Receipt';
             
-            // //TODO: ne fonctionne pas pour les external paymentID (doc API action/subscribe)
+            // //TODO OK: ne fonctionne pas pour les external paymentID (doc API action/subscribe)
             // if (isB2B) {
             //     subAcc.defaultPaymentMethodId = SM_Hermes.getExtPaymentMethodId(true, 'BTB', codePays);
             // }else {
-            //     subAcc.defaultPaymentMethodId = SM_Hermes.getExtPaymentMethodId(false, 'CBI', codePays); //TODO mapping CBI;
+            //     subAcc.defaultPaymentMethodId = SM_Hermes.getExtPaymentMethodId(false, 'CBI', codePays); 
             // }
             
         }
@@ -254,11 +267,11 @@ public with sharing class SM_Subscribe {
         //public String produit;
         public String codeOffreCo;
         public String modeLivraison;
-        public String numCarteParrain;
+        public String parrainSFID;
         public String iban;
         public String mandateId;
         public String produit;
-        public WSZ.Paiement paiement;
+        public List<WSZ.Paiement> paiements;
         public String payeurSFID;
       
     }    
@@ -323,7 +336,8 @@ public with sharing class SM_Subscribe {
         WSZ.SubProduct subOffre = (WSZ.SubProduct)offreProxy.get('offre');
         List<zc_AmendmentRatePlanData> offreRatePlans = (List<zc_AmendmentRatePlanData>)offreProxy.get('offreRatePlans');
 
-        Decimal abonnement=0,montantInitial=0,fraisAdhesion=0,fraisAdhesionRemise=0,fraisAdhesionApresRemise=0,prorata=0,montantInitialNonRemise=0;
+        Decimal abonnement=0,montantInitial=0,fraisAdhesion=0,remiseFraisAdhesion=0,fraisAdhesionNet=0,prorata=0,montantInitialNonRemise=0;
+        Decimal remiseAbonnement=0,abonnementNet=0;
         
         String typeContrat = (subOffre.Reference.contains('CDI')?'CDI':'CDD');
         if (resObj instanceof zc_ProxySubscribeResult) {
@@ -343,7 +357,8 @@ public with sharing class SM_Subscribe {
             rpcIds.add(invItem.productRatePlanChargeId);
         }
         Map<String,ProdRatePlanCharge__c> rpcs = new Map<String,ProdRatePlanCharge__c>();
-        for(ProdRatePlanCharge__c item : [Select Id, zid__c, Reference__c, ReferenceCIC__c, FamilleRPC__c, Name from ProdRatePlanCharge__c where zid__c in :rpcIds])
+        //for(ProdRatePlanCharge__c item : [Select Id, zid__c, Reference__c, ReferenceCIC__c, FamilleRPC__c, Name from ProdRatePlanCharge__c where zid__c in :rpcIds])
+        for(ProdRatePlanCharge__c item : [Select Id, zid__c, Reference__c, ReferenceCIC__c, FamilleRPC__c, Name from ProdRatePlanCharge__c])
         rpcs.put(item.zid__c, item);
 
         System.debug('MBEN:rpcs: ' + JSON.serialize(rpcs));
@@ -355,31 +370,28 @@ public with sharing class SM_Subscribe {
             String rpcZid = invItem.productRatePlanChargeId;
             if (rpcs.get(rpcZid).FamilleRPC__c == 'ABO'  ) {
                 abonnement += (Decimal)invItem.unitPrice;
-                prevDetail = new WSZ.PreviewDetail('ABO','Abonnement',abonnement);
-                preview.previewDetail.add(prevDetail);
-                if (typeContrat == 'CDD') {montantInitial += abonnement; montantInitialNonRemise += abonnement;}
+                if (typeContrat == 'CDD') {montantInitial += abonnement;montantInitialNonRemise += abonnement;}
+
                 //preview.dateDebutContrat = invItem.serviceStartDate;
                 //preview.dateFinContrat = invItem.serviceEndDate;
             }
             if (rpcs.get(rpcZid).FamilleRPC__c == 'FRAIDOSS') {
                 fraisAdhesion += (Decimal)invItem.TaxAmount + (Decimal)invItem.ChargeAmount;
-                // prevDetail.reference = 'FRAIDOSS';
-                // prevDetail.libelle = 'Frais d\'adhesion';
-                // prevDetail.montant = fraisAdhesion;
                 montantInitial += fraisAdhesion; 
                 montantInitialNonRemise += fraisAdhesion;
 
-            }
+            }            
+            if (rpcs.get(rpcZid).ReferenceCIC__c == 'REMMONTANNUAL') {
+                remiseAbonnement += invItem.TaxAmount + invItem.ChargeAmount;
+                montantInitial += remiseAbonnement;                
+            }            
             if (rpcs.get(rpcZid).FamilleRPC__c == 'REMFRAIDOSS') {
-                fraisAdhesionRemise += invItem.TaxAmount + invItem.ChargeAmount;
-                // prevDetail.reference = 'REMFRAIDOSS';
-                // prevDetail.libelle = 'Remise frais d\'adhesion';
-                // prevDetail.montant = fraisAdhesionRemise; 
-                montantInitial += fraisAdhesionRemise;                
+                remiseFraisAdhesion += invItem.TaxAmount + invItem.ChargeAmount;
+                montantInitial += remiseFraisAdhesion;                
             }
             if (rpcs.get(rpcZid).FamilleRPC__c == 'ABO' && typeContrat == 'CDI' && invItem.serviceStartDate.toStartOfMonth() != invItem.serviceStartDate) {
                 prorata += (Decimal)invItem.TaxAmount + (Decimal)invItem.ChargeAmount;
-                prevDetail = new WSZ.PreviewDetail('PRORATA','Prorata sur abonnement',prorata);
+                prevDetail = new WSZ.PreviewDetail('PRORATA','Prorata sur abonnement',prorata,prorata);
                 preview.previewDetail.add(prevDetail);
                 montantInitial += prorata;
                 montantInitialNonRemise += prorata;
@@ -388,19 +400,24 @@ public with sharing class SM_Subscribe {
             
         }
 
-        fraisAdhesionApresRemise = fraisAdhesion + fraisAdhesionRemise;
-        preview.previewDetail.add(new WSZ.PreviewDetail('FRAISADHESION','Frais d\'adhesion',fraisAdhesionApresRemise));
+        fraisAdhesionNet = fraisAdhesion + remiseFraisAdhesion;
+        preview.previewDetail.add(new WSZ.PreviewDetail('FRAISADHESION','Frais d\'adhesion',fraisAdhesionNet, fraisAdhesion));
+        
+        abonnementNet = abonnement + remiseAbonnement;
+        preview.previewDetail.add(new WSZ.PreviewDetail('ABO','Abonnement',abonnementNet,abonnement));
+
+        //if (typeContrat == 'CDD') {montantInitial += abonnement; montantInitialNonRemise += abonnement;}
 
 
         //preview.abonnement = abonnement;
         preview.montantInitial = montantInitial;
         //preview.fraisAdhesion = fraisAdhesion;
-        //preview.fraisAdhesionApresRemise = fraisAdhesionApresRemise;
+        //preview.fraisAdhesionNet = fraisAdhesionNet;
         //preview.prorata = prorata;
-        preview.montantInitialNonRemise = montantInitialNonRemise; //TODO voir si ce montant est bon.
+        preview.montantInitialNonRemise = montantInitialNonRemise; //TODO: OK voir si ce montant est bon.
          
 
-        preview.intituleOffre = subOffre.HermesIntituleOffre; //TODO gestion de langue ou a gerer dans SM_Offre;
+        preview.intituleOffre = subOffre.HermesIntituleOffre; //TODO: OK: gestion de langue ou a gerer dans SM_Offre;
         //preview.intituleOffreNL = subOffre.HermesIntituleOffreNL;
         preview.isB2B = subOffre.IsB2B;
         preview.isPrepaid = subOffre.IsPrepaid;

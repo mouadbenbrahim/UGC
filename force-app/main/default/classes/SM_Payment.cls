@@ -55,26 +55,26 @@ public with sharing class SM_Payment {
     }
 
 
-    public static zc_CreatePaymentType createExtPayment(String invoiceId, String accountZID, WSZ.Paiement pa){
+    public static zc_CreatePaymentType createExtPayment(String invoiceId, String accountZID, WSZ.Paiement pa, String codePays){
 
         // Creation paiement Zuora
-        //TODO check si montant invoice = montant paye: il faut un call getinvoice, car le montant ne se trouve pas dans le resultat du subscribe
+        //TODO: OK check si montant invoice = montant paye: il faut un call getinvoice, car le montant ne se trouve pas dans le resultat du subscribe
         // if (acqIn.paiement.montant != resObj.results.get(0).invoiceResult) ..etc
         zc_CreatePaymentType payment = new zc_CreatePaymentType();
         payment.accountId = accountZID;
         payment.amount = pa.montant;
         payment.currency2 = 'EUR';
-        payment.r_type = zc_CreatePaymentType.RTypeEnum.External; //TODO
-        String pmMethodId = Utils.getUgcGenericParam('Zuora_PM_'+'CBI','033').ParamValue__c; //TODO
+        payment.r_type = zc_CreatePaymentType.RTypeEnum.External;
+        String pmMethodId = Utils.getUgcGenericParam('Zuora_PM_'+pa.methodePaiement,codePays).ParamValue__c; //TODO country
         payment.paymentMethodId = pmMethodId;
         payment.effectiveDate = Date.today();
         payment.referenceId = pa.refPaiement;
-        payment.methodePaiement = pa.methodePaiement; //TODO si mapping a faire
+        payment.methodePaiement = pa.methodePaiement;
         payment.lieu = pa.lieu;
         payment.agent = pa.agent;
         if (pa.methodePaiement == 'VIR') {payment.dateVirement = pa.dateVirement;}
         zc_PaymentInvoiceApplicationCreateR invoice1 = new zc_PaymentInvoiceApplicationCreateR(); // Invoice Amend : FG + DNE
-        invoice1.amount = pa.montant; //TODO champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes du acqIn
+        invoice1.amount = pa.montant; //TODO: OK champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes du acqIn
         invoice1.invoiceId = invoiceId;
         payment.invoices.add(invoice1);
 
@@ -87,7 +87,7 @@ public with sharing class SM_Payment {
 
     }
 
-    public static zc_CreatePaymentType createElecPayment(String invoiceId, String accountZID, WSZ.Paiement pa){
+    public static zc_CreatePaymentType createElecPayment(String invoiceId, String accountZID, WSZ.Paiement pa, String codePays){
 
         // Creation paiement Zuora
         //TODO check si montant invoice = montant paye: il faut un call getinvoice, car le montant ne se trouve pas dans le resultat du subscribe
@@ -96,10 +96,10 @@ public with sharing class SM_Payment {
         payment.accountId = accountZID;
         payment.amount = pa.montant;
         payment.currency2 = 'EUR';
-        payment.r_type = zc_CreatePaymentType.RTypeEnum.Electronic; //TODO
-        //String pmMethodId = Utils.getUgcGenericParam('Zuora_PM_'+'CBI','033').ParamValue__c; //TODO
+        payment.r_type = zc_CreatePaymentType.RTypeEnum.Electronic;
+        //String pmMethodId = Utils.getUgcGenericParam('Zuora_PM_'+'CBI','033').ParamValue__c; 
         //payment.paymentMethodId = pmMethodId;
-        String gatewayId = Utils.getUgcGenericParam('Zuora Gateway Id','033').ParamValue__c; //TODO country
+        String gatewayId = Utils.getUgcGenericParam('Zuora Gateway Id',codePays).ParamValue__c; //TODO country
         payment.gatewayId = gatewayId;
         //payment.effectiveDate = Date.today();
         //payment.referenceId = pa.refPaiement;
@@ -108,7 +108,7 @@ public with sharing class SM_Payment {
         //payment.agent = pa.agent;
         //if (pa.methodePaiement == 'VIR') {payment.dateVirement = pa.dateVirement;}
         zc_PaymentInvoiceApplicationCreateR invoice1 = new zc_PaymentInvoiceApplicationCreateR(); // Invoice Amend : FG + DNE
-        invoice1.amount = pa.montant; //TODO champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes du acqIn
+        invoice1.amount = pa.montant; //TODO: OK champ obligatoire, soit on requette invoice dans zuora, ou bien on utitilise les donnes du acqIn
         invoice1.invoiceId = invoiceId;
             payment.invoices.add(invoice1);
 
@@ -145,17 +145,18 @@ public with sharing class SM_Payment {
     }
 
 
-    public static zc_CreatePaymentType paymentReq(String invoiceId, String accountZID, Double invAmount, Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date  dateVirement) {
+    public static zc_CreatePaymentType paymentReq(String invoiceId, String accountZID, Double invAmount, Double montant, String refPaiement, 
+    String methodePaiement, String lieu, String agent, Date dateVirement, String codePays) {
         WSZ.Paiement paymentIn;
         zc_CreatePaymentType paymentReq;
         // if (renouvIn.paiement != null ) { // TODOFUTUR:  si on traite les B2B : || subOffre.IsB2B == true
         if (montant != null ) { // External : // TODOFUTUR:  si on traite les B2B : || subOffre.IsB2B == true
             //if (montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,new ProcessLog__c());
             paymentIn = new WSZ.Paiement(montant, refPaiement, methodePaiement, lieu, agent, dateVirement);
-            paymentReq = createExtPayment(invoiceId, accountZID, paymentIn);
+            paymentReq = createExtPayment(invoiceId, accountZID, paymentIn, codePays);
         }else { // Electronic
             paymentIn = new WSZ.Paiement(invAmount, null, null, null, null, null);
-            paymentReq = createElecPayment(invoiceId, accountZID, paymentIn);
+            paymentReq = createElecPayment(invoiceId, accountZID, paymentIn, codePays);
         }
 
         return paymentReq;

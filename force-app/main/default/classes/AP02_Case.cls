@@ -60,15 +60,15 @@ public class AP02_Case {
         //MNE_31-07-2018 OK
         getCaseRecordType(cases); 
         
-        //MNE_22-11-2018
-        initDesaboDate(cases);
-        
         //MNE_04-04-2019
         system.debug ('##MNE AP02_Case processTriggerBeforeInsert setSubName.size() >> ' + setSubName.size()) ; 
         system.debug ('##MNE AP02_Case processTriggerBeforeInsert setAccId.size() >> ' + setAccId.size()) ; 
         if (setAccId.size() > 0 || setAccId.size() > 0){
-        	initSubscriptionId(mapListCaseBySubName, setSubName, mapListCaseByAccId, setAccId);
+        	initSubscriptionId(cases,mapListCaseBySubName, setSubName, mapListCaseByAccId, setAccId);
         }
+        
+        //MNE_22-11-2018
+        initDesaboDate(cases);
         
     }
     
@@ -183,16 +183,16 @@ public class AP02_Case {
         	getCaseRecordType(listCaseChangeCaseRecordType);
         }
         
-        //MNE_22-11-2018
-        if (desaboDateCases.size() > 0){
-            initDesaboDate(desaboDateCases);
-        }
-        
         //MNE_04-04-2019
         system.debug ('##MNE AP02_Case processTriggerBeforeUpdate setSubName.size() >> ' + setSubName.size()) ; 
         system.debug ('##MNE AP02_Case processTriggerBeforeUpdate setAccId.size() >> ' + setAccId.size()) ; 
         if (setAccId.size() > 0 || setAccId.size() > 0){
-        	initSubscriptionId(mapListCaseBySubName, setSubName, mapListCaseByAccId, setAccId);
+        	initSubscriptionId(mapNewCases.values(),mapListCaseBySubName, setSubName, mapListCaseByAccId, setAccId);
+        }
+        
+        //MNE_22-11-2018
+        if (desaboDateCases.size() > 0){
+            initDesaboDate(desaboDateCases);
         }
     }
     
@@ -604,7 +604,7 @@ public class AP02_Case {
         }
     }
     
-    public static void initSubscriptionId (map<String, list<Case>> mapListCaseBySubName, set<String> setSubName, map<Id, list<Case>> mapListCaseByAccId, set<Id> setAccId){
+    public static void initSubscriptionId (List<Case> cases, map<String, list<Case>> mapListCaseBySubName, set<String> setSubName, map<Id, list<Case>> mapListCaseByAccId, set<Id> setAccId){
     	system.debug('##MNE AP02_Case initSubscriptionId mapListCaseBySubName >> '+mapListCaseBySubName);
         system.debug('##MNE AP02_Case initSubscriptionId setSubName >> '+setSubName);
         system.debug('##MNE AP02_Case initSubscriptionId mapListCaseByAccId >> '+mapListCaseByAccId);
@@ -615,6 +615,21 @@ public class AP02_Case {
         if (listSub.isEmpty()) {
             return;
         }
+
+
+        //ECH 06/02/20 : Start Add
+        map<Id, list<Zuora__Subscription__c>> mapListSubByAccId = new map<Id, list<Zuora__Subscription__c>>();
+
+        for(Zuora__Subscription__c sub : listSub){
+           if(sub.Zuora__Account__c != null){
+                if(!mapListSubByAccId.containsKey(sub.Zuora__Account__c)){
+                    mapListSubByAccId.put(sub.Zuora__Account__c, new list<Zuora__Subscription__c>());
+                }
+                mapListSubByAccId.get(sub.Zuora__Account__c).add(sub);
+            }
+        }
+        //ECH 06/02/20 : End Add
+
 
         /* ECH 04/02 Old Version
         set<Id> setAccIdAlreadyTreated = new set<Id>();
@@ -642,77 +657,95 @@ public class AP02_Case {
            	}
         }
         */
-        /*ECH 04/02 New Version */
+        /*ECH 04/02 START New Version pour récupérer le contrat courant*/
+        
 
-        for (Zuora__Subscription__c zSub : listSub){
-            
-            system.debug('## AP02_Case initSubscriptionId zSub.Name >> '+zSub.Name);
-            
-            list<Case> listCase = mapListCaseByAccId.get(zSub.Zuora__Account__r.Id);
+        for(Case fCase : cases){
 
-            system.debug('## AP02_Case initSubscriptionId listCase >> '+listCase);
-            
-            for(Case fCase : listCase){
+            Id SubIdPriority = null;
+            String SubIdToAssign = null;
+            String SubToAssign = '';
 
-                system.debug('## AP02_Case initSubscriptionId fCase.Motif__c >> '+fCase.Motif__c);
+            list<Zuora__Subscription__c> listSub2 = mapListSubByAccId.get(fCase.AccountId);
+            system.debug('## AP02_Case initSubscriptionId listSub >> '+listSub);
 
-                if(fCase.SubscriptionZName__c!=null){
+            if(listSub2.size()>0){
+                for (Zuora__Subscription__c zSub : listSub2){
+                
+                    system.debug('## AP02_Case initSubscriptionId zSub.Name >> '+zSub.Name);
+    
+                    system.debug('## AP02_Case initSubscriptionId fCase.Motif__c >> '+fCase.Motif__c);
 
-                    system.debug('## AP02_Case initSubscriptionId fCase.SubscriptionZName__c >> '+fCase.SubscriptionZName__c);
+                    if(fCase.SubscriptionZName__c!=null){
 
-                    if(fCase.SubscriptionZName__c == zSub.Name){
-                        fCase.Subscription__c    	= zSub.Id;
-                        fCase.SubscriptionZName__c 	= zSub.Name;
+                        system.debug('## AP02_Case initSubscriptionId fCase.SubscriptionZName__c >> '+fCase.SubscriptionZName__c);
+
+                        if(fCase.SubscriptionZName__c == zSub.Name){
+                            SubIdToAssign    	= zSub.Id;
+                            SubToAssign 	= zSub.Name;
+                        }
+                    }
+                    else{
+                        if(fCase.Subscription__c==null){
+                            if(fCase.RecordTypeId==CaseAnnulationMigrationRTid){
+                                system.debug('## AP02_Case initSubscriptionId AnnulationMigration >> '+'AnnulationMigration');
+                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
+
+                                if(zSub.Zuora__Status__c =='Pending Activation'){
+                                    SubIdToAssign    	= zSub.Id;
+                                    SubToAssign 	= zSub.Name;
+                                }
+                            }
+                            else if(fCase.RecordTypeId==CaseRemboursementRTId){
+                                system.debug('## AP02_Case initSubscriptionId Remboursement >> '+'Remboursement');
+
+                                if(zSub.Zuora__Status__c =='Active'){
+                                    system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
+                                    SubIdToAssign    	= zSub.Id;
+                                    SubToAssign 	= zSub.Name;
+                                    SubIdPriority    	= zSub.Id;
+
+                                }
+                                if(zSub.Zuora__Status__c =='Pending Activation' && SubIdPriority==null){
+                                    system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
+                                    SubIdToAssign    	= zSub.Id;
+                                    SubToAssign 	= zSub.Name;                              
+                                    SubIdPriority    	= zSub.Id;
+
+                                }
+                                if(zSub.Zuora__Status__c =='Cancelled' && SubIdPriority==null){
+                                    system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
+                                    SubIdToAssign    	= zSub.Id;
+                                    SubToAssign 	= zSub.Name;
+                                }
+                            }else{
+                                system.debug('## AP02_Case initSubscriptionId Autre recordtype >> '+'Autre recordtype');
+                                
+                                if(zSub.Zuora__Status__c =='Active'){
+                                    system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
+                                    SubIdToAssign    	= zSub.Id;
+                                    SubToAssign 	= zSub.Name;
+                                    SubIdPriority    	= zSub.Id;
+                                }
+                                if(zSub.Zuora__Status__c =='Pending Activation' && SubIdPriority==null){
+                                    SubIdToAssign    	= zSub.Id;
+                                    SubToAssign 	= zSub.Name;                              
+                                    
+                                }
+                            }
+                        }
                     }
                 }
-                else{
-                    if(fCase.Subscription__c==null){
-                        if(fCase.RecordTypeId==CaseAnnulationMigrationRTid){
-                            system.debug('## AP02_Case initSubscriptionId AnnulationMigration >> '+'AnnulationMigration');
-                            system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
 
-                            if(zSub.Zuora__Status__c =='Pending Activation'){
-                                fCase.Subscription__c    	= zSub.Id;
-                                fCase.SubscriptionZName__c 	= zSub.Name;
-                            }
-                        }
-                        else if(fCase.RecordTypeId==CaseRemboursementRTId){
-                            system.debug('## AP02_Case initSubscriptionId Remboursement >> '+'Remboursement');
-
-                            if(zSub.Zuora__Status__c =='Active'){
-                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
-                                fCase.Subscription__c    	= zSub.Id;
-                                fCase.SubscriptionZName__c 	= zSub.Name;
-                            }
-                            if(zSub.Zuora__Status__c =='Cancelled' && fCase.Subscription__c==null){
-                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
-                                fCase.Subscription__c    	= zSub.Id;
-                                fCase.SubscriptionZName__c 	= zSub.Name;
-                            }
-                            if(zSub.Zuora__Status__c =='Pending Activation' && fCase.Subscription__c==null){
-                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
-                                fCase.Subscription__c    	= zSub.Id;
-                                fCase.SubscriptionZName__c 	= zSub.Name;
-                            }
-
-                        }else{
-                            system.debug('## AP02_Case initSubscriptionId Autre recordtype >> '+'Autre recordtype');
-                            
-                            if(zSub.Zuora__Status__c =='Active'){
-                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
-                                fCase.Subscription__c    	= zSub.Id;
-                                fCase.SubscriptionZName__c 	= zSub.Name;
-                            }
-                            if(zSub.Zuora__Status__c =='Pending Activation' && fCase.Subscription__c==null){
-                                system.debug('## AP02_Case initSubscriptionId zSub.Zuora__Status__c >> '+zSub.Zuora__Status__c);
-                                fCase.Subscription__c    	= zSub.Id;
-                                fCase.SubscriptionZName__c 	= zSub.Name;
-                            }
-                        }
-                    }
+                if(SubIdToAssign!=null)
+                {
+                    fCase.Subscription__c    	= SubIdToAssign;
+                    fCase.SubscriptionZName__c 	= SubToAssign;
                 }
             }
         }
+
+        /*ECH 04/02 END New Version pour récupérer le contrat courant*/
     }
     
         

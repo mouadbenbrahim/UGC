@@ -126,6 +126,7 @@ public with sharing class SM_Offre {
                     FROM Offre__c
                     WHERE Id != :offId
                     AND (RecordType.Name = 'Offre commerciale' OR RecordType.Name = 'Offre coupon')
+                    AND DateDebut__c != null AND DateFin__c != null
             ];
 
             List<OffreContrainte__c> contraintes = new List<OffreContrainte__c>();
@@ -204,6 +205,8 @@ public with sharing class SM_Offre {
         dateEligOffre = Datetime.now(); //utilise dans la selection de l'offre
         dateJourEligOffre = Date.today(); //utilise dans la selection de l'offre
         isContratFutur = false;
+        String langue = subIn.codeLangue.left(2);
+        String hermesIntitule;
 
         if(dateSouscription > Datetime.now()){
             isContratFutur = true;
@@ -233,8 +236,8 @@ public with sharing class SM_Offre {
             if (!offAboBase.isEmpty()) {
                 ratePlansAboBase = getRemisesRatePlans(offAboBase.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansAboBase);
-                subProd.HermesIntituleOffre = offAboBase.get(0).HermesIntituleOffre__c; //TODO gestion de langue
-                subProd.HermesIntituleOffreNL = offAboBase.get(0).HermesIntituleOffreNL__c;                
+                subProd.HermesIntituleOffre = (langue == 'nl')?offAboBase.get(0).HermesIntituleOffreNL__c:offAboBase.get(0).HermesIntituleOffre__c; //TODO gestion de langue
+                  
                 // subProd.CodeOffreCo = offAboBase.get(0).Reference__c; Ano: 1017
             }
 
@@ -253,8 +256,7 @@ public with sharing class SM_Offre {
             if (!offBase.isEmpty()) {
                 ratePlansBase = getRemisesRatePlans(offBase.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansBase);
-                subProd.HermesIntituleOffre = offBase.get(0).HermesIntituleOffre__c;
-                subProd.HermesIntituleOffreNL = offBase.get(0).HermesIntituleOffreNL__c;
+                subProd.HermesIntituleOffre = (langue == 'nl')?offBase.get(0).HermesIntituleOffreNL__c:offBase.get(0).HermesIntituleOffre__c;
                 // subProd.CodeOffreCo = offBase.get(0).Reference__c;
             }
 
@@ -263,8 +265,9 @@ public with sharing class SM_Offre {
             if (!offCo.isEmpty()) {
                 ratePlansCom = getRemisesRatePlans(offCo.get(0), subIn);
                 subProd.subscribeToRatePlans.addAll(ratePlansCom);
-                subProd.HermesIntituleOffre += '|' + offCo.get(0).HermesIntituleOffre__c;
-                subProd.HermesIntituleOffreNL += '|' + offCo.get(0).HermesIntituleOffreNL__c;
+                hermesIntitule = (langue == 'nl')?offCo.get(0).HermesIntituleOffreNL__c:offCo.get(0).HermesIntituleOffre__c;
+                subProd.HermesIntituleOffre += '|' + hermesIntitule;
+                //subProd.HermesIntituleOffreNL += '|' + offCo.get(0).HermesIntituleOffreNL__c;
                 subProd.CodeOffreCo = offCo.get(0).Reference__c;
                 // if (subProd.CodeOffreCo !=  offAboBase.get(0).Reference__c) {
                 //     subProd.CodeOffreCo = subProd.CodeOffreCo + '|' + offCo.get(0).Reference__c;
@@ -283,8 +286,9 @@ public with sharing class SM_Offre {
                     if (offPc.get(0).RecordType.Name == 'Offre coupon') {
                         ratePlansPc = getRemisesRatePlans(offPc.get(0), subIn);
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
-                        subProd.HermesIntituleOffre += '|' + offPc.get(0).HermesIntituleOffre__c;
-                        subProd.HermesIntituleOffreNL += '|' + offPc.get(0).HermesIntituleOffreNL__c;
+                        hermesIntitule = (langue == 'nl')?offPc.get(0).HermesIntituleOffreNL__c:offPc.get(0).HermesIntituleOffre__c;
+                        subProd.HermesIntituleOffre += '|' + hermesIntitule;
+                        //subProd.HermesIntituleOffreNL += '|' + offPc.get(0).HermesIntituleOffreNL__c;
                         //subProd.CodeOffreCo = offPc.get(0).Reference__c;
                         if (subProd.CodeOffreCo !=  null) {
                             subProd.CodeOffreCo = subProd.CodeOffreCo + '-' + offPc.get(0).Reference__c;
@@ -296,8 +300,8 @@ public with sharing class SM_Offre {
                         System.debug('MBEN: Offre BtoB: couponG15: ' + couponG);
                         ratePlansPc = getBtoBRatePlan(offPc.get(0), subIn, couponG);
                         subProd.Marche = 'BTOB';
-                        subProd.HermesIntituleOffre = offPc.get(0).HermesIntituleOffre__c;
-                        subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
+                        subProd.HermesIntituleOffre = (langue == 'nl')?offPc.get(0).HermesIntituleOffreNL__c:offPc.get(0).HermesIntituleOffre__c;
+                        //subProd.HermesIntituleOffreNL = offPc.get(0).HermesIntituleOffreNL__c;
                         //subProd.CodeOffreCo =  offPc.get(0).Reference__c;
                         subProd.subscribeToRatePlans.clear(); //supprimer les anciens Rateplans si BtoB
                         subProd.subscribeToRatePlans.addAll(ratePlansPc);
@@ -533,7 +537,7 @@ public with sharing class SM_Offre {
             if (rem.Charge__r.ReferenceCIC__c == 'REMMENS') { //OK
                 ch.discountPercentage = rem.Montant__c;
                 // ch.endDateCondition = (isContratFutur)?'FixedPeriod':'Fixed_Period';
-                ch.endDateCondition = 'Fixed_Period';
+                ch.endDateCondition = 'FixedPeriod'; //Fixed_Period
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
                 if (dateJourSouscription.toStartOfMonth() == dateJourSouscription) rem.DebuteXmois__c = rem.DebuteXmois__c - 1;
@@ -553,7 +557,7 @@ public with sharing class SM_Offre {
             if (rem.Charge__r.ReferenceCIC__c == 'REMMONT') {
                 ch.discountAmount = rem.Montant__c;
                 //ch.endDateCondition = (isContratFutur)?'FixedPeriod':'Fixed_Period';
-                ch.endDateCondition = 'Fixed_Period';
+                ch.endDateCondition = 'FixedPeriod'; //Fixed_Period
                 ch.upToPeriods = (Integer) rem.NombreMensu__c;
                 ch.triggerEvent = 'USD';
                 ch.triggerDate = Util.zDate(dateJourSouscription.toStartOfMonth().addMonths((Integer) rem.DebuteXmois__c));
@@ -739,13 +743,13 @@ if (gpName == 'Offre_Managers_France')  {
         return offreAboRatePlans;
     }    
 
-    public static Map<String,Object> getOffreProxy(Datetime dateDebutContrat, String lieu, String agent, String coupon, String accountSFID, string operation, String produit){
+    public static Map<String,Object> getOffreProxy(Datetime dateDebutContrat, String lieu, String agent, String coupon, String accountSFID, string operation, String produit, String codeLangue){
         Map<String,Object> resObj = new Map<String,Object>();
         List<zc_AmendmentRatePlanData> offreCoRatePlans;
         List<zc_AmendmentRatePlanData> offreAboRatePlans;
         
         //get offre
-        WSZ.SubProduct subOffre = getSubOffres(new WSZ.SubOffreIn(dateDebutContrat, lieu, agent, coupon,accountSFID, operation, produit)).get(0);
+        WSZ.SubProduct subOffre = getSubOffres(new WSZ.SubOffreIn(dateDebutContrat, lieu, agent, coupon,accountSFID, operation, produit, codeLangue)).get(0);
         
         //extract and convert RatePlans
         List<zc_AmendmentRatePlanData> offreRatePlans = convertRatePlan(subOffre.subscribeToRatePlans);

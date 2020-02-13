@@ -95,7 +95,7 @@ public without sharing class SM_Subscription {
 						Zuora__NextChargeDate__c,Zuora__NextRenewalDate__c,Zuora__PreviousSubscriptionId__c,Zuora__External_Id__c,Zuora__CurrentTermPeriodType__c,
 						Zuora__CurrentTerm__c,Zuora__TermSettingType__c,Zuora__Zuora_Id__c,Zuora__Account__r.Id,Zuora__Account__r.CodePays__c,Zuora__Account__r.PersonContactId,
 						Zuora__CustomerAccount__r.Zuora__Balance__c,Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, Zuora__CustomerAccount__r.Zuora__External_Id__c,
-                        Zuora__RenewalTerm__c,Zuora__RenewalTermPeriodType__c
+                        Zuora__RenewalTerm__c,Zuora__RenewalTermPeriodType__c, PayeurCRMID__c
                 FROM Zuora__Subscription__c
                 WHERE Zuora__SubscriptionNumber__c IN :setName
                 ORDER BY CreatedDate DESC

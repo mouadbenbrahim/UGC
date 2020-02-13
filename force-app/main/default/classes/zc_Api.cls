@@ -469,6 +469,51 @@ public with sharing class zc_Api {
         return respObj;
     }
 
+    public static zc_GETAmendmentType amendSubscriptionGET(String accessToken, String zEntityId, String subId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETAmendmentType respObj = new zc_GETAmendmentType();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/amendments/subscriptions/'+subId, zEntityId, 'GET', null,zc_GETAmendmentType.class, zc_CommonResponseType.class, null);
+
+        String reqStr = 'subId: ' + subId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETAmendmentType)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }    
+
+    public static zc_ProxyGetAmendment objectAmendGET(String accessToken, String zEntityId, String amendId, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_ProxyGetAmendment respObj = new zc_ProxyGetAmendment();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest3(accessToken, '/v1/object/amendment/'+amendId, zEntityId, 'GET', null,zc_ProxyGetAmendment.class, zc_ProxyActionqueryResponse.class, null);
+
+        String reqStr = 'amendId' + amendId;
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }
+        else {
+            respObj = (zc_ProxyGetAmendment)respMap.get('RESP_OBJECT');
+            // if(respObj != null && respObj.success != null){
+            //     if(!respObj.success){                
+            //         throw new RTException(new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')),rtc.code));   
+            //     }            
+            // }
+        }
+
+        return respObj;
+    }     
+
 } // end class
 
 // // NON UTILISE

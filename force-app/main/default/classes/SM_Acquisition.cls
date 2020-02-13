@@ -3,7 +3,7 @@ public with sharing class SM_Acquisition {
 // il faut recevoir un code d'Hermes si ce cas se presente, ce code doit etre communique par les autorisation a Hermes et redescendre vers SF.
 //TODO le premier du mois en Stand CDI : il faut encaisser juste les FD, la mensualite se fait par le payment run, donc payement partiel sur une partie de la facture genere.ApexPages
     
-    public static String accessToken, zEntityId;
+    public static String accessToken, zEntityId, codePays;
 
     public SM_Acquisition() {
 
@@ -11,7 +11,8 @@ public with sharing class SM_Acquisition {
 
     public static Map<String,Object> acquisition(WSZ.SubOpeIn acqIn, Boolean isPreview){
         
-        String invoiceFileUrl,payMethodId,paymentId,caseId,invoiceId,fileImpId, zDocId;
+        String invoiceFileUrl,payMethodId,caseId,invoiceId,fileImpId, zDocId;
+        List<String> paymentIds = new List<String>();
         Boolean compteBloque = false;
         Boolean rembourser = false;
         String intituleOffreFR,intituleOffreNL;
@@ -20,7 +21,11 @@ public with sharing class SM_Acquisition {
         WSZ.SubOpeOut acqOut = new WSZ.SubOpeOut();
         List<String> sDocjobIds = new List<String>{'idjob1','idjob2'};
         zc_ZObjectUpdate zObj;
-        
+        Map<String,WSZ.Paiement> mapPaiements = new Map<String,WSZ.Paiement>();  // key=refCharge 
+        Map<String,WSZ.Paiement> mapPaiements2 = new Map<String,WSZ.Paiement>();  // key=methodPaiement: si deux paiements de meme method et meme reference, alors c'un seul, on cumul le montant.
+        //List<WSZ.Paiement> listPaiements;  // si deux paiements de meme method , alors on garder un seul avec total montant
+
+                
 
         //Decimal abonnement=0,montantInitial=0,fraisAdhesion=0,fraisAdhesionRemise=0,fraisAdhesionApresRemise=0,prorata=0;
         Date dateJourDebutContrat = Date.newinstance(acqIn.dateDebutContrat.year(), acqIn.dateDebutContrat.month(), acqIn.dateDebutContrat.day()); 
@@ -30,20 +35,22 @@ public with sharing class SM_Acquisition {
         String typeContrat = (produit.contains('CDI')?'CDI':'CDD');
         Boolean isFutur = (acqIn.dateDebutContrat <= Datetime.now())?false:true;
 
+
+
         //###### get subOffres ######
         // WSZ.SubProduct subOffre = SM_Offre.getSubOffres(new WSZ.SubOffreIn(acqIn.dateDebutContrat, acqIn.lieu, acqIn.agent, acqIn.coupon,acqIn.accountSFID, 'acquisition', produit)).get(0);
         // List<zc_AmendmentRatePlanData> subOffreRatePlans = SM_Offre.convertRatePlan(subOffre.subscribeToRatePlans);
 
         //###### get subOffres ######
-        Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy(acqIn.dateDebutContrat, acqIn.lieu, acqIn.agent, acqIn.coupon, acqIn.accountSFID, 'acquisition', produit);
+        Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy(acqIn.dateDebutContrat, acqIn.lieu, acqIn.agent, acqIn.coupon, acqIn.accountSFID, 'acquisition', produit, acqIn.codeLangue);
         WSZ.SubProduct subOffre = (WSZ.SubProduct)offreProxyOut.get('offre');
         List<zc_AmendmentRatePlanData> subOffreRatePlans = (List<zc_AmendmentRatePlanData>)offreProxyOut.get('offreRatePlans');
         if (subOffre == null || subOffreRatePlans == null) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog);
-
         
         //###### get AccountData ######
         Account porteur = SM_Account.getAccountData(acqIn.accountSFID);
         Account payeur = SM_Account.getAccountData(acqIn.payeurSFID);
+        codePays = porteur.CodePays__c;
         
         // check:
         if (acqIn.codeOffreCo != null && acqIn.codeOffreCo != subOffre.CodeOffreCo) {
@@ -52,7 +59,7 @@ public with sharing class SM_Acquisition {
 
         //token/entity
         accessToken = WS001_CallZuora.access_token;
-        zEntityId = WS001_CallZuora.getZuoraEntityId(porteur.CodePays__c);  
+        zEntityId = WS001_CallZuora.getZuoraEntityId(codePays);  
 
         //###### Subscribe ######
         Map<String,Object> customSub = new Map<String,Object>{'IsB2B'=>subOffre.IsB2B, 'isPreview'=>isPreview, 'codeOffreCo'=>subOffre.CodeOffreCo};
@@ -77,10 +84,30 @@ public with sharing class SM_Acquisition {
         String subscriptionZID = subRes.results.get(0).subscriptionId;
         String subscriptionName = subRes.results.get(0).subscriptionNumber;
 
+        //map external payments
+        if (acqIn.paiements.size() > 0 ){
+            mapPaiements = new Map<String,WSZ.Paiement>();
+            //List<Paiement> paiements = acqIn.paiements;
+            for (WSZ.Paiement item:acqIn.paiements){
+                WSZ.Paiement pai1 = new WSZ.Paiement();
+                WSZ.Paiement pai2 = new WSZ.Paiement();
+                pai1 = item.clone();
+                pai2 = item.clone();
+                mapPaiements.put(item.refCharge,pai1);
+                if (mapPaiements2.containsKey(item.methodePaiement)) {
+                    mapPaiements2.get(item.methodePaiement).montant += (Double)item.montant;
+                }else {
+                    mapPaiements2.put(item.methodePaiement,pai2);
+                }
+            }
+        }
+        System.debug('MBEN:mapPaiements: ' + mapPaiements);
+        System.debug('MBEN:mapPaiements2: ' + mapPaiements2);
+
         // TODO: OK: Update Account DefPaymentMethodId (car ne fonctionne pas avec action/subscribe)
         zc_ProxyActionupdateRequest accUpdateReq = new zc_ProxyActionupdateRequest();
-        if ((acqIn.mandateId == null || acqIn.iban == null) && typeContrat == 'CDD') {
-            payMethodId = SM_Hermes.getExtPaymentMethodId(subOffre.IsB2B, acqIn.paiement.methodePaiement, porteur.CodePays__c);
+        if (typeContrat == 'CDD') {
+            payMethodId = SM_Hermes.getExtPaymentMethodId(subOffre.IsB2B, mapPaiements.get('ABO').methodePaiement, codePays);
             accUpdateReq.r_type = 'Account';
             zObj = new zc_ZObjectUpdate();
             zObj.id = accountZID;
@@ -100,14 +127,19 @@ public with sharing class SM_Acquisition {
 
         //###### Creation paiement Zuora ######
         Map<String,String> retPayment;
-        if (acqIn.paiement.refPaiement != null || subOffre.IsB2B == true) { //External
+        if (acqIn.paiements.size() > 0 || subOffre.IsB2B == true) { //External
             //if (acqIn.paiement.montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog);
-            retPayment = execPayment(invoiceId, accountZID, invAmount, acqIn.paiement.montant, acqIn.paiement.refPaiement, acqIn.paiement.methodePaiement, acqIn.lieu, acqIn.agent, acqIn.paiement.dateVirement);
+            //for(WSZ.Paiement itemPaiement:acqIn.paiements){
+            for(String key:mapPaiements2.keySet()){      //key=methodPaiement: CBL,ESP..etc.
+                retPayment = execPayment(invoiceId, accountZID, invAmount, mapPaiements2.get(key).montant, mapPaiements2.get(key).refPaiement, mapPaiements2.get(key).methodePaiement, acqIn.lieu, acqIn.agent, mapPaiements2.get(key).dateVirement);
+                paymentIds.add(retPayment.get('paymentId'));
+            }
         }else { //Electronic
             retPayment = execPayment(invoiceId, accountZID, invAmount, null, null, null, null, null, null);    
+            paymentIds.add(retPayment.get('paymentId'));
         }
         //payMethodId = retPayment.get('payMethodId'); //ce n'est pas le paymentmethodid du compte mai celui du paiement, il faut verifier, on le recuperer dans la partie CRM.
-        paymentId = retPayment.get('paymentId');
+        
 
 
         //###### Get Zuora Data (subscription) ######
@@ -137,7 +169,7 @@ public with sharing class SM_Acquisition {
         SM_SDoc.makeSdocJobs(cs);
 
         //###### insert Fil impression ######
-        //List<Carte__c> cartes = [Select Id from Carte__c where Name = 'numeroCarte']; //TODO voir si numero est cree a l impression et fournit par hermes.
+        //List<Carte__c> cartes = [Select Id from Carte__c where Name = 'numeroCarte']; //TODO OK voir si numero est cree a l impression et fournit par hermes.
         //Id carteId = (cartes.size() > 0)?cartes.get(0).Id:null;
         ZDocData__c zDoc = [Select Id, Payeur__r.FirstName, Payeur__r.LastName from ZDocData__c where Id = :zDocId];
         fileImpId = SM_FileImpression.createFileImpressionCarte(null, (Id)acqIn.accountSFID, null, (ID)caseId, subscriptionName, sub.CodeOffrePrincipale, zDoc.Payeur__r.FirstName, zDoc.Payeur__r.LastName);
@@ -147,7 +179,7 @@ public with sharing class SM_Acquisition {
 
         //RETURN
         acqOut = new WSZ.SubOpeOut(acqIn.accountSFID, accountZID, subscriptionZID, subscriptionName, compteBloque,invoiceFileUrl, rembourser,
-        paymentId, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
+        paymentIds, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
 
         // return acqOut;
         } //if else !isPreview
@@ -164,11 +196,12 @@ public with sharing class SM_Acquisition {
      public static Map<String,String> execPayment(String invoiceId, String accountZID, Double invAmount, Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date  dateVirement) {
 
         Map<String,String> ret = new Map<String,String>{'paymentId'=>null,'payMethodId'=>null};
-        zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, montant, refPaiement, methodePaiement, lieu, agent, dateVirement);
+        zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, montant, refPaiement, methodePaiement, lieu, agent, dateVirement, codePays);
         //###### Call WS Payment ######   
         zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,new ProcessLog__c());
         ret.put('payMethodId',paymentRes.paymentMethodId);
         ret.put('paymentId',paymentRes.id);
+        System.debug('MBEN:retPayment1: ' + ret);                
         return ret;
 
     }

@@ -1,7 +1,7 @@
 public with sharing class SM_Renouvellement {
 
     public final static Set<String> FAMILLE_REMISES = new Set<String>{'REMFRAIDOSS', 'REMMENS', 'REMMONT'};
-    public static String accessToken, zEntityId;
+    public static String accessToken, zEntityId, codePays;
     public static ProcessLog__c pLog;
 
     public SM_Renouvellement(){
@@ -12,20 +12,24 @@ public with sharing class SM_Renouvellement {
     
     //TODO (emmanuel zuora): Renew d'un CDD ayant eu un gestco  extension de term de + x mois.
     //TODO: OK: renouvellement CDD-CDI : pas d engagement pour le CDI: il faut clarifier la notion de l engagement vis a vis du desabo et du rglt impaye
-    //TODO: renouvellement CDD-CDD : pas d'engagement pour le nouveau CDD càd : desabo -> impossible
-    //TODOFUTUR gerer des templateID: B2B/FRANCE, Belgique: FR-FR - FR-NL
+    //TODO Abandonne: renouvellement CDD-CDD : pas d'engagement pour le nouveau CDD càd : desabo -> impossible
+    //TODO FUTUR gerer des templateID: B2B/FRANCE, Belgique: FR-FR - FR-NL
     
     Map<String,Object> returnObj = new Map<String,Object>();
     WSZ.Preview previewOut = new WSZ.Preview(); 
     WSZ.SubOpeOut renouvOut = new WSZ.SubOpeOut(); 
     zc_ZObjectUpdate zObj;
     List<String> sDocjobIds = new List<String>{'idjob1','idjob2'};
+    List<String> paymentIds = new List<String>();
 
     Boolean compteBloque = false, rembourser = false;
     Date renewDateCE,dateFinContrat,dateFinEngagement;     
     String currentSubId, invoiceFileUrl,elecPayMethodId,extPaymentMethodId,payMethodId; 
-    String paymentId,caseId,invoiceId,fileImpId,zDocId;
+    String caseId,invoiceId,fileImpId,zDocId;
     String renouvInStr = JSON.serialize(renouvIn);
+    Map<String,WSZ.Paiement> mapPaiements = new Map<String,WSZ.Paiement>();  // key=refCharge 
+    Map<String,WSZ.Paiement> mapPaiements2 = new Map<String,WSZ.Paiement>();  // key=methodPaiement: si deux paiements de meme method et meme reference, alors c'un seul, on cumul le montant.
+
 
     try {
     
@@ -48,10 +52,11 @@ public with sharing class SM_Renouvellement {
     String subscriptionName = sub.Name;
     String typeContratActuel = sub.TypeContrat__c;
     String typeRenouvellement = typeContratActuel+'-'+typeContrat;    
+    codePays = porteur.CodePays__c;
 
     // ###### check/calcul:
     // calcul latence, dateDebutContrat
-    Integer periodeLatence = Integer.valueOf(Utils.getUgcGenericParam('Periode de latence',porteur.CodePays__c).ParamValue__c);
+    Integer periodeLatence = Integer.valueOf(Utils.getUgcGenericParam('Periode de latence',codePays).ParamValue__c);
     Date dateFinContratActuel = sub.Zuora__SubscriptionEndDate__c.addDays(-1);
     Date dateFinEligibilite =  dateFinContratActuel.addDays(-1).addMonths(periodeLatence);   // date eligibilite inclut
     Date dateDebutContrat = sub.Zuora__NextRenewalDate__c;
@@ -59,7 +64,7 @@ public with sharing class SM_Renouvellement {
     //Date dateFinContratActuel = sub.Zuora__SubscriptionEndDate__c.addDays(-1);
 
     if  (dateFinEligibilite < Date.today()) {
-        //TODO a remettre: throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog); //Normalement c un controle au niveau authorisation
+        //TODO Abandonne a remettre: throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog); -> Normalement c un controle au niveau authorisation
     } else if (dateFinContratActuel < Date.today() && dateFinEligibilite >= Date.today()){
         //isLatence = true;
         renewDateCE = dateDebutContrat;
@@ -82,7 +87,7 @@ public with sharing class SM_Renouvellement {
     
     
     //###### get subOffres ######
-    Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy((Datetime)dateDebutContrat, renouvIn.lieu, renouvIn.agent, renouvIn.coupon, renouvIn.accountSFID, 'renouvellement', renouvIn.produit);
+    Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy((Datetime)dateDebutContrat, renouvIn.lieu, renouvIn.agent, renouvIn.coupon, renouvIn.accountSFID, 'renouvellement', renouvIn.produit,renouvIn.codeLangue);
     WSZ.SubProduct subOffre = (WSZ.SubProduct)offreProxyOut.get('offre');
 
     // check: codeOffreCo
@@ -95,22 +100,6 @@ public with sharing class SM_Renouvellement {
     accessToken = zuoraToken.accessToken;
     zEntityId =zuoraToken.zEntityId;
 
-    
-    if (!isPreview) {
-        //###### Create Elec/Ext PaymentMethod ######
-        PaymentMethodOut pmOut = execCreateGetPaymentMethod(typeContrat, subOffre.IsB2B, renouvIn.paiement.methodePaiement, porteur.CodePays__c, renouvIn.iban,renouvIn.mandateId, payeur, accountZID);
-        
-        //###### Update Account DefPaymentMethod, Batch..etc ######
-        execUpdAccount(accountZID, pmOut, typeRenouvellement);
-        
-        // ###### Delete Cancel Sub  (mois de latence): 
-        if (sub.Zuora__Status__c == 'Cancelled' && !isPreview) {
-            zc_SaveResult subDelResult = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
-            currentSubId = subDelResult.id;
-            //TODO TRACKING AMEND
-        }
-    }
-
     // ###### ExecAmendRenew for Preview
     if (isPreview){
         previewOut = execAmendRenewPreview(dateDebutContrat, renewDateCE, currentSubId, offreProxyOut, isPreview, typeRenouvellement);  
@@ -119,17 +108,56 @@ public with sharing class SM_Renouvellement {
 
         //TODO , il faut fait un preview different si le contrat initialement a Cancel
     }else {
+
+    //###### Create Elec/Ext PaymentMethod ######
+    PaymentMethodOut pmOut = execCreateGetPaymentMethod(typeContrat, subOffre.IsB2B, mapPaiements.get('ABO').methodePaiement, codePays, renouvIn.iban,renouvIn.mandateId, payeur, accountZID);
+    
+    //###### Update Account DefPaymentMethod, Batch..etc ######
+    execUpdAccount(accountZID, pmOut, typeRenouvellement);
+    
+    // ###### Delete Cancel Sub  (mois de latence): 
+    if (sub.Zuora__Status__c == 'Cancelled' && !isPreview) {
+        //get amend informations before delete
+        zc_GETAmendmentType amendRes = zc_Api.amendSubscriptionGET(accessToken, zEntityId, originalSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog);
+        //zc_ProxyGetAmendment amendRes2 = zc_Api.objectAmendGET(accessToken, zEntityId, amendRes.id, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog); 
+
+        zc_SaveResult subDelResult = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+        currentSubId = subDelResult.id;
+        //TODO TRACKING AMEND
+        SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, originalSubId, subscriptionName);
+    }
+
     // ###### ExecAmendRenew
     AmendRenewReelOut amendRenewOut = execAmendRenewReel(dateDebutContrat, currentSubId, offreProxyOut, isPreview, typeRenouvellement);
     String amendId = amendRenewOut.amendId; 
     invoiceId = amendRenewOut.invoiceId; 
     currentSubId = amendRenewOut.subId;
 
+    //map external payments
+    if (renouvIn.paiements.size() > 0 ){
+        mapPaiements = new Map<String,WSZ.Paiement>();
+        //List<Paiement> paiements = renouvIn.paiements;
+        for (WSZ.Paiement item:renouvIn.paiements){
+            WSZ.Paiement pai1 = new WSZ.Paiement();
+            WSZ.Paiement pai2 = new WSZ.Paiement();
+            pai1 = item.clone();
+            pai2 = item.clone();
+            mapPaiements.put(item.refCharge,pai1);
+            if (mapPaiements2.containsKey(item.methodePaiement)) {
+                mapPaiements2.get(item.methodePaiement).montant += (Double)item.montant;
+            }else {
+                mapPaiements2.put(item.methodePaiement,pai2);
+            }
+        }
+    }
+    System.debug('MBEN:mapPaiements: ' + mapPaiements);
+    System.debug('MBEN:mapPaiements2: ' + mapPaiements2);
+
     // ###### Update Amend (operation)
     execUpdateAmend(amendId,originalSubId);
 
     // ###### Update sub: 
-    execUpdateSub(currentSubId, renouvIn.lieu, renouvIn.agent, renouvIn.produit, renouvIn.paiement.methodePaiement, typeContrat, dateFinContrat, originalSubId);
+    execUpdateSub(currentSubId, renouvIn.lieu, renouvIn.agent, renouvIn.produit, mapPaiements.get('ABO').methodePaiement, typeContrat, dateFinContrat, originalSubId);
 
     //###### get invoice ######
     zc_ProxyGetInvoice invRes = zc_Api.objectInvoiceGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
@@ -141,13 +169,18 @@ public with sharing class SM_Renouvellement {
     
     //###### Creation paiement Zuora ######
     Map<String,String> retPayment;
-    if (renouvIn.paiement.refPaiement != null) { //External
-        retPayment = execPayment(invoiceId, accountZID, invAmount, renouvIn.paiement.montant, renouvIn.paiement.refPaiement, renouvIn.paiement.methodePaiement, renouvIn.lieu, renouvIn.agent, renouvIn.paiement.dateVirement);
+    if (renouvIn.paiements.size() > 0) { //External
+        //retPayment = execPayment(invoiceId, accountZID, invAmount, renouvIn.paiement.montant, renouvIn.paiement.refPaiement, renouvIn.paiement.methodePaiement, renouvIn.lieu, renouvIn.agent, renouvIn.paiement.dateVirement);
+        for(String key:mapPaiements2.keySet()){      //key=methodPaiement: CBL,ESP..etc.
+            retPayment = execPayment(invoiceId, accountZID, invAmount, mapPaiements2.get(key).montant, mapPaiements2.get(key).refPaiement, mapPaiements2.get(key).methodePaiement, renouvIn.lieu, renouvIn.agent, mapPaiements2.get(key).dateVirement);
+            paymentIds.add(retPayment.get('paymentId'));
+        }
     }else { //Electronic
         retPayment = execPayment(invoiceId, accountZID, invAmount, null, null, null, null, null, null);    
+        paymentIds.add(retPayment.get('paymentId'));
     }
     //payMethodId = retPayment.get('payMethodId');
-    paymentId = retPayment.get('paymentId');    
+    //paymentId = retPayment.get('paymentId');    
 
     //###### Get Zuora Data (subscription) ######    
     zc_GETSubscriptionTypeWithSuccess zSub = zc_Api.subscriptionGET(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
@@ -176,7 +209,7 @@ public with sharing class SM_Renouvellement {
 
     //RETURN
     renouvOut = new WSZ.SubOpeOut(renouvIn.accountSFID, accountZID, currentSubId, subscriptionName, compteBloque,invoiceFileUrl, rembourser,
-    paymentId, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
+    paymentIds, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
     } //end not preview
 
     if (isPreview) {
@@ -240,12 +273,12 @@ public with sharing class SM_Renouvellement {
     req1.amendments.add(amend1);
 
     // Add offreCos: +ieurs
-    //TODOFUTUR: si on a le temps, sinon TODOFUTUR pour les OffresCo/Renouvellement:
+    //TODO FUTUR: si on a le temps, sinon TODOFUTUR pour les OffresCo/Renouvellement:
     // if (offreProxyOut.containsKey('offreCoRatePlans')) 
     // if (offreProxyOut.containsKey('offreCoRatePlans') != null && offreCoRatePlans.size() > 0){
     //     for( zc_AmendmentRatePlanData offreCoRatePlan: offreCoRatePlans){
     //         zc_Amendment amendX = new zc_Amendment();
-    //         amendX.contractEffectiveDate = dateDebutContrat;  //TODO verifier si ca passe pour tous les types de remises, ou il faut overrider des champs.
+    //         amendX.contractEffectiveDate = dateDebutContrat;  //TODO FUTUR verifier si ca passe pour tous les types de remises, ou il faut overrider des champs.
     //         amendx.serviceActivationDate = dateDebutContrat;
     //         amendx.customerAcceptanceDate = dateDebutContrat;              
     //         amendX.name='OffreCo CDD: Ajour remise';
@@ -360,11 +393,11 @@ public with sharing class SM_Renouvellement {
     //.ratePlanData.addAll(subOffreRatePlans);
 
     // // Add offreCos: +ieurs
-    // //TODO: si on a le temps, sinon TODOFUTUR pour les OffresCo/Renouvellement:
+    // //TODO FUTUR: si on a le temps, sinon TODOFUTUR pour les OffresCo/Renouvellement:
     // if (offreCoRatePlans != null && offreCoRatePlans.size() > 0){
     //     for( zc_AmendmentRatePlanData offreCoRatePlan: offreCoRatePlans){
     //         zc_Amendment amendX = new zc_Amendment();
-    //         amendX.contractEffectiveDate=renewDateCE;  //TODO verifier si ca passe pour tous les types de remises, ou il faut overrider des champs.
+    //         amendX.contractEffectiveDate=renewDateCE;  //TODO FUTUR verifier si ca passe pour tous les types de remises, ou il faut overrider des champs.
     //         amendx.serviceActivationDate = renewDateCE;
     //         amendx.customerAcceptanceDate = renewDateCE;              
     //         amendX.name='OffreCo CDD: Ajour remise';
@@ -413,7 +446,7 @@ public with sharing class SM_Renouvellement {
     public static Map<String,String> execPayment(String invoiceId, String accountZID, Double invAmount, Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date  dateVirement) {
 
         Map<String,String> ret = new Map<String,String>{'paymentId'=>null,'payMethodId'=>null};
-        zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, montant, refPaiement, methodePaiement, lieu, agent, dateVirement);
+        zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, montant, refPaiement, methodePaiement, lieu, agent, dateVirement, codePays);
         //###### Call WS Payment ######   
         zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,pLog);
         ret.put('payMethodId',paymentRes.paymentMethodId);
@@ -606,7 +639,7 @@ public with sharing class SM_Renouvellement {
 
 
 
-    // // update BtoB product price
+    // // update BtoB  product price
     // amend2.contractEffectiveDate = renewDateCE;        
     // amend2.name='Mise a jour prix B2B';
     // amend2.status='Completed';
@@ -616,10 +649,10 @@ public with sharing class SM_Renouvellement {
     // zc_AmendmentRatePlanData ratePlanData = new zc_AmendmentRatePlanData();
     // ratePlanData.ratePlan = new zc_RatePlan();
     // ratePlanData.ratePlan.productRatePlanId=rpId; 
-    // ratePlanData.ratePlan.amendmentSubscriptionRatePlanId = ''; //TODO
+    // ratePlanData.ratePlan.amendmentSubscriptionRatePlanId = ''; //TODO FUTUR
     // zc_RatePlanChargeDataInRatePlanData rpcChargeData = new zc_RatePlanChargeDataInRatePlanData();
     // rpcChargeData.ratePlanCharge = new zc_RatePlanChargeInRatePlanChargeData();        
-    // rpcChargeData.ratePlanCharge.price = 150; //TODO prix dans le coupon        
+    // rpcChargeData.ratePlanCharge.price = 150; //TODO FUTUR prix dans le coupon        
     // rpcChargeData.ratePlanCharge.productRatePlanChargeId = rpcId;                
     // ratePlanData.ratePlanChargeData.add(rpcChargeData);
     // amend2.ratePlanData = ratePlanData; 

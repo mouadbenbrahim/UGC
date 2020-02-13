@@ -2,7 +2,7 @@
  * Created by mouad on 11/11/2018.
  */
 
-public with sharing class RTException extends Exception {
+public without sharing class RTException extends Exception {
 
     public Integer Code;
     // public WSZ.ProcessLog pLog;

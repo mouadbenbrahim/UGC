@@ -85,6 +85,8 @@ public without sharing class LCC006_GesteCommercial {
         amendOptions.invoiceProcessingOptions = invPrc;
         //Term and condition
         amend1.contractEffectiveDate=Date.today();
+        amend1.serviceActivationDate=Date.today();
+        amend1.customerAcceptanceDate=Date.today();
         amend1.name='GestCo CDD: update term and condition';
         amend1.status='Completed';
         amend1.subscriptionId=sub.Zuora__External_Id__c;
@@ -93,6 +95,8 @@ public without sharing class LCC006_GesteCommercial {
         amend1.currentTerm=newCurrentTerm;
         // Add remise
         amend2.contractEffectiveDate=sub.Zuora__TermEndDate__c;        
+        amend2.serviceActivationDate=sub.Zuora__TermEndDate__c;
+        amend2.customerAcceptanceDate=sub.Zuora__TermEndDate__c;
         amend2.name='GestCo CDD: Ajour remise';
         amend2.status='Completed';
         amend2.subscriptionId=sub.Zuora__External_Id__c;
@@ -188,10 +192,16 @@ public without sharing class LCC006_GesteCommercial {
         amendOptions.generateInvoice=false;
 
         // Add remise
-        if(dem.DateDemande__c>sub.Zuora__ContractEffectiveDate__c)
-        amend1.contractEffectiveDate=dem.DateDemande__c;
-        else
-        amend1.contractEffectiveDate=sub.Zuora__ContractEffectiveDate__c;         
+        if(dem.DateDemande__c>sub.Zuora__ContractEffectiveDate__c){
+            amend1.contractEffectiveDate=dem.DateDemande__c;
+            amend1.serviceActivationDate=dem.DateDemande__c;
+            amend1.customerAcceptanceDate=dem.DateDemande__c;
+        }
+        else{
+           amend1.contractEffectiveDate=sub.Zuora__ContractEffectiveDate__c;         
+           amend1.serviceActivationDate=sub.Zuora__ContractEffectiveDate__c;
+           amend1.customerAcceptanceDate=sub.Zuora__ContractEffectiveDate__c;
+        }
         
         amend1.name='Geste Commercial';
         amend1.status='Completed';

@@ -136,6 +136,7 @@ global with sharing class WSIN_Subscription {
             //ProcessLog__c pLog = new ProcessLog__c(Process__c = 'renouvellement', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
             //insert pLog;
         } finally {
+            wsOut.refGuid = wsIn.refGuid;
             String strOut = JSON.serializePretty(wsOut, false);
             //WSZ.SubOpeOutH wsOutH = (WSZ.SubOpeOutH)JSON.deserialize(strOut, WSZ.SubOpeOutH.class);
             WSZ.SubOpeOut wsOutH = (WSZ.SubOpeOut)JSON.deserialize(strOut, WSZ.SubOpeOut.class);
@@ -214,17 +215,15 @@ global with sharing class WSIN_Subscription {
 
     public static void changebanque(RestRequest req, RestResponse res) {
 
-        WSZ.SubHermesOut wsOut = new WSZ.SubHermesOut();
-        WSZ.SubHermesIn wsIn; // = new WSZ.SubHermesIn();
+        WSZ.ChangeBanqueOut wsOut = new WSZ.ChangeBanqueOut();
+        WSZ.ChangeBanqueIn wsIn;
         Blob body = req.requestBody;
-        String respBodyStr = null;
-        
         try {
-            wsIn = (WSZ.SubHermesIn) JSON.deserializeStrict(body.toString(), WSZ.SubHermesIn.class);
-            wsOut = SM_Hermes.changebanque(wsIn);
+            wsIn = (WSZ.ChangeBanqueIn) JSON.deserializeStrict(body.toString(), WSZ.ChangeBanqueIn.class);
+            //wsOut = SM_Hermes.changebanque(wsIn);
+            wsOut = SM_ChangeBanque.changebanque(wsIn); 
             wsOut.success = true;
             wsOut.message = null;
-            //wsOut = subProducts.clone();
         } catch (RTException e) {
             wsOut.success = false;
             wsOut.message = e.getMessage();
@@ -233,10 +232,9 @@ global with sharing class WSIN_Subscription {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
             String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
-            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'changebanque', Account__c = wsIn.accountId, AccountZID__c = wsIn.accountZID, SubscriptionZID__c = wsIn.subscriptionZID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'changebanque', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
             insert pLog;            
         } finally {
-            //return wsOut;
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
         }
     } 
@@ -276,7 +274,7 @@ global with sharing class WSIN_Subscription {
         }
     } 
 
-public static void opeauthorize(RestRequest req, RestResponse res) {
+	public static void opeauthorize(RestRequest req, RestResponse res) {
         WSZ.AuthorizeOut wsOut = new WSZ.AuthorizeOut();
         WSZ.AuthorizeIn wsIn;
         Blob body = req.requestBody;
@@ -304,7 +302,7 @@ public static void opeauthorize(RestRequest req, RestResponse res) {
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
             //a supprimer apres la recette
             if(!pLogAlreadyInsered){
-                ProcessLog__c pLog = new ProcessLog__c(Process__c = 'opeauthorize_OK', Account__c = wsIn.accountSFID, Message__c = JSON.serializePretty(wsOut, false));
+                ProcessLog__c pLog = new ProcessLog__c(Process__c = 'opeauthorize_OK', Account__c = wsIn.accountSFID, Message__c = 'WSIN => '+body.toString()+' \nWSOUT => '+JSON.serializePretty(wsOut, false));
                 insert pLog; 
             }
         }
@@ -370,12 +368,12 @@ public static void opeauthorize(RestRequest req, RestResponse res) {
             wsOut.message = null;
             //wsOut = subProducts.clone();
         } catch (RTException e) {
-            wsOut.preview = null;
+            wsOut.preview = new List<WSZ.Preview>();
             wsOut.success = false;
             wsOut.message = e.getMessage();
             wsOut.errorCode = e.Code;
         } catch (Exception e) {
-            wsOut.preview = null;
+            wsOut.preview = new List<WSZ.Preview>();
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
             String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();

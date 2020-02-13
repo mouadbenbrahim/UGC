@@ -123,7 +123,7 @@ public with sharing class WSZ {
         public String codeLangue;
         public List<String> references = new List<String>();
 
-        public SubOffreIn(Datetime dateSubscription, String lieu, String agent, String coupon,String crmId, String operation,String produit){
+        public SubOffreIn(Datetime dateSubscription, String lieu, String agent, String coupon,String crmId, String operation,String produit, String codeLangue){
             this.dateSubscription = dateSubscription;
             this.dateSub = String.valueOf(dateSubscription);
             this.lieu = lieu;
@@ -132,6 +132,7 @@ public with sharing class WSZ {
             this.crmId = crmId;
             this.operation = operation;
             this.references.add(produit);
+            this.codeLangue = codeLangue;
         }
         
         public SubOffreIn(){
@@ -296,10 +297,15 @@ public with sharing class WSZ {
         public String cancelledById;
         public String latestPDFFileId;
         public String transferredToAccounting;
+        public String exclusioncompta_c;
         public Boolean excludeFromAutoApplyRules;
         public Boolean autoApplyUponPosting;
         public Boolean success;
 
+    }
+
+    public class CreditMemoUpdateIn {
+        public String exclusioncompta_c;
     }
 
 
@@ -417,6 +423,16 @@ public with sharing class WSZ {
         public String TECH_RefundGatewayResponseCode;
         public String DateRejetBanque;
     }
+
+    public class RefundlIn3 {
+        public String refundDate;
+        public Decimal totalAmount;
+        public String typeX;
+        public String methodType;
+        public String reasonCode;
+        public String comment;
+        public String exclusioncompta_c;
+    }
     
     public class RefundOut {
         public String id;
@@ -456,7 +472,8 @@ public with sharing class WSZ {
         public String TECH_RefundGatewayResponseCode; 
         public String DateRejetBanque;
         public String TECH_DejaTraiter;
-        public String TECH_RefundCreatedDate;                    
+        public String TECH_RefundCreatedDate;
+        public String exclusioncompta_c;                    
         public boolean success;
         public FinanceInformation financeInformation;
     }
@@ -901,7 +918,7 @@ public with sharing class WSZ {
              
     }
 
-    public class SubHermesIn {
+    /*public class SubHermesIn {
         public String accountId; //ID Salesforce : [Obligatoire]
         public String accountZID; // -- ajoutee. [Obligatoire]
         public String subscriptionZID; //Id Zuora. [Obligatoire]
@@ -923,9 +940,9 @@ public with sharing class WSZ {
         // public String dateDemande; // a faire en local: date du jour (creation case remboursmenet)
         // public String Account__r.PersonContactId; // -- a faire en local
         public String numeroCarte;
-    }
+    }*/
 
-    public class SubHermesOut {
+    /*public class SubHermesOut {
         public String accountId; //ID Salesforce : [Obligatoire]
         public String accountZID; // -- ajoutee. [Obligatoire]
         public String subscriptionZID; //Id Zuora. [Obligatoire]
@@ -946,8 +963,7 @@ public with sharing class WSZ {
         public SubHermesOut(){
 
         }        
-
-    }
+    }*/
   
     public class AuthorizeIn {
         public String accountSFID;
@@ -977,8 +993,8 @@ public with sharing class WSZ {
 		public AuthorizeOut(){
 			autorisations = new list<AuthorizeOut_Autorisation>();
 			subscriptions = new list<AuthorizeOut_Subscription>();
-			list<String> listOperation = new list<String>{'acquisition', 'renouvellement', 'migration', 'reglerimpaye', 'changebanque', 'reeditioncarte', 'getimpaye'};
-			for(String op : listOperation){
+			//list<String> listOperation = new list<String>{'acquisition', 'renouvellement', 'migration', 'reglerimpaye', 'changebanque', 'reeditioncarte', 'getimpaye'};
+			for(String op : SM_Autorisation.listOpertions){
 				autorisations.add(new AuthorizeOut_Autorisation(op));
 			}
 		}
@@ -1091,16 +1107,25 @@ public with sharing class WSZ {
         public String reference;
         public String libelle;
         public Decimal montant;
+        public Decimal montantNonRemise;
 
         public previewDetail(String reference, String libelle, Decimal montant){
             this.reference = reference;
             this.libelle = libelle;
             this.montant = montant;
         }
+
+        public previewDetail(String reference, String libelle, Decimal montant, Decimal montantNonRemise){
+            this.reference = reference;
+            this.libelle = libelle;
+            this.montant = montant;
+            this.montantNonRemise = montantNonRemise;
+        }        
     }
 
     
     public class SubOpeIn {
+        public String refGuid;
         public Datetime dateDebutContrat; //RENOUV, PREV
         public String subscriptionName; //RENOUV, MIG, PREV
         public String lieu; // ACQ, RENOUV, MIG, PREV
@@ -1115,21 +1140,22 @@ public with sharing class WSZ {
         //public String produitActuel; //RENOUV, MIG
         public String codeOffreCo; // ACQ, RENOUV, MIG
         public String modeLivraison;  // ACQ, RENOUV, MIG
-        public String numCarteParrain; // ACQ, RENOUV, MIG
+        public String parrainSFID; // ACQ, RENOUV, MIG
         public String iban; // ACQ, RENOUV, MIG
         public String mandateId; // ACQ, RENOUV, MIG
-        public Paiement paiement; // ACQ, RENOUV, MIG
+        public List<Paiement> paiements; // ACQ, RENOUV, MIG
         public String codeLangue;
         public List<String> produits = new List<String>(); // PREV
 
         public SubOpeIn(){
-            paiement = new Paiement();
+            paiements = new List<Paiement>();
         }
     }
 
     public class Paiement {
         public Double montant;
         public String refPaiement;
+        public String refCharge; // ABO, FRAISADHESION, PRORATA
         public String methodePaiement;
         public String lieu; // non expose en WS
         public String agent; // non expose en WS
@@ -1147,9 +1173,20 @@ public with sharing class WSZ {
             this.agent = agent;
             this.dateVirement = dateVirement;
         }
+        
+        public Paiement(String refCharge, Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date dateVirement){
+            this.montant = montant;
+            this.refPaiement = refPaiement;
+            this.methodePaiement = methodePaiement;
+            this.lieu = lieu;
+            this.agent = agent;
+            this.dateVirement = dateVirement;
+            this.refCharge = refCharge;
+        }        
     }
 
     public class SubOpeOut {
+        public String refGuid;
         public Boolean success;
         public String message;
         public Integer errorCode;
@@ -1162,7 +1199,7 @@ public with sharing class WSZ {
         //public String caseId;
         public String invoiceFileUrl; //non utilise
         public Boolean rembourser;
-        public String paymentId;
+        public List<String> paymentIds;
         public String caseId;
         public String payMethodId;
         public String invoiceId;
@@ -1170,7 +1207,7 @@ public with sharing class WSZ {
         public List<String> sDocjobIds;
         
         public SubOpeOut(String accountSFID, String accountZID, String subscriptionZID, String subscriptionName, Boolean compteBloque,
-        String invoiceFileUrl, Boolean rembourser, String paymentId, String caseId, String payMethodId, String invoiceId, String fileImpId, List<String> sDocjobIds ){
+        String invoiceFileUrl, Boolean rembourser, List<String> paymentIds, String caseId, String payMethodId, String invoiceId, String fileImpId, List<String> sDocjobIds ){
             this.accountSFID = accountSFID;
             this.accountZID = accountZID;
             //this.accountRCUID =  accountRCUID;
@@ -1179,7 +1216,7 @@ public with sharing class WSZ {
             this.compteBloque =  compteBloque;
             this.invoiceFileUrl =  invoiceFileUrl;
             this.rembourser =  rembourser;
-            this.paymentId = paymentId;
+            this.paymentIds = paymentIds;
             this.caseId = caseId;
             this.payMethodId = payMethodId;
             this.invoiceId = invoiceId;
@@ -1285,6 +1322,43 @@ public with sharing class WSZ {
         public Datetime dt1;
         
     }
+    
+    
+    public class ChangeBanqueIn {
+		public String accountSFID;
+		public String payeurSFID;
+		public String mandateId;
+		public String iban;
+		public String subscriptionName;
+		public String lieu;
+		public String agent;
+		public String refGuid;
+	}
+	
+	public class ChangeBanqueOut { 
+		public String accountSFID;
+        public String accountZID;
+        public String subscriptionZID;
+        public String subscriptionName;
+        public String caseId;
+        public Boolean success;
+        public String message;
+        public Integer errorCode;
+        public String refGuid;
+        public Boolean compteBloque;
+        
+        public ChangeBanqueOut(String accountSFID, String accountZID, String subscriptionZID, String subscriptionName, String caseId, String refGuid){
+            this.accountSFID 		= accountSFID;
+            this.accountZID 		= accountZID;
+            this.subscriptionZID 	= subscriptionZID;
+            this.subscriptionName 	= subscriptionName;
+            this.caseId 			= caseId;
+            this.refGuid 			= refGuid;
+        }
+        
+        public ChangeBanqueOut(){
+        }  
+	}
 
 
 }

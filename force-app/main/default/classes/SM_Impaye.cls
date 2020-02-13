@@ -12,11 +12,12 @@
 public without sharing class SM_Impaye {
 
     public static String zEntityId,currentSubId;
-    public static String accessToken;
+    public static String accessToken,codePays;
     public static ProcessLog__c pLog;
     public final static Set<String> DETTETECH_NAME = new Set<String>{'Dette technique','Reprise'};
     public static Zuora__Subscription__c sub;
     public static Boolean subRecancelled = false;
+    public enum opeEnum {Souscription,Migration,Renouvellement,Desabonnement,Resiliation,Retractation,FinContrat,PassageU26}
 
     public SM_Impaye() {
 
@@ -124,7 +125,7 @@ public without sharing class SM_Impaye {
             throw new RTException(RTExceptionCode.ERREUR_IMPAYE_REGLER_SOUSCRITPION_NON_TROUVE,pLog);
         }
 
-        String codePays = sub.Zuora__Account__r.CodePays__c;
+        codePays = sub.Zuora__Account__r.CodePays__c;
         String contactId = sub.Zuora__Account__r.PersonContactId;
         String accountSID = sub.Zuora__Account__r.Id;
         zEntityId = WS001_CallZuora.getZuoraEntityId(codePays);
@@ -174,11 +175,18 @@ public without sharing class SM_Impaye {
 
         // Reactivation du subsctription si est cancelled (pour pouvoir ajouter la charge des FG)
         if (sub.Zuora__Status__c == 'Cancelled'){            
-
+            
+            //TODO get amend informations before delete (ex: operation, amendid,subid) à inserer dans le trackoperation.
+            zc_GETAmendmentType amendRes = zc_Api.amendSubscriptionGET(accessToken, zEntityId, subZID, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog);
+            //zc_ProxyGetAmendment amendRes2 = zc_Api.objectAmendGET(accessToken, zEntityId, amendRes.id, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog);            
+            
+            //delete sub
             zc_SaveResult res = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, subZID, RTExceptionCode.ERREUR_IMPAYE_REGLER_DELETE_SUB, pLog);
             subActivated = true;
             currentSubId = sub.Zuora__PreviousSubscriptionId__c;
-            //TODO TRACKING AMEND
+
+            //TODO TRACKING AMEND            
+            //SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, subZID, sub.Name);
         }
 
         Double montantPreview = 0; //dette non echue
@@ -483,8 +491,6 @@ public without sharing class SM_Impaye {
     }
 
     public static String detteTechInvoiceId(List<String> invoiceIds){
-        accessToken = WS001_CallZuora.access_token;
-        zEntityId = WS001_CallZuora.getZuoraEntityId('033');
         String r = null;
         for(String invoiceId:invoiceIds){
             zc_GETInvoiceItemsResponse resObj = zc_Api.invoicesItemsGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER, pLog);
@@ -510,6 +516,10 @@ public without sharing class SM_Impaye {
         currentSubId = rCancel.subscriptionId;
         subRecancelled = true;
         //TODO TRACKING AMEND
+        //zc_GETAmendmentType amend = zc_Api.amendSubscriptionGET(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_CANCEL, pLog);        
+        //SM_Hermes.trackOperation('AJOUT', Datetime.now(), 'Resiliation', 'Cancel', amend.id, currentSubId, sub2.Name);
+
     }
 
+ 
 }

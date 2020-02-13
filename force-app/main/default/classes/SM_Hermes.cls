@@ -3,242 +3,6 @@ public with sharing class SM_Hermes {
 
     }
 
-    // public static WSZ.SubHermesOut acquisition(WSZ.SubHermesIn hermesIn){
-        
-    //     String hermesInStr = JSON.serialize(hermesIn);
-    //     Account acc = SM_Account.getAccount(hermesIn.accountId);
-    //     ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
-
-    //     // Zuora token
-    //     String accessToken = WS001_CallZuora.access_token;
-    //     String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
-
-    //     // Get Zuora Data (subscription)
-    //     zc_GETSubscriptionTypeWithSuccess sub = zc_Api.subscriptionGET(accessToken, zEntityId, hermesIn.subscriptionZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
-
-    //     // Get Zuora Data (Account)
-    //     zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, hermesIn.accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
-    //     String payMethodId = zacc.defaultPaymentMethodId;
-
-    //     // Get Zuora Data (PaymentMethod)
-    //     zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
-
-    //     // insert zdocdata subscription
-    //     Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
-
-    //     // insert case
-    //     String sousMotif = lieuToSousMotif(hermesIn.lieu);
-    //     Case c = newCase(zDocId, hermesIn.subscriptionName, acc.PersonContactId, hermesIn.origin, '0- Souscription', hermesIn.motif, sousMotif, 'Fermee', 
-    //     hermesIn.lieu, hermesIn.commentairesInternes, hermesIn.accountId,null,null,null);
-    //     Id caseId = c.Id;
-
-    //     // generate sDoc 
-    //     List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id=:caseId];
-    //     SM_SDoc.makeSdocJobs(cs);
-
-    //     // insert Fil impression
-    //     List<Carte__c> cartes = [Select Id from Carte__c where Name = :hermesIn.numeroCarte];
-    //     Id carteId = (cartes.size() > 0)?cartes.get(0).Id:null;
-    //     ZDocData__c zDoc = [Select Id, Payeur__r.FirstName, Payeur__r.LastName from ZDocData__c where Id = :zDocId];
-    //     SM_FileImpression.createFileImpressionCarte(hermesIn.numeroCarte, (Id)hermesIn.accountId, carteId, caseId, hermesIn.subscriptionName, sub.CodeOffrePrincipale, zDoc.Payeur__r.FirstName, zDoc.Payeur__r.LastName);
-
-    //     //RETURN
-    //     WSZ.SubHermesOut hermOut = new WSZ.SubHermesOut(hermesIn.accountId, hermesIn.accountZID, hermesIn.subscriptionZID, hermesIn.subscriptionName, caseId);
-
-    //     return hermOut;
-    // }
-
-// public static WSZ.SubHermesOut migration(WSZ.SubHermesIn hermesIn){
-        
-//         String hermesInStr = JSON.serialize(hermesIn);
-//         Date dateFinContrat = Date.valueOf(hermesIn.dateFinContrat);
-//         Account acc = SM_Account.getAccount(hermesIn.accountId);
-//         ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
-
-//         // Zuora token
-//         String accessToken = WS001_CallZuora.access_token;
-//         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
-
-//         // Get Zuora Data (subscription)
-//         zc_GETSubscriptionTypeWithSuccess sub = zc_Api.subscriptionGET(accessToken, zEntityId, hermesIn.subscriptionZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
-
-//         // Get Zuora Data (Account)
-//         zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, hermesIn.accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
-//         String payMethodId = zacc.defaultPaymentMethodId;
-
-//         // Get Zuora Data (PaymentMethod)
-//         zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
-
-//         // insert zdocdata subscription
-//         Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
-
-//         // Insert case
-//         String sousMotif = lieuToSousMotif(hermesIn.lieu);
-//         Case c = newCase(zDocId, hermesIn.subscriptionName, acc.PersonContactId, hermesIn.origin, '1- Vie de l\'abonnement', hermesIn.motif, sousMotif, 'Fermee', 
-//         hermesIn.lieu, hermesIn.commentairesInternes, hermesIn.accountId,hermesIn.typeDeMigration,hermesIn.creditMemoId,hermesIn.dateFinContrat);
-//         Id caseId = c.Id;
-
-//         // generate sDoc 
-//         List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id=:caseId];
-//         SM_SDoc.makeSdocJobs(cs);
-
-//         // insert Fil impression
-//         //List<Carte__c> cartes = [Select Id from Carte__c where Name = :hermesIn.numeroCarte];
-//         //Id carteId = (cartes.size() > 0)?cartes.get(0).Id:null;
-//         ZDocData__c zDoc = [Select Id, Payeur__r.FirstName, Payeur__r.LastName from ZDocData__c where Id = :zDocId];
-//         SM_FileImpression.createFileImpressionCarte(null, (Id)hermesIn.accountId, null, caseId, hermesIn.subscriptionName, sub.CodeOffrePrincipale, zDoc.Payeur__r.FirstName, zDoc.Payeur__r.LastName);
-
-            
-//         // Create case remboursement
-//         if(hermesIn.creditMemoId != null){
-//             // get creditmemo
-//             WSZ.CreditMemoOut cm = SM_CreditMemo.getCreditMemo(hermesIn.creditMemoId, zEntityId);
-//             Decimal amountToRefund = Decimal.valueOf(cm.amount);
-//             if(amountToRefund < 0){
-//                 amountToRefund = amountToRefund * -1;
-//             }
-//             Decimal amountToRefundRoundFromCreditMemo = amountToRefund.setScale(2);
-
-//             SM_Remboursement.createRebousementCase(caseId, amountToRefundRoundFromCreditMemo, amountToRefundRoundFromCreditMemo, (Id)hermesIn.accountId, hermesIn.creditMemoId, dateFinContrat, null, Date.today(), hermesIn.subscriptionName);
-//         }
-
-//         WSZ.SubHermesOut hermOut = new WSZ.SubHermesOut(hermesIn.accountId, hermesIn.accountZID, hermesIn.subscriptionZID, hermesIn.subscriptionName, caseId);
-
-//         return hermOut;
-
-// }
-
-    // public static WSZ.SubHermesOut reedition(WSZ.SubHermesIn hermesIn){
-        
-    //     String hermesInStr = JSON.serialize(hermesIn);
-    //     Account acc = SM_Account.getAccount(hermesIn.accountId);
-    //     ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
-
-    //     // Zuora token
-    //     String accessToken = WS001_CallZuora.access_token;
-    //     String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
-
-    //     // Get Zuora Data (subscription)
-    //     zc_GETSubscriptionTypeWithSuccess sub = zc_Api.subscriptionGET(accessToken, zEntityId, hermesIn.subscriptionZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
-
-    //     // Get Zuora Data (Account)
-    //     zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, hermesIn.accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
-    //     String payMethodId = zacc.defaultPaymentMethodId;
-
-    //     // Get Zuora Data (PaymentMethod)
-    //     zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
-
-    //     // insert zdocdata subscription
-    //     Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
-
-    //     // insert case
-    //     String sousMotif = lieuToSousMotif(hermesIn.lieu);
-    //     String commentairesInternes = (hermesIn.motif == '02- Reedition payante')?'réédition payante':'réédition gratuite'; //03- Réédition gratuite
-        
-    //     Case c = newCase(zDocId, hermesIn.subscriptionName, acc.PersonContactId, hermesIn.origin, '1- Vie de l\'abonnement', hermesIn.motif, sousMotif, 'Fermee', 
-    //     hermesIn.lieu, commentairesInternes, hermesIn.accountId,hermesIn.typeDeMigration,hermesIn.creditMemoId,hermesIn.dateFinContrat);
-    //     Id caseId = c.Id;
-
-    //     // generate sDoc 
-    //     List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id=:caseId];
-    //     SM_SDoc.makeSdocJobs(cs);
-
-    //     // insert Fil impression
-    //     //List<Carte__c> cartes = [Select Id from Carte__c where Name = :hermesIn.numeroCarte];
-    //     //Id carteId = (cartes.size() > 0)?cartes.get(0).Id:null;
-    //     ZDocData__c zDoc = [Select Id, Payeur__r.FirstName, Payeur__r.LastName from ZDocData__c where Id = :zDocId];
-    //     SM_FileImpression.createFileImpressionCarte(null, (Id)hermesIn.accountId, null, caseId, hermesIn.subscriptionName, sub.CodeOffrePrincipale, zDoc.Payeur__r.FirstName, zDoc.Payeur__r.LastName);
-
-    //     //RETURN
-    //     WSZ.SubHermesOut hermOut = new WSZ.SubHermesOut(hermesIn.accountId, hermesIn.accountZID, hermesIn.subscriptionZID, hermesIn.subscriptionName, caseId);
-
-    //     return hermOut;
-
-    // }
-
-    // public static WSZ.SubHermesOut renouvellement(WSZ.SubHermesIn hermesIn){
-        
-    //     String hermesInStr = JSON.serialize(hermesIn);
-    //     Account acc = SM_Account.getAccount(hermesIn.accountId);
-    //     ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
-
-    //     // Zuora token
-    //     String accessToken = WS001_CallZuora.access_token;
-    //     String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
-
-    //     // Get Zuora Data (subscription)
-    //     zc_GETSubscriptionTypeWithSuccess sub = zc_Api.subscriptionGET(accessToken, zEntityId, hermesIn.subscriptionZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
-
-    //     // Get Zuora Data (Account)
-    //     zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, hermesIn.accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
-    //     String payMethodId = zacc.defaultPaymentMethodId;
-
-    //     // Get Zuora Data (PaymentMethod)
-    //     zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
-
-    //     // insert zdocdata subscription
-    //     Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
-
-    //     // insert case
-    //     String sousMotif = lieuToSousMotif(hermesIn.lieu);
-    //     //TODO commentaire interne, voir si on rappatrie en local: -> NON: trop d informations non presente en local
-    //     Case c = newCase(zDocId, hermesIn.subscriptionName, acc.PersonContactId, hermesIn.origin, '1- Vie de l\'abonnement', hermesIn.motif, sousMotif, 'Fermee', 
-    //     hermesIn.lieu, hermesIn.commentairesInternes, hermesIn.accountId,hermesIn.typeDeMigration,hermesIn.creditMemoId,hermesIn.dateFinContrat);
-    //     Id caseId = c.Id;
-
-    //     // generate sDoc 
-    //     List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id=:caseId];
-    //     SM_SDoc.makeSdocJobs(cs);
-
-    //     //RETURN
-    //     WSZ.SubHermesOut hermOut = new WSZ.SubHermesOut(hermesIn.accountId, hermesIn.accountZID, hermesIn.subscriptionZID, hermesIn.subscriptionName, caseId);
-
-    //     return hermOut;
-
-    // }
-
-    public static WSZ.SubHermesOut changebanque(WSZ.SubHermesIn hermesIn){
-        
-        String hermesInStr = JSON.serialize(hermesIn);
-        Account acc = SM_Account.getAccount(hermesIn.accountId);
-        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = hermesIn.accountId, AccountZID__c = hermesIn.accountZID, SubscriptionZID__c = hermesIn.subscriptionZID, Message__c = hermesInStr);
-
-        // Zuora token
-        String accessToken = WS001_CallZuora.access_token;
-        String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
-
-        // Get Zuora Data (subscription)
-        zc_GETSubscriptionTypeWithSuccess sub = zc_Api.subscriptionGET(accessToken, zEntityId, hermesIn.subscriptionZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
-
-        // Get Zuora Data (Account)
-        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, hermesIn.accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
-        String payMethodId = zacc.defaultPaymentMethodId;
-
-        // Get Zuora Data (PaymentMethod)
-        zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
-
-        // insert zdocdata subscription
-        Id zDocId = addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => acc});
-
-        // insert case
-        String sousMotif = lieuToSousMotif(hermesIn.lieu);
-
-        Case c = newCase(zDocId, hermesIn.subscriptionName, acc.PersonContactId, hermesIn.origin, '7- Finance', hermesIn.motif, sousMotif, 'Fermee', 
-        hermesIn.lieu, hermesIn.commentairesInternes, hermesIn.accountId,hermesIn.typeDeMigration,hermesIn.creditMemoId,hermesIn.dateFinContrat,null);
-        Id caseId = c.Id;
-
-        // generate sDoc 
-        List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id=:caseId];
-        SM_SDoc.makeSdocJobs(cs);
-
-        //RETURN
-        WSZ.SubHermesOut hermOut = new WSZ.SubHermesOut(hermesIn.accountId, hermesIn.accountZID, hermesIn.subscriptionZID, hermesIn.subscriptionName, caseId);
-
-        return hermOut;
-
-    }
-
-
     public static Case newCase(Id zDocId, String subscriptionName, Id personContactId, String origin, String famille, String motif, String sousMotif, String status, String lieu, 
     String commentairesInternes, String accountId, String typeDeMigration, String creditMemoId, String dateFinContrat, String agent){
 
@@ -411,6 +175,20 @@ public with sharing class SM_Hermes {
 
         return invTemplateId;
         
+    }
+
+    //public static void trackOperation(String action, Datetime dateOperation, Enum operation, String zOperation, String amendId, String subId, String subName)
+    //@Future    
+    public static void trackOperation(String action, Datetime dateOperation, String operation, String zOperation, String amendId, String subId, String subName)
+    {
+        
+        //TODO a activer pour le tracking
+        // BillingOperation__c ope = new BillingOperation__c(Action__c = action, DateOperation__c = dateOperation, Operation__c=operation, Zoperation__c = zOperation, 
+        // AmendZID__c= amendId, SubscriptionZID__c = subId, SubscriptionName__c = subName);
+        // insert ope;
+        
+        //SMQ_TrackOperation trackOpe = new SMQ_TrackOperation(action, dateOperation, operation, zOperation, amendId, subId, subName);
+        //Id jobId = System.enqueueJob(trackOpe);
     }
 
 

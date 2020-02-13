@@ -4,7 +4,7 @@ public with sharing class SM_Migration {
 //TODO OK: batch d'activation des nouveaux contrats: workflow zuora: OK 
 
 public final static Set<String> FAMILLE_REMISES = new Set<String>{'REMFRAIDOSS', 'REMMENS', 'REMMONT'};
-public static String accessToken, zEntityId;
+public static String accessToken, zEntityId, codePays;
 
 public SM_Migration() {
 
@@ -13,8 +13,8 @@ public SM_Migration() {
 public static Map<String,Object> migration(WSZ.SubOpeIn migIn, Boolean isPreview){
 
     String invoiceFileUrl, creditMemoId, currentSubId,typeDeMigration,elecPayMethodId, extPaymentMethodId;
-    String fileImpId,payMethodId, invoiceId,paymentId,caseId,cancelCaseId;
-
+    String fileImpId,payMethodId, invoiceId,caseId,cancelCaseId;
+    List<String> paymentIds;
     Boolean compteBloque = false;
     Boolean rembourser = false;
     String intituleOffreFR,intituleOffreNL;
@@ -25,6 +25,8 @@ public static Map<String,Object> migration(WSZ.SubOpeIn migIn, Boolean isPreview
     Boolean isB2B;
     zc_ZObjectUpdate zObj;
     List<String> sDocjobIds = new List<String>{'idjob1','idjob2'};
+    Map<String,WSZ.Paiement> mapPaiements;
+    Map<String,WSZ.Paiement> mapPaiements2;
     
 
     String migInStr = JSON.serialize(migIn);
@@ -33,7 +35,7 @@ public static Map<String,Object> migration(WSZ.SubOpeIn migIn, Boolean isPreview
     String typeContrat = produit.contains('CDI')?'CDI':'CDD';
     //Boolean isFutur = (migIn.dateDebutContrat == Date.today())?false:true;
     Boolean isNewMandate = (migIn.mandateId != null && migIn.iban != null);
-    
+
 
     //###### get SF_AccountData SF_sub Data ######
     Account porteur = SM_Account.getAccountData(migIn.accountSFID);
@@ -45,6 +47,7 @@ public static Map<String,Object> migration(WSZ.SubOpeIn migIn, Boolean isPreview
     String typeContratActuel = sub.TypeContrat__c;
     String typeMigration = typeContratActuel+'-'+typeContrat;
     Boolean generateInvoice;
+    codePays = porteur.CodePays__c;
     //String subscriptionName = sub.Name;
 
     // ###### check/calcul:
@@ -84,7 +87,7 @@ public static Map<String,Object> migration(WSZ.SubOpeIn migIn, Boolean isPreview
     //if (isPreview) generateInvoice = true; //overrider dans subscribeMigration
 
     //###### get subOffres ######
-    Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy(migIn.dateDebutContrat, migIn.lieu, migIn.agent, migIn.coupon, migIn.accountSFID, 'migration', produit);
+    Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy(migIn.dateDebutContrat, migIn.lieu, migIn.agent, migIn.coupon, migIn.accountSFID, 'migration', produit, migIn.codeLangue);
     WSZ.SubProduct subOffre = (WSZ.SubProduct)offreProxyOut.get('offre');
     List<zc_AmendmentRatePlanData> subOffreRatePlans = (List<zc_AmendmentRatePlanData>)offreProxyOut.get('offreRatePlans');
 
@@ -105,9 +108,29 @@ public static Map<String,Object> migration(WSZ.SubOpeIn migIn, Boolean isPreview
 
     //token/entity
     accessToken = WS001_CallZuora.access_token;
-    zEntityId = WS001_CallZuora.getZuoraEntityId(porteur.CodePays__c);  
+    zEntityId = WS001_CallZuora.getZuoraEntityId(codePays);  
+    
 
 if (!isPreview){
+
+    //map external payments
+    if (migIn.paiements.size() > 0 ){
+        mapPaiements = new Map<String,WSZ.Paiement>();
+        //List<Paiement> paiements = migIn.paiements;
+        for (WSZ.Paiement item:migIn.paiements){
+            WSZ.Paiement pai1 = new WSZ.Paiement();
+            WSZ.Paiement pai2 = new WSZ.Paiement();
+            pai1 = item.clone();
+            pai2 = item.clone();
+            mapPaiements.put(item.refCharge,pai1);
+            if (mapPaiements2.containsKey(item.methodePaiement)) {
+                mapPaiements2.get(item.methodePaiement).montant += (Double)item.montant;
+            }else {
+                mapPaiements2.put(item.methodePaiement,pai2);
+            }
+        }
+    }  
+        
     //###### Create Elec PaymentMethod ######
     if (isNewMandate) {         
         zc_ProxyCreatePaymentMethod reqObj = SM_Payment.paymentMethodElec(accountZID, migIn.iban, migIn.mandateId, payeur);
@@ -117,7 +140,7 @@ if (!isPreview){
     
     //###### Update Account, DefPaymentMethod, Batch..etc ######
     zc_ProxyActionupdateRequest accUpdateReq = new zc_ProxyActionupdateRequest();
-    if (typeContrat == 'CDD') extPaymentMethodId = SM_Hermes.getExtPaymentMethodId(subOffre.IsB2B, migIn.paiement.methodePaiement, porteur.CodePays__c);
+    if (typeContrat == 'CDD') extPaymentMethodId = SM_Hermes.getExtPaymentMethodId(subOffre.IsB2B, mapPaiements.get('ABO').methodePaiement, porteur.CodePays__c);
     accUpdateReq.r_type = 'Account';
     zObj = new zc_ZObjectUpdate();
     zObj.id = accountZID;
@@ -214,18 +237,26 @@ if (!isPreview){
         //###### Creation paiement Zuora ######
         WSZ.Paiement paymentIn;
         zc_CreatePaymentType paymentReq;
-        if (migIn.paiement != null || subOffre.IsB2B == true) {
-            if (migIn.paiement.montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog);
-            paymentIn = new WSZ.Paiement(migIn.paiement.montant, migIn.paiement.refPaiement, migIn.paiement.methodePaiement, migIn.lieu, migIn.agent, migIn.paiement.dateVirement);
-            paymentReq = SM_Payment.createExtPayment(invoiceId, accountZID, paymentIn);
+        zc_GETARPaymentType paymentRes;
+        if (migIn.paiements.size() > 0 || subOffre.IsB2B == true) {
+            //TODO A analyser: cette condition n est pas toujours valable: a voir en fonction des abo du 01 du mois. if (migIn.paiement.montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog);
+            //TODO OK si deux lignes avec meme refPaiement alors il faut un seul paiement.
+            for(String key:mapPaiements2.keySet()){      //key=methodPaiement: CBL,ESP..etc.
+            //for(WSZ.Paiement itemPaiement:migIn.paiements){
+                paymentIn = new WSZ.Paiement(mapPaiements2.get(key).montant, mapPaiements2.get(key).refPaiement, mapPaiements2.get(key).methodePaiement, migIn.lieu, migIn.agent, mapPaiements2.get(key).dateVirement);
+                paymentReq = SM_Payment.createExtPayment(invoiceId, accountZID, paymentIn, codePays);
+                paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,pLog);
+                paymentIds.add(paymentRes.id);
+            //}
+            }
+                        
         }else {
             paymentIn = new WSZ.Paiement(invAmount, null, null, null, null, null);
-            paymentReq = SM_Payment.createElecPayment(invoiceId, accountZID, paymentIn);
+            paymentReq = SM_Payment.createElecPayment(invoiceId, accountZID, paymentIn, codePays);
+            paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,pLog);
+            paymentIds.add(paymentRes.id);
         }
 
-        zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,pLog);
-        //payMethodId = paymentRes.paymentMethodId;
-        paymentId = paymentRes.id;
     }
     
 
@@ -271,7 +302,7 @@ if (!isPreview){
 
     //RETURN
     migOut = new WSZ.SubOpeOut(migIn.accountSFID, accountZID, subscriptionZID, subscriptionName, compteBloque,invoiceFileUrl, rembourser,
-    paymentId, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
+    paymentIds, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
 
     // return migOut;
     } //if else !isPreview
