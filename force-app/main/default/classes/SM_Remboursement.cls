@@ -605,6 +605,7 @@ public with sharing class SM_Remboursement {
         wsOut = wsOut.replace('TECH_DejaTraiter__c','TECH_DejaTraiter');
         wsOut = wsOut.replace('Lieu__c','Lieu');
         wsOut = wsOut.replace('TECH_RefundCreatedDate__c','TECH_RefundCreatedDate');
+        wsOut = wsOut.replace('ExclusionCompta__c', 'exclusioncompta_c');
 
         System.debug('##MNE SM_Remboursement executeRefund wsOut >> ' + wsOut);
     
@@ -835,6 +836,61 @@ public with sharing class SM_Remboursement {
         }
 
         return 'ToBeCompleted';
+    }
+
+
+    public static WSZ.RefundOut refundCreditMemo(String refundDate, Decimal totalAmount, String typeX, String methodType, String reasonCode, String zCreditMemoId, String zEntityId, String comment, String ExclusionCompta) {
+        System.debug('##MNE SM_Remboursement executeRefund refundDate >> ' + refundDate);
+        System.debug('##MNE SM_Remboursement executeRefund totalAmount >> ' + totalAmount);
+        System.debug('##MNE SM_Remboursement executeRefund typeX >> ' + typeX);
+        System.debug('##MNE SM_Remboursement executeRefund methodType >> ' + methodType);
+        System.debug('##MNE SM_Remboursement executeRefund reasonCode >> ' + reasonCode);
+        System.debug('##MNE SM_Remboursement executeRefund zCreditMemoId >> ' + zCreditMemoId);
+        System.debug('##MNE SM_Remboursement executeRefund zEntityId >> ' + zEntityId);
+        
+        String endpoint = '/v1/creditmemos/'+zCreditMemoId+'/refunds';
+        String method = 'POST';
+        String wsIn = null;
+        String wsOut = '';
+        
+        // Retrieve Zuora token
+        String accessToken = WS001_CallZuora.access_token;
+        
+        WSZ.RefundlIn3 wsInObj = new WSZ.RefundlIn3();
+        
+        Date todayDate = Date.today();
+        String zTodayDate = Util.zDate(todayDate);
+     
+        wsInObj.typeX = typeX;
+        wsInObj.methodType = methodType;
+        wsInObj.reasonCode = reasonCode;
+        wsInObj.refundDate = zTodayDate;
+        wsInObj.totalAmount = totalAmount;
+        wsInObj.comment = comment;
+        wsInObj.exclusioncompta_c = ExclusionCompta;
+        
+        
+        wsIn = (String) JSON.serialize(wsInObj);
+        wsIn = wsIn.replace('typeX','type');
+        wsIn = wsIn.replace('exclusioncompta_c','ExclusionCompta__c');
+        
+        System.debug('##ECH SM_Remboursement refundCreditMemo wsIn >> ' + wsIn);
+        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', '211.0');
+        wsOut = wsOut.replace('number','numberX');
+        wsOut = wsOut.replace('type','typeX');
+        wsOut = wsOut.replace('Canal__c','Canal');
+        wsOut = wsOut.replace('TECH_RefundGatewayResponseCode__c','TECH_RefundGatewayResponseCode');
+        wsOut = wsOut.replace('DateRejetBanque__c','DateRejetBanque');
+        wsOut = wsOut.replace('Agent__c','Agent');
+        wsOut = wsOut.replace('TECH_DejaTraiter__c','TECH_DejaTraiter');
+        wsOut = wsOut.replace('Lieu__c','Lieu');
+        wsOut = wsOut.replace('TECH_RefundCreatedDate__c','TECH_RefundCreatedDate');
+        wsOut = wsOut.replace('ExclusionCompta__c', 'exclusioncompta_c');
+
+        System.debug('##MNE SM_Remboursement refundCreditMemo wsOut >> ' + wsOut);
+    
+        return (WSZ.RefundOut) JSON.deserializeStrict(wsOut, WSZ.RefundOut.class);
+
     }
 
 

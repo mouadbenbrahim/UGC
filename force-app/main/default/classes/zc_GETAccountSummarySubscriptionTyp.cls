@@ -152,7 +152,7 @@ public class zc_GETAccountSummarySubscriptionTyp {
 	public String idContratPrecedent { get; set; }
 	public String typeContrat { get; set; }
 	public String codeFinContrat { get; set; }
-	public String numCarteParrain { get; set; }
+	public String parrainSFID { get; set; }
 	public String codeOffreCo { get; set; }
 	public String marche { get; set; }
 	public String payeurCRMID { get; set; }
@@ -192,7 +192,7 @@ public class zc_GETAccountSummarySubscriptionTyp {
         'IdContratPrecedent__c' => 'idContratPrecedent',
         'TypeContrat__c' => 'typeContrat',
         'CodeFinContrat__c' => 'codeFinContrat',
-        'NumCarteParrain__c' => 'numCarteParrain',
+        'ParrainSFID__c' => 'parrainSFID',
         'CodeOffreCo__c' => 'codeOffreCo',
         'Marche__c' => 'marche',
         'PayeurCRMID__c' => 'payeurCRMID',

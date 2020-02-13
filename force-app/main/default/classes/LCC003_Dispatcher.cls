@@ -77,6 +77,9 @@ public without sharing class LCC003_Dispatcher {
                 when 'ActiverCarte' {
                 	SM_Carte.activationFromCard(currentId);
                 }
+                when 'AnnulationMigration' {
+                    SM_AnnulationMigration.AnnulationMigration(currentId);
+                }
                 when else {
                     System.debug('##MBEN : aucune operation n est transmise');
                 }

@@ -35,4 +35,6 @@
     <tabs>BilendiAccounting__c</tabs>
     <tabs>Payment_Run_Calendar__c</tabs>
     <tabs>ProcessLog__c</tabs>
+    <tabs>BillingOperation__c</tabs>
+    <tabs>Zuora__Subscription__c</tabs>
 </CustomApplication>

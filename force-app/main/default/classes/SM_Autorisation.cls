@@ -136,7 +136,8 @@ public without sharing class SM_Autorisation {
 														UUCDD  => new set<String>{UUCDD}},
 		lieu_DRC 		=> new map<String, set<String>>{UI1CDD => new set<String>{UI1CDI},
 														UI2CDD => new set<String>{UI2CDI},
-														UI3CDD => new set<String>{UI3CDI}}												 
+														UI3CDD => new set<String>{UI3CDI},
+														UUCDD  => new set<String>{UUCDD}}												 
 	};
 	
 
@@ -193,6 +194,7 @@ public without sharing class SM_Autorisation {
 			wsOut.message = null;
 	  		wsOut.errorCode = null;
 			wsOut.accountSFID = acc.Id;
+			wsOut.PersonEmail = acc.PersonEmail;
 			wsOut.porteurSFID = acc.Id;
         	system.debug('##MNE SM_Autorisation sortie 5 opeauthorize wsOut >> '+wsOut);
 			return wsOut;
@@ -220,6 +222,7 @@ public without sharing class SM_Autorisation {
 		wsOut.message = null;
   		wsOut.errorCode = null;
 		wsOut.accountSFID = acc.Id;
+		wsOut.PersonEmail = acc.PersonEmail;
 		wsOut.accountZID = zAccId;
 		wsOut.porteurSFID = acc.Id;
 		

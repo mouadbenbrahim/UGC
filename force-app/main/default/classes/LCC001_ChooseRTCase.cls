@@ -35,8 +35,9 @@ public class LCC001_ChooseRTCase {
         c.Origin     = valueOrigin;
         c.AccountId	 = recordId;
         c.ContactId  = contact.Id;
-        c.Subscription__c = repIds == null ? null : repIds.subscriptionId;
-        c.SubscriptionZName__c = repIds == null ? null : repIds.subscriptionName;
+        /* ECH 05/02 Desactivation du code car alimentation prise en compte par le trigger */
+        //c.Subscription__c = repIds == null ? null : repIds.subscriptionId;
+        //c.SubscriptionZName__c = repIds == null ? null : repIds.subscriptionName;
         insert c;
 
         return c.Id;

@@ -283,7 +283,7 @@ public class zc_SubscribeRequestSubscriptionDataSub {
     public String lieu { get; set; }
     public String agent { get; set; }
     public String typeContrat { get; set; }
-    public String numCarteParrain { get; set; }
+    public String parrainSFID { get; set; }
     public Date dateFinContrat { get; set; }
 
 
@@ -343,7 +343,7 @@ public class zc_SubscribeRequestSubscriptionDataSub {
         'Lieu__c' => 'lieu',
         'Agent__c' => 'agent',
         'TypeContrat__c' => 'typeContrat',
-        'NumCarteParrain__c' => 'numCarteParrain',
+        'ParrainSFID__c' => 'parrainSFID',
         'DateFinContrat__c' => 'dateFinContrat'
     };
 

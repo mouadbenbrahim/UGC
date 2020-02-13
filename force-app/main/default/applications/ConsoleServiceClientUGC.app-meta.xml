@@ -708,6 +708,8 @@
     <tabs>BilendiAccounting__c</tabs>
     <tabs>Payment_Run_Calendar__c</tabs>
     <tabs>ProcessLog__c</tabs>
+    <tabs>BillingOperation__c</tabs>
+    <tabs>Zuora__Subscription__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Test_Lightening_Console_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -716,6 +718,9 @@
         </mappings>
         <mappings>
             <tab>BilendiAccounting__c</tab>
+        </mappings>
+        <mappings>
+            <tab>BillingOperation__c</tab>
         </mappings>
         <mappings>
             <tab>Carte__c</tab>
@@ -773,6 +778,9 @@
         </mappings>
         <mappings>
             <tab>Salle__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Zuora__Subscription__c</tab>
         </mappings>
         <mappings>
             <tab>Zuora__ZInvoice__c</tab>

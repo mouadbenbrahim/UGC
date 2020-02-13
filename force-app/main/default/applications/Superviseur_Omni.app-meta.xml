@@ -64,11 +64,16 @@
     <tabs>Zuora__ZInvoice__c</tabs>
     <tabs>BilendiAccounting__c</tabs>
     <tabs>ProcessLog__c</tabs>
+    <tabs>BillingOperation__c</tabs>
+    <tabs>Zuora__Subscription__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>console_test_admin_UtilityBar</utilityBar>
     <workspaceConfig>
         <mappings>
             <tab>BilendiAccounting__c</tab>
+        </mappings>
+        <mappings>
+            <tab>BillingOperation__c</tab>
         </mappings>
         <mappings>
             <tab>Carte__c</tab>
@@ -102,6 +107,9 @@
         </mappings>
         <mappings>
             <tab>RejetExterne__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Zuora__Subscription__c</tab>
         </mappings>
         <mappings>
             <tab>Zuora__ZInvoice__c</tab>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>AllAccounts</fullName>
-    <booleanFilter>1 AND 2</booleanFilter>
     <columns>ACCOUNT.NAME</columns>
     <columns>CodePays__c</columns>
     <columns>Pays__c</columns>
@@ -13,14 +12,9 @@
     <columns>ACCOUNT.CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
-        <field>CodePays__c</field>
-        <operation>lessThan</operation>
-        <value>0</value>
-    </filters>
-    <filters>
-        <field>Pays__c</field>
+        <field>PC_EMAIL</field>
         <operation>equals</operation>
-        <value>FRANCE</value>
+        <value>biabi@yahoo.fr</value>
     </filters>
     <label>Tous les comptes</label>
 </ListView>

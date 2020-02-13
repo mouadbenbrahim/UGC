@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Subscriptions</fullName>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Zuora__Status__c</field>
+        <operation>equals</operation>
+        <value>Active</value>
+    </filters>
+    <filters>
+        <field>TypeContrat__c</field>
+        <operation>equals</operation>
+        <value>CDD</value>
+    </filters>
+    <label>Active CDD Subscriptions</label>
+</ListView>

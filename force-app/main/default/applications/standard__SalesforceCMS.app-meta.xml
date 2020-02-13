@@ -7,10 +7,18 @@
     <navType>Console</navType>
     <tabs>standard-CmsAuthorHome</tabs>
     <tabs>ProcessLog__c</tabs>
+    <tabs>BillingOperation__c</tabs>
+    <tabs>Zuora__Subscription__c</tabs>
     <uiType>Lightning</uiType>
     <workspaceConfig>
         <mappings>
+            <tab>BillingOperation__c</tab>
+        </mappings>
+        <mappings>
             <tab>ProcessLog__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Zuora__Subscription__c</tab>
         </mappings>
         <mappings>
             <tab>standard-CmsAuthorHome</tab>

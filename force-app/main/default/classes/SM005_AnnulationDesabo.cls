@@ -54,9 +54,15 @@ public without sharing class SM005_AnnulationDesabo {
             zc_ProxySaveResult resObj1 = zc_Api.actionUpdatePOST(accessToken, zEntityId, reqObj, RTExceptionCode.ERREUR_ANNUL_DESABO_UPDATE_SUB, pLog);
 
         }else {   // contract cancelled (que les CDIs)                
+            //get amend informations before delete
+            zc_GETAmendmentType amendRes = zc_Api.amendSubscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog);
+            //zc_ProxyGetAmendment amendRes2 = zc_Api.objectAmendGET(accessToken, zEntityId, amendRes.id, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog); 
+            
             // Suppression de la derniere subscription
             zc_SaveResult resObj2 = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ANNUL_DESABO_DELETE_SUB, pLog);
+
             //TODO TRACKING AMEND
+            SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, sub.Zuora__External_Id__c, sub.Name);
 
             // mise a jour subscription
             zObj.id = sub.Zuora__PreviousSubscriptionId__c;

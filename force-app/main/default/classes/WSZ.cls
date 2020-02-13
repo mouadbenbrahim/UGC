@@ -982,6 +982,7 @@ public with sharing class WSZ {
 		public String subscriptionZIDAvenir;
 		public String accountSFID;
 		public String accountZID;
+		public String PersonEmail;
 		public String porteurSFID;
 		public String payeurSFID;
 		public Boolean compteBloque;

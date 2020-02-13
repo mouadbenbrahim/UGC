@@ -17,7 +17,7 @@ public with sharing class SM_Account {
     public static Account getAccount(Id accId){
         list<Account> listAccount = new list<Account> ([
                 SELECT Id, Name, MauvaisComportement__c, ProduitUGC__c, CodePays__c, PersonContactId,
-                Payeur__c, IdMonCompte__c, PersonBirthdate
+                Payeur__c, IdMonCompte__c, PersonBirthdate, PersonEmail
                 FROM Account
                 WHERE Id = :accId]);
         if(listAccount.size() == 0){
