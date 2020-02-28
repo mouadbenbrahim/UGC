@@ -98,6 +98,7 @@ public with sharing class SM_Renouvellement {
 		        //generateInvoice = true;
 		        renewDateCE = dateDebutContrat;
 		    }
+		    
 		
 		    if (typeContrat == 'CDD') {
 		        //dateFinContrat = dateDebutContrat.addMonths(12).addDays(-1);
@@ -110,14 +111,13 @@ public with sharing class SM_Renouvellement {
 		        dateFinContrat = null;
 		    }
 		    
-		    
 		    //###### get subOffres ######
 		    Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy((Datetime)dateDebutContrat, renouvIn.lieu, renouvIn.agent, renouvIn.coupon, renouvIn.accountSFID, 'renouvellement', renouvIn.produit,renouvIn.codeLangue);
 		    WSZ.SubProduct subOffre = (WSZ.SubProduct)offreProxyOut.get('offre');
 		
 		    // check: codeOffreCo
 		    if (renouvIn.codeOffreCo != null && renouvIn.codeOffreCo != subOffre.CodeOffreCo) {
-		         throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog);
+		         throw new RTException(RTExceptionCode.ERREUR_RENOUV_COUPON_ABOTIER,pLog);
 		    }
 		
 		    // ###### token/entity
@@ -164,10 +164,10 @@ public with sharing class SM_Renouvellement {
 		    // ###### Delete Cancel Sub  (mois de latence): 
 		    if (sub.Zuora__Status__c == 'Cancelled' && !isPreview) {
 		        //get amend informations before delete
-		        zc_GETAmendmentType amendRes = zc_Api.amendSubscriptionGET(accessToken, zEntityId, originalSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog);
+		        zc_GETAmendmentType amendRes = zc_Api.amendSubscriptionGET(accessToken, zEntityId, originalSubId, RTExceptionCode.ERREUR_RENOUV_APPLICATION_CANCEL, pLog);
 		        //zc_ProxyGetAmendment amendRes2 = zc_Api.objectAmendGET(accessToken, zEntityId, amendRes.id, RTExceptionCode.ERREUR_IMPAYE_REGLER_PROBLEM_PREVIEW, pLog); 
 		
-		        zc_SaveResult subDelResult = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+		        zc_SaveResult subDelResult = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_RENOUV_DELETE_ZSUBSCRIPTION, pLog);
 		        //mapRollBackProcess : Cancel Subscription	5
 		        currentSubId = subDelResult.id;
 		        //TODO TRACKING AMEND
@@ -194,7 +194,7 @@ public with sharing class SM_Renouvellement {
 		    //mapRollBackProcess : Update Subscription to previsous values 3
 		
 		    //###### get invoice ######
-		    zc_ProxyGetInvoice invRes = zc_Api.objectInvoiceGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+		    zc_ProxyGetInvoice invRes = zc_Api.objectInvoiceGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_RENOUV_GET_INVOICE, pLog);
 		    Double invAmount = invRes.amount;
 		
 		    //###### get invoice File ######
@@ -219,14 +219,14 @@ public with sharing class SM_Renouvellement {
 		    //paymentId = retPayment.get('paymentId');    
 		
 		    //###### Get Zuora Data (subscription) ######    
-		    zc_GETSubscriptionTypeWithSuccess zSub = zc_Api.subscriptionGET(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
+		    zc_GETSubscriptionTypeWithSuccess zSub = zc_Api.subscriptionGET(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_RENOUV_GET_ZSUBSCRIPTION,pLog);
 		
 		    //###### Get Zuora Data (Account) PaymentMethod ###### 
-		    zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
+		    zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, accountZID, RTExceptionCode.ERREUR_RENOUV_GET_ACCOUNT,pLog);
 		    payMethodId = zacc.defaultPaymentMethodId;
 		
 		    //###### Get Zuora Data (PaymentMethod) ######
-		    zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
+		    zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_RENOUV_GET_PAYMENTMETHOD,pLog);
 		    
 		    //###### insert zdocdata subscription ######    
 		    zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => zSub,'ZPM' => pm,'ACC' => porteur});
@@ -526,7 +526,7 @@ public with sharing class SM_Renouvellement {
         Map<String,String> ret = new Map<String,String>{'paymentId'=>null,'payMethodId'=>null};
         zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, montant, refPaiement, methodePaiement, lieu, agent, dateVirement, codePays);
         //###### Call WS Payment ######   
-        zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_PAYMENT,pLog);
+        zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_RENOUV_PAYMENT,pLog);
         ret.put('payMethodId',paymentRes.paymentMethodId);
         ret.put('paymentId',paymentRes.id);
         return ret;
@@ -552,7 +552,7 @@ public with sharing class SM_Renouvellement {
         }
         subUpdReq.objects.add(zObj);
         //Call WS sub update
-        zc_Api.actionUpdatePOST(accessToken, zEntityId, subUpdReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_ACCOUNT,pLog);
+        zc_Api.actionUpdatePOST(accessToken, zEntityId, subUpdReq, RTExceptionCode.ERREUR_RENOUV_UPDATE_SUBSCRIPTION,pLog);
     }
 
     public static void execUpdateAmend(String amendId, String originalSubId){
@@ -564,7 +564,7 @@ public with sharing class SM_Renouvellement {
         zObj.idContratPrecedent = originalSubId;
         amendUpdReq.objects.add(zObj);
         //Call WS Amend update
-        zc_Api.actionUpdatePOST(accessToken, zEntityId, amendUpdReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_ACCOUNT,pLog);    
+        zc_Api.actionUpdatePOST(accessToken, zEntityId, amendUpdReq, RTExceptionCode.ERREUR_RENOUV_UPDATE_AMENDMENT,pLog);    
     }
 
 
@@ -578,7 +578,7 @@ public with sharing class SM_Renouvellement {
         if (typeRenouvellement == 'CDD-CDI') 
             amendRenewReq = getAmendRenew_CDD_CDI(dateDebutContrat, subId, offreProxyOut);
 
-        zc_ProxyActionAmendResponse amendResult = zc_Api.actionAmendPOST(accessToken, zEntityId, amendRenewReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+        zc_ProxyActionAmendResponse amendResult = zc_Api.actionAmendPOST(accessToken, zEntityId, amendRenewReq, RTExceptionCode.ERREUR_RENOUV_ADD_AMENDMENT_RENEW, pLog);
         amendOut.invoiceId = amendResult.results.get(0).invoiceId;
         Integer amendCount = amendResult.results.get(0).amendmentIds.size();
         amendOut.amendId = amendResult.results.get(0).amendmentIds.get(amendCount-1); //Last AmendId
@@ -596,7 +596,7 @@ public with sharing class SM_Renouvellement {
         if (typeRenouvellement == 'CDD-CDI') 
             amendRenewReq = getAmendRenew_CDD_CDI(dateDebutContrat, subId, offreProxyOut);
 
-        zc_ProxyActionAmendResponse amendResult = zc_Api.actionAmendPOST(accessToken, zEntityId, amendRenewReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+        zc_ProxyActionAmendResponse amendResult = zc_Api.actionAmendPOST(accessToken, zEntityId, amendRenewReq, RTExceptionCode.ERREUR_RENOUV_ADD_AMENDMENT_RENEW_PREVIEW, pLog);
         
         WSZ.preview preview = SM_Subscribe.parsePreview(amendResult, offreProxyOut);
 
@@ -623,7 +623,7 @@ public with sharing class SM_Renouvellement {
 
         if (mandateId != null && iban != null) {         
             zc_ProxyCreatePaymentMethod reqObj = SM_Payment.paymentMethodElec(accountZID, iban, mandateId, payeur);
-            zc_ProxyCreateOrModifyResponse resObj = zc_Api.objectPaymentMethodPOST(accessToken, zEntityId, reqObj, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+            zc_ProxyCreateOrModifyResponse resObj = zc_Api.objectPaymentMethodPOST(accessToken, zEntityId, reqObj, RTExceptionCode.ERREUR_RENOUV_POST_PAYMENTMETHOD, pLog);
             pmOut.elecPayMethodId = resObj.id;
         }else if (typeContrat == 'CDD') {
             pmOut.extPaymentMethodId = SM_Hermes.getExtPaymentMethodId(isB2B, methodePaiement, codePays); //TODO: OK methodePaiement mapping
@@ -646,7 +646,7 @@ public with sharing class SM_Renouvellement {
         }        
         //TODOFUTUR si renouvellement BTOB subAcc.invoiceTemplateId = SM_Hermes.getInvoiceTemplateId(isB2B, acc.CodePays__c, acc.Langue_parl_e_par_le_client__c);
         accUpdateReq.objects.add(zObj);
-        zc_Api.actionUpdatePOST(accessToken, zEntityId, accUpdateReq, RTExceptionCode.ERREUR_IMPAYE_REGLER_UPDATE_ACCOUNT,pLog);
+        zc_Api.actionUpdatePOST(accessToken, zEntityId, accUpdateReq, RTExceptionCode.ERREUR_RENOUV_UPDATEACC_DEFPAYMETHOD,pLog);
 
     }
 
