@@ -18,6 +18,8 @@ public without sharing class SM_Impaye {
     public static Zuora__Subscription__c sub;
     public static Boolean subRecancelled = false;
     public enum opeEnum {Souscription,Migration,Renouvellement,Desabonnement,Resiliation,Retractation,FinContrat,PassageU26}
+    private static String paysLibelle;
+    private static List<BillingOperation__c> billOpes = new List<BillingOperation__c>();
 
     public SM_Impaye() {
 
@@ -118,7 +120,12 @@ public without sharing class SM_Impaye {
         
         String impayeRegInStr = JSON.serialize(impayeRegIn);
         pLog = new ProcessLog__c(Process__c = 'reglerImpaye', AccountZID__c = accountID, SubscriptionZID__c = subZID, Message__c = impayeRegInStr);
+        WSZ.ImpayeReglerOut impayeRegOut;
         
+        //String paysLibelle;
+
+        try {
+            
         
         Zuora__Subscription__c sub = SM_Subscription.getSubscriptionByZID(subZID);
         if (sub == null ) {
@@ -126,6 +133,7 @@ public without sharing class SM_Impaye {
         }
 
         codePays = sub.Zuora__Account__r.CodePays__c;
+        paysLibelle = Util.paysLibelle(codePays);
         String contactId = sub.Zuora__Account__r.PersonContactId;
         String accountSID = sub.Zuora__Account__r.Id;
         zEntityId = WS001_CallZuora.getZuoraEntityId(codePays);
@@ -186,7 +194,11 @@ public without sharing class SM_Impaye {
             currentSubId = sub.Zuora__PreviousSubscriptionId__c;
 
             //TODO TRACKING AMEND            
-            //SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, subZID, sub.Name);
+            //SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, subZID, sub.Name, codePays);
+            
+            billOpes.add(new BillingOperation__c(Action__c = 'SUPPRESSION', DateOperation__c = Datetime.now(), Operation__c='Reactivation', Zoperation__c = 'DeleteCancel', 
+            AmendZID__c= amendRes.id, SubscriptionZID__c = subZID, SubscriptionName__c = sub.Name, Pays__c=paysLibelle));
+
         }
 
         Double montantPreview = 0; //dette non echue
@@ -290,7 +302,9 @@ public without sharing class SM_Impaye {
         amendOptions.invoiceProcessingOptions = invPrc;
 
         //Ajout FG: avec ou sans DNE
-        amend1.contractEffectiveDate = dateDebutFG;        
+        amend1.contractEffectiveDate = dateDebutFG;
+        amend1.serviceActivationDate = dateDebutFG;
+        amend1.customerAcceptanceDate = dateDebutFG;
         amend1.name='Frais de gestion';
         amend1.status='Completed';
         amend1.subscriptionId=currentSubId;
@@ -464,10 +478,17 @@ public without sharing class SM_Impaye {
         // Create Case ??
         Id caseId = createImpayeCase(accountSID, contactId, codePays, montantPaye);
 
-        WSZ.ImpayeReglerOut impayeRegOut = new WSZ.ImpayeReglerOut(accountID, currentSubId, paymentRes.amount, impayeRegIn.referenceId, paymentRes.id);
+        impayeRegOut = new WSZ.ImpayeReglerOut(accountID, currentSubId, paymentRes.amount, impayeRegIn.referenceId, paymentRes.id);
+
+        } catch (RTException rte) {
+            throw rte;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (billOpes.size() > 0) insert billOpes;
+        }
 
         return impayeRegOut;
-
     }
 
     private static Id createImpayeCase(String accountSID, String contactId, String codePays, Double montantPaye){
@@ -516,8 +537,12 @@ public without sharing class SM_Impaye {
         currentSubId = rCancel.subscriptionId;
         subRecancelled = true;
         //TODO TRACKING AMEND
-        //zc_GETAmendmentType amend = zc_Api.amendSubscriptionGET(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_CANCEL, pLog);        
-        //SM_Hermes.trackOperation('AJOUT', Datetime.now(), 'Resiliation', 'Cancel', amend.id, currentSubId, sub2.Name);
+        zc_GETAmendmentType amend = zc_Api.amendSubscriptionGET(accessToken, zEntityId, currentSubId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_CANCEL, pLog);        
+        //SM_Hermes.trackOperation('AJOUT', Datetime.now(), 'Resiliation', 'Cancel', amend.id, currentSubId, sub2.Name, codePays);
+        
+        billOpes.add(new BillingOperation__c(Action__c = 'AJOUT', DateOperation__c = Datetime.now(), Operation__c='Resiliation', Zoperation__c = 'Cancel', 
+        AmendZID__c= amend.id, SubscriptionZID__c = currentSubId, SubscriptionName__c = sub2.Name, Pays__c=paysLibelle));
+
 
     }
 

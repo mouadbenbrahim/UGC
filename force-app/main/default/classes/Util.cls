@@ -221,6 +221,19 @@ public with sharing class Util {
         return mDate.toStartOfMonth().addMonths(1);
     }
 
+    public static String paysLibelle(String codePays){
+        String paysLibelle;
+
+        if (BELGIQUE.contains(codePays)) {
+            paysLibelle = 'Belgique';
+        } else if (FRANCE.contains(codePays)){
+            paysLibelle = 'France';
+        } else {
+            //TODO : throw new MyException('Attribut Code Pays obligatoire sur le Compte');
+        }
+        return paysLibelle;
+    }
+
     // public static void pLog(WSZ.ProcessLog pLog){
     //     ProcessLog__c pLog = new ProcessLog__c();
     //     pLog.Process__c = process;

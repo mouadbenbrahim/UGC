@@ -91,10 +91,10 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
-            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            //String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
             //ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = wsIn.accountSFID, Message__c = fullMessage);
-            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Message__c = fullMessage);
-            insert pLog;
+            //ProcessLog__c pLog = new ProcessLog__c(Process__c = 'acquisition', Message__c = fullMessage);
+            //insert pLog;
         } finally {
             //return wsOut;
 
@@ -198,9 +198,10 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
-            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
-            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'migration', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
-            insert pLog;
+            //String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            //system.debug('## ECH WSIN_Subscription >> Account='+wsIn.accountSFID+',SubscriptionName__c='+wsIn.subscriptionName+',Message__c='+fullMessage);
+            //ProcessLog__c pLog = new ProcessLog__c(Process__c = 'migration', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            //insert pLog;
         } finally {
             String strOut = JSON.serializePretty(wsOut, false);
             //WSZ.SubOpeOutH wsOutH = (WSZ.SubOpeOutH)JSON.deserialize(strOut, WSZ.SubOpeOutH.class);
@@ -231,9 +232,9 @@ global with sharing class WSIN_Subscription {
         } catch (Exception e) {
             wsOut.success = false;
             wsOut.message = e.getMessage() + e.getStackTraceString();
-            String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
-            ProcessLog__c pLog = new ProcessLog__c(Process__c = 'changebanque', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
-            insert pLog;            
+            //String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber() + body.toString();
+            //ProcessLog__c pLog = new ProcessLog__c(Process__c = 'changebanque', Account__c = wsIn.accountSFID, SubscriptionName__c = wsIn.subscriptionName ,Message__c = fullMessage);
+            //insert pLog;            
         } finally {
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, false));
         }
@@ -356,13 +357,28 @@ global with sharing class WSIN_Subscription {
         try {
             wsIn = (WSZ.SubOpeIn) JSON.deserializeStrict(body.toString(), WSZ.SubOpeIn.class);
             wsOut.accountSFID = wsIn.accountSFID;
+            Exception lastException = null;
             for(String pdt: wsIn.produits){
-                prev = new WSZ.Preview();
-                wsIn.produit = pdt;
-                if (wsIn.operation == 'acquisition') prev = (WSZ.Preview)SM_Acquisition.acquisition(wsIn, isPreview).get('preview');
-                if (wsIn.operation == 'renouvellement') prev = (WSZ.Preview)SM_Renouvellement.renouvellement(wsIn, isPreview).get('preview');
-                if (wsIn.operation == 'migration') prev = (WSZ.Preview)SM_Migration.migration(wsIn, isPreview).get('preview');
-                wsOut.preview.add(prev);
+                try {
+                    prev = new WSZ.Preview();
+                    wsIn.produit = pdt;
+                    if (wsIn.operation == 'acquisition') prev = (WSZ.Preview)SM_Acquisition.acquisition(wsIn, isPreview).get('preview');
+                    if (wsIn.operation == 'renouvellement') prev = (WSZ.Preview)SM_Renouvellement.renouvellement(wsIn, isPreview).get('preview');
+                    if (wsIn.operation == 'migration') prev = (WSZ.Preview)SM_Migration.migration(wsIn, isPreview).get('preview');
+                    wsOut.preview.add(prev);
+                } catch (Exception e) {
+                    lastException = e;  
+                } finally {
+                    
+                }
+            }
+
+            if (! (wsOut.preview.size() > 0)){
+                if(lastException != null) {
+                    throw lastException;
+                }else {
+                    throw new RTException(RTExceptionCode.ERREUR_PREVIEW_PROBLEM);
+                }
             }
             wsOut.success = true;
             wsOut.message = null;

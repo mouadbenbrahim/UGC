@@ -207,6 +207,7 @@ public with sharing class SM_Offre {
         isContratFutur = false;
         String langue = subIn.codeLangue.left(2);
         String hermesIntitule;
+        Exception lastException;
 
         if(dateSouscription > Datetime.now()){
             isContratFutur = true;
@@ -231,6 +232,8 @@ public with sharing class SM_Offre {
             subProd.IsPrepaid = false;
             subProd.subscribeToRatePlans = new List<WSZ.SubscribeToRatePlan>();
 
+            try {
+                
             // Recupere le RP de l abonnement
             List<Offre__c> offAboBase = aboBaseEligible(prodRpRef, subIn);
             if (!offAboBase.isEmpty()) {
@@ -320,6 +323,22 @@ public with sharing class SM_Offre {
             System.debug('MBEN: prod: ' + prodRpRef + ': ' + (String) JSON.serialize(subProd, true));
             subProducts.add(subProd);
 
+
+            } catch (Exception e) {
+                lastException = e;
+                    
+            } finally {
+                
+            }
+
+        } 
+
+        if (! (subProducts.size() > 0) ){
+            if (lastException != null) {
+                throw lastException;
+            } else {
+                throw new RTException(RTExceptionCode.ERREUR_OFFRE_PROBLEM);
+            }
         }
 
         return subProducts;

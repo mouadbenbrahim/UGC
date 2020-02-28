@@ -143,7 +143,7 @@ public with sharing class SM_Remboursement {
         
         //Exécution du remboursement
         try{
-            WSZ.RefundOut refOut = executeRefund(refundDate, dem.MontantRembourser__c, typeRefund, methodTypeRefund, reasonCodeRefund, zuoraPaymentId, zEntityId,comment);
+            WSZ.RefundOut refOut = executeRefund(refundDate, dem.MontantRembourser__c, typeRefund, methodTypeRefund, reasonCodeRefund, zuoraPaymentId, zEntityId, null, comment);
             //Si erreur du remboursement, reapplication du paiemment
             if(refOut.status=='Error' || !refOut.success){
                 throw new MyException(refOut.gatewayResponse);
@@ -554,7 +554,7 @@ public with sharing class SM_Remboursement {
 
 
     
-    public static WSZ.RefundOut executeRefund(String refundDate, Decimal totalAmount, String typeX, String methodType, String reasonCode, String zPaymentId, String zEntityId, String comment) {
+    public static WSZ.RefundOut executeRefund(String refundDate, Decimal totalAmount, String typeX, String methodType, String reasonCode, String zPaymentId, String zEntityId, String access_token, String comment) {
         System.debug('##MNE SM_Remboursement executeRefund refundDate >> ' + refundDate);
         System.debug('##MNE SM_Remboursement executeRefund totalAmount >> ' + totalAmount);
         System.debug('##MNE SM_Remboursement executeRefund typeX >> ' + typeX);
@@ -562,6 +562,8 @@ public with sharing class SM_Remboursement {
         System.debug('##MNE SM_Remboursement executeRefund reasonCode >> ' + reasonCode);
         System.debug('##MNE SM_Remboursement executeRefund zPaymentId >> ' + zPaymentId);
         System.debug('##MNE SM_Remboursement executeRefund zEntityId >> ' + zEntityId);
+        System.debug('##MNE SM_Remboursement executeRefund access_token >> ' + access_token);
+        System.debug('##MNE SM_Remboursement executeRefund comment >> ' + comment);
         
         String endpoint = '/v1/payments/'+zPaymentId+'/refunds';
         String method = 'POST';
@@ -569,7 +571,14 @@ public with sharing class SM_Remboursement {
         String wsOut = '';
         
         // Retrieve Zuora token
-        String accessToken = WS001_CallZuora.access_token;
+        //String accessToken = WS001_CallZuora.access_token;
+        String accessToken;
+        if(access_token != null){
+            accessToken = access_token;
+        }
+        else {
+            accessToken = WS001_CallZuora.access_token; 
+        }
         
         //Date todayDate = Date.today();
         //String zTodayDate = Util.zDate(todayDate);
@@ -838,7 +847,7 @@ public with sharing class SM_Remboursement {
         return 'ToBeCompleted';
     }
 
-
+    /*
     public static WSZ.RefundOut refundCreditMemo(String refundDate, Decimal totalAmount, String typeX, String methodType, String reasonCode, String zCreditMemoId, String zEntityId, String comment, String ExclusionCompta) {
         System.debug('##MNE SM_Remboursement executeRefund refundDate >> ' + refundDate);
         System.debug('##MNE SM_Remboursement executeRefund totalAmount >> ' + totalAmount);
@@ -892,6 +901,7 @@ public with sharing class SM_Remboursement {
         return (WSZ.RefundOut) JSON.deserializeStrict(wsOut, WSZ.RefundOut.class);
 
     }
+    */
 
 
 }

@@ -170,6 +170,8 @@ public without sharing class SM_Autorisation {
         if(acc == null){
         	resultatCodeBloqueAll(wsOut , BLOCAGE_AUTORISATION_ACCOUNTMANQUANT.code, BLOCAGE_AUTORISATION_ACCOUNTMANQUANT.message);
         	system.debug('##MNE SM_Autorisation sortie 4 opeauthorize wsOut >> '+wsOut);
+        	//A supprimé
+			//openRenew(wsOut);
 			return wsOut;
         }
         
@@ -197,10 +199,14 @@ public without sharing class SM_Autorisation {
 			wsOut.PersonEmail = acc.PersonEmail;
 			wsOut.porteurSFID = acc.Id;
         	system.debug('##MNE SM_Autorisation sortie 5 opeauthorize wsOut >> '+wsOut);
+        	//A supprimé
+			//openRenew(wsOut);
 			return wsOut;
         }else if (billingAccounts.size() > 1){
         	resultatCodeBloqueAll(wsOut , BLOCAGE_AUTORISATION_MULTIPLE_BILL_ACCOUNT.code, BLOCAGE_AUTORISATION_MULTIPLE_BILL_ACCOUNT.message);
         	system.debug('##MNE SM_Autorisation sortie 6 opeauthorize wsOut >> '+wsOut);
+        	//A supprimé
+			//openRenew(wsOut);
 			return wsOut;
         }
         
@@ -214,6 +220,8 @@ public without sharing class SM_Autorisation {
 		if(res == null || !res.success){
 			resultatCodeBloqueAll(wsOut , BLOCAGE_AUTORISATION_GET_ACCOUNTSUMMARY.code, BLOCAGE_AUTORISATION_GET_ACCOUNTSUMMARY.message);
 			system.debug('##MNE SM_Autorisation sortie 7 opeauthorize wsOut >> '+wsOut);
+			//A supprimé
+			//openRenew(wsOut);
 			return wsOut;
 		}
 
@@ -245,10 +253,14 @@ public without sharing class SM_Autorisation {
 		
 		if(hasBloacage){
 			system.debug('##MNE SM_Autorisation sortie 8 opeauthorize wsOut >> '+wsOut);
+			//A supprimé
+			//openRenew(wsOut);
 			return wsOut;
 		}
 		
 		calculAutorisation(wsOut, res, acc, zAccId, mapResSubInByName, wsIn.lieu);
+		//A supprimé
+		//openRenew(wsOut);
 		
 		system.debug('##MNE SM_Autorisation derniere sortie opeauthorize wsOut >> '+wsOut);
 		return wsOut ; 
@@ -643,6 +655,22 @@ public without sharing class SM_Autorisation {
 				autorisation.code 		= null;
 				autorisation.message 	= null;
 			}
+			if(fromDRC){
+				/*
+				OUI	opertion_Reglerimpaye,
+				OUI	opertion_Getimpaye
+				NON	opertion_Acquisition,
+				NON	opertion_Renouvellement,
+				NON	opertion_Migration,
+				OUI	opertion_Changebanque,
+				NON	opertion_Reeditioncarte,
+				*/
+				autorisation = mapAutorisationByOpName.get(opertion_Changebanque);
+				autorisation.autorise 	= true;
+				autorisation.visible 	= true;
+				autorisation.code 		= null;
+				autorisation.message 	= null;
+			}
 			resultatCodeBloqueByLieu(wsOut, fromWEB, fromDRC, fromCompexe);
 			return;
 		} else {
@@ -937,6 +965,25 @@ public without sharing class SM_Autorisation {
 		resultatCodeBloqueByLieu(wsOut, fromWEB, fromDRC, fromCompexe);
 		getProduitEligible(wsOut, fromWEB, fromDRC, fromCompexe, mapAutorisationByOpName, subCourante.codeOffrePrincipale, res.basicInfo.DateNaissance, acc.PersonBirthdate);
 	}
+	
+	//A supprimer, test chokri
+	public static void openRenew(WSZ.AuthorizeOut wsOut){
+		for(WSZ.AuthorizeOut_Autorisation autorisation : wsOut.autorisations){
+			if(autorisation.operation == opertion_Renouvellement){
+				autorisation.autorise 			= true;
+				autorisation.visible 			= true;
+				autorisation.code 				= null;
+				autorisation.message 			= null;
+				autorisation.DateFinEligibilite = String.valueOf(Date.today().addDays(30));
+				set<String> setProdEligibleTMP = new set<String>{UI1CDD, UI2CDD, UI3CDD, UI1CDI, UI2CDI, UI3CDI, UUCDD};
+				autorisation.produitEligible.addAll(setProdEligibleTMP);
+			}
+		}
+	}
+	
+	
+
+	
 	
 	
 }

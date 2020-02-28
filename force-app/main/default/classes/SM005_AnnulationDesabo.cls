@@ -11,8 +11,16 @@ public without sharing class SM005_AnnulationDesabo {
     public static ProcessLog__c pLog;
     public static zc_GETSubscriptionTypeWithSuccess subZdoc;
     public static zc_ProxyGetPaymentMethod pm;
+    private static List<BillingOperation__c> billOpes = new List<BillingOperation__c>();
+    private static String paysLibelle;
+
 
     public static void AnnulerDesabo(Id ddeId) {        
+
+        
+
+        try {
+            
 
         //WSZ.GenericEmptyFields subEmpty = new WSZ.GenericEmptyFields();
         //subEmpty.fieldsToNull = new List<String>{'DateFinContrat__c','CodeFinContrat__c','CancelCaseID__c'};
@@ -21,6 +29,8 @@ public without sharing class SM005_AnnulationDesabo {
         //setDem(ddeId);
         dem = SM_Demande.getDemande(ddeId);
         acc = SM_Account.getAccount(dem.AccountId);
+
+        paysLibelle = Util.paysLibelle(acc.CodePays__c);
         
         //sub = SM_Subscription.getSubscription(lastSubscription[0].Id);
         sub = SM_Subscription.getActiveSubscriptionByNameORAccId(dem.SubscriptionZName__c, dem.AccountId);
@@ -62,7 +72,10 @@ public without sharing class SM005_AnnulationDesabo {
             zc_SaveResult resObj2 = zc_Api.objectSubscriptionDELETE(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ANNUL_DESABO_DELETE_SUB, pLog);
 
             //TODO TRACKING AMEND
-            SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, sub.Zuora__External_Id__c, sub.Name);
+            //SM_Hermes.trackOperation('SUPPRESSION', Datetime.now(), 'Reactivation', 'DeleteCancel', amendRes.id, sub.Zuora__External_Id__c, sub.Name, acc.CodePays__c);
+            billOpes.add(new BillingOperation__c(Action__c = 'SUPPRESSION', DateOperation__c = Datetime.now(), Operation__c='Reactivation', Zoperation__c = 'DeleteCancel', 
+            AmendZID__c= amendRes.id, SubscriptionZID__c = sub.Zuora__External_Id__c, SubscriptionName__c = sub.Name, Pays__c=paysLibelle));
+
 
             // mise a jour subscription
             zObj.id = sub.Zuora__PreviousSubscriptionId__c;
@@ -89,6 +102,15 @@ public without sharing class SM005_AnnulationDesabo {
         dem.Status = 'Fermee';       
         update dem;
         SM_SDoc.makeSdocJobs(new list<Case>{dem});
+
+        } catch (RTException rte){
+            throw rte;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (billOpes.size() > 0) insert billOpes;   
+        }
+
         
     }
     

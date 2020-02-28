@@ -20,9 +20,12 @@ public without sharing class RTException extends Exception {
         this.Code = e.code;
         
         // Insert processLog
-        pLog.Code__c = e.code;
-        pLog.Message__c = msg + pLog.Message__c;
-        insert pLog;
+        if(e.code<5000 && e.code>=6000)
+        {
+            pLog.Code__c = e.code;
+            pLog.Message__c = msg + pLog.Message__c;
+            insert pLog;
+        }
     }
 
 

@@ -46,6 +46,10 @@
                 <behavior>Edit</behavior>
                 <field>AmendZID__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Pays__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

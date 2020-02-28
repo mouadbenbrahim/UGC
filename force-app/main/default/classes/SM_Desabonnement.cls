@@ -48,12 +48,25 @@ public without sharing class SM_Desabonnement {
         String strIsBatchCall = (isBatchCall)?'_isBatchCall':'_isUI';
         String process = 'desabonner' + strIsBatchCall + '_' + recordTypeName;
         pLog = new ProcessLog__c(Process__c = process, Account__c = dem.AccountId, SubscriptionName__c = dem.SubscriptionZName__c, Case__c = ddeId);
+
+        BillingOperation__c billOpe;
+        String paysLibelle;
         
+        try {
+            
         //sub = SM_Subscription.getSubscription(dem.Subscription__c);
         sub = SM_Subscription.getActiveSubscriptionByNameORAccId(dem.SubscriptionZName__c, dem.AccountId);
         
         acc = SM_Account.getAccount(dem.AccountId);
         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
+
+        if (Util.BELGIQUE.contains(acc.CodePays__c)) {
+            paysLibelle = 'Belgique';
+        } else if (Util.FRANCE.contains(acc.CodePays__c)){
+            paysLibelle = 'France';
+        } else {
+            //TODO : throw new MyException('Attribut Code Pays obligatoire sur le Compte');
+        }
 
         if(dem.RecordTypeId == annulationMigrationRecordTypeId){
             dateCancelContrat = sub.Zuora__ContractEffectiveDate__c;
@@ -160,7 +173,9 @@ public without sharing class SM_Desabonnement {
             // Mise a jour amendOperation dans Zuora            
             if (amendOperation != null ) {
                 //TODO TRACKING AMEND
-                SM_Hermes.trackOperation('AJOUT', Datetime.now(), amendOperation, 'Cancel', amend.id, zSubZID, sub.Name);
+                billOpe = new BillingOperation__c(Action__c = 'AJOUT', DateOperation__c = Datetime.now(), Operation__c=amendOperation, Zoperation__c = 'Cancel', 
+                AmendZID__c= amend.id, SubscriptionZID__c = zSubZID, SubscriptionName__c = sub.Name, Pays__c=paysLibelle);
+                
                 //update amend
                 amend2 = SM_Amendment.updateAmendment(new WSZ.AmendIn(amend.id, amendOperation), zEntityId);
             }
@@ -207,38 +222,26 @@ public without sharing class SM_Desabonnement {
                     amountToRefund = amountToRefund * -1;
                 }
 
+                
                 //Exécution de la mise à jour du credit memo
-                try{
-                    WSZ.CreditMemoOut cmOut = SM_CreditMemo.updateCreditMemo(rCancel.creditMemoId, zEntityId, 'true');
-                    
-                    if(cmOut.status=='Error' || !cmOut.success){
-                        throw new RTException(RTExceptionCode.ERREUR_DESABO_GATEWAY_ZUORA,pLog );
-                    }
-                }
-                catch(Exception excep){
 
-                    throw new RTException(RTExceptionCode.ERREUR_DESABO_UPDATE_CREDIT_MEMO,pLog );
+                zc_PUTCreditMemoType reqObjmemo = new zc_PUTCreditMemoType();
+                reqObjmemo.exclusionCompta = 'true';
+                zc_GETCreditMemoType respObj = zc_Api.creditmemosPUT(accessToken, zEntityId, rCancel.creditMemoId, reqObjmemo, RTExceptionCode.ERREUR_DESABO_UPDATE_CREDIT_MEMO, new ProcessLog__c());
 
-                }
                 
                 //Exécution du remboursement
-                String typeRefund = 'External';
-                String methodTypeRefund = 'Other';
-                String comment = 'Compensation du credit memo automatique pour les cas de désabonnements sans remboursement';
-                String reasonCodeRefund = '';
-                String ExclusionCompta = 'true';
-                try{
-                    WSZ.RefundOut refOut = SM_Remboursement.refundCreditMemo('', amountToRefund.setScale(2), typeRefund, methodTypeRefund, reasonCodeRefund, rCancel.creditMemoId, zEntityId,comment,ExclusionCompta);
-                    
-                    if(refOut.status=='Error' || !refOut.success){
-                        throw new RTException(RTExceptionCode.ERREUR_DESABO_GATEWAY_ZUORA,pLog );
-                    }
-                }
-                catch(Exception excep){
+                
+                zc_PostNonRefRefundType reqObjref = new zc_PostNonRefRefundType();
+                reqObjref.r_type ='External';
+                reqObjref.methodType = 'Other';
+                reqObjref.comment = 'Compensation du credit memo automatique pour les cas de désabonnement sans remboursement';
+                reqObjref.reasonCode = '';
+                reqObjref.exclusionCompta = 'true';
+                reqObjref.refundDate = Date.today();
+                reqObjref.totalAmount = amountToRefund.setScale(2);
+                zc_GETRefundCreditMemoType respObjref = zc_Api.creditmemosRefundPOST(accessToken, zEntityId, rCancel.creditMemoId, reqObjref, RTExceptionCode.ERREUR_DESABO_REFUND_CREDIT_MEMO,new ProcessLog__c());
 
-                    throw new RTException(RTExceptionCode.ERREUR_DESABO_REFUND_CREDIT_MEMO,pLog );
-
-                }
             }
             
             
@@ -314,6 +317,14 @@ public without sharing class SM_Desabonnement {
             update dem;
             SM_SDoc.makeSdocJobs(new list<Case>{dem});
         }
+
+    } catch (Exception e) {
+            throw e;
+    } finally {
+
+        if (billOpe != null) insert billOpe;
+                
+    }
 
     }
 
@@ -421,22 +432,29 @@ public without sharing class SM_Desabonnement {
 
     // Operation desabonnement: Contrats Sans Case: (Bilendi(CDD+CDI) ou CDD(sans code Fin))
     public static void desabonner_SansCase(Id subId) {
+
         
         zc_SaveResult zSubUpdateResult = new zc_SaveResult();
         String codeDesaCarte = null;
         String operation = 'desabonnement';
         Boolean billRun;
         String amendOperation = null;
-        Boolean noRemboursementAFaire = false;              
+        Boolean noRemboursementAFaire = false; 
+        String paysLibelle;             
 
         System.debug('MBEN:desabonner_SansCase: DEBUT');
 
         sub = SM_Subscription.getSubscription(subId);
         acc = SM_Account.getAccount(sub.Zuora__Account__c);
 
+
         pLog = new ProcessLog__c(Process__c = 'desabonner_SansCase_isBatchCall', Account__c = acc.Id, SubscriptionName__c = sub.Name, SubscriptionZID__c = sub.Zuora__External_Id__c);
 
         dateCancelContrat = sub.DateFinContrat__c.addDays(1);
+        BillingOperation__c billOpe;
+
+        try {
+            
 
         // Verification du desabo
         verifDesabo_SansCase();
@@ -458,6 +476,14 @@ public without sharing class SM_Desabonnement {
         System.debug('MBEN:desabonner_SansCase: ' + ' isDesaboNow: '+isDesaboNow+' noRemboursementAFaire: '+noRemboursementAFaire);
         System.debug('MBEN:desabonner_SansCase: ' + ' sub.DateFinContrat__c: ' + sub.DateFinContrat__c);
         System.debug('MBEN:desabonner_SansCase: ' + ' amendOperation: ' + amendOperation + ' sub.CodeFinContrat__c: '+sub.CodeFinContrat__c);        
+
+        if (Util.BELGIQUE.contains(acc.CodePays__c)) {
+            paysLibelle = 'Belgique';
+        } else if (Util.FRANCE.contains(acc.CodePays__c)){
+            paysLibelle = 'France';
+        } else {
+            //TODO : throw new MyException('Attribut Code Pays obligatoire sur le Compte');
+        }
 
         String zEntityId = WS001_CallZuora.getZuoraEntityId(acc.CodePays__c);
 
@@ -482,7 +508,10 @@ public without sharing class SM_Desabonnement {
         // Mise a jour amendOperation dans Zuora            
         if (amendOperation != null ) {
             //TODO TRACKING AMEND
-            SM_Hermes.trackOperation('AJOUT', Datetime.now(), amendOperation, 'Cancel', amend.id, newSubId, sub.Name);
+            //SM_Hermes.trackOperation('AJOUT', Datetime.now(), amendOperation, 'Cancel', amend.id, newSubId, sub.Name, acc.CodePays__c);
+            billOpe = new BillingOperation__c(Action__c = 'AJOUT', DateOperation__c = Datetime.now(), Operation__c=amendOperation, Zoperation__c = 'Cancel', 
+            AmendZID__c= amend.id, SubscriptionZID__c = newSubId, SubscriptionName__c = sub.Name, Pays__c=paysLibelle);
+
             //update amend
             amend2 = SM_Amendment.updateAmendment(new WSZ.AmendIn(amend.id, amendOperation), zEntityId);
         }
@@ -505,6 +534,17 @@ public without sharing class SM_Desabonnement {
         List<Carte__c> listCarteToUpdate = SM_Carte.desactivation(acc.Id, codeDesaCarte);
              
         update listCarteToUpdate;
+
+
+    } catch (RTException rte) {
+        throw rte;
+    } catch (Exception e) {
+        throw e;
+    } finally {
+        if (billOpe != null) insert billOpe;
+    }
+
+
     }
 
 

@@ -22,7 +22,13 @@ public with sharing class SM_Hermes {
         c.ContactId = personContactId;
         c.SubscriptionZName__c = subscriptionName;
         List<User> users = [Select Id from User where AgentExtRef__c = :agent];
-        if (users.size() == 1) {c.OwnerId = users.get(0).Id;}
+        if (users.size() == 1) {
+            c.OwnerId = users.get(0).Id;
+        }else{
+            Database.DMLOptions dmo = new Database.DMLOptions();
+            dmo.assignmentRuleHeader.useDefaultRule= false;
+            c.setOptions(dmo);
+        }
 
         insert c;
         return c;
@@ -49,7 +55,14 @@ public with sharing class SM_Hermes {
         c.SubscriptionZName__c = subscriptionName;
         if (agent != null) {
             List<User> users = [Select Id from User where AgentExtRef__c = :agent];
-            if (users.size() == 1) c.OwnerId = users.get(0).Id;
+            if (users.size() == 1){
+                c.OwnerId = users.get(0).Id;
+            }
+            else{
+                Database.DMLOptions dmo = new Database.DMLOptions();
+                dmo.assignmentRuleHeader.useDefaultRule= false;
+                c.setOptions(dmo);
+            }
         }        
         insert c;
         return c;
@@ -179,7 +192,7 @@ public with sharing class SM_Hermes {
 
     //public static void trackOperation(String action, Datetime dateOperation, Enum operation, String zOperation, String amendId, String subId, String subName)
     //@Future    
-    public static void trackOperation(String action, Datetime dateOperation, String operation, String zOperation, String amendId, String subId, String subName)
+    public static void trackOperation(String action, Datetime dateOperation, String operation, String zOperation, String amendId, String subId, String subName, String codePays)
     {
         
         //TODO a activer pour le tracking

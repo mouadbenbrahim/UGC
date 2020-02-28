@@ -8,7 +8,7 @@ public with sharing class SM_Subscribe {
 
     }
 
-    public static zc_ProxyActionsubscribeRequest subscribe(SubscribeIn subIn, Boolean isPreview, Account porteur, Account payeur, List<zc_AmendmentRatePlanData> subOffreRatePlans, Map<String,Object> customSub){
+    public static zc_ProxyActionsubscribeRequest subscribe(SubscribeIn subIn, Boolean isPreview, Account porteur, Account payeur, List<zc_AmendmentRatePlanData> subOffreRatePlans, Map<String,Object> customSub, String accountZID){
 
         Date dateDebutContrat = Date.newinstance(subIn.dateDebutContrat.year(), subIn.dateDebutContrat.month(), subIn.dateDebutContrat.day());
         //Date dateJourDebutContrat =  
@@ -31,6 +31,11 @@ public with sharing class SM_Subscribe {
         }        
 
         sub.account = subAccount(typeContrat, porteur,customSub);
+        //MNE
+        if(accountZID != null){
+            sub.account.id = accountZID;
+        }
+        //FIN MNE
         sub.billToContact = billToContact(payeur);
         sub.soldToContact = soldToContact(porteur);
         if (subIn.mandateId != null && subIn.iban != null && !isPreview) {
@@ -65,6 +70,7 @@ public with sharing class SM_Subscribe {
 
     private static zc_SubscribeRequestSubscriptionDataSub subTerm(String typeContrat, Date dateDebutContrat, SubscribeIn subIn, Map<String,Object> customSub){
 
+                
         zc_SubscribeRequestSubscriptionDataSub sub = new zc_SubscribeRequestSubscriptionDataSub();
         Boolean isFutur = (dateDebutContrat <= Date.today())?false:true;
         Boolean isPreview = (Boolean)customSub.get('isPreview');        
@@ -88,6 +94,7 @@ public with sharing class SM_Subscribe {
             }
 
         }else if (typeContrat == 'CDD'){
+            
             sub.termType = 'TERMED';
             sub.initialTermPeriodType = 'Month';
             sub.renewalTermPeriodType = 'Month';
@@ -101,9 +108,11 @@ public with sharing class SM_Subscribe {
             if (!isFutur) sub.contractAcceptanceDate = dateDebutContrat;            
             sub.termStartDate = dateDebutContrat;
             sub.dateFinContrat = dateDebutContrat.addMonths(12).addDays(-1);
+            
         }
 
         if (!isPreview) {
+            
             sub.modeLivraison = subIn.modeLivraison;
             sub.codeOffreCo = (String)customSub.get('codeOffreCo');
             sub.codePromo = subIn.coupon;
@@ -112,20 +121,29 @@ public with sharing class SM_Subscribe {
             sub.payeurCRMID = subIn.payeurSFID;
             sub.parrainSFID = subIn.parrainSFID;
             sub.typeContrat = typeContrat;
+            
             if (customSub.containsKey('IsB2B') && customSub.get('IsB2B') == true ) {
                 sub.marche = 'BTOB';
             }else {
                 sub.marche = 'BTOC';
             }
             sub.codeOffrePrincipale = subIn.produit;
+            system.debug('##ECH subTerm33>>'+typeContrat+','+dateDebutContrat+','+subIn+','+customSub );
+        
             if (typeContrat == 'CDI') { 
                 sub.methodePaiement = 'PRE';
             }else {
                 sub.methodePaiement = mapPaiements.get('ABO').methodePaiement;
             }
+            system.debug('##ECH subTerm34>>'+typeContrat+','+dateDebutContrat+','+subIn+','+customSub );
+        
             // TODO sub.idContratPrecedent a remplir pour la migration/renouvellement: de preference le nom de la souscription, car la souscription sera cancelle dans le futur
+            system.debug('##ECH subTerm4>>'+typeContrat+','+dateDebutContrat+','+subIn+','+customSub );
+        
         }
 
+        system.debug('##ECH subTerm5>>'+typeContrat+','+dateDebutContrat+','+subIn+','+customSub );
+        
         return sub;
     }
 
@@ -167,7 +185,7 @@ public with sharing class SM_Subscribe {
         return subAcc;
 
         // Id, Name, LastName, FirstName, PersonBirthdate, IdMonCompte__c, PersonEmail, NoVoie__c, TypeVoie__c, NomVoie__c, 
-		//		CodePostal__c, Ville__r.Name, ClientResident__c, CodePays__c, 
+        //      CodePostal__c, Ville__r.Name, ClientResident__c, CodePays__c, 
 
     }   
 
@@ -186,7 +204,7 @@ public with sharing class SM_Subscribe {
             return billTo;
 
         // Id, Name, LastName, FirstName, PersonBirthdate, IdMonCompte__c, PersonEmail, NoVoie__c, TypeVoie__c, NomVoie__c, 
-		//		CodePostal__c, Ville__r.Name, ClientResident__c, CodePays__c, 
+        //      CodePostal__c, Ville__r.Name, ClientResident__c, CodePays__c, 
 
     }  
 
@@ -289,6 +307,16 @@ public with sharing class SM_Subscribe {
         zc_ProxyActionsubscribeRequest subscribeReq = new zc_ProxyActionsubscribeRequest();
         zc_SubscribeRequest sub = new zc_SubscribeRequest();
 
+
+        // parse mapPaiements
+
+        if (!isPreview && subIn.paiements.size() > 0){
+            mapPaiements = new Map<String,WSZ.Paiement>();
+            //List<Paiement> paiements = acqIn.paiements;
+            for (WSZ.Paiement item:subIn.paiements){
+                mapPaiements.put(item.refCharge,item);         
+            }
+        } 
         
         if(!isPreview) {
             sub.account = new zc_SubscribeRequestAccount();

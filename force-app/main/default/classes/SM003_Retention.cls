@@ -130,6 +130,8 @@ public without sharing class SM003_Retention {
 
         //Term and condition
         amend1.contractEffectiveDate=newContractStartDate;
+        amend1.serviceActivationDate=newContractStartDate;
+        amend1.customerAcceptanceDate=newContractStartDate;
         amend1.name='Offre de retention : Renouvellement';
         amend1.status='Completed';
         amend1.subscriptionId=zuoraSubId;
@@ -146,7 +148,9 @@ public without sharing class SM003_Retention {
         // Add remise Retention
         if (hasRemiseRetention){
         //ajout amend remise
-            amend2.contractEffectiveDate=dateDebutRemise;        
+            amend2.contractEffectiveDate=dateDebutRemise;
+            amend2.serviceActivationDate=dateDebutRemise;
+            amend2.customerAcceptanceDate=dateDebutRemise;        
             amend2.name='Offre de retention : Remise';
             amend2.status='Completed';
             amend2.subscriptionId=zuoraSubId;

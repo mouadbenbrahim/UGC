@@ -512,6 +512,72 @@ public with sharing class zc_Api {
         }
 
         return respObj;
+    }
+    
+    public static zc_GETCreditMemoType creditmemosPUT(String accessToken, String zEntityId, String crMemoId, zc_PUTCreditMemoType reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETCreditMemoType respObj = new zc_GETCreditMemoType();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest5(accessToken, '/v1/creditmemos/'+crMemoId, zEntityId, 'PUT', reqObj,zc_GETCreditMemoType.class, zc_CommonResponseType.class, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETCreditMemoType)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    }    
+
+    public static zc_GETRefundCreditMemoType creditmemosRefundPOST(String accessToken, String zEntityId, String crMemoId, zc_PostNonRefRefundType reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETRefundCreditMemoType respObj = new zc_GETRefundCreditMemoType();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest5(accessToken, '/v1/creditmemos/'+crMemoId+'/refunds', zEntityId, 'POST', reqObj,zc_GETRefundCreditMemoType.class, zc_CommonResponseType.class, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETRefundCreditMemoType)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
+    } 
+
+    public static zc_GETCreditMemoType creditmemosAPPLY(String accessToken, String zEntityId, String crMemoId, zc_ApplyCreditMemoType reqObj, RTExceptionCode rtc, ProcessLog__c pLog){
+        
+        zc_GETCreditMemoType respObj = new zc_GETCreditMemoType();
+        Map<String,Object> respMap = WS001_CallZuora.sendRequest5(accessToken, '/v1/creditmemos/'+crMemoId+'/apply', zEntityId, 'PUT', reqObj,zc_GETCreditMemoType.class, zc_CommonResponseType.class, null);
+
+        String reqStr = JSON.serialize(reqObj);
+        RTExceptionCode rtc2 = new RTExceptionCode(rtc.libelle + String.valueOf(respMap.get('RESP_BODY')) + reqStr,rtc.code);
+
+        if(respMap.containsKey('ERROR_HTTP') || respMap.containsKey('ERROR_OBJECT')){
+            throw new RTException(rtc2,pLog);
+        }else {
+            respObj = (zc_GETCreditMemoType)respMap.get('RESP_OBJECT');
+            if(respObj != null && respObj.success != null){
+                if(!respObj.success){                
+                    throw new RTException(rtc2,pLog);
+                }            
+            }
+        }
+
+        return respObj;
     }     
 
 } // end class
