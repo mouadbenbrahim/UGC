@@ -201,6 +201,7 @@
     <tabs>ProcessLog__c</tabs>
     <tabs>BillingOperation__c</tabs>
     <tabs>Zuora__Subscription__c</tabs>
+    <tabs>Zuora__CustomerAccount__c</tabs>
     <workspaceConfig>
         <mappings>
             <tab>Abonnement__c</tab>
@@ -261,6 +262,9 @@
         </mappings>
         <mappings>
             <tab>Salle__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Zuora__CustomerAccount__c</tab>
         </mappings>
         <mappings>
             <tab>Zuora__Subscription__c</tab>

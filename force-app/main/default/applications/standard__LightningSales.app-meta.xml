@@ -153,5 +153,6 @@
     <tabs>ProcessLog__c</tabs>
     <tabs>BillingOperation__c</tabs>
     <tabs>Zuora__Subscription__c</tabs>
+    <tabs>Zuora__CustomerAccount__c</tabs>
     <uiType>Lightning</uiType>
 </CustomApplication>

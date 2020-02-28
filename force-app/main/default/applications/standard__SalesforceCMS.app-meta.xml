@@ -9,6 +9,10 @@
     <tabs>ProcessLog__c</tabs>
     <tabs>BillingOperation__c</tabs>
     <tabs>Zuora__Subscription__c</tabs>
+    <tabs>standard-CmsChannel</tabs>
+    <tabs>standard-CmsWorkspaces</tabs>
+    <tabs>standard-CmsExperiences</tabs>
+    <tabs>Zuora__CustomerAccount__c</tabs>
     <uiType>Lightning</uiType>
     <workspaceConfig>
         <mappings>
@@ -18,10 +22,22 @@
             <tab>ProcessLog__c</tab>
         </mappings>
         <mappings>
+            <tab>Zuora__CustomerAccount__c</tab>
+        </mappings>
+        <mappings>
             <tab>Zuora__Subscription__c</tab>
         </mappings>
         <mappings>
             <tab>standard-CmsAuthorHome</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-CmsChannel</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-CmsExperiences</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-CmsWorkspaces</tab>
         </mappings>
     </workspaceConfig>
 </CustomApplication>

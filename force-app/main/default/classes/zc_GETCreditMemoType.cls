@@ -1,7 +1,7 @@
 /**
  * zc_GETCreditMemoType
  */
-public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_CreditMemoObjectCustomFields, zc_Zuc.MappedProperties {
+public class zc_GETCreditMemoType {
     /**
      * ID of the corresponding object in NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
      * @return integrationIdNS
@@ -66,7 +66,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * The date and time when the credit memo was cancelled, in `yyyy-mm-dd hh:mm:ss` format.\n
      * @return cancelledOn
      */
-    public Datetime cancelledOn { get; set; }
+    public String cancelledOn { get; set; }
 
     /**
      * Comments about the credit memo.\n
@@ -84,7 +84,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * The date and time when the credit memo was created, in `yyyy-mm-dd hh:mm:ss` format. For example, 2017-03-01 15:31:10.\n
      * @return createdDate
      */
-    public Datetime createdDate { get; set; }
+    public String createdDate { get; set; }
 
     /**
      * The date when the credit memo takes effect, in `yyyy-mm-dd` format. For example, 2017-05-20.\n
@@ -96,7 +96,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * A currency defined in the web-based UI administrative settings.\n
      * @return currency
      */
-    public String currency { get; set; }
+    public String currency2 { get; set; }
 
     /**
      * Whether the credit memo is excluded from the rule of automatically applying credit memos to invoices.\n
@@ -132,7 +132,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * The date and time when the credit memo was posted, in `yyyy-mm-dd hh:mm:ss` format.\n
      * @return postedOn
      */
-    public Datetime postedOn { get; set; }
+    public String postedOn { get; set; }
 
     /**
      * A code identifying the reason for the transaction. The value must be an existing reason code or empty.\n
@@ -219,7 +219,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * The status of tax calculation related to the credit memo.\n\n**Note**: This field is only applicable to tax calculation by third-party tax engines.\n
      * @return taxStatus
      */
-    public TaxStatusEnum taxStatus { get; set; }
+    public String taxStatus { get; set; }
 
     /**
      * The total amount of taxes or VAT for which the customer has an exemption.\n
@@ -260,63 +260,68 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * The date and time when the credit memo was last updated, in `yyyy-mm-dd hh:mm:ss` format. For example, 2017-03-01 15:36:10.\n
      * @return updatedDate
      */
-    public Datetime updatedDate { get; set; }
+    public String updatedDate { get; set; }
 
-    private static final Map<String, String> propertyMappings = new Map<String, String>{
+    // public zc_GETCreditMemoType() {
+    //     this.transferredToAccounting = new TransferredToAccountingEnum();
+    // }
+
+    private final Map<String, String> propertyMappings = new Map<String, String>{
         'IntegrationId__NS' => 'integrationIdNS',
         'IntegrationStatus__NS' => 'integrationStatusNS',
         'Origin__NS' => 'originNS',
         'SyncDate__NS' => 'syncDateNS',
         'Transaction__NS' => 'transactionNS',
-        'number' => 'r_number'
+        'number' => 'r_number',
+        'currency2' => 'currency'        
     };
 
     public Map<String, String> getPropertyMappings() {
         return propertyMappings;
     }
 
-    public static zc_GETCreditMemoType getExample() {
-        zc_GETCreditMemoType geTCreditMemoType = new zc_GETCreditMemoType();
-        geTCreditMemoType.integrationIdNS = 'aeiou';
-        geTCreditMemoType.integrationStatusNS = 'aeiou';
-        geTCreditMemoType.originNS = 'aeiou';
-        geTCreditMemoType.syncDateNS = 'aeiou';
-        geTCreditMemoType.transactionNS = 'aeiou';
-        geTCreditMemoType.accountId = 'aeiou';
-        geTCreditMemoType.amount = 1.3579;
-        geTCreditMemoType.appliedAmount = 1.3579;
-        geTCreditMemoType.autoApplyUponPosting = true;
-        geTCreditMemoType.cancelledById = 'aeiou';
-        geTCreditMemoType.cancelledOn = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
-        geTCreditMemoType.comment = 'aeiou';
-        geTCreditMemoType.createdById = 'aeiou';
-        geTCreditMemoType.createdDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
-        geTCreditMemoType.creditMemoDate = Date.newInstance(2000, 1, 23);
-        geTCreditMemoType.currency = 'aeiou';
-        geTCreditMemoType.excludeFromAutoApplyRules = true;
-        geTCreditMemoType.id = 'aeiou';
-        geTCreditMemoType.latestPDFFileId = 'aeiou';
-        geTCreditMemoType.r_number = 'aeiou';
-        geTCreditMemoType.postedById = 'aeiou';
-        geTCreditMemoType.postedOn = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
-        geTCreditMemoType.reasonCode = 'aeiou';
-        geTCreditMemoType.referredInvoiceId = 'aeiou';
-        geTCreditMemoType.refundAmount = 1.3579;
-        geTCreditMemoType.source = 'aeiou';
-        geTCreditMemoType.sourceId = 'aeiou';
-        geTCreditMemoType.status = StatusEnum.DRAFT;
-        geTCreditMemoType.success = true;
-        geTCreditMemoType.targetDate = Date.newInstance(2000, 1, 23);
-        geTCreditMemoType.taxAmount = 1.3579;
-        geTCreditMemoType.taxMessage = 'aeiou';
-        geTCreditMemoType.taxStatus = TaxStatusEnum.COMPLETED;
-        geTCreditMemoType.totalTaxExemptAmount = 1.3579;
-        geTCreditMemoType.transferredToAccounting = TransferredToAccountingEnum.PROCESSING;
-        geTCreditMemoType.unappliedAmount = 1.3579;
-        geTCreditMemoType.updatedById = 'aeiou';
-        geTCreditMemoType.updatedDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
-        return geTCreditMemoType;
-    }
+    // public static zc_GETCreditMemoType getExample() {
+    //     zc_GETCreditMemoType geTCreditMemoType = new zc_GETCreditMemoType();
+    //     geTCreditMemoType.integrationIdNS = 'aeiou';
+    //     geTCreditMemoType.integrationStatusNS = 'aeiou';
+    //     geTCreditMemoType.originNS = 'aeiou';
+    //     geTCreditMemoType.syncDateNS = 'aeiou';
+    //     geTCreditMemoType.transactionNS = 'aeiou';
+    //     geTCreditMemoType.accountId = 'aeiou';
+    //     geTCreditMemoType.amount = 1.3579;
+    //     geTCreditMemoType.appliedAmount = 1.3579;
+    //     geTCreditMemoType.autoApplyUponPosting = true;
+    //     geTCreditMemoType.cancelledById = 'aeiou';
+    //     geTCreditMemoType.cancelledOn = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+    //     geTCreditMemoType.comment = 'aeiou';
+    //     geTCreditMemoType.createdById = 'aeiou';
+    //     geTCreditMemoType.createdDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+    //     geTCreditMemoType.creditMemoDate = Date.newInstance(2000, 1, 23);
+    //     geTCreditMemoType.currency = 'aeiou';
+    //     geTCreditMemoType.excludeFromAutoApplyRules = true;
+    //     geTCreditMemoType.id = 'aeiou';
+    //     geTCreditMemoType.latestPDFFileId = 'aeiou';
+    //     geTCreditMemoType.r_number = 'aeiou';
+    //     geTCreditMemoType.postedById = 'aeiou';
+    //     geTCreditMemoType.postedOn = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+    //     geTCreditMemoType.reasonCode = 'aeiou';
+    //     geTCreditMemoType.referredInvoiceId = 'aeiou';
+    //     geTCreditMemoType.refundAmount = 1.3579;
+    //     geTCreditMemoType.source = 'aeiou';
+    //     geTCreditMemoType.sourceId = 'aeiou';
+    //     geTCreditMemoType.status = StatusEnum.DRAFT;
+    //     geTCreditMemoType.success = true;
+    //     geTCreditMemoType.targetDate = Date.newInstance(2000, 1, 23);
+    //     geTCreditMemoType.taxAmount = 1.3579;
+    //     geTCreditMemoType.taxMessage = 'aeiou';
+    //     geTCreditMemoType.taxStatus = TaxStatusEnum.COMPLETED;
+    //     geTCreditMemoType.totalTaxExemptAmount = 1.3579;
+    //     geTCreditMemoType.transferredToAccounting = TransferredToAccountingEnum.PROCESSING;
+    //     geTCreditMemoType.unappliedAmount = 1.3579;
+    //     geTCreditMemoType.updatedById = 'aeiou';
+    //     geTCreditMemoType.updatedDate = Datetime.newInstanceGmt(2000, 1, 23, 4, 56, 7);
+    //     return geTCreditMemoType;
+    // }
 
     public Boolean equals(Object obj) {
         if (obj instanceof zc_GETCreditMemoType) {
@@ -336,7 +341,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
                 && this.createdById == geTCreditMemoType.createdById
                 && this.createdDate == geTCreditMemoType.createdDate
                 && this.creditMemoDate == geTCreditMemoType.creditMemoDate
-                && this.currency == geTCreditMemoType.currency
+                && this.currency2 == geTCreditMemoType.currency2
                 && this.excludeFromAutoApplyRules == geTCreditMemoType.excludeFromAutoApplyRules
                 && this.id == geTCreditMemoType.id
                 && this.latestPDFFileId == geTCreditMemoType.latestPDFFileId
@@ -380,7 +385,7 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
         hashCode = (17 * hashCode) + (createdById == null ? 0 : System.hashCode(createdById));
         hashCode = (17 * hashCode) + (createdDate == null ? 0 : System.hashCode(createdDate));
         hashCode = (17 * hashCode) + (creditMemoDate == null ? 0 : System.hashCode(creditMemoDate));
-        hashCode = (17 * hashCode) + (currency == null ? 0 : System.hashCode(currency));
+        hashCode = (17 * hashCode) + (currency2 == null ? 0 : System.hashCode(currency2));
         hashCode = (17 * hashCode) + (excludeFromAutoApplyRules == null ? 0 : System.hashCode(excludeFromAutoApplyRules));
         hashCode = (17 * hashCode) + (id == null ? 0 : System.hashCode(id));
         hashCode = (17 * hashCode) + (latestPDFFileId == null ? 0 : System.hashCode(latestPDFFileId));
@@ -406,4 +411,3 @@ public class zc_GETCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
         return hashCode;
     }
 }
-

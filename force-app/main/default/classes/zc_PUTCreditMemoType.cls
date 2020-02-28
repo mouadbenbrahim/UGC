@@ -1,7 +1,7 @@
 /**
  * zc_PUTCreditMemoType
  */
-public class zc_PUTCreditMemoType implements zc_CreditMemoObjectNSFields, zc_CreditMemoObjectCustomFields, zc_Zuc.MappedProperties {
+public class zc_PUTCreditMemoType  {
     /**
      * ID of the corresponding object in NetSuite. Only available if you have installed the [Zuora Connector for NetSuite](https://www.zuora.com/connect/app/?appId=265).\n
      * @return integrationIdNS
@@ -67,6 +67,10 @@ public class zc_PUTCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      * @return reasonCode
      */
     public String reasonCode { get; set; }
+    
+    //add MBE
+    public String exclusionCompta { get; set; }
+    
 
     /**
      * Whether the credit memo is transferred to an external accounting system. Use this field for integration with accounting systems, such as NetSuite. \n
@@ -85,12 +89,13 @@ public class zc_PUTCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
      */
     public TransferredToAccountingEnum transferredToAccounting { get; set; }
 
-    private static final Map<String, String> propertyMappings = new Map<String, String>{
+    private final Map<String, String> propertyMappings = new Map<String, String>{
         'IntegrationId__NS' => 'integrationIdNS',
         'IntegrationStatus__NS' => 'integrationStatusNS',
         'Origin__NS' => 'originNS',
         'SyncDate__NS' => 'syncDateNS',
-        'Transaction__NS' => 'transactionNS'
+        'Transaction__NS' => 'transactionNS',
+        'ExclusionCompta__c' => 'exclusionCompta'
     };
 
     public Map<String, String> getPropertyMappings() {
@@ -101,22 +106,22 @@ public class zc_PUTCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
         items = new List<zc_PUTCreditMemoItemType>();
     }
 
-    public static zc_PUTCreditMemoType getExample() {
-        zc_PUTCreditMemoType puTCreditMemoType = new zc_PUTCreditMemoType();
-        puTCreditMemoType.integrationIdNS = 'aeiou';
-        puTCreditMemoType.integrationStatusNS = 'aeiou';
-        puTCreditMemoType.originNS = 'aeiou';
-        puTCreditMemoType.syncDateNS = 'aeiou';
-        puTCreditMemoType.transactionNS = 'aeiou';
-        puTCreditMemoType.autoApplyUponPosting = true;
-        puTCreditMemoType.comment = 'aeiou';
-        puTCreditMemoType.effectiveDate = Date.newInstance(2000, 1, 23);
-        puTCreditMemoType.excludeFromAutoApplyRules = true;
-        puTCreditMemoType.items = new List<zc_PUTCreditMemoItemType>{zc_PUTCreditMemoItemType.getExample()};
-        puTCreditMemoType.reasonCode = 'aeiou';
-        puTCreditMemoType.transferredToAccounting = TransferredToAccountingEnum.PROCESSING;
-        return puTCreditMemoType;
-    }
+    // public static zc_PUTCreditMemoType getExample() {
+    //     zc_PUTCreditMemoType puTCreditMemoType = new zc_PUTCreditMemoType();
+    //     puTCreditMemoType.integrationIdNS = 'aeiou';
+    //     puTCreditMemoType.integrationStatusNS = 'aeiou';
+    //     puTCreditMemoType.originNS = 'aeiou';
+    //     puTCreditMemoType.syncDateNS = 'aeiou';
+    //     puTCreditMemoType.transactionNS = 'aeiou';
+    //     puTCreditMemoType.autoApplyUponPosting = true;
+    //     puTCreditMemoType.comment = 'aeiou';
+    //     puTCreditMemoType.effectiveDate = Date.newInstance(2000, 1, 23);
+    //     puTCreditMemoType.excludeFromAutoApplyRules = true;
+    //     puTCreditMemoType.items = new List<zc_PUTCreditMemoItemType>{zc_PUTCreditMemoItemType.getExample()};
+    //     puTCreditMemoType.reasonCode = 'aeiou';
+    //     puTCreditMemoType.transferredToAccounting = TransferredToAccountingEnum.PROCESSING;
+    //     return puTCreditMemoType;
+    // }
 
     public Boolean equals(Object obj) {
         if (obj instanceof zc_PUTCreditMemoType) {
@@ -154,4 +159,3 @@ public class zc_PUTCreditMemoType implements zc_CreditMemoObjectNSFields, zc_Cre
         return hashCode;
     }
 }
-

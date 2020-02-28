@@ -33,6 +33,7 @@ public class zc_ZObjectUpdate implements zc_Zuc.MappedProperties { //zc_ZObject,
     public String cancelCaseId { get; set; }
     public Date serviceActivationDate { get; set; }
     public Date contractAcceptanceDate { get; set; }
+    public String status { get; set; }
     
 
     private final Map<String, String> propertyMappings = new Map<String, String>{
@@ -58,7 +59,8 @@ public class zc_ZObjectUpdate implements zc_Zuc.MappedProperties { //zc_ZObject,
         'DefaultPaymentMethodId' => 'defaultPaymentMethodId',
         'CancelCaseID__c' => 'cancelCaseId',
         'ServiceActivationDate' => 'serviceActivationDate',
-        'ContractAcceptanceDate' => 'contractAcceptanceDate'
+        'ContractAcceptanceDate' => 'contractAcceptanceDate',
+        'Status' => 'status'
     };
 
     public Map<String, String> getPropertyMappings() {
