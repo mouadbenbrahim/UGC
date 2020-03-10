@@ -160,9 +160,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Payment Run Calendar</pluralLabel>
-    <searchLayouts>
-        <listViewButtons>Planifier</listViewButtons>
-    </searchLayouts>
+    <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

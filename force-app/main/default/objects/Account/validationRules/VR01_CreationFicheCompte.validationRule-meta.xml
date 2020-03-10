@@ -6,19 +6,12 @@
 - Nom, Prénom, email
 - Nom, Prénom, adresse postale,
 - Nom, Prénom, téléphone</description>
-    <errorConditionFormula>AND ( NOT( $User.ByPassValidationRule__c), 
-	      NOT(ISBLANK(LastName)),
-	      AND ((ISBLANK(  Ville__c  )),
-	         (ISBLANK(PersonEmail)),
-	         (ISBLANK(PersonHomePhone)),
+    <errorConditionFormula>AND (NOT( $User.ByPassValidationRule__c),
+NOT(ISBLANK(LastName)),
+(ISBLANK( Ville__c )),
+(ISBLANK(PersonEmail)),
+(ISBLANK(PersonHomePhone)),
 (ISBLANK ( TelephoneBureau__c )),
-(ISBLANK  ( PersonMobilePhone   ))
-
-
-
-
-
-	)
-)</errorConditionFormula>
+(ISBLANK ( PersonMobilePhone )))</errorConditionFormula>
     <errorMessage>Merci de renseigner le nom du client et son adresse email ou son adresse postale ou son numéro de téléphone</errorMessage>
 </ValidationRule>

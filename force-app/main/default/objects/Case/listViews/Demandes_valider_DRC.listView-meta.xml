@@ -14,6 +14,6 @@
     </filters>
     <label>Demandes à valider DRC</label>
     <sharedTo>
-        <role>SVP_Customer_Experience</role>
+        <role>Responsable_Service_Client</role>
     </sharedTo>
 </ListView>

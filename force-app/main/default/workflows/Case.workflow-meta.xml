@@ -86,7 +86,26 @@
             <type>user</type>
         </recipients>
         <recipients>
+            <recipient>echeung@easyfront.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
             <recipient>vdevergnes@ugc.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>ProcessusApprobation/Nouvelle_demande_approbation</template>
+    </alerts>
+    <alerts>
+        <fullName>Demande_envoyee_au_superviseur_BE</fullName>
+        <description>Demande envoyée au superviseur BE</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>echeung@easyfront.fr</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>mcatarino@ugc.be</recipient>
             <type>user</type>
         </recipients>
         <senderType>CurrentUser</senderType>
@@ -197,6 +216,18 @@
         <template>unfiled$public/DemandeValideeCB</template>
     </alerts>
     <alerts>
+        <fullName>ValidationDuRemboursementCheque</fullName>
+        <description>Validation du remboursement Cheque</description>
+        <protected>false</protected>
+        <recipients>
+            <field>ContactEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@ugc.fr</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/DemandeValideeCheque</template>
+    </alerts>
+    <alerts>
         <fullName>ValidationFinaleDRC</fullName>
         <description>Validation finale DRC</description>
         <protected>false</protected>
@@ -251,7 +282,7 @@
         <description>Validation du remboursement</description>
         <protected>false</protected>
         <recipients>
-            <recipient>SVP_Customer_Experience</recipient>
+            <recipient>Responsable_Service_Client</recipient>
             <type>role</type>
         </recipients>
         <senderType>CurrentUser</senderType>

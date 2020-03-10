@@ -5,11 +5,18 @@
     <columns>Promo__c</columns>
     <columns>HermesIntituleOffre__c</columns>
     <columns>HermesIntituleOffreNL__c</columns>
+    <columns>DateFin__c</columns>
+    <columns>OWNER.ALIAS</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>
         <operation>equals</operation>
         <value>Offre__c.Offre_commerciale</value>
+    </filters>
+    <filters>
+        <field>OWNER.ALIAS</field>
+        <operation>equals</operation>
+        <value>mcamp</value>
     </filters>
     <label>Offres commerciales</label>
 </ListView>

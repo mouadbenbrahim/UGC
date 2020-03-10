@@ -76,10 +76,6 @@
                 <behavior>Edit</behavior>
                 <field>CodeFinContrat__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>lien_porteur_payeur__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -394,6 +390,11 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>NewTask</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>NewEvent</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
@@ -424,9 +425,9 @@
             <sortOrder>6</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>NewTask</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>0</sortOrder>
+            <actionName>SDOC__S_Docs</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>7</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
@@ -491,6 +492,7 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Zuora__BankTransferAccountNumber__c</fields>
+        <fields>Zuora__BankName__c</fields>
         <fields>Zuora__LastTransactionDateTime__c</fields>
         <relatedList>Zuora__PaymentMethod__c.Account__c</relatedList>
         <sortField>Zuora__LastTransactionDateTime__c</sortField>

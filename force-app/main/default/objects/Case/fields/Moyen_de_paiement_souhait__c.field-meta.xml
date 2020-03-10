@@ -71,6 +71,11 @@
                 <default>false</default>
                 <label>Virement (UU)</label>
             </value>
+            <value>
+                <fullName>Espèce</fullName>
+                <default>false</default>
+                <label>Espèce</label>
+            </value>
         </valueSetDefinition>
         <valueSettings>
             <controllingFieldValue>VLO</controllingFieldValue>
@@ -79,6 +84,19 @@
         <valueSettings>
             <controllingFieldValue>VLO</controllingFieldValue>
             <valueName>CB (VLO)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>VLO</controllingFieldValue>
+            <controllingFieldValue>Réservations autres</controllingFieldValue>
+            <controllingFieldValue>UGCUnlimited</controllingFieldValue>
+            <valueName>Virement (UU)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>VLO</controllingFieldValue>
+            <controllingFieldValue>Réservations autres</controllingFieldValue>
+            <controllingFieldValue>UGCIllimité</controllingFieldValue>
+            <controllingFieldValue>UGCUnlimited</controllingFieldValue>
+            <valueName>Espèce</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>Réservations autres</controllingFieldValue>
@@ -115,10 +133,6 @@
         <valueSettings>
             <controllingFieldValue>UGCUnlimited</controllingFieldValue>
             <valueName>Bancontact (UU)</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>UGCUnlimited</controllingFieldValue>
-            <valueName>Virement (UU)</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

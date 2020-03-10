@@ -125,6 +125,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G23- Rétractation</valueName>
@@ -136,6 +137,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G23-Trop perçu</valueName>
@@ -147,6 +149,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G23- Décès</valueName>
@@ -158,6 +161,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G23- Réduction préavis</valueName>
@@ -169,6 +173,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G20- Désabo anticipé</valueName>
@@ -180,6 +185,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G21- Résiliation</valueName>
@@ -191,6 +197,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G23- Annulation</valueName>
@@ -202,6 +209,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G22- Doublon</valueName>
@@ -213,6 +221,7 @@
             <controllingFieldValue>Bancontact (UU)</controllingFieldValue>
             <controllingFieldValue>Virement (UI)</controllingFieldValue>
             <controllingFieldValue>Virement (UU)</controllingFieldValue>
+            <controllingFieldValue>Espèce</controllingFieldValue>
             <controllingFieldValue>Chèque (UI)</controllingFieldValue>
             <controllingFieldValue>CB (UI)</controllingFieldValue>
             <valueName>G23- Autres</valueName>

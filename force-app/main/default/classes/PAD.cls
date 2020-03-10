@@ -1,5 +1,5 @@
 public class PAD {
-	private static final Set<String> requiredOnce=new Set<String>{'AP123','AP432'};//List of Apex codes that should run only once. Add any code to the list
+	private static final Set<String> requiredOnce=new Set<String>{'AP123','AP432','AP02_CaseBeforeUpdate','AP02_CaseAfterUpdate'};//List of Apex codes that should run only once. Add any code to the list
 	//private static final Set<String> requiredOnce=new Set<String>{'AP01_AccountAfter','AP01'};//List of Apex codes that should run only once. Add any code to the list
 	
 	
@@ -43,6 +43,7 @@ public class PAD {
 			// System.Debug('## >>>  requiredOnce =' + requiredOnce);
 			// System.Debug('## >>>  hasRun =' + hasRun);
 			if(hasRun.contains(ApexName)) {
+				System.debug('MBEN:trigger:dontrun');
 				return false;//Already run, should not run
 			}
 			hasRun.add(ApexName);//Never run, can run only if not bypassed
@@ -53,6 +54,7 @@ public class PAD {
 		// System.Debug('## >>>  ApexForcedBypass.contains(' + ApexName + ')  =' + ApexForcedBypass.contains(ApexName));
 		// System.Debug('## >>>  bypassAll  =' + bypassAll );
 		// System.Debug('## >>>  hasRun =' + hasRun);
+		System.debug('MBEN:trigger:index: ' + PAD_BypassTrigger.indexOf(';'+ApexName+';') + ' ApexForcedBypass:' + !ApexForcedBypass.contains(ApexName) + ' bypassAll:' + !bypassAll);
 
 			
 		// System.Debug('## >>>  return  =' + (PAD_BypassTrigger.indexOf(';'+ApexName+';')==-1 && !ApexForcedBypass.contains(ApexName) && !bypassAll));

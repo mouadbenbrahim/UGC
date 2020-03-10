@@ -3,6 +3,8 @@
     <fullName>Promos_des_offres</fullName>
     <columns>NAME</columns>
     <columns>OWNER.ALIAS</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Reference__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>

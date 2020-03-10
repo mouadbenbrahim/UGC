@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
-        <fullName>Cine_OffreManagers_BE</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Cine OffreManagers BE</label>
+        <fullName>ManagersBE</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Managers BE</label>
         <sharedTo>
-            <group>Offre_Managers_Belgique</group>
+            <roleAndSubordinatesInternal>Directeur_Service_Client_BE</roleAndSubordinatesInternal>
         </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
         <criteriaItems>
             <field>CodePays__c</field>
             <operation>equals</operation>
@@ -14,12 +20,75 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Cine_OffreManagers_FR</fullName>
+        <fullName>ManagersFR</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Managers FR</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Directeur_Service_Client</roleAndSubordinatesInternal>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>equals</operation>
+            <value>033</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Managers_UGC</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Managers UGC</label>
+        <sharedTo>
+            <role>DAF</role>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>equals</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>PromoCommunBE</fullName>
         <accessLevel>Edit</accessLevel>
-        <label>Cine OffreManagers FR</label>
+        <label>PromoCommunBE</label>
+        <sharedTo>
+            <group>Offre_Managers_Belgique</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>equals</operation>
+            <value>032</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>PromoCommunFR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>PromoCommunFR</label>
         <sharedTo>
             <group>Offre_Managers_France</group>
         </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>CodePays__c</field>
+            <operation>notEqual</operation>
+            <value>032,033,034,039</value>
+        </criteriaItems>
         <criteriaItems>
             <field>CodePays__c</field>
             <operation>equals</operation>
@@ -31,7 +100,7 @@
         <accessLevel>Read</accessLevel>
         <label>Cine Service Client</label>
         <sharedTo>
-            <roleAndSubordinatesInternal>SVP_Customer_Experience</roleAndSubordinatesInternal>
+            <roleAndSubordinatesInternal>Responsable_Service_Client</roleAndSubordinatesInternal>
         </sharedTo>
         <sharedFrom>
             <allInternalUsers/>

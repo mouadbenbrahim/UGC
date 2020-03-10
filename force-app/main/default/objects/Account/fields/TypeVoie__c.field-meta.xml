@@ -7,9 +7,8 @@
     <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
-        <restricted>true</restricted>
         <valueSetDefinition>
-            <sorted>true</sorted>
+            <sorted>false</sorted>
             <value>
                 <fullName>ABBAYE</fullName>
                 <default>false</default>
@@ -376,11 +375,6 @@
                 <label>LIEUDIT</label>
             </value>
             <value>
-                <fullName>Lieu dit</fullName>
-                <default>false</default>
-                <label>Lieu dit</label>
-            </value>
-            <value>
                 <fullName>LOTISSEMENT</fullName>
                 <default>false</default>
                 <label>LOTISSEMENT</label>
@@ -681,11 +675,6 @@
                 <label>VIA</label>
             </value>
             <value>
-                <fullName>vide</fullName>
-                <default>false</default>
-                <label>vide</label>
-            </value>
-            <value>
                 <fullName>VIEUXCHEMIN</fullName>
                 <default>false</default>
                 <label>VIEUXCHEMIN</label>
@@ -729,6 +718,16 @@
                 <fullName>ZONE</fullName>
                 <default>false</default>
                 <label>ZONE</label>
+            </value>
+            <value>
+                <fullName>vide</fullName>
+                <default>false</default>
+                <label>vide</label>
+            </value>
+            <value>
+                <fullName>Lieu dit</fullName>
+                <default>false</default>
+                <label>Lieu dit</label>
             </value>
         </valueSetDefinition>
     </valueSet>

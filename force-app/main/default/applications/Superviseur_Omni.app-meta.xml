@@ -11,6 +11,14 @@
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>Tab</actionName>
+        <content>PageAccueilSalleCinema</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Salle</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
         <content>PageAccueilChargClientele</content>
         <formFactor>Large</formFactor>
         <pageOrSobjectType>standard-home</pageOrSobjectType>
@@ -40,14 +48,6 @@
         <pageOrSobjectType>standard-home</pageOrSobjectType>
         <type>Flexipage</type>
         <profile>Directeur du service client</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>Tab</actionName>
-        <content>PageAccueilSalleCinema</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Salle</profile>
     </profileActionOverrides>
     <tabs>standard-Case</tabs>
     <tabs>standard-OmniSupervisorLightning</tabs>

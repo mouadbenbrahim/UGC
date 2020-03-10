@@ -3,7 +3,9 @@ public class CsvBatchTest {
 
     static testmethod void csvTest() {
      
-    Account a = new Account(LastName = 'Test Account');
+    //Account a = new Account(LastName = 'Test Account');
+    Account a = new Account(LastName='Test Account', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
     insert a;
    	Case c = new Case(origin='Téléphone',AccountId = a.id, NbAppelsEntrants__c = 0, NbAppelsSortants__c = 0, NbFormulaireContact__c =0 );
     insert c;

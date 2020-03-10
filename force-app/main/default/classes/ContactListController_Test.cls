@@ -59,7 +59,9 @@ private class ContactListController_Test {
     }
 
     public static Id initAccount() {
-        Account account = new Account(Name = 'Test_Name');
+        //Account account = new Account(Name = 'Test_Name');
+        Account account = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert account;
         return account.Id;
     }

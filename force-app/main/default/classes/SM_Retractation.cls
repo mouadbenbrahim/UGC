@@ -16,7 +16,7 @@ public without sharing class SM_Retractation {
             System.debug('##MNE SM003_Retention retention field empty >> "Offre de rétention", "Raison de désabonnement" et "Résultat Rétention"');
             throw new MyException('Si les trois critères ne sont pas remplies, la rétractation n\'est pas possible');
         }
-        SM_Desabonnement.desabonner(caseId);
+        SM_Desabonnement.desabonner(caseId,false);
     }
 
     private class MyException extends Exception {

@@ -3,6 +3,7 @@
     <consoleConfig>
         <componentList>
             <alignment>right</alignment>
+            <components>Console.BuiltInComponent.servicePresence</components>
         </componentList>
         <detailPageRefreshMethod>none</detailPageRefreshMethod>
         <keyboardShortcuts>

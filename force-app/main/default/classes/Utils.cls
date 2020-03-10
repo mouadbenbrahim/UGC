@@ -72,8 +72,12 @@ public without sharing class Utils {
 
 	Public static UGC_Generic_Param__mdt getUgcGenericParam(String paramName, String entite){
 
-
 		entite = (entite == null) ? 'N/A' : entite;
+		if(Util.FRANCE.contains(entite)){
+			entite = 'France';
+		} else if (Util.BELGIQUE.contains(entite)) {
+			entite = 'Belgique';
+		}
 
 		List<UGC_Generic_Param__mdt> ugcGenericParams = [SELECT DeveloperName,Entite__c,ParamName__c,ParamValue__c FROM UGC_Generic_Param__mdt WHERE ParamName__c = :paramName and Entite__c = :entite LIMIT 1];
 		UGC_Generic_Param__mdt ugcGenericParam = (ugcGenericParams.size() == 1) ? ugcGenericParams.get(0) : null;

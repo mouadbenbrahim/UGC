@@ -19,6 +19,7 @@ public with sharing class SM_CreditMemo {
 
         wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', null);
         wsOut = wsOut.replace('number','numberx');
+        wsOut = wsOut.replace('ExclusionCompta__c', 'exclusioncompta_c');
         //wsOut = wsOut.replace('currency', 'currencyx');
         return (WSZ.CreditMemoOut) JSON.deserializeStrict(wsOut, WSZ.CreditMemoOut.class);
     }
@@ -35,6 +36,7 @@ public with sharing class SM_CreditMemo {
 
         wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', null);
         wsOut = wsOut.replace('number','numberx');
+        wsOut = wsOut.replace('ExclusionCompta__c', 'exclusioncompta_c');
         //wsOut = wsOut.replace('currency', 'currencyx');
         return (WSZ.CreditMemoOut) JSON.deserializeStrict(wsOut, WSZ.CreditMemoOut.class);
     }
@@ -51,6 +53,7 @@ public with sharing class SM_CreditMemo {
 
         wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', null);
         wsOut = wsOut.replace('number','numberx');
+        wsOut = wsOut.replace('ExclusionCompta__c', 'exclusioncompta_c');
         //wsOut = wsOut.replace('currency', 'currencyx');
         return (WSZ.CreditMemoOut) JSON.deserializeStrict(wsOut, WSZ.CreditMemoOut.class);
     }
@@ -82,9 +85,29 @@ public with sharing class SM_CreditMemo {
         system.debug('##MNE SM_CreditMemo executeBillRun wsOut >> '+wsOut);
         return (WSZ.SubOut) JSON.deserializeStrict(wsOut, WSZ.SubOut.class);
     }
-    
-    
-    /*public static WSZ.RefundOut executeRefund(String creditMemoId, String refundDate, Decimal totalAmount, String typeX, String methodType, Boolean isSansRemboursement, String zEntityId) {
+    /*
+    public static WSZ.CreditMemoOut updateCreditMemo(String memoId, String zEntityId, String ExclusionCompta) {
+        //String endpoint = 'https://rest.sandbox.eu.zuora.com/v1/creditmemos/'+memoId;
+        String endpoint = '/v1/creditmemos/'+memoId;
+        String method = 'PUT';
+        String wsIn = null;
+        String wsOut = '';
+
+        // Retrieve Zuora token
+        String accessToken = WS001_CallZuora.access_token;
+
+        WSZ.CreditMemoUpdateIn wsInObj = new WSZ.CreditMemoUpdateIn();
+        wsInObj.exclusioncompta_c = ExclusionCompta;
+        wsIn = (String) JSON.serialize(wsInObj);
+
+        wsIn = wsIn.replace('exclusioncompta_c','ExclusionCompta__c');
+
+        wsOut = WS001_CallZuora.sendRequest(accessToken, endpoint, zEntityId, method, wsIn, 'type1', null);
+        wsOut = wsOut.replace('number','numberx');
+        wsOut = wsOut.replace('ExclusionCompta__c', 'exclusioncompta_c');
+        return (WSZ.CreditMemoOut) JSON.deserializeStrict(wsOut, WSZ.CreditMemoOut.class);
+    }
+    public static WSZ.RefundOut executeRefund(String creditMemoId, String refundDate, Decimal totalAmount, String typeX, String methodType, Boolean isSansRemboursement, String zEntityId) {
     	system.debug('##MNE SM_CreditMemo executeRefund creditMemoId >> '+creditMemoId);
     	system.debug('##MNE SM_CreditMemo executeRefund refundDate >> '+refundDate);
     	system.debug('##MNE SM_CreditMemo executeRefund totalAmount >> '+totalAmount);

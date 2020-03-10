@@ -8,6 +8,48 @@ public with sharing class SM_Carte {
     
     
     @Future(callout=true) 
+    public static void activationByListAsynchrone(set<Id> setAccountId) {
+        map<Id, Boolean> activationResult = activationByList(setAccountId);
+        system.debug ('##MNE SM_Carte activationByListAsynchrone activationResult >> '+activationResult); 
+    }
+  
+  public static map<Id, Boolean> activationByList(set<Id> setAccountId) {
+        system.debug('##MNE SM_Carte activationByList setAccountId >> '+setAccountId);
+        map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
+        
+        if(setAccountId == null || setAccountId.size() == 0){
+            system.debug('##MNE SM_Carte activationByList setAccountId empty');
+            return listResultByCarteId;
+        }
+        
+        list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Inactive' AND Abonn__c IN :setAccountId]);
+        if(listCarte.size() == 0){
+            return listResultByCarteId;
+        }
+        
+        list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
+        for(Carte__c c : listCarte){
+            try{
+                activateCard(c.Name);
+                c.Statut__c = 'Active';
+                listCarteToUpdate.add(c);
+                listResultByCarteId.put(c.Id, true);
+            }catch(Exception e){
+                system.debug('##MNE SM_Carte activationByList exception >> '+e.getMessage());
+                listResultByCarteId.put(c.Id, false);
+            }
+        }
+        
+        if(listCarteToUpdate.size() > 0){
+            update listCarteToUpdate;
+        }
+        
+        system.debug('##MNE SM_Carte activationByList END');
+        return listResultByCarteId;
+    }
+    
+    
+    @Future(callout=true) 
     public static void desactivationByListAsynchrone(set<Id> setAccountId, String code) {
         map<Id, Boolean> desactivationResult = desactivationByList(setAccountId, code);
         system.debug ('##MNE SM_Carte desactivationByListAsynchrone desactivationResult >> '+desactivationResult); 
@@ -50,18 +92,20 @@ public with sharing class SM_Carte {
         return listResultByCarteId;
     }
 
+  
 
-    public static map<Id, Boolean> desactivation(Id accountId, String code) {
-        system.debug('##MNE SM_Carte desactivation accountId >> '+accountId);
-        system.debug('##MNE SM_Carte desactivation code >> '+code);
+
+  //ok
+  public static map<Id, Boolean> activation(Id accountId) {
+    system.debug('##MNE SM_Carte activation accountId >> '+accountId);
         map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
         
         if(accountId == null){
-            system.debug('##MNE SM_Carte desactivation accountId empty');
+            system.debug('##MNE SM_Carte activation accountId empty');
             return listResultByCarteId;
         }
         
-        list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Active' AND Abonn__c = :accountId]);
+        list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Inactive' AND Abonn__c = :accountId]);
         if(listCarte.size() == 0){
             return listResultByCarteId;
         }
@@ -69,12 +113,12 @@ public with sharing class SM_Carte {
         list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
         for(Carte__c c : listCarte){
             try{
-                deactivateCard(c.Name, code);
-                c.Statut__c = 'Inactive';
+                activateCard(c.Name);
+                c.Statut__c = 'Active';
                 listCarteToUpdate.add(c);
                 listResultByCarteId.put(c.Id, true);
             }catch(Exception e){
-                system.debug('##MNE SM_Carte desactivation exception >> '+e.getMessage());
+                system.debug('##MNE SM_Carte activation exception >> '+e.getMessage());
                 listResultByCarteId.put(c.Id, false);
             }
         }
@@ -83,17 +127,195 @@ public with sharing class SM_Carte {
             update listCarteToUpdate;
         }
         
-        system.debug('##MNE SM_Carte desactivation END');
+        system.debug('##MNE SM_Carte activation END');
         return listResultByCarteId;
     }
+    
 
+  //ok
+    public static List<Carte__c> desactivation(Id accountId, String code) {
+        system.debug('##MNE SM_Carte desactivation accountId >> '+accountId);
+        system.debug('##MNE SM_Carte desactivation code >> '+code);
+        map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
+        list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
+        
+        if(accountId == null){
+            system.debug('##MNE SM_Carte desactivation accountId empty');
+            return listCarteToUpdate;
+        }
+        
+        list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Active' AND Abonn__c = :accountId]);
+        if(listCarte.size() == 0){
+            return listCarteToUpdate;
+        }
+        
+        
+        for(Carte__c c : listCarte){
+            try{
+                deactivateCard(c.Name, code);
+                c.Statut__c = 'Inactive';
+                listCarteToUpdate.add(c);
+                listResultByCarteId.put(c.Id, true);
 
-    public static void activation(String code) {
+            }catch(Exception e){
+                system.debug('##MNE SM_Carte desactivation exception >> '+e.getMessage());
+                listResultByCarteId.put(c.Id, false);
+            }
+        }
+/*
+        if(listCarteToUpdate.size() > 0){
+            update listCarteToUpdate;
+        }
+*/
+        system.debug('##MNE SM_Carte desactivation END');
+        return listCarteToUpdate;
+    }    
+    
+/////////////////////////////////////////////////////////////////
+    
+  public static void activationFromCard(Id cardId) {
+    system.debug('##MNE SM_Carte activationFromCard cardId >> '+cardId);
+        
+        if(cardId == null){
+      system.debug('##MNE SM_Carte activationFromCard cardId empty');
+      throw new MyException('ActivateCard impossible : id carte vide');
+        }
+        
+        list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Inactive' AND Id = :cardId]);
+        if(listCarte.size() == 0){
+      system.debug('##MNE SM_Carte activationFromCard no card fourn or card is already actif');
+      throw new MyException('ActivateCard impossible : pas de carte trouvée ou carte deja Actif ');
+        }
+        
+        list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
+        for(Carte__c c : listCarte){
+            try{
+                activateCard(c.Name);
+                c.Statut__c = 'Active';
+                listCarteToUpdate.add(c);
+            }catch(Exception e){
+                system.debug('##MNE SM_Carte activationFromCard exception >> '+e.getMessage());
+        throw new MyException('ActivateCard Exception : '+e.getMessage());
+            }
+        }
 
-        // Call WS Cardwizard
+        if(listCarteToUpdate.size() > 0){
+            update listCarteToUpdate;
+        }
+        
+        system.debug('##MNE SM_Carte activationFromCard END');
+    }
+    
+    
+  public static void desactivationFromCard(Id cardId, String code) {
+        system.debug('##MNE SM_Carte desactivationFromCard cardId >> '+cardId);
+        system.debug('##MNE SM_Carte desactivationFromCard code >> '+code);
+        map<Id, Boolean> listResultByCarteId = new map<Id, Boolean>();
+        
+        if(cardId == null){
+            system.debug('##MNE SM_Carte desactivationFromCard cardId empty');
+      throw new MyException('DesactivateCard impossible : id carte vide');
+        }
+        
+        list<Carte__c> listCarte = new list<Carte__c>([SELECT Id, Abonn__c, Name, Statut__c FROM Carte__c WHERE Statut__c = 'Active' AND Id = :cardId]);
+        if(listCarte.size() == 0){
+      system.debug('##MNE SM_Carte desactivationFromCard no card fourn or card is already inactif');
+      throw new MyException('DesactivateCard impossible : pas de carte trouvée ou carte deja Inactif ');
+        }
+        
+        list<Carte__c> listCarteToUpdate =  new list<Carte__c>();
+        for(Carte__c c : listCarte){
+            try{
+                deactivateCard(c.Name, code);
+                c.Statut__c = 'Inactive';
+                listCarteToUpdate.add(c);
+            }catch(Exception e){
+                system.debug('##MNE SM_Carte desactivationFromCard exception >> '+e.getMessage());
+        throw new MyException('DesactivateCard Exception : '+e.getMessage()); 
+            }
+        }
 
-        // Create update SF Carte object
+        if(listCarteToUpdate.size() > 0){
+            update listCarteToUpdate;
+        }
+        
+        system.debug('##MNE SM_Carte desactivationFromCard END');
+    }   
+    
+/////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    //OK
+    public static Boolean activateCard(String numCard){
+        system.debug('##MNE SM_Carte activateCard numCard >> '+numCard);
+     
+        if(String.isBlank(numCard)) {
+            system.debug('##MNE SM_Carte activateCard numCard is Blank');
+            throw new MyException('SM_Carte activateCard impossible : numCard is Blank');
+        }
 
+        String endpoint = '/card/activate?card_id='+numCard+'&reason=';
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:OctopusAPI'+endpoint);
+        req.setMethod('GET');
+        req.setCompressed(true);
+        req.setTimeout(60000);
+            
+        HttpResponse res = h.send(req);
+        Boolean isOk = false;
+        String body = res.getBody();
+        String status = res.getStatus();
+        system.debug('##MNE SM_Carte activateCard body >> '+body);
+        system.debug('##MNE SM_Carte activateCard status >> '+status);
+        if(status == 'OK'){
+            isOk = true;
+        } else{
+            system.debug('##MNE SM_Carte activateCard pb dans l\'activation de la carte via Octopus');
+            throw new MyException('SM_Carte activateCard impossible : problèmeb dans le WS Octopus');
+        }
+        system.debug('##MNE SM_Carte activateCard isOk >> '+isOk);
+        return isOk;
+    }
+    
+    //OK
+    public static Boolean deactivateCard(String numCard, String reason){
+        system.debug('##MNE SM_Carte deactivateCard numCard >> '+numCard);
+        system.debug('##MNE SM_Carte deactivateCard reason >> '+reason);
+     
+        if(String.isBlank(numCard)) {
+            system.debug('##MNE SM_Carte deactivateCard numCard is Blank');
+            throw new MyException('SM_Carte deactivateCard impossible : numCard is Blank');
+        }
+        /*if(String.isBlank(reason)) {
+            system.debug('##MNE SM_Carte deactivateCard reason is Blank');
+            throw new MyException('SM_Carte deactivateCard impossible : reason is Blank');
+        }*/
+
+        String endpoint = '/card/deactivate?card_id='+numCard+'&reason='+reason;
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:OctopusAPI'+endpoint);
+        req.setMethod('GET');
+        req.setCompressed(true);
+        req.setTimeout(60000);
+            
+        HttpResponse res = h.send(req);
+        Boolean isOk = false;
+        String body = res.getBody();
+        String status = res.getStatus();
+        system.debug('##MNE SM_Carte deactivate body >> '+body);
+        system.debug('##MNE SM_Carte deactivate status >> '+status);
+        if(status == 'OK'){
+            isOk = true;
+        } else{
+            system.debug('##MNE SM_Carte deactivate pb dans la deactivate de la carte via Octopus');
+            throw new MyException('SM_Carte deactivate impossible : problèmeb dans le WS Octopus');
+        }
+        system.debug('##MNE SM_Carte deactivate isOk >> '+isOk);
+        return isOk;
     }
 
     public static WSZ.CarteOut get(Integer mId) {
@@ -144,7 +366,7 @@ public with sharing class SM_Carte {
     
     
     
-    public static void processTriggerAfterInsert (List<Carte__c> listCartes)  { 
+    /*public static void processTriggerAfterInsert (List<Carte__c> listCartes)  { 
         createFileImpressionRecords (listCartes);
     }
     
@@ -158,15 +380,15 @@ public with sharing class SM_Carte {
         }
 
         list<File_Impression__c> listFileImpressionToIsert = new list<File_Impression__c>();
-        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c, DemandeClient__r.SubscriptionZID__c FROM Carte__c WHERE Id IN :setCarteId]);
+        map<Id, Carte__c> mapCarteById = new map<Id, Carte__c> ([SELECT Id, DemandeClient__c, DemandeClient__r.Subscription__c, DemandeClient__r.SubscriptionZName__c FROM Carte__c WHERE Id IN :setCarteId]);
         
         for(Carte__c c : listCartes){
             File_Impression__c fi   = new File_Impression__c();
             if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.Subscription__c != null){
-                fi.Subscription__c  	= mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
+                fi.Subscription__c    = mapCarteById.get(c.Id).DemandeClient__r.Subscription__c;
             }
-            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c != null){
-                fi.SubscriptionZID__c  	= mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZID__c;
+            if(mapCarteById.containsKey(c.Id) && mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZName__c != null){
+                fi.SubscriptionZName__c    = mapCarteById.get(c.Id).DemandeClient__r.SubscriptionZName__c;
             }
             
             //fi.Subscription__c      = c.Contrat__c;
@@ -183,77 +405,8 @@ public with sharing class SM_Carte {
             insert listFileImpressionToIsert;
         }
     }
-    
-    public static Boolean activateCard(String numCard){
-        system.debug('##MNE SM_Carte activateCard numCard >> '+numCard);
-     
-        if(String.isBlank(numCard)) {
-            system.debug('##MNE SM_Carte activateCard numCard is Blank');
-            throw new MyException('SM_Carte activateCard impossible : numCard is Blank');
-        }
+    */
 
-        String endpoint = '/card/activate?card_id='+numCard+'&reason=';
-
-        Http h = new Http();
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint('callout:OctopusAPI'+endpoint);
-        req.setMethod('GET');
-        req.setCompressed(true);
-        req.setTimeout(60000);
-            
-        HttpResponse res = h.send(req);
-        Boolean isOk = false;
-        String body = res.getBody();
-        String status = res.getStatus();
-        system.debug('##MNE SM_Carte deactivate body >> '+body);
-        system.debug('##MNE SM_Carte activateCard status >> '+status);
-        if(status == 'OK'){
-            isOk = true;
-        } else{
-            system.debug('##MNE SM_Carte activateCard pb dans l\'activation de la carte via Octopus');
-            throw new MyException('SM_Carte activateCard impossible : problèmeb dans le WS Octopus');
-        }
-        system.debug('##MNE SM_Carte activateCard isOk >> '+isOk);
-        return isOk;
-    }
-    
-    public static Boolean deactivateCard(String numCard, String reason){
-        system.debug('##MNE SM_Carte deactivateCard numCard >> '+numCard);
-        system.debug('##MNE SM_Carte deactivateCard reason >> '+reason);
-     
-        if(String.isBlank(numCard)) {
-            system.debug('##MNE SM_Carte deactivateCard numCard is Blank');
-            throw new MyException('SM_Carte deactivateCard impossible : numCard is Blank');
-        }
-        /*if(String.isBlank(reason)) {
-            system.debug('##MNE SM_Carte deactivateCard reason is Blank');
-            throw new MyException('SM_Carte deactivateCard impossible : reason is Blank');
-        }*/
-
-        String endpoint = '/card/deactivate?card_id='+numCard+'&reason='+reason;
-
-        Http h = new Http();
-        HttpRequest req = new HttpRequest();
-        req.setEndpoint('callout:OctopusAPI'+endpoint);
-        req.setMethod('GET');
-        req.setCompressed(true);
-        req.setTimeout(60000);
-            
-        HttpResponse res = h.send(req);
-        Boolean isOk = false;
-        String body = res.getBody();
-        String status = res.getStatus();
-        system.debug('##MNE SM_Carte deactivate body >> '+body);
-        system.debug('##MNE SM_Carte deactivate status >> '+status);
-        if(status == 'OK'){
-            isOk = true;
-        } else{
-            system.debug('##MNE SM_Carte deactivate pb dans la deactivate de la carte via Octopus');
-            throw new MyException('SM_Carte deactivate impossible : problèmeb dans le WS Octopus');
-        }
-        system.debug('##MNE SM_Carte deactivate isOk >> '+isOk);
-        return isOk;
-    }
     
     private class MyException extends Exception {
     }

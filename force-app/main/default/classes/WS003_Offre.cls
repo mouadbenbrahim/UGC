@@ -18,6 +18,9 @@ global with sharing class WS003_Offre {
             when 'consommeCoupon'{
                 consommeCoupon(req,res);
             }
+            when 'subOffreTest'{
+                subOffreTest(req,res);
+            }            
             when else{
                 wsOut.Success = false;
                 wsOut.Message = 'Requette inconnue, verifiez les parametres';
@@ -80,5 +83,38 @@ global with sharing class WS003_Offre {
             res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, true));
         }
     }
+
+    public static void subOffreTest(RestRequest req, RestResponse res) {
+
+        WSZ.SubOffreOut wsOut = new WSZ.SubOffreOut();
+        Blob body = req.requestBody;
+        String respBodyStr = null;
+        WSZ.SubOffreIn2 wsIn = new WSZ.SubOffreIn2();
+        Datetime dt1;
+        try {
+            wsIn = (WSZ.SubOffreIn2) JSON.deserializeStrict(body.toString(), WSZ.SubOffreIn2.class);
+            dt1 = wsIn.dt1;
+            System.debug('MBEN Datetime: ' + dt1);
+            List<WSZ.SubProduct> subProducts = new List<WSZ.SubProduct>();
+            wsOut.Success = true;
+            wsOut.Message = null;
+            wsOut.subProducts = subProducts.clone();
+        } catch (RTException e) {
+            wsOut.Success = false;
+            wsOut.Message = e.getMessage();
+            wsOut.ErrorCode = e.Code;
+        } catch (Exception e) {
+            wsOut.Success = false;
+            wsOut.Message = e.getMessage() + e.getStackTraceString();
+        } finally {
+            //return wsOut;
+            res.responseBody = Blob.valueOf(JSON.serializePretty(wsOut, true));
+            respBodyStr = res.responseBody.toString();
+            // respBodyStr = respBodyStr.replace('"lieu_c"', '"Lieu__c"');
+            // respBodyStr = respBodyStr.replace('"intitule_c"', '"Intitule__c"');
+            // respBodyStr = respBodyStr.replace('"agent_c"', '"Agent__c"');
+            res.responseBody = Blob.valueOf(respBodyStr);
+        }
+    }    
 
 }

@@ -6,11 +6,20 @@
     <columns>DateDebut__c</columns>
     <columns>DateFin__c</columns>
     <columns>OWNER.ALIAS</columns>
+    <columns>Reference__c</columns>
+    <columns>HermesIntituleOffre__c</columns>
+    <columns>HermesIntituleOffreNL__c</columns>
+    <columns>Active__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>
         <operation>equals</operation>
         <value>Offre__c.Offre_commerciale</value>
+    </filters>
+    <filters>
+        <field>DateFin__c</field>
+        <operation>greaterOrEqual</operation>
+        <value>9/19/2019 12:00 AM</value>
     </filters>
     <label>Offres commerciales</label>
 </ListView>

@@ -16,5 +16,5 @@
     <protected>false</protected>
     <showsLocation>false</showsLocation>
     <showsStatus>false</showsStatus>
-    <url>https://recette-cs-app.ugc.fr/?user_email={!Account.PersonEmail}</url>
+    <url>http://recette-cs-app.ugc.{!Account.Extention_URL__c}/?user_email={!Account.PersonEmail}</url>
 </WebLink>

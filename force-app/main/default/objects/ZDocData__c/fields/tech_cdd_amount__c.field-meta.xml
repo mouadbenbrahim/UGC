@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>tech_cdd_amount__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(CodeOffrePrincipale__c,&#39;UI1CDD&#39;), &#39;262,80€&#39;, IF(ISPICKVAL(CodeOffrePrincipale__c,&#39;UI2CDD&#39;), &#39;441,60€&#39;, IF(ISPICKVAL(CodeOffrePrincipale__c,&#39;UI3CDD&#39;), &#39;214,80€&#39;, IF(ISPICKVAL(CodeOffrePrincipale__c,&#39;UUCDD&#39;), &#39;UGC Unlimited&#39;, &#39;226,80€&#39;) ) ) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>tech_cdd_amount</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

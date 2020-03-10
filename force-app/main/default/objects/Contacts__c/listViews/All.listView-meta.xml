@@ -8,9 +8,11 @@
     <columns>Famille_Statut__c</columns>
     <columns>Motif_Statut__c</columns>
     <columns>SousMotif_Statut__c</columns>
-    <columns>NomModeleEmailHTML__c</columns>
     <columns>NomModeleCourrierEmail__c</columns>
+    <columns>NomModeleEmailHTML__c</columns>
     <columns>Reponse__c</columns>
+    <columns>ValeurALCMEON__c</columns>
+    <columns>TypeTemplate__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

@@ -1,0 +1,331 @@
+public with sharing class SM_Acquisition {
+//TODO prendre en compte si code X sur un contrat existant et abo en stand , il faut tagger la souscription pour quel soit resilier plus tard par SC ou en automatique.
+// il faut recevoir un code d'Hermes si ce cas se presente, ce code doit etre communique par les autorisation a Hermes et redescendre vers SF.
+//TODO le premier du mois en Stand CDI : il faut encaisser juste les FD, la mensualite se fait par le payment run, donc payement partiel sur une partie de la facture genere.
+//TODO quand un AccountZid existe il ne faut pas creer de compte zuora dans le subscribe.
+
+    
+    public static String accessToken, zEntityId, codePays;
+
+    public SM_Acquisition() {
+
+    }
+    
+    public static String rollBackStep01 = '01_REFUNDACTION';
+	public static String rollBackStep02 = '02_CANCELSUB';
+	public static String rollBackStep03 = '03_CANCELCASE';
+
+    public static Map<String,Object> acquisition(WSZ.SubOpeIn acqIn, Boolean isPreview){
+    	
+    	Map<String,Object> returnObj = new Map<String,Object>();
+    	Map<String,List<Map<String,Object>>> mapRollBackProcess = new Map<String,List<Map<String,Object>>>();
+    	Boolean isDMLoperation = false;
+    	ProcessLog__c pLog;
+        
+        try{
+        
+	        String invoiceFileUrl,payMethodId,caseId,invoiceId,fileImpId, zDocId;
+	        List<String> paymentIds = new List<String>();
+	        Boolean compteBloque = false;
+	        Boolean rembourser = false;
+	        String intituleOffreFR,intituleOffreNL;
+	        WSZ.Preview previewOut = new WSZ.Preview();
+	        WSZ.SubOpeOut acqOut = new WSZ.SubOpeOut();
+	        List<String> sDocjobIds = new List<String>{'idjob1','idjob2'};
+	        zc_ZObjectUpdate zObj;
+	        Map<String,WSZ.Paiement> mapPaiements = new Map<String,WSZ.Paiement>();  // key=refCharge 
+	        Map<String,WSZ.Paiement> mapPaiements2 = new Map<String,WSZ.Paiement>();  // key=methodPaiement: si deux paiements de meme method et meme reference, alors c'un seul, on cumul le montant.
+	        //List<WSZ.Paiement> listPaiements;  // si deux paiements de meme method , alors on garder un seul avec total montant
+	
+	                
+	
+	        //Decimal abonnement=0,montantInitial=0,fraisAdhesion=0,fraisAdhesionRemise=0,fraisAdhesionApresRemise=0,prorata=0;
+	        Date dateJourDebutContrat = Date.newinstance(acqIn.dateDebutContrat.year(), acqIn.dateDebutContrat.month(), acqIn.dateDebutContrat.day()); 
+	        String acqInStr = JSON.serialize(acqIn);
+	        pLog = new ProcessLog__c(Process__c = 'acquisition', Account__c = acqIn.accountSFID, Message__c = acqInStr);
+	        String produit = acqIn.produit; // acqIn.produit.get(0);
+	        String typeContrat = (produit.contains('CDI')?'CDI':'CDD');
+	        Boolean isFutur = (acqIn.dateDebutContrat <= Datetime.now())?false:true;
+	
+	
+	
+	        //###### get subOffres ######
+	        // WSZ.SubProduct subOffre = SM_Offre.getSubOffres(new WSZ.SubOffreIn(acqIn.dateDebutContrat, acqIn.lieu, acqIn.agent, acqIn.coupon,acqIn.accountSFID, 'acquisition', produit)).get(0);
+	        // List<zc_AmendmentRatePlanData> subOffreRatePlans = SM_Offre.convertRatePlan(subOffre.subscribeToRatePlans);
+	
+	        //###### get subOffres ######
+	        Map<String,Object> offreProxyOut = SM_Offre.getOffreProxy(acqIn.dateDebutContrat, acqIn.lieu, acqIn.agent, acqIn.coupon, acqIn.accountSFID, 'acquisition', produit, acqIn.codeLangue);
+	        WSZ.SubProduct subOffre = (WSZ.SubProduct)offreProxyOut.get('offre');
+	        List<zc_AmendmentRatePlanData> subOffreRatePlans = (List<zc_AmendmentRatePlanData>)offreProxyOut.get('offreRatePlans');
+	        if (subOffre == null || subOffreRatePlans == null) throw new RTException(RTExceptionCode.ERREUR_ACQUISIT_COUPON_ABOTIER, pLog);
+	        
+	        //###### get AccountData ######
+	        Account porteur = SM_Account.getAccountData(acqIn.accountSFID);
+	        Account payeur = SM_Account.getAccountData(acqIn.payeurSFID);
+	        codePays = porteur.CodePays__c;
+	        
+	        // check:
+	        if (acqIn.codeOffreCo != null && acqIn.codeOffreCo != subOffre.CodeOffreCo) {
+	            throw new RTException(RTExceptionCode.ERREUR_ACQUISIT_COUPON_ABOTIER,pLog);
+	        }
+	
+	        //token/entity
+	        accessToken = WS001_CallZuora.access_token;
+	        zEntityId = WS001_CallZuora.getZuoraEntityId(codePays);  
+	
+	        //###### Subscribe ######
+	        Map<String,Object> customSub = new Map<String,Object>{'IsB2B'=>subOffre.IsB2B, 'isPreview'=>isPreview, 'codeOffreCo'=>subOffre.CodeOffreCo};
+	        //customSub.put('IsB2B', subOffre.IsB2B);
+	        SM_Subscribe.SubscribeIn subIn = SM_Subscribe.mapToSubscribeIn(acqIn);
+	        //MNE recupérer zId du billing s'il existe
+	        List<Zuora__CustomerAccount__c> billingAccounts = new List<Zuora__CustomerAccount__c>([SELECT Id, Zuora__External_Id__c FROM Zuora__CustomerAccount__c WHERE Zuora__Account__c = :porteur.Id]);
+	        String accountZIDtmp = null;
+	        if(billingAccounts.size() == 0){
+	        	accountZIDtmp = null;
+	        } else if (billingAccounts.size() > 1){
+	        	throw new RTException(RTExceptionCode.ERREUR_ACQUISIT_MULTIPLE_BILL_ACCOUNT,pLog);
+	        } else {
+	        	accountZIDtmp = billingAccounts.get(0).Zuora__External_Id__c;
+	        }
+	        //FIN MNE
+	        zc_ProxyActionsubscribeRequest subscribeReq = SM_Subscribe.subscribe(subIn, isPreview, porteur, payeur, subOffreRatePlans, customSub, accountZIDtmp);
+	        zc_ProxySubscribeResult subRes = zc_Api.actionSubscribePOST(accessToken, zEntityId, subscribeReq, RTExceptionCode.ERREUR_ACQUISIT_SUBSCRIBE, pLog);
+	        
+	        //MNE For rollBack BEGIN
+            //addRollBackActionCancelInvoice(mapRollBackProcess, subRes.results.get(0).invoiceId, zEntityId, accessToken);
+            addRollBackActionCancelSub(mapRollBackProcess, subIn.dateDebutContrat, subRes.results.get(0).subscriptionId, zEntityId, accessToken, rollBackStep02);
+            //MNE For rollBack END
+	
+	        if (isPreview){          
+	            previewOut = SM_Subscribe.parsePreview(subRes, offreProxyOut);
+	            previewOut.dateDebutContrat = dateJourDebutContrat;
+	            zc_SubscribeRequestSubscriptionDataSub subDataSub = subscribeReq.subscribes.get(0).subscriptionData.subscription;
+	            if (subDataSub.termType == 'TERMED'){
+	                if (subDataSub.initialTermPeriodType == 'Month' ) previewOut.dateFinContrat = subDataSub.termStartDate.addMonths(subDataSub.initialTerm).addDays(-1);             
+	            }else if (subDataSub.termType == 'EVERGREEN') {
+	                previewOut.dateFinContrat = null;
+	            }
+	
+	        }else {
+		        String accountZID = subRes.results.get(0).accountId;
+		        invoiceId = subRes.results.get(0).invoiceId;
+		        String subscriptionZID = subRes.results.get(0).subscriptionId;
+		        String subscriptionName = subRes.results.get(0).subscriptionNumber;
+		
+		        //map external payments
+		        if (acqIn.paiements.size() > 0 ){
+		            mapPaiements = new Map<String,WSZ.Paiement>();
+		            //List<Paiement> paiements = acqIn.paiements;
+		            for (WSZ.Paiement item:acqIn.paiements){
+		                WSZ.Paiement pai1 = new WSZ.Paiement();
+		                WSZ.Paiement pai2 = new WSZ.Paiement();
+		                pai1 = item.clone();
+		                pai2 = item.clone();
+		                mapPaiements.put(item.refCharge,pai1);
+		                if (mapPaiements2.containsKey(item.methodePaiement)) {
+		                    mapPaiements2.get(item.methodePaiement).montant += (Double)item.montant;
+		                }else {
+		                    mapPaiements2.put(item.methodePaiement,pai2);
+		                }
+		            }
+		        }
+		        System.debug('MBEN:mapPaiements: ' + mapPaiements);
+		        System.debug('MBEN:mapPaiements2: ' + mapPaiements2);
+		
+		        // TODO: OK: Update Account DefPaymentMethodId (car ne fonctionne pas avec action/subscribe)
+		        zc_ProxyActionupdateRequest accUpdateReq = new zc_ProxyActionupdateRequest();
+		        if (typeContrat == 'CDD') {
+		            payMethodId = SM_Hermes.getExtPaymentMethodId(subOffre.IsB2B, mapPaiements.get('ABO').methodePaiement, codePays);
+		            accUpdateReq.r_type = 'Account';
+		            zObj = new zc_ZObjectUpdate();
+		            zObj.id = accountZID;
+		            zObj.defaultPaymentMethodId = payMethodId;
+		            accUpdateReq.objects.add(zObj);
+		            zc_Api.actionUpdatePOST(accessToken, zEntityId, accUpdateReq, RTExceptionCode.ERREUR_ACQUISIT_UPDATEACC_DEFPAYMETHOD,pLog); 
+		        }
+		        
+		
+		        //###### get invoice ######
+		        zc_ProxyGetInvoice invRes = zc_Api.objectInvoiceGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_ACQUISIT_GET_INVOICE, pLog);
+		        Double invAmount = invRes.amount;
+		
+		        //###### get invoice File ######
+		        // zc_GETInvoiceFilesResponse invFileRes = zc_Api.invoicesFilesGET(accessToken, zEntityId, invoiceId, RTExceptionCode.ERREUR_IMPAYE_REGLER_APPLICATION_FRAIS, pLog);
+		        // if (invFileRes.invoiceFiles.size() > 0 ) invoiceFileUrl = invFileRes.invoiceFiles.get(0).pdfFileUrl;
+		
+		        //###### Creation paiement Zuora ######
+		        Map<String,String> retPayment;
+		        if (acqIn.paiements.size() > 0 || subOffre.IsB2B == true) { //External
+		            //if (acqIn.paiement.montant != invAmount) throw new RTException(RTExceptionCode.ERREUR_DESABO_COUPON_ABOTIER,pLog);
+		            //for(WSZ.Paiement itemPaiement:acqIn.paiements)
+		            for(String key:mapPaiements2.keySet()){      //key=methodPaiement: CBL,ESP..etc.
+		                retPayment = execPayment(invoiceId, accountZID, invAmount, mapPaiements2.get(key).montant, mapPaiements2.get(key).refPaiement, mapPaiements2.get(key).methodePaiement, acqIn.lieu, acqIn.agent, mapPaiements2.get(key).dateVirement);
+		                paymentIds.add(retPayment.get('paymentId'));
+		                //MNE For rollBack BEGIN
+		                addRollBackActionRefund(mapRollBackProcess, invoiceId, retPayment, zEntityId, accessToken, rollBackStep01);
+		                //MNE For rollBack END
+		                
+		            }
+		        }else { //Electronic
+		            retPayment = execPayment(invoiceId, accountZID, invAmount, null, null, null, null, null, null);    
+		            paymentIds.add(retPayment.get('paymentId'));
+		            //MNE For rollBack BEGIN
+	                addRollBackActionRefund(mapRollBackProcess, invoiceId, retPayment, zEntityId, accessToken, rollBackStep01);
+	                //MNE For rollBack END
+		        }
+		        //payMethodId = retPayment.get('payMethodId'); //ce n'est pas le paymentmethodid du compte mai celui du paiement, il faut verifier, on le recuperer dans la partie CRM.
+		        
+		
+		
+		        //###### Get Zuora Data (subscription) ######
+		        zc_GETSubscriptionTypeWithSuccess sub = zc_Api.subscriptionGET(accessToken, zEntityId, subscriptionZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION,pLog);
+		
+		        //###### Get Zuora Data (Account) ######
+		        zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, accountZID, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT,pLog);
+		        payMethodId = zacc.defaultPaymentMethodId;
+		 
+		        //###### Get Zuora Data (PaymentMethod) ######
+		        zc_ProxyGetPaymentMethod pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD,pLog);
+		
+		        //###### insert zdocdata subscription ######
+		        zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => sub,'ZPM' => pm,'ACC' => porteur});
+		        isDMLoperation = true;
+		
+		        //###### insert case ######
+		        String sousMotif = SM_Hermes.lieuToSousMotif(acqIn.lieu);
+		        String motif = SM_Hermes.lieuToMotif(acqIn.lieu, subOffre.IsB2B);
+		        String origin = SM_Hermes.lieuToOrigin(acqIn.lieu);
+		        String commentairesInternes = 'Prise d\'abonnement - ' + acqIn.produit + ' - ' + subOffre.HermesIntituleOffre;
+		        Case c = SM_Hermes.newCase(zDocId, subscriptionName, porteur.PersonContactId, origin, '0- Souscription', motif, sousMotif, 'Fermee', 
+		        acqIn.lieu, commentairesInternes, acqIn.accountSFID,null,null,null,acqIn.agent);
+		        caseId = c.Id;
+		        
+		        //MNE For rollBack BEGIN
+		        addRollBackActionCancelCase(mapRollBackProcess, caseId, zEntityId, accessToken, rollBackStep03);
+		        //MNE For rollBack END
+		
+		        //###### generate sDoc ######
+		        List<Case> cs = [SELECT Id,AccountId,TECHIdStatut__c FROM Case WHERE Id=:caseId];
+		        SM_SDoc.makeSdocJobs(cs);
+		
+		        //###### insert Fil impression ######
+		        //List<Carte__c> cartes = [Select Id from Carte__c where Name = 'numeroCarte']; //TODO OK voir si numero est cree a l impression et fournit par hermes.
+		        //Id carteId = (cartes.size() > 0)?cartes.get(0).Id:null;
+		        ZDocData__c zDoc = [Select Id, Payeur__r.FirstName, Payeur__r.LastName from ZDocData__c where Id = :zDocId];
+		        fileImpId = SM_FileImpression.createFileImpressionCarte(null, (Id)acqIn.accountSFID, null, (ID)caseId, subscriptionName, sub.CodeOffrePrincipale, zDoc.Payeur__r.FirstName, zDoc.Payeur__r.LastName);
+		
+		        //###### consomme coupon ######
+		        if (acqIn.coupon != null) SM_Coupon.consommer(acqIn.coupon,dateJourDebutContrat);
+		
+		        //RETURN
+		        acqOut = new WSZ.SubOpeOut(acqIn.accountSFID, accountZID, subscriptionZID, subscriptionName, compteBloque,invoiceFileUrl, rembourser,
+		        paymentIds, caseId, payMethodId, invoiceId, fileImpId, sDocjobIds);
+		
+		        // return acqOut;
+	        } //if else !isPreview
+	
+	        if (isPreview) {
+	            returnObj.put('preview', previewOut);
+	        }else {
+	            returnObj.put('acquisition', acqOut);
+	        }
+	        
+	    }catch(Exception e){
+			SM_Rollback.executeCatch(e, pLog, isDMLoperation, acqIn.accountSFID, zEntityId, accessToken, mapRollBackProcess);
+	    }
+
+        return returnObj;
+    }
+    
+    
+     public static Map<String,String> execPayment(String invoiceId, String accountZID, Double invAmount, Double montant, String refPaiement, String methodePaiement, String lieu, String agent, Date  dateVirement) {
+
+        Map<String,String> ret = new Map<String,String>{'paymentId'=>null,'payMethodId'=>null};
+        zc_CreatePaymentType paymentReq = SM_Payment.paymentReq(invoiceId, accountZID, invAmount, montant, refPaiement, methodePaiement, lieu, agent, dateVirement, codePays);
+        //###### Call WS Payment ######   
+        zc_GETARPaymentType paymentRes = zc_Api.paymentsPOST2(accessToken, zEntityId, paymentReq, RTExceptionCode.ERREUR_ACQUISIT_PAYMENT, new ProcessLog__c());
+        ret.put('payMethodId',paymentRes.paymentMethodId);
+        ret.put('paymentId',paymentRes.id);
+        String paymentType = paymentRes.r_type == zc_GETARPaymentType.RTypeEnum.ELECTRONIC ? 'Electronic' : 'External';
+        ret.put('paymentType',paymentType);
+        ret.put('paymentAmount',String.valueOf(paymentRes.amount));
+        System.debug('MBEN:retPayment1: ' + ret);                
+        return ret;
+
+    }
+    
+	public static void addRollBackActionRefund(Map<String,List<Map<String,Object>>> mapRollBackProcess, String invoiceId, Map<String,String> retPayment, String zEntityId, String accessToken, String actionName){
+		if(!mapRollBackProcess.containsKey(actionName)){
+			mapRollBackProcess.put(actionName, new list<map<String, Object>>());
+		}
+		String refundDate = Util.zDate(Date.today());
+		String paymentMethodType = 'Other';
+		if(retPayment.get('paymentType') == 'Electronic'){
+			paymentMethodType = null;
+			refundDate = null;
+		}
+		mapRollBackProcess.get(actionName).add(new map<String, Object>{
+			'amount' 			=> Decimal.valueOf(retPayment.get('paymentAmount')),
+			'zInvoiceId' 		=> invoiceId,
+			'zPaymentId' 		=> retPayment.get('paymentId'),
+			'zEntityId' 		=> zEntityId,
+			'access_token' 		=> accessToken,
+			'refundDate' 		=> refundDate,
+			'paymentType' 		=> retPayment.get('paymentType'),
+			'paymentMethodType' => paymentMethodType,
+			'reasonCode' 		=> 'Standard Refund',
+			'comment' 			=> 'RollBack'
+		});
+	}
+	
+	public static void addRollBackActionCancelSub(Map<String,List<Map<String,Object>>> mapRollBackProcess, Datetime dateDebutContrat, String subZId, String zEntityId, String accessToken, String actionName){
+		zc_POSTSubscriptionCancellationType subCancelReqRollback = new zc_POSTSubscriptionCancellationType();
+		Date cancelDate = Date.newinstance(dateDebutContrat.year(), dateDebutContrat.month(), dateDebutContrat.day());
+		subCancelReqRollback.cancellationEffectiveDate = cancelDate;         
+		subCancelReqRollback.targetDate = cancelDate; 
+		subCancelReqRollback.runBilling = false;
+		subCancelReqRollback.cancellationPolicy = 'SpecificDate';  
+	
+		if(!mapRollBackProcess.containsKey(actionName)){
+			mapRollBackProcess.put(actionName, new list<map<String, Object>>());
+		}
+		mapRollBackProcess.get(actionName).add(new map<String, Object>{
+			'SUBCANCELREQUEST' 			=> subCancelReqRollback,
+			'SUBID'                		=> subZId,
+			'DATEDEBUTCONTRAT'          => dateDebutContrat
+		}); 
+	}
+	
+	public static void addRollBackActionCancelCase(Map<String,List<Map<String,Object>>> mapRollBackProcess, Id caseId, String zEntityId, String accessToken, String actionName){
+		if(!mapRollBackProcess.containsKey(actionName)){
+			mapRollBackProcess.put(actionName, new list<map<String, Object>>());
+		}
+		mapRollBackProcess.get(actionName).add(new map<String, Object>{
+			'CASEID' 			=> caseId
+		}); 
+	}
+	
+	/*public static void addRollBackActionCancelInvoice(Map<String,List<Map<String,Object>>> mapRollBackProcess, String invoiceId, String zEntityId, String accessToken){
+		if(!mapRollBackProcess.containsKey(actionName)){
+			mapRollBackProcess.put('03_CANCEL_INVOICE_ACTION', new list<map<String, Object>>());
+		}
+		mapRollBackProcess.get('03_CANCEL_INVOICE_ACTION').add(new map<String, Object>{
+			'zInvoiceId' 	=> invoiceId,
+			 'status'		=> 'Draft',
+			'zEntityId' 	=> zEntityId,
+			'access_token'	=> accessToken
+		});
+		
+		if(!mapRollBackProcess.containsKey('04_CANCEL_INVOICE_ACTION')){
+			mapRollBackProcess.put('04_CANCEL_INVOICE_ACTION', new list<map<String, Object>>());
+		}
+
+		mapRollBackProcess.get('04_CANCEL_INVOICE_ACTION').add(new map<String, Object>{
+			'zInvoiceId' 	=> invoiceId,
+			'status'		=> 'Canceled',
+			'zEntityId' 	=> zEntityId,
+			'access_token'	=> accessToken
+		});
+	}*/
+
+}

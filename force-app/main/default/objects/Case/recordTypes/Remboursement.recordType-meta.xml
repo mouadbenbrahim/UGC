@@ -311,6 +311,17 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>ExecStatus__c</picklist>
+        <values>
+            <fullName>Erreur</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Famille__c</picklist>
         <values>
             <fullName>0- Souscription</fullName>
@@ -722,6 +733,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Espèce</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Prélèvement %28UI%29</fullName>
             <default>false</default>
         </values>
@@ -772,7 +787,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Email sortant</fullName>
+            <fullName>E-mail sortant</fullName>
             <default>false</default>
         </values>
         <values>
@@ -784,11 +799,19 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Google</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Interne</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Salle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Selfcare</fullName>
             <default>false</default>
         </values>
         <values>
@@ -1527,6 +1550,10 @@
         <picklist>Type_de_migration__c</picklist>
         <values>
             <fullName>UI 1 %3E UI 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UI2CDI %3E UI3CDI</fullName>
             <default>false</default>
         </values>
     </picklistValues>

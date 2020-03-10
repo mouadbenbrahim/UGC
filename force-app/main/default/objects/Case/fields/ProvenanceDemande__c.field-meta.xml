@@ -3,40 +3,28 @@
     <fullName>ProvenanceDemande__c</fullName>
     <externalId>false</externalId>
     <formula>IF(ISPICKVAL(Origin,&quot;E-mail entrant&quot;),IMAGE(&quot;/resource/1227196930000/EmailEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;E-mail sortant&quot;),IMAGE(&quot;/resource/1227196930000/EmailEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Téléphone entrant&quot;),IMAGE(&quot;/resource/1227196861000/Appelentrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Telephone sortant&quot;),IMAGE(&quot;/resource/1227196861000/Appelentrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Formulairedecontact&quot;),IMAGE(&quot;/resource/1227196220000/FormulaireContact?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Courrier entrant&quot;),IMAGE(&quot;/resource/1227642306000/CourrierEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Courrier sortant&quot;),IMAGE(&quot;/resource/1227642306000/CourrierEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Salle&quot;),IMAGE(&quot;/resource/1227197419000/Iconesalle?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Interne&quot;),IMAGE(&quot;/resource/1227198181000/IconeInterne?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Facebook&quot;),IMAGE(&quot;/resource/1227197302200/FacebookEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Twitter&quot;),IMAGE(&quot;/resource/1227197343000/TwitterEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 IF(ISPICKVAL(Origin,&quot;Critizr&quot;),IMAGE(&quot;/resource/1227197837000/CritizrEntrant?isdtp=p1&quot;,&quot;.png&quot;,22,22),
-
 &quot;&quot;))))))))))))
-
 &amp; &quot; &quot; &amp; 
-
 IF(ISPICKVAL(Status,&quot;Fermee&quot;),IMAGE(&quot;/resource/1511537369000/Cadenasferme&quot;,&quot;.png&quot;,22,22),
+IF(ISPICKVAL(Status,&quot;Fermée&quot;),IMAGE(&quot;/resource/1511537369000/Cadenasferme&quot;,&quot;.png&quot;,22,22),
 IF(ISPICKVAL(Status,&quot;EnCours&quot;),IMAGE(&quot;/resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
+IF(ISPICKVAL(Status,&quot;En Cours&quot;),IMAGE(&quot;/resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
 IF(ISPICKVAL( Status ,&quot;EnAttenteRetourClient&quot;),IMAGE(&quot;/resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
 IF(ISPICKVAL( Status ,&quot;EnAttenteRemboursement&quot;),IMAGE(&quot;/resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
 IF(ISPICKVAL( Status ,&quot;EnAttenteRetourSalle&quot;),IMAGE(&quot;//resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
-IF(ISPICKVAL( Status ,&quot;en attente retour interne&quot;),IMAGE(&quot;/resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
-&quot;&quot;))))))</formula>
+IF(ISPICKVAL( Status ,&quot;En attente retour interne&quot;),IMAGE(&quot;/resource/1512578078000/Cadenasouvert2&quot;,&quot;.png&quot;,22,22),
+&quot;&quot;))))))))</formula>
     <label>.</label>
     <required>false</required>
     <trackHistory>false</trackHistory>

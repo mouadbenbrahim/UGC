@@ -207,7 +207,7 @@ public with sharing class SM_Rejet {
 		//recuperer paymentMethodId pour other France et Belgique
 		String FR_paymentMethodId;
 		String BE_paymentMethodId;
-		list<UGC_Generic_Param__mdt> listPaymentMethodId = new list<UGC_Generic_Param__mdt>([SELECT ParamValue__c, Entite__c FROM UGC_Generic_Param__mdt WHERE ParamName__c = 'paymentMethodIdOther']);
+		list<UGC_Generic_Param__mdt> listPaymentMethodId = new list<UGC_Generic_Param__mdt>([SELECT ParamValue__c, Entite__c FROM UGC_Generic_Param__mdt WHERE ParamName__c = 'Zuora_PM_BTB']);
         system.debug('##MNE SM_Rejet processRejetBredInZuora listPaymentMethodId >> '+listPaymentMethodId);
 		if(listPaymentMethodId.size() != 2){
 			system.debug('##MNE SM_Rejet processRejetBredInZuora Pas de Payment Method Other trouvé pour le Rejet Bred');
@@ -245,6 +245,8 @@ public with sharing class SM_Rejet {
 	     	String zuoraSubId = zSub.Zuora__External_Id__c;								//OK
 	     	String accountId = zSub.Zuora__CustomerAccount__r.Zuora__External_Id__c;	//OK
 	     	Decimal price = item.MontantRejet__c;										//OK
+	     	String rejetCode = item.CodeRejet__c;										//OK
+	     	Date rejetDate = item.RejetDate__c;										//OK
 	     	
 			String zInvoiceId;															//OK
 			String zPaymentId;
@@ -252,6 +254,7 @@ public with sharing class SM_Rejet {
 			
 			try{
            		String rep = SM_Rejet.precessAmendmentAddProd(zuoraSubId, ProductRatePlanId, ProductRatePlanChargeId, price, zEntityId, access_token);
+           		system.debug('##MNE SM_Rejet processRejetBredInZuora Step 1 Res >> '+rep);
            		Resultat resApex = (Resultat)System.JSON.deserialize(rep, Resultat.class);
            		zInvoiceId = resApex.results.get(0).InvoiceId;
 	        }catch(Exception e){
@@ -285,7 +288,7 @@ public with sharing class SM_Rejet {
 	        }
      		
      		try{
-           		SM_Remboursement.executeRefundRejetBred(price, zPaymentId, zEntityId, access_token);
+           		SM_Remboursement.executeRefundRejetBred(price, zPaymentId, rejetCode, rejetDate, zEntityId, access_token);
 	        }catch(Exception e){
 	        	system.debug('##MNE SM_Rejet processRejetBredInZuora create Refund exception >> '+e.getMessage());
 	            system.debug('##MNE SM_Rejet processRejetBredInZuora create Refund Error Step 4');

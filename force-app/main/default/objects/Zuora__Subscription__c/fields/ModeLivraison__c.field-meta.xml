@@ -3,32 +3,8 @@
     <fullName>ModeLivraison__c</fullName>
     <externalId>false</externalId>
     <label>ModeLivraison</label>
+    <length>200</length>
     <required>false</required>
-    <type>Picklist</type>
-    <valueSet>
-        <restricted>true</restricted>
-        <valueSetDefinition>
-            <sorted>false</sorted>
-            <value>
-                <fullName>Adresse Payeur</fullName>
-                <default>false</default>
-                <label>Adresse Payeur</label>
-            </value>
-            <value>
-                <fullName>Adresse Porteur</fullName>
-                <default>false</default>
-                <label>Adresse Porteur</label>
-            </value>
-            <value>
-                <fullName>Click Collect</fullName>
-                <default>false</default>
-                <label>Click Collect</label>
-            </value>
-            <value>
-                <fullName>Autres</fullName>
-                <default>false</default>
-                <label>Autres</label>
-            </value>
-        </valueSetDefinition>
-    </valueSet>
+    <type>Text</type>
+    <unique>false</unique>
 </CustomField>

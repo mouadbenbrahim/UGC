@@ -1177,6 +1177,22 @@
         <name>et4ae5__TITLE</name>
     </customLabels>
     <customLabels>
+        <label><!-- TSQ error for deleted triggered sends --></label>
+        <name>et4ae5__TSQDeletedTriggeredSendMessage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TSQ error for inactive triggered sends --></label>
+        <name>et4ae5__TSQInactiveTriggeredSendMessage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TSQ unexpected error --></label>
+        <name>et4ae5__TSQUnexpectedError</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- TSQ unexpected error --></label>
+        <name>et4ae5__TSQUnexpectedErrorTryAgain</name>
+    </customLabels>
+    <customLabels>
         <label><!-- TrackingRequestedCallFailedForTriggeredSend --></label>
         <name>et4ae5__TrackingRequestedCallFailedForTriggeredSend</name>
     </customLabels>
@@ -1915,6 +1931,14 @@
     <customLabels>
         <label><!-- deprecateSendDefinitionJSComponents --></label>
         <name>et4ae5__deprecateSendDefinitionJSComponents</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- deprecateVisualforcePageBody --></label>
+        <name>et4ae5__deprecateVisualforcePageBody</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- deprecateVisualforcePageTitle --></label>
+        <name>et4ae5__deprecateVisualforcePageTitle</name>
     </customLabels>
     <customLabels>
         <label><!-- description --></label>
@@ -5561,6 +5585,10 @@
         <name>et4ae5__unReqd</name>
     </customLabels>
     <customLabels>
+        <label><!-- unableToGetBuI --></label>
+        <name>et4ae5__unableToGetBuId</name>
+    </customLabels>
+    <customLabels>
         <label><!-- undo --></label>
         <name>et4ae5__undo</name>
     </customLabels>
@@ -5814,6 +5842,12 @@
     </customTabs>
     <flowDefinitions>
         <flows>
+            <fullName>CASE_Email_Client_validation_DRC-1</fullName>
+        </flows>
+        <fullName>CASE_Email_Client_validation_DRC</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
             <fullName>Utilisation_Coupon_Souscription_Case-1</fullName>
         </flows>
         <fullName>Utilisation_Coupon_Souscription_Case</fullName>
@@ -5844,7 +5878,7 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows>
-            <fullName>SUBSCRIPTION_SyncPayeurID-7</fullName>
+            <fullName>SUBSCRIPTION_SyncPayeurID-6</fullName>
         </flows>
         <fullName>SUBSCRIPTION_SyncPayeurID</fullName>
     </flowDefinitions>
@@ -5952,7 +5986,7 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows>
-            <fullName>Processus_d_approbation-1</fullName>
+            <fullName>Processus_d_approbation-2</fullName>
         </flows>
         <fullName>Processus_d_approbation</fullName>
     </flowDefinitions>
@@ -6000,7 +6034,7 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows>
-            <fullName>Offre_Contrainte_Refresh-1</fullName>
+            <fullName>Offre_Contrainte_Refresh-2</fullName>
         </flows>
         <fullName>Offre_Contrainte_Refresh</fullName>
     </flowDefinitions>
@@ -6012,7 +6046,7 @@
     </flowDefinitions>
     <flowDefinitions>
         <flows>
-            <fullName>CASE_CreationAutomatiqueTacheContactEntrants-7</fullName>
+            <fullName>CASE_CreationAutomatiqueTacheContactEntrants-5</fullName>
         </flows>
         <fullName>CASE_CreationAutomatiqueTacheContactEntrants</fullName>
     </flowDefinitions>

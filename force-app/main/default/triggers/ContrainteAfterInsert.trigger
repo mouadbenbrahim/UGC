@@ -4,7 +4,7 @@
 
 trigger ContrainteAfterInsert on OffreContrainte__c (after insert) {
 
-    Boolean canTrigger = PAD.canTrigger('ContrainteAfterInsert');
+    // Boolean canTrigger = PAD.canTrigger('ContrainteAfterInsert');
 
 /*    if (canTrigger) {
         system.debug( '##MBE ContrainteAfterInsert trigger Begin');

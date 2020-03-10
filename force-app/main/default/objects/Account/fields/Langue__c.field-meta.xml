@@ -3,9 +3,23 @@
     <fullName>Langue__c</fullName>
     <externalId>false</externalId>
     <label>Langue Client</label>
-    <length>2</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
-    <type>Text</type>
-    <unique>false</unique>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>FR</fullName>
+                <default>false</default>
+                <label>FR</label>
+            </value>
+            <value>
+                <fullName>NL</fullName>
+                <default>false</default>
+                <label>NL</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

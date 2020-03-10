@@ -12,16 +12,10 @@
         <sharedTo>
             <role>ChargeClienteleBE</role>
         </sharedTo>
-        <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>ProduitUGC__c</field>
             <operation>equals</operation>
             <value>belge</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>ProduitUGC__c</field>
-            <operation>notEqual</operation>
-            <value>français</value>
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
@@ -39,7 +33,43 @@
         <criteriaItems>
             <field>ProduitUGC__c</field>
             <operation>equals</operation>
-            <value>français,belge</value>
+            <value>français</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Acces_comptes_superviseur_BE</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>Edit</caseAccessLevel>
+            <contactAccessLevel>Edit</contactAccessLevel>
+            <opportunityAccessLevel>None</opportunityAccessLevel>
+        </accountSettings>
+        <label>Accès comptes superviseur BE</label>
+        <sharedTo>
+            <role>Responsable_Service_Client_BE</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>ProduitUGC__c</field>
+            <operation>equals</operation>
+            <value>belge</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Acces_comptes_superviseur_FR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>Edit</caseAccessLevel>
+            <contactAccessLevel>Edit</contactAccessLevel>
+            <opportunityAccessLevel>None</opportunityAccessLevel>
+        </accountSettings>
+        <label>Accès comptes superviseur FR</label>
+        <sharedTo>
+            <role>Responsable_Service_Client</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>ProduitUGC__c</field>
+            <operation>equals</operation>
+            <value>français</value>
         </criteriaItems>
     </sharingCriteriaRules>
 </SharingRules>

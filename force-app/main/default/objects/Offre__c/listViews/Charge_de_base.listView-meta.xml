@@ -5,9 +5,8 @@
     <columns>Promo__c</columns>
     <columns>DateDebut__c</columns>
     <columns>DateFin__c</columns>
-    <columns>HermesIntituleOffre__c</columns>
-    <columns>HermesIntituleOffreNL__c</columns>
     <columns>Intitule__c</columns>
+    <columns>Reference__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>

@@ -5,5 +5,5 @@
     <mayForecastManagerShare>false</mayForecastManagerShare>
     <name>Chargé de clientèle BE</name>
     <opportunityAccessLevel>Edit</opportunityAccessLevel>
-    <parentRole>ChargeClienteleFR</parentRole>
+    <parentRole>Responsable_Service_Client_BE</parentRole>
 </Role>

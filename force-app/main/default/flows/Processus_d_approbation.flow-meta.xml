@@ -94,22 +94,100 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <assignments>
-        <name>myVariable_waitStartTimeAssignment</name>
-        <label>myVariable_waitStartTimeAssignment</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
-            <operator>Assign</operator>
+    <actionCalls>
+        <processMetadataValues>
+            <name>processSelection</name>
             <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
+                <stringValue>Demande de remboursementv1_BE - DemandeRemboursementv1_BE</stringValue>
             </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myDecision</targetReference>
-        </connector>
-    </assignments>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>selectionType</name>
+            <value>
+                <stringValue>selectedProcess</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>submitterType</name>
+            <value>
+                <stringValue>currentUser</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>Submit to Superviseur BE</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <actionName>submit</actionName>
+        <actionType>submit</actionType>
+        <inputParameters>
+            <name>objectId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>comment</name>
+        </inputParameters>
+        <inputParameters>
+            <name>processDefinitionNameOrId</name>
+            <value>
+                <stringValue>DemandeRemboursementv1_BE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>skipEntryCriteria</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>processSelection</name>
+            <value>
+                <stringValue>Demande de remboursement superviseur BE - Demande_de_remboursement_superviseur_BE</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>selectionType</name>
+            <value>
+                <stringValue>selectedProcess</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>submitterType</name>
+            <value>
+                <stringValue>currentUser</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_7_A1</name>
+        <label>Submit to Director BE</label>
+        <locationX>700</locationX>
+        <locationY>200</locationY>
+        <actionName>submit</actionName>
+        <actionType>submit</actionType>
+        <inputParameters>
+            <name>objectId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>comment</name>
+        </inputParameters>
+        <inputParameters>
+            <name>processDefinitionNameOrId</name>
+            <value>
+                <stringValue>Demande_de_remboursement_superviseur_BE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>skipEntryCriteria</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -138,7 +216,7 @@
             <connector>
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
-            <label>criteria process with two steps</label>
+            <label>Chargé FR</label>
         </rules>
     </decisions>
     <decisions>
@@ -152,6 +230,9 @@
         <label>myDecision2</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_3</name>
@@ -166,7 +247,66 @@
             <connector>
                 <targetReference>myRule_3_A1</targetReference>
             </connector>
-            <label>Criteria  process with one step</label>
+            <label>Superviseur FR</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision6</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>Chargé BE</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision6</name>
+        <label>myDecision6</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_7</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_7</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_7_A1</targetReference>
+            </connector>
+            <label>Superviseur BE</label>
         </rules>
     </decisions>
     <formulas>
@@ -180,11 +320,7 @@ ISPICKVAL([Case].DemandeRemboursement__c, &#39;VLO&#39;)
 ISPICKVAL([Case].DemandeRemboursement__c, &#39;Réservations autres&#39;)
 ) 
 &amp;&amp;
-( 
-($Profile.Name = &#39;Chargé de Clientèle&#39;)
-||  
-( $Profile.Name = &#39;Chargé de clientèle Junior&#39;)
-)
+($UserRole.Name  = &#39;ChargeClienteleFR&#39;)
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -197,11 +333,7 @@ ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;VLO&#39;)
 ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;Réservations autres&#39;)
 ) 
 &amp;&amp;
-( 
-({!$Profile.Name} = &#39;Chargé de Clientèle&#39;)
-||  
-( {!$Profile.Name} = &#39;Chargé de clientèle Junior&#39;)
-)
+({!$UserRole.Name}  = &#39;ChargeClienteleFR&#39;)
 )</expression>
     </formulas>
     <formulas>
@@ -215,7 +347,7 @@ ISPICKVAL([Case].DemandeRemboursement__c, &#39;VLO&#39;)
 ISPICKVAL([Case].DemandeRemboursement__c, &#39;Réservations autres&#39;)
 ) 
 &amp;&amp; 
-($Profile.Name  = &#39;Superviseur&#39;)
+($UserRole.Name  = &#39;Responsable_Service_Client&#39;)
 ) </stringValue>
             </value>
         </processMetadataValues>
@@ -228,10 +360,64 @@ ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;VLO&#39;)
 ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;Réservations autres&#39;)
 ) 
 &amp;&amp; 
-({!$Profile.Name}  = &#39;Superviseur&#39;)
+({!$UserRole.Name}  = &#39;Responsable_Service_Client&#39;)
 )</expression>
     </formulas>
-    <interviewLabel>Processus_d_approbation-1_InterviewLabel</interviewLabel>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>(
+(
+ISPICKVAL([Case].DemandeRemboursement__c, &#39;VLO&#39;) 
+|| 
+ISPICKVAL([Case].DemandeRemboursement__c, &#39;Réservations autres&#39;)
+) 
+&amp;&amp;
+($UserRole.Name  = &#39;ChargeClienteleBE&#39;)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>(
+(
+ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;VLO&#39;) 
+|| 
+ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;Réservations autres&#39;)
+) 
+&amp;&amp;
+({!$UserRole.Name}  = &#39;ChargeClienteleBE&#39;)
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>(
+(
+ISPICKVAL([Case].DemandeRemboursement__c, &#39;VLO&#39;) 
+|| 
+ISPICKVAL([Case].DemandeRemboursement__c, &#39;Réservations autres&#39;)
+) 
+&amp;&amp; 
+($UserRole.Name  = &#39;Responsable_Service_Client_BE&#39;)
+) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_7</name>
+        <dataType>Boolean</dataType>
+        <expression>(
+(
+ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;VLO&#39;) 
+|| 
+ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;Réservations autres&#39;)
+) 
+&amp;&amp; 
+({!$UserRole.Name}  = &#39;Responsable_Service_Client_BE&#39;)
+)</expression>
+    </formulas>
+    <interviewLabel>Processus_d_approbation-2_InterviewLabel</interviewLabel>
     <label>CASE_Processus d&#39;approbation</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -258,7 +444,7 @@ ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;Réservations autr
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
-    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
+    <startElementReference>myDecision</startElementReference>
     <status>Active</status>
     <variables>
         <name>myVariable_current</name>
@@ -275,15 +461,5 @@ ISPICKVAL({!myVariable_current.DemandeRemboursement__c}, &#39;Réservations autr
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>Case</objectType>
-    </variables>
-    <variables>
-        <name>myVariable_waitStartTimeVariable</name>
-        <dataType>DateTime</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Flow.CurrentDateTime</elementReference>
-        </value>
     </variables>
 </Flow>

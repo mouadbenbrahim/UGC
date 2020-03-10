@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR08_RemboursementBTOBimpossible</fullName>
+    <active>true</active>
+    <description>Remboursement impossible sur une souscription BTOB</description>
+    <errorConditionFormula>NOT($User.ByPassValidationRule__c)
+&amp;&amp;
+ ISPICKVAL(Famille__c,&#39;7- Finance&#39;) &amp;&amp;
+ ISPICKVAL(Motif__c,&#39;04- Remboursement&#39;)&amp;&amp; 
+ Subscription__r.Marche__c ==&#39;BTOB&#39; &amp;&amp;
+ NOT(ISBLANK(TEXT(SousMotif__c))) &amp;&amp;
+(ISPICKVAL(DemandeRemboursement__c, &#39;UGCIllimité&#39;)||
+ ISPICKVAL(DemandeRemboursement__c, &#39;UGCUnlimited&#39;))</errorConditionFormula>
+    <errorMessage>Il n&#39;est pas possible d&#39;effectuer ce type de remboursement pour une souscription BTOB</errorMessage>
+</ValidationRule>

@@ -1,19 +1,19 @@
 public without sharing class LCC002_BandeauField {
     
     public static final List<String> fieldsForQuerryAccount = new List<String> {
-        'lien_porteur_payeur__c',
         'Note_Client__c',
         'ScoreAntichurn__c'
     };
     
     public static final List<String> fieldsForQuerrySubscription = new List<String> {
+        'lien_porteur_payeur__c',//
         'CodeOffrePrincipale__c',//
         'Zuora__Status__c',//
         'Date_de_debut_de_contrat__c',//
         'Zuora__ContractEffectiveDate__c',//
-        'Date_de_fin_de_contrat__c',//
+        'DateFinContrat__c',//
         'CodeFinContrat__c',//
-        'Zuora__TermEndDate__c',//
+        'Marche__c',//
         'Lieu__c',//
         'TypeContrat__c',
         'Zuora__ContractAcceptanceDate__c'
@@ -28,13 +28,22 @@ public without sharing class LCC002_BandeauField {
     /*public static final List<String> fieldsForQuerryCase = new List<String> {
         'AccountId',
         'Subscription__c',
-        'SubscriptionZID__c'
+        'SubscriptionZName__c'
     };*/
     
     
     @AuraEnabled 
     public static List<WRPFieldValues> getFieldValuesInAccout(Id accId){
         system.debug('##MNE getFieldValuesInAccout accId >> '+accId);
+        
+        //Clacule de la note client
+        Double noteClient = SM_Account.getNoteClient(accId);
+        if(noteClient != null){
+        	Account accTMP = new Account();
+        	accTMP.Id = accId;
+        	accTMP.Note_Client__c = noteClient;
+        	update accTMP;
+        }
      
         String query = 'SELECT Id, '+String.join(fieldsForQuerryAccount, ', ')+ ' FROM Account WHERE Id = \'' + accId+ '\'';
         system.debug('##MNE getFieldValuesInAccout query >> '+query);
@@ -68,7 +77,7 @@ public without sharing class LCC002_BandeauField {
     public static List<WRPFieldValues> getFieldValuesInSubscription(Id accId){
         system.debug('##MNE getFieldValuesInSubscription accId >> '+accId);
      
-        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerrySubscription, ', ')+ ' FROM Zuora__Subscription__c WHERE Zuora__Account__c = \'' + accId + '\'  ORDER BY LastModifiedDate DESC NULLS LAST LIMIT 1';
+        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerrySubscription, ', ')+ ' FROM Zuora__Subscription__c WHERE Zuora__Account__c = \'' + accId + '\'  ORDER BY Zuora__OriginalCreated_Date__c DESC NULLS LAST LIMIT 1';
         system.debug('##MNE getFieldValuesInSubscription query >> '+query);
         
         list<Zuora__Subscription__c> listSub = (list<Zuora__Subscription__c>) Database.query(query); 
@@ -94,9 +103,9 @@ public without sharing class LCC002_BandeauField {
                 Date d = Date.valueOf(sub.get(field));
                 system.debug('##MNE getFieldValuesInSubscription date d >> '+d); 
                 if(d == null){
-                	value = null; 
+                  value = null; 
                 }else {
-                	value = DateTime.newInstance(d.year(), d.month(), d.day()).format('dd-MM-yyyy');
+                  value = DateTime.newInstance(d.year(), d.month(), d.day()).format('dd-MM-yyyy');
                 }
             }
             rep.add(new WRPFieldValues(label, value));
@@ -110,7 +119,7 @@ public without sharing class LCC002_BandeauField {
     public static List<WRPFieldValues> getFieldValuesInCarte(Id accId){
         system.debug('##MNE getFieldValuesInCarte accId >> '+accId);
      
-        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerryCarte, ', ')+ ' FROM Carte__c WHERE Abonn__c = \'' + accId + '\' AND Statut__c = \'Active\'  ORDER BY LastModifiedDate DESC NULLS LAST LIMIT 1';
+        String query = 'SELECT Id, LastModifiedDate, '+String.join(fieldsForQuerryCarte, ', ')+ ' FROM Carte__c WHERE Abonn__c = \'' + accId + '\' ORDER BY LastModifiedDate DESC NULLS LAST LIMIT 1';
         system.debug('##MNE getFieldValuesInCarte query >> '+query);
         
         list<Carte__c> listCarte = (list<Carte__c>) Database.query(query); 
@@ -214,12 +223,12 @@ public without sharing class LCC002_BandeauField {
             system.debug('##MNE LCC002_BandeauField getPhotoSFDC paysTMP >> '+paysTMP);
             
             if (Util.FRANCE.contains(paysTMP)) {
-	            pays = '033';
-	        } else {
-	            pays = '032';
-	        }
-	        
-	        system.debug('##MNE LCC002_BandeauField getPhotoSFDC pays >> '+pays);
+              pays = '033';
+          } else {
+              pays = '032';
+          }
+          
+          system.debug('##MNE LCC002_BandeauField getPhotoSFDC pays >> '+pays);
             
             String endpoint = '/Photos/GetPhoto/'+pays+'/'+RCUId;
             //String endpoint = '/Photos/GetPhoto/033/14538';

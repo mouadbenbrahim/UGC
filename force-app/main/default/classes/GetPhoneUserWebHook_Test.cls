@@ -29,7 +29,9 @@ private class GetPhoneUserWebHook_Test {
     }
 
     static Id createTestContact() {
-        Account account = new Account(Name = 'Test Name', Phone = '(098) 407-3751');
+        //Account account = new Account(Name = 'Test Name', Phone = '(098) 407-3751');
+        Account account = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert account;
         return account.Id;
     }
@@ -42,7 +44,9 @@ private class GetPhoneUserWebHook_Test {
     }
 
     static void createTestContactEmptyPhone() {
-        Account account = new Account(Name = 'Test Name');
+        //Account account = new Account(Name = 'Test Name');
+        Account account = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert account;
     }
 

@@ -8,6 +8,7 @@
     <columns>HermesIntituleOffre__c</columns>
     <columns>HermesIntituleOffreNL__c</columns>
     <columns>RECORDTYPE</columns>
+    <columns>Reference__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>RECORDTYPE</field>

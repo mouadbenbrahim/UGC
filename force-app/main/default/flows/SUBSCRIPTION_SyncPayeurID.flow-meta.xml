@@ -201,7 +201,7 @@
                 <stringValue>[Zuora__Subscription__c].PayeurCRMID__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_5267990013</name>
+        <name>formula_2_myRule_1_A1_3955130473</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.PayeurCRMID__c}</expression>
     </formulas>
@@ -212,7 +212,7 @@
                 <stringValue>[Zuora__Subscription__c].PayeurCRMID__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_5_myRule_4_A1_6057395872</name>
+        <name>formula_5_myRule_4_A1_5744280906</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.PayeurCRMID__c}</expression>
     </formulas>
@@ -223,7 +223,7 @@
                 <stringValue>NULL</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_9_myRule_7_A1_5922719401</name>
+        <name>formula_9_myRule_7_A1_5063823234</name>
         <dataType>String</dataType>
         <expression>NULL</expression>
     </formulas>
@@ -261,7 +261,7 @@ AND(
         <dataType>Boolean</dataType>
         <expression>ISNEW() &amp;&amp; {!myVariable_current.PayeurCRMID__c} &lt;&gt; {!myVariable_current.Zuora__Account__r.Id}</expression>
     </formulas>
-    <interviewLabel>SUBSCRIPTION_SyncPayeurID-8_InterviewLabel</interviewLabel>
+    <interviewLabel>SUBSCRIPTION_SyncPayeurID-6_InterviewLabel</interviewLabel>
     <label>SUBSCRIPTION_SyncPayeurID</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -366,7 +366,7 @@ AND(
             </processMetadataValues>
             <field>Payeur__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_5267990013</elementReference>
+                <elementReference>formula_2_myRule_1_A1_3955130473</elementReference>
             </value>
         </inputAssignments>
         <object>Zuora__Subscription__c</object>
@@ -529,7 +529,7 @@ AND(
             </processMetadataValues>
             <field>Payeur__c</field>
             <value>
-                <elementReference>formula_5_myRule_4_A1_6057395872</elementReference>
+                <elementReference>formula_5_myRule_4_A1_5744280906</elementReference>
             </value>
         </inputAssignments>
         <object>Zuora__Subscription__c</object>
@@ -689,13 +689,13 @@ AND(
             </processMetadataValues>
             <field>Payeur__c</field>
             <value>
-                <elementReference>formula_9_myRule_7_A1_5922719401</elementReference>
+                <elementReference>formula_9_myRule_7_A1_5063823234</elementReference>
             </value>
         </inputAssignments>
         <object>Account</object>
     </recordUpdates>
     <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
-    <status>Draft</status>
+    <status>Obsolete</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>

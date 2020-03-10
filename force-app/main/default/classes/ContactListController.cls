@@ -203,10 +203,16 @@ public with sharing class ContactListController {
         refreshContacts(leadToCreate);
     }
     private void crAccount() {
-        Account accountToCreate = new Account(
+        /*Account accountToCreate = new Account(
                 LastName = evt.sda__c,
-                Phone = evt.sda__c, RecordTypeId='0120Y000000ZZgEQAW'
-        );
+                Phone = evt.sda__c, 
+                RecordTypeId=Utils.getComptePersonelAccountRecordType().Id
+        );*/
+		
+		Account accountToCreate = new Account(  LastName= evt.sda__c, 
+										        Phone = evt.sda__c,
+										        RecordTypeId = Utils.getComptePersonelAccountRecordType().Id,
+										        PersonMobilePhone = evt.sda__c);		
 
         insert accountToCreate;
         evt.WhatId = accountToCreate.Id;

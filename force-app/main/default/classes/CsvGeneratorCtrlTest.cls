@@ -27,7 +27,9 @@ public class CsvGeneratorCtrlTest {
     	Test.startTest();
     	Test.setMock(HttpCalloutMock.class, new TestHttpCalloutMock());
         
-        Account a = New Account(LastName = 'test');
+        //Account a = New Account(LastName = 'test');
+        Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert a;
     	Case c = new Case(AccountId = a.id);
         c.TECH_FamilleMatrice__c =famille2;
@@ -55,7 +57,9 @@ public class CsvGeneratorCtrlTest {
     	Test.startTest();
     	Test.setMock(HttpCalloutMock.class, new TestHttpCalloutMock());
         
-        Account a = New Account(LastName = 'test');
+        //Account a = New Account(LastName = 'test');
+        Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert a;
     	Case c = new Case(AccountId = a.id);
         c.TECH_FamilleMatrice__c =famille2;
@@ -82,7 +86,9 @@ public class CsvGeneratorCtrlTest {
     	Test.startTest();
     	Test.setMock(HttpCalloutMock.class, new TestHttpCalloutMock());
         
-        Account a = New Account(LastName = 'test');
+        //Account a = New Account(LastName = 'test');
+        Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert a;
     	Case c = new Case(AccountId = a.id);
         c.TECH_FamilleMatrice__c =famille2;
@@ -106,7 +112,9 @@ public class CsvGeneratorCtrlTest {
     	Test.startTest();
     	Test.setMock(HttpCalloutMock.class, new TestHttpCalloutMock());
   		        
-        Account a = New Account(LastName = 'test');
+        //Account a = New Account(LastName = 'test');
+        Account a = new Account(LastName='test', FirstName='test', RecordTypeId = Utils.getComptePersonelAccountRecordType().Id, 
+        						  PersonEmail='test@test.test', ClientResident__c = 'France');
         insert a;
     	Case c = new Case(AccountId = a.id);
         c.TECH_FamilleMatrice__c =famille2;

@@ -2,12 +2,14 @@
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>All</fullName>
     <columns>NAME</columns>
+    <columns>Reference__c</columns>
     <columns>Promo__c</columns>
     <columns>DateDebut__c</columns>
     <columns>DateFin__c</columns>
     <columns>RECORDTYPE</columns>
     <columns>Operation__c</columns>
     <columns>OWNER.ALIAS</columns>
+    <columns>Active__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

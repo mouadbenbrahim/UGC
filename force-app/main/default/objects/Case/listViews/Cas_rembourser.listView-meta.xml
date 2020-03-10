@@ -3,10 +3,28 @@
     <fullName>Cas_rembourser</fullName>
     <columns>CASES.CASE_NUMBER</columns>
     <columns>NAME</columns>
-    <columns>CASES.SUBJECT</columns>
+    <columns>Etat_remboursement__c</columns>
     <columns>CASES.STATUS</columns>
-    <columns>CASES.PRIORITY</columns>
-    <columns>CORE.USERS.ALIAS</columns>
     <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.CREATED_DATE_DATE_ONLY</field>
+        <operation>greaterOrEqual</operation>
+        <value>9/11/2019 12:00 AM</value>
+    </filters>
+    <filters>
+        <field>Etat_remboursement__c</field>
+        <operation>equals</operation>
+        <value>en attente,Créée</value>
+    </filters>
+    <filters>
+        <field>Pays__c</field>
+        <operation>notContain</operation>
+        <value>Belgique</value>
+    </filters>
+    <filters>
+        <field>Etat_remboursement__c</field>
+        <operation>notContain</operation>
+        <value>Remboursé</value>
+    </filters>
     <label>Cas à rembourser</label>
 </ListView>

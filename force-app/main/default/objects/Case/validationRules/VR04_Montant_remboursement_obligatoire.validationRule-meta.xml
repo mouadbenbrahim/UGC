@@ -3,9 +3,11 @@
     <fullName>VR04_Montant_remboursement_obligatoire</fullName>
     <active>true</active>
     <description>Montant obligatoire pour une demande de remboursement</description>
-    <errorConditionFormula>NOT($User.ByPassValidationRule__c)
-&amp;&amp;
-NOT(ISBLANK(TEXT(DemandeRemboursement__c))) &amp;&amp;
-ISBLANK( MontantRembourser__c )</errorConditionFormula>
+    <errorConditionFormula>AND(
+NOT($User.ByPassValidationRule__c),
+TEXT(DemandeRemboursement__c)&lt;&gt;&#39;UGCIllimité&#39;,
+TEXT(DemandeRemboursement__c)&lt;&gt;&#39;UGCUnlimited&#39;,
+NOT(ISBLANK(TEXT(DemandeRemboursement__c))),
+ISBLANK(MontantRembourser__c))</errorConditionFormula>
     <errorMessage>Merci de remplir un montant afin de faire une demande de remboursement</errorMessage>
 </ValidationRule>

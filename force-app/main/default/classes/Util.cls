@@ -54,6 +54,14 @@ public with sharing class Util {
         if (aDate < bDate) { return aDate;} else { return bDate;}
     }
 
+    public static Datetime maxDatetime(Datetime aDate, Datetime bDate) {
+        if (aDate > bDate) { return aDate;} else { return bDate;}
+    }
+
+    public static Datetime minDatetime(Datetime aDate, Datetime bDate) {
+        if (aDate < bDate) { return aDate;} else { return bDate;}
+    }
+
     public static String oppositeAction(String action) {
         String oppAction = '';
         if (action == 'Prioritaire') {oppAction = 'Non-Prioritaire';}
@@ -182,5 +190,60 @@ public with sharing class Util {
         }
         return prevDate;
     }
+
+    /**
+     * serializeSobject Seralize un sObject en supprimant les tag attributes.
+     * @param  myObject Object de type sObject
+     * @return          Json en String
+     */
+    public static String serializeSobject(Object myObject){
+        
+        Map<String,Object> map1 = (Map<String,Object>)JSON.deserializeUntyped(JSON.serializePretty(myObject,true));
+        map1.remove('attributes');
+        return JSON.serialize(map1);        
+        
+    }
+
+    public static Set<String> mapValToSet(Map<Id,String> mapIn){
+
+        Set<String> r = new Set<String>();
+        for (String key : mapIn.keySet()) {
+            r.add(mapIn.get(key));
+        }
+        return r;
+    }
+
+    public static Date endOfMonth(Date mDate) {
+        return mDate.toStartOfMonth().addMonths(1).addDays(-1);
+    }
+
+    public static Date firstOfNextMonth(Date mDate) {
+        return mDate.toStartOfMonth().addMonths(1);
+    }
+
+    public static String paysLibelle(String codePays){
+        String paysLibelle;
+
+        if (BELGIQUE.contains(codePays)) {
+            paysLibelle = 'Belgique';
+        } else if (FRANCE.contains(codePays)){
+            paysLibelle = 'France';
+        } else {
+            //TODO : throw new MyException('Attribut Code Pays obligatoire sur le Compte');
+        }
+        return paysLibelle;
+    }
+
+    // public static void pLog(WSZ.ProcessLog pLog){
+    //     ProcessLog__c pLog = new ProcessLog__c();
+    //     pLog.Process__c = process;
+    //     pLog.Account__c = accountId;
+    //     pLog.Case__c = caseId;
+    //     pLog.SubscriptionName__c = subscriptionName;
+    //     pLog.AccountZID__c = accountZID;
+    //     pLog.Code__c = code;
+    //     pLog.Message__c = message;
+    //     insert pLog;
+    // }
 
 }

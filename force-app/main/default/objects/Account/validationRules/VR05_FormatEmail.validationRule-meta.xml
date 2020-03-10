@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>VR05_FormatEmail</fullName>
-    <active>true</active>
+    <active>false</active>
     <description>L&#39;adresse email doit contenir un &quot;@&quot; et un &quot;.&quot;</description>
     <errorConditionFormula>AND ( 
 NOT($User.ByPassValidationRule__c), 

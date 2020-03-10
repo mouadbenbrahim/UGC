@@ -1,4 +1,8 @@
 public without sharing class SM003_Retention {
+	
+	public static Boolean needCreateDoc = false;
+	public static zc_GETSubscriptionTypeWithSuccess subZdoc;
+	public static zc_ProxyGetPaymentMethod pm;
     
     public static void retention(String caseId){
         System.debug('##MNE SM003_Retention retention caseId >> ' + caseId);
@@ -6,7 +10,11 @@ public without sharing class SM003_Retention {
         if(caseId == null){
             throw new MyException('No Id Case found for Retention');
         }
-        Case c = [SELECT Id, Status, DateDemande__c, AccountId, Offre_de_r_tention__c, Mois_de_d_but_remise__c, Raison_de_d_sabonnement__c, Type_de_d_sabonnement__c, R_sultat_R_tention__c, Date_fin_engagement__c FROM Case WHERE Id =:caseId].get(0);
+        
+        Case c = SM_Demande.getDemande(caseId);
+                    
+        list<Contacts__c> contactsList = new list<Contacts__c>([SELECT Id, name, TypeTemplate__c FROM Contacts__c WHERE TypeTemplate__c = 'ZDocTemplate' AND Name = :c.TECHIdStatut__c]);
+        needCreateDoc = contactsList.size() == 0 ? false : true;
         
         if((c.Offre_de_r_tention__c == null   || c.Offre_de_r_tention__c == '')
         || (c.Raison_de_d_sabonnement__c == null   || c.Raison_de_d_sabonnement__c == '')
@@ -16,30 +24,44 @@ public without sharing class SM003_Retention {
         }
         
         if(c.Offre_de_r_tention__c == 'Hausse tarifaire'){
-            System.debug('##MNE SM003_Retention retention Offre de rétention "Hausse tarifaire" choisi');
+        	System.debug('##MNE SM003_Retention retention Offre de rétention "Hausse tarifaire" choisi');
             throw new MyException('Poduit non fonctionnel : "Hausse tarifaire"');
         }
         
         if(c.R_sultat_R_tention__c != null && (c.R_sultat_R_tention__c == 'Refuse sans desabonnement' || c.R_sultat_R_tention__c == 'Client indécis') ){
-            c.Status = 'EnCours';
-            update c;
             System.debug('##MNE SM003_Retention retention case closed EnCours');
-            return;
+            callOutForZDoc(c.AccountId, c.SubscriptionZName__c);
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});        
+			c.ZDocData__c = zDocId;
+            c.Status = 'Fermee';
+        	update c;
+        	SM_SDoc.makeSdocJobs(new list<Case>{c});
         } else if(c.R_sultat_R_tention__c != null && c.R_sultat_R_tention__c == 'Accepté'){
             System.debug('##MNE SM003_Retention retention go to rentention in zuora');
             executeRetention(c);
-            c.Status = 'EnCours';
-            update c;
+            Id zDocId = SM_Hermes.addZdocData(new Map<String,Object>{'ZSUB' => subZdoc,'ZPM' => pm});
+			c.ZDocData__c = zDocId;
+			c.Status = 'Fermee';
+        	update c;
+        	SM_SDoc.makeSdocJobs(new list<Case>{c});
         } else if(c.R_sultat_R_tention__c != null && c.R_sultat_R_tention__c == 'Refuse avec desabonnement'){
             System.debug('##MNE SM003_Retention retention go to desabonnement');
-            SM_Desabonnement.desabonner(c.Id);
-            c.Status = 'EnCours';
-            update c;
+            SM_Desabonnement.desabonner(c.Id,false);
+            //on ferme le ticket dans la methode desabonnement
+            //c.Status = 'Fermee';
+        	//update c;
         }
     }
     
     public static void executeRetention(Case c){
         system.debug('##MNE SM003_Retention executeRetention case >> '+c);
+
+        Boolean hasRemiseRetention = false;
+        Integer moisDebutRemise;
+        Date dateDebutRemise, newContractStartDate;
+        String rpId, rpcId;  
+        
+        ProcessLog__c pLog = new ProcessLog__c(Process__c = 'executeRetention', Account__c = c.AccountId);      
         
         //mois obligatoir si l'offre proposé != Points fidélité && != Hausse tarifaire
         if( (c.Mois_de_d_but_remise__c == null || c.Mois_de_d_but_remise__c == '') 
@@ -49,135 +71,179 @@ public without sharing class SM003_Retention {
         }
         
         Id accId = c.AccountId;
-        list<Zuora__Subscription__c> listSub = new list<Zuora__Subscription__c>([SELECT Zuora__External_Id__c, Zuora__Account__r.ProduitUGC__c, Zuora__Account__r.CodePays__c, TypeContrat__c FROM Zuora__Subscription__c WHERE Zuora__Account__c =:accId AND Zuora__Status__c = 'Active' ORDER BY CreatedDate DESC NULLS FIRST LIMIT 1]);
-        
-        if(listSub.size() == 0){
-            system.debug('##MNE SM003_Retention executeRetention Pas de souscription trouvée.');
-            throw new MyException('Pas de souscription trouvée.');
-        }
-        
-        Zuora__Subscription__c sub = listSub.get(0);
+        //Zuora__Subscription__c sub = SM_Subscription.getSubscription(c.Subscription__c);
+        Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(c.SubscriptionZName__c, c.AccountId);
+        if (sub == null) {
+            throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
+        } 
+
         
         if(sub.TypeContrat__c == 'CDD'){
             system.debug('##MNE SM003_Retention executeRetention Pas possible pour CDD.');
             throw new MyException('La rétention n\'est pas possible pour un utilisateur en CDD.');
         }
         
-        String zuoraSubId = listSub.get(0).Zuora__External_Id__c;
-        String zEntityId = WS001_CallZuora.getZuoraEntityId(listSub.get(0).Zuora__Account__r.CodePays__c);
-        String ProductRatePlanId;
-        String ProductRatePlanChargeId;
-        //SM001_GesteCommercial.Body res = new SM001_GesteCommercial.Body();
-        list<SM001_GesteCommercial.Amendment> listAmendment = new list<SM001_GesteCommercial.Amendment>();
+        String zuoraSubId = sub.Zuora__External_Id__c;
+        String zEntityId = WS001_CallZuora.getZuoraEntityId(sub.Zuora__Account__r.CodePays__c);        
         
-        if(c.Offre_de_r_tention__c != 'Points fidélité'){
-        //if(c.Offre_de_r_tention__c != 'Points fidélité' && c.Offre_de_r_tention__c != 'Hausse tarifaire'){
+        // determiner si application de remise + produit remise
+        if(c.Offre_de_r_tention__c != 'Points fidélité'){        	
+            String entite = (sub.Zuora__Account__r.CodePays__c == '033') ? 'France' : 'Belgique';
+            String rpcReference = c.Offre_de_r_tention__c;
+            list<ProdRatePlanCharge__c> listProdRatePlanCharge = new list<ProdRatePlanCharge__c>([SELECT ReferenceCIC__c, zid__c, ProdRatePlan__r.zid__c 
+            FROM ProdRatePlanCharge__c WHERE ReferenceCIC__c = :rpcReference and Entite__c = :entite]);        
+        
+            if(listProdRatePlanCharge.size() == 0){                
+                throw new RTException(RTExceptionCode.ERREUR_RETENTION_PRODUIT_ABSENT);			
+		    }            
             
-            String prefixe = '';
-            if(listSub.get(0).Zuora__Account__r.CodePays__c == '033'){
-                prefixe = 'FR';
-            }else if(listSub.get(0).Zuora__Account__r.CodePays__c == '032'){
-                prefixe = 'BE';
-            }
+            rpId = listProdRatePlanCharge.get(0).ProdRatePlan__r.zid__c;
+		    rpcId = listProdRatePlanCharge.get(0).zid__c;
+            moisDebutRemise = Integer.valueOf(c.Mois_de_d_but_remise__c);
+            dateDebutRemise = SM_Demande.getRemiseDate(moisDebutRemise,sub.Zuora__ContractEffectiveDate__c);
             
-            String productRatePlanReference = prefixe + c.Offre_de_r_tention__c;
-            list<ProdRatePlanCharge__c> listProdRatePlanCharge = new list<ProdRatePlanCharge__c>([SELECT Reference__c, zid__c, ProdRatePlan__r.zid__c FROM ProdRatePlanCharge__c WHERE Reference__c = :productRatePlanReference]);
-            if(listProdRatePlanCharge.size() == 0){
-                system.debug('##MNE SM003_Retention executeRetention Pas de Product Rate Plan Charge trouvée pour la remise de rétention');
-                throw new MyException('Pas de Product Rate Plan Charge trouvée pour la remise de rétention.');
-            }
-            
-            ProdRatePlanCharge__c prodRatePlanCharge = listProdRatePlanCharge.get(0);
-            ProductRatePlanId = prodRatePlanCharge.ProdRatePlan__r.zid__c;
-            ProductRatePlanChargeId = prodRatePlanCharge.zid__c;
-            
-            Integer moisDebutRemise = Integer.valueOf(c.Mois_de_d_but_remise__c);
-            Date dateDebutRemise = SM_Demande.getRemiseDate(moisDebutRemise);
-            
-            system.debug('##MNE SM003_Retention executeRetention dateDebutRemise >> '+dateDebutRemise);
-            
-            //add product remise
-            SM001_GesteCommercial.Amendment addPr = new SM001_GesteCommercial.Amendment(zuoraSubId, ProductRatePlanId, ProductRatePlanChargeId, dateDebutRemise);
-            //res.requests.get(0).Amendments.add(addPr);
-            listAmendment.add(addPr);
+            hasRemiseRetention = true;
         }
-        
-        //Renew
-        Date contractEffectiveDate;
-        Date termStartDate;
-        if(c.Date_fin_engagement__c >= Date.today() ){
-            contractEffectiveDate = c.Date_fin_engagement__c;
-            termStartDate = c.Date_fin_engagement__c;
-        } else {
-            contractEffectiveDate = Date.today();
-            termStartDate = Date.today();
+                
+
+        if(sub.Zuora__TermSettingType__c == 'EVERGREEN'){
+    	 	newContractStartDate = Util.finMois(Date.today()).addDays(1); // premier jour du mois suivant
+        }else if (sub.Zuora__TermSettingType__c == 'TERMED'){
+    	 	newContractStartDate = sub.Zuora__TermEndDate__c;
         }
-        //SM001_GesteCommercial.Amendment renew = new SM001_GesteCommercial.Amendment(zuoraSubId);
-        SM001_GesteCommercial.Amendment renew = new SM001_GesteCommercial.Amendment(zuoraSubId, contractEffectiveDate, termStartDate);
-        //res.requests.get(0).Amendments.add(renew);
-        listAmendment.add(0,renew);
+
+
+        // instantiate AmendRequest Instance
+        zc_ProxyActionAmendRequest actionAmend = new zc_ProxyActionAmendRequest();
+        zc_AmendRequest req1 = new zc_AmendRequest();        
+        zc_AmendRequestPreviewOptions previewOptions = new zc_AmendRequestPreviewOptions();
+        zc_AmendRequestAmendOptions amendOptions = new zc_AmendRequestAmendOptions();
+        zc_Amendment amend1 = new zc_Amendment(); //Term and condition
+        zc_Amendment amend2 = new zc_Amendment(); //Add product
+        previewOptions.enablePreviewMode=false;
+        amendOptions.generateInvoice=false;
+        amendOptions.processPayments=false;
+        //zc_InvoiceProcessingOptions invPrc = new zc_InvoiceProcessingOptions();
+        //invPrc.invoiceDate=Date.today();
+        //invPrc.invoiceTargetDate=sub.Zuora__TermEndDate__c;
+        //amendOptions.invoiceProcessingOptions = invPrc;
+
+        //Term and condition
+        amend1.contractEffectiveDate=newContractStartDate;
+        amend1.serviceActivationDate=newContractStartDate;
+        amend1.customerAcceptanceDate=newContractStartDate;
+        amend1.name='Offre de retention : Renouvellement';
+        amend1.status='Completed';
+        amend1.subscriptionId=zuoraSubId;
+        amend1.r_type='TermsAndConditions';
+        amend1.description='offre de retention description'; 
+        amend1.termType = 'TERMED';
+        amend1.currentTerm = 12;
+        amend1.currentTermPeriodType = 'Month';
+        amend1.renewalSetting = 'RENEW_TO_EVERGREEN';                
+        //amend1.currentTerm=newCurrentTerm;
+        amend1.termStartDate=newContractStartDate; //TODO
+        req1.amendments.add(amend1);
+        
+        // Add remise Retention
+        if (hasRemiseRetention){
+        //ajout amend remise
+            amend2.contractEffectiveDate=dateDebutRemise;
+            amend2.serviceActivationDate=dateDebutRemise;
+            amend2.customerAcceptanceDate=dateDebutRemise;        
+            amend2.name='Offre de retention : Remise';
+            amend2.status='Completed';
+            amend2.subscriptionId=zuoraSubId;
+            amend2.r_type='NewProduct';
+            amend2.description='offre de retention description';                                   
+            zc_AmendmentRatePlanData ratePlanData = new zc_AmendmentRatePlanData();
+            zc_RatePlan ratePlan = new zc_RatePlan();
+            ratePlan.productRatePlanId=rpId;                
+            ratePlanData.ratePlan = ratePlan;
+            zc_RatePlanChargeDataInRatePlanData rpcChargeData = new zc_RatePlanChargeDataInRatePlanData();
+            zc_RatePlanChargeInRatePlanChargeData rpcCharge = new zc_RatePlanChargeInRatePlanChargeData();
+            rpcChargeData.ratePlanCharge = rpcCharge;        
+            //rpcCharge.endDateCondition = 'FixedPeriod';
+            //rpcCharge.discountAmount = 55;//TODO
+            //rpcCharge.triggerEvent = 'SpecificDate';
+            //rpcCharge.triggerDate = dateDebutRemise; //TODO        
+            //rpcCharge.upToPeriods = 55; //TODO
+            //rpcCharge.upToPeriodsType = 'Billing Periods';        
+            rpcCharge.productRatePlanChargeId = rpcId;                
+            ratePlanData.ratePlanChargeData.add(rpcChargeData);
+            //ratePlanData.ratePlanChargeData.add(ratePlanChargeData);
+            amend2.ratePlanData = ratePlanData; 
+            req1.amendments.add(amend2);
+        }           
+        
+        req1.previewOptions = previewOptions;
+        req1.amendOptions = amendOptions;
+        actionAmend.requests.add(req1);
+
+
+        //Call WS
+        String accessToken = WS001_CallZuora.access_token;
+        String repWS = WS001_CallZuora.sendRequest2(accessToken, '/v1/action/amend', zEntityId, 'POST', actionAmend, zc_AmendRequest.class, zc_AmendResult.class, null);
+
+        // Check resultat WS
+        ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+        repWS = par.serializeWithMapping2(repWS,'zc_ProxyActionAmendResponse'); //rename members
+        zc_ProxyActionAmendResponse repObj = (zc_ProxyActionAmendResponse)JSON.deserialize(repWS, zc_ProxyActionAmendResponse.class);
+        
+        
+        //Debut call out pour ZDOC
+		// Get Zuora Data (subscription)
+		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+		
+		// Get Zuora Data (Account)
+		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+		String payMethodId = zacc.defaultPaymentMethodId;
+		
+		// Get Zuora Data (PaymentMethod)
+		pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+        //Fin call out pour ZDOC
         
         
         
-        
-        
-        /*String inBody = JSON.serialize(res);
-        inBody = inBody.replace('null','""');
-        System.debug('##MNE SM003_Retention executeRetention inBody >> '+inBody);
-        
-        String repWS = SM001_GesteCommercial.sendAmendRequest(inBody, zEntityId);
-        System.debug('##MNE SM003_Retention executeRetention repWS >> '+repWS);
-        
-        SM001_GesteCommercial.Resultat resApex =   (SM001_GesteCommercial.Resultat)System.JSON.deserialize(repWS, SM001_GesteCommercial.Resultat.class);
-        System.debug('##MNE SM003_Retention executeRetention resApex >> '+resApex);
-        
+
         Boolean success = true;
         String messageError = '';
-        if(resApex != null && resApex.results != null  && resApex.results.size() > 0){
-            for(SM001_GesteCommercial.Result r : resApex.results){
-                if(!r.Success){
-                    if(r.Errors != null && r.Errors.size() > 0){
-                        throw new MyException(r.Errors.get(0).Message);
+        if(repObj != null && repObj.results != null  && repObj.results.size() > 0){
+            for(zc_AmendResult r : repObj.results){
+                if(!r.success){
+                    if(r.errors != null && r.errors.size() > 0){
+                        throw new RTException(String.valueOf(new RTException(RTExceptionCode.ERREUR_RETENTION_APPLICATION)) + r.errors.get(0).message);
                     }
                 }
             }
-        }*/
-        
-        
-        
-        ////
-        for(SM001_GesteCommercial.Amendment amend : listAmendment){
-            SM001_GesteCommercial.Body res = new SM001_GesteCommercial.Body();
-            res.requests.get(0).Amendments.add(amend);
-            String inBody = JSON.serialize(res);
-            inBody = inBody.replace('null','""');
-            System.debug('##MNE SM003_Retention executeRetention inBody >> '+inBody);
-            
-            String repWS = SM001_GesteCommercial.sendAmendRequest(inBody, zEntityId);
-            System.debug('##MNE SM003_Retention executeRetention repWS >> '+repWS);
-            
-            SM001_GesteCommercial.Resultat resApex =   (SM001_GesteCommercial.Resultat)System.JSON.deserialize(repWS, SM001_GesteCommercial.Resultat.class);
-            System.debug('##MNE SM003_Retention executeRetention resApex >> '+resApex);
-            
-            Boolean success = true;
-            String messageError = '';
-            if(resApex != null && resApex.results != null  && resApex.results.size() > 0){
-                for(SM001_GesteCommercial.Result r : resApex.results){
-                    if(!r.Success){
-                        if(r.Errors != null && r.Errors.size() > 0){
-                            throw new MyException(r.Errors.get(0).Message);
-                        }
-                    }
-                }
-            }
-        }
-        
-        
-        
-        
-        
+        }                
         
      }
+     
+     public static void callOutForZDoc(String subName, Id accId){
+		Zuora__Subscription__c sub = SM_Subscription.getActiveSubscriptionByNameORAccId(subName, accId);
+        if (sub == null) {
+            throw new MyException('Abonnement absent de la demande: pas dabo, plusieurs ou inactif');
+        } 
+		
+		ProcessLog__c pLog = new ProcessLog__c(Process__c = 'executeRetention', Account__c = accId);  
+		//Debut call out pour ZDOC
+		String accessToken = WS001_CallZuora.access_token;
+		String zEntityId = WS001_CallZuora.getZuoraEntityId(sub.Zuora__Account__r.CodePays__c);  
+		
+		// Get Zuora Data (subscription)
+		subZdoc = zc_Api.subscriptionGET(accessToken, zEntityId, sub.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ZSUBSCRIPTION, pLog);
+		
+		// Get Zuora Data (Account)
+		zc_ProxyGetAccount zacc = zc_Api.objectAccountGET(accessToken, zEntityId, sub.Zuora__CustomerAccount__r.Zuora__External_Id__c, RTExceptionCode.ERREUR_ACQUISIT_GET_ACCOUNT, pLog);
+		String payMethodId = zacc.defaultPaymentMethodId;
+		
+		// Get Zuora Data (PaymentMethod)
+		pm = zc_Api.objectPaymentMethodGET(accessToken, zEntityId, payMethodId, RTExceptionCode.ERREUR_ACQUISIT_GET_PAYMENTMETHOD, pLog);
+        //Fin call out pour ZDOC
+     }
+     
+     
      
     private class MyException extends Exception {
     }

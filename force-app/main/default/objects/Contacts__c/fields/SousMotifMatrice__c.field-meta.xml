@@ -339,15 +339,21 @@
         <valueSettings>
             <controllingFieldValue>05- B2B</controllingFieldValue>
             <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
             <valueName>AD- Action DRC</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>05- B2B</controllingFieldValue>
             <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
             <valueName>AH- Action Selfcare</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
             <valueName>AS- Action Stand</valueName>
         </valueSettings>
         <valueSettings>

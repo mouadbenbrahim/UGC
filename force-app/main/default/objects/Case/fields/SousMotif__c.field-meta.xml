@@ -338,26 +338,38 @@
             <valueName>Click to Call Recla</valueName>
         </valueSettings>
         <valueSettings>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <valueName>AD- Action DRC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <valueName>AS- Action Stand</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>06- Migration UI 1/2/3</controllingFieldValue>
+            <controllingFieldValue>07- Reabonnement</controllingFieldValue>
+            <controllingFieldValue>02- Impaye</controllingFieldValue>
+            <controllingFieldValue>05- Changement coordonnees bancaires</controllingFieldValue>
+            <controllingFieldValue>05- B2B</controllingFieldValue>
+            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
+            <valueName>AH- Action Selfcare</valueName>
+        </valueSettings>
+        <valueSettings>
             <controllingFieldValue>02- Impaye</controllingFieldValue>
             <valueName>R1- 1er rejet</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>02- Impaye</controllingFieldValue>
             <valueName>R2- 2nd rejet</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>05- B2B</controllingFieldValue>
-            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
-            <valueName>AD- Action DRC</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>05- B2B</controllingFieldValue>
-            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
-            <valueName>AH- Action Selfcare</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>07- Creation Abonnement</controllingFieldValue>
-            <valueName>AS- Action Stand</valueName>
         </valueSettings>
     </valueSet>
 </CustomField>

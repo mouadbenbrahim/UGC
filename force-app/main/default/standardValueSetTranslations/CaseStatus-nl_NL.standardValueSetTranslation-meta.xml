@@ -33,10 +33,6 @@
         <translation>Gesloten</translation>
     </valueTranslation>
     <valueTranslation>
-        <masterLabel>temp_mbe1</masterLabel>
-        <translation><!-- temp_mbe1 --></translation>
-    </valueTranslation>
-    <valueTranslation>
         <masterLabel>à traiter</masterLabel>
         <translation>Te behandelen</translation>
     </valueTranslation>

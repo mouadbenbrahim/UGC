@@ -7,8 +7,10 @@ public without sharing class LCC003_Dispatcher {
         System.debug('##MBEN LCC003_Dispatcher initApexMethod otherVar: ' + otherVar);
         System.debug('##MBEN LCC003_Dispatcher initApexMethod bttnOperation: ' + bttnOperation);
         System.debug('##MBEN LCC003_Dispatcher initApexMethod confirmationAction: ' + confirmationAction);
+        
+        Case caseToUpdate = new Case();
+        Case caseToUpdateError = new Case();
  
-        // Case demande = getCase(currentId);
         if((bttnOperation == 'Anonymisation' || bttnOperation == 'AnonymisationAbonne') && !confirmationAction){
             return rep;
         }
@@ -16,24 +18,20 @@ public without sharing class LCC003_Dispatcher {
         try{
             switch on bttnOperation {
                 when 'Desabonnement' {
-                    SM_Desabonnement.desabonner(currentId);
-                }
-                when 'AnnulerDesabonnement' {
-                    SM_Desabonnement.annuler(currentId);
+					SM_Desabonnement.desabonner(currentId,false);
                 }
                 when 'Resiliation' {
-                    SM_Resiliation.resiliation(currentId);
-                    //SM_Resiliation.resilier(currentId);
+					SM_Resiliation.resiliation(currentId);
                 }
                 when 'getAccount' {
-                    SM_Subscription subscription = new SM_Subscription();
-                    //subscription.getAccount();
+					SM_Subscription subscription = new SM_Subscription();
                 }
                 when 'Anonymisation' {
-                    rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ALL);
+					rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ALL);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'RefreshContraintes' {
-                    SM_Offre.refreshContraintes2(currentId);
+					SM_Offre.refreshContraintes2(currentId);
                 }
                 when 'GenerateCouponItems' {
                     SM_Coupon.generateCouponItems(currentId);
@@ -42,9 +40,6 @@ public without sharing class LCC003_Dispatcher {
                     SM_Product.sync();
                 }
                 when 'Retention' {
-                    //TO do :
-                    //partie Offre de rétention = "hausse tarifaire" => uniquement renouvellement de sub fait
-                    // partie envoie de courrier
                     system.debug('##MNE LCC003_Dispatcher initApexMethod process >> Retention');
                     SM003_Retention.retention(currentId);
                 }
@@ -55,28 +50,32 @@ public without sharing class LCC003_Dispatcher {
                     SM_Retractation.retractation(currentId);
                 }
                 when 'AnnulationDemande' {
-                     SM_Desabonnement.desabonner(currentId);
+                    SM_Desabonnement.desabonner(currentId,false);
                 }
                 when 'AnonymisationAbonne' {
-                     rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ONLY_ZUORA);
+                    rep = SM002_Anonymisation.accountAnonymisationFromQuickAction(currentId, SM002_Anonymisation.AnonymisationType.ONLY_ZUORA);
+					caseToUpdate.Status = 'Fermee';
                 }
                 when 'Remboursement' {
-                     SM_Remboursement.Remboursement(currentId); 
+                    SM_Remboursement.Remboursement(currentId); 
                 }
                 when 'AnnulationDesabo' {
-                     SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
+                    SM005_AnnulationDesabo.AnnulerDesabo(currentId); 
                 }
-                /*when 'RejetBRED' {
-                     SM_Rejet.traiterFichier(currentId);  
-                }*/
                 when 'RejetBRED_Parser_STEP1' {
-                     SM_Rejet.traiterFichier(currentId);  
+					SM_Rejet.traiterFichier(currentId);  
                 }
                 when 'RejetBRED_Traiter_STEP2' {
-                     SM_Rejet.getZSubRejetBredStep2(currentId);  
+                    SM_Rejet.getZSubRejetBredStep2(currentId);  
                 }
                 when 'GesteCommercial' {
-                     LCC006_GesteCommercial.executeGesteCommercial(currentId);  
+                    LCC006_GesteCommercial.executeGesteCommercial(currentId, false);
+                }
+                when 'DesactiverCarte' {
+                    SM_Carte.desactivationFromCard(currentId, null);
+                }
+                when 'ActiverCarte' {
+                	SM_Carte.activationFromCard(currentId);
                 }
                 when else {
                     System.debug('##MBEN : aucune operation n est transmise');
@@ -91,8 +90,33 @@ public without sharing class LCC003_Dispatcher {
             System.debug('##MNE LCC003_Dispatcher initApexMethod exception getTypeName >> ' + e.getTypeName());   
             System.debug('##MNE LCC003_Dispatcher initApexMethod exception getCause >> ' + e.getCause()); 
             System.debug('##MNE LCC003_Dispatcher initApexMethod exception getLineNumber >> ' + e.getLineNumber());  
+            if(currentId.getSObjectType() == Schema.Case.SObjectType){
+                
+                Datetime dNow = Datetime.now();
+                caseToUpdateError.Id = currentId;
+                String sDate = String.valueOf(dNow);
+                Case cs = SM_Demande.getDemande(currentId);
+                String current_ExecMessage = cs.ExecMessage__c;
+                String fullMessage = e.getMessage() + e.getStackTraceString() + e.getTypeName() + e.getCause() + e.getLineNumber();
+                caseToUpdateError.ExecMessage__c = sDate + fullMessage + '\n' + current_ExecMessage;
+                caseToUpdateError.ExecStatus__c = 'Erreur';
+                caseToUpdateError.ExecDate__c = dNow;
+                update caseToUpdateError;
+                
+                ProcessLog__c pLog = new ProcessLog__c(Process__c = bttnOperation, Account__c = cs.AccountId, SubscriptionName__c = cs.SubscriptionZName__c , Message__c = fullMessage);
+                insert pLog;
+            }
             return rep;
         }
+        
+        if(currentId.getSObjectType() == Schema.Case.SObjectType && currentId != null){
+            Datetime dNow = Datetime.now();
+            caseToUpdate.Id = currentId;
+			caseToUpdate.ExecStatus__c = 'Success';
+            caseToUpdate.ExecDate__c = dNow;
+            caseToUpdate.ExecSuccessDate__c = dNow;
+            update caseToUpdate;
+		}
 
         return rep;
 

@@ -27,11 +27,6 @@
                 <label>03- Click and collect</label>
             </value>
             <value>
-                <fullName>04- Dematerialise</fullName>
-                <default>false</default>
-                <label>04- Dématérialisé</label>
-            </value>
-            <value>
                 <fullName>05- B2B</fullName>
                 <default>false</default>
                 <label>05- B2B</label>
@@ -54,12 +49,12 @@
             <value>
                 <fullName>02- Reedition payante</fullName>
                 <default>false</default>
-                <label>02- Réédition payante</label>
+                <label>02- Reedition payante</label>
             </value>
             <value>
                 <fullName>03- Reedition gratuite</fullName>
                 <default>false</default>
-                <label>03- Réédition gratuite</label>
+                <label>03- Reedition gratuite</label>
             </value>
             <value>
                 <fullName>04- Desabonnement</fullName>
@@ -112,6 +107,11 @@
                 <label>13- Annulation Contrat</label>
             </value>
             <value>
+                <fullName>04- Dematerialise</fullName>
+                <default>false</default>
+                <label>04- Dématérialisé</label>
+            </value>
+            <value>
                 <fullName>01- Inscription</fullName>
                 <default>false</default>
                 <label>01- Inscription</label>
@@ -159,7 +159,7 @@
             <value>
                 <fullName>01- Modalites de reservation</fullName>
                 <default>false</default>
-                <label>01- Modalites de reservation</label>
+                <label>01- Modalités de réservation</label>
             </value>
             <value>
                 <fullName>02- Annulation Réservation</fullName>
@@ -184,7 +184,7 @@
             <value>
                 <fullName>01- UGC Illimite</fullName>
                 <default>false</default>
-                <label>01- UGC Illimite</label>
+                <label>01- UGC Illimité</label>
             </value>
             <value>
                 <fullName>02- Club</fullName>
@@ -199,7 +199,7 @@
             <value>
                 <fullName>02- Impaye</fullName>
                 <default>false</default>
-                <label>02- Impaye</label>
+                <label>02- Impayé</label>
             </value>
             <value>
                 <fullName>03- Facture / attestation de paiement</fullName>
@@ -214,7 +214,7 @@
             <value>
                 <fullName>05- Changement coordonnees bancaires</fullName>
                 <default>false</default>
-                <label>05- Changement coordonnées bancaires</label>
+                <label>05- Changement coordonnees bancaires</label>
             </value>
             <value>
                 <fullName>06- Gestes commerciaux</fullName>
@@ -381,10 +381,6 @@
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>0- Souscription</controllingFieldValue>
-            <valueName>04- Dematerialise</valueName>
-        </valueSettings>
-        <valueSettings>
-            <controllingFieldValue>0- Souscription</controllingFieldValue>
             <valueName>05- B2B</valueName>
         </valueSettings>
         <valueSettings>
@@ -394,6 +390,10 @@
         <valueSettings>
             <controllingFieldValue>0- Souscription</controllingFieldValue>
             <valueName>07- Creation Abonnement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>0- Souscription</controllingFieldValue>
+            <valueName>04- Dematerialise</valueName>
         </valueSettings>
         <valueSettings>
             <controllingFieldValue>1- Vie de l&#39;abonnement</controllingFieldValue>

@@ -14,7 +14,7 @@ public class Test_MailBatch {
       	 account1.FirstName = 'Test Account'; 
          account1.LastName = 'Test Account';
          account1.PersonBirthdate = Date.newInstance(1976, 12, 9);
-         account1.RecordTypeId = '0120Y000000ZZgEQAW';
+         account1.RecordTypeId = Utils.getComptePersonelAccountRecordType().Id;
          account1.CodePostal__c='94000';
          account1.PersonHomePhone='0155658899';
          account1.PersonMobilePhone='0656546323';

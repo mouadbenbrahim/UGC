@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>TECH_Region__c</fullName>
     <externalId>false</externalId>
-    <formula>Lieu__r.Region__c</formula>
+    <formula>Cinema__r.Region__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>TECH_Region</label>
     <required>false</required>

@@ -89,9 +89,6 @@
         <label>myDecision16</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision20</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_17</name>
@@ -107,96 +104,6 @@
                 <targetReference>myRule_17_A1</targetReference>
             </connector>
             <label>Origine Salle</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>5.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision20</name>
-        <label>myDecision20</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision24</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_21</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_21</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_21_A1</targetReference>
-            </connector>
-            <label>Origine Email sortant</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>6.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision24</name>
-        <label>myDecision24</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision28</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_25</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_25</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_25_A1</targetReference>
-            </connector>
-            <label>Origine courrier sortant</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>7.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision28</name>
-        <label>myDecision28</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_29</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_29</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_29_A1</targetReference>
-            </connector>
-            <label>Origine telephone sortant</label>
         </rules>
     </decisions>
     <decisions>
@@ -269,7 +176,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_10_myRule_9_A1_1380541610</name>
+        <name>formula_10_myRule_9_A1_6566842164</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -280,9 +187,9 @@
                 <stringValue>$User.Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_9_A1_4076107950</name>
+        <name>formula_11_myRule_9_A1_9128221270</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
+        <expression>$User.Id</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -291,7 +198,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_13_A1_8805462501</name>
+        <name>formula_14_myRule_13_A1_1566386609</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -302,9 +209,9 @@
                 <stringValue>$User.Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_15_myRule_13_A1_9659579355</name>
+        <name>formula_15_myRule_13_A1_4215174285</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
+        <expression>$User.Id</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -313,7 +220,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_18_myRule_17_A1_2790943804</name>
+        <name>formula_18_myRule_17_A1_2766042647</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -324,53 +231,9 @@
                 <stringValue>$User.Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_19_myRule_17_A1_6952542947</name>
+        <name>formula_19_myRule_17_A1_6636284567</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>TODAY() </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_22_myRule_21_A1_8691397435</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>$User.Id </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_23_myRule_21_A1_9810460830</name>
-        <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>$User.Id </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_26_myRule_25_A1_7600381126</name>
-        <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>TODAY() </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_27_myRule_25_A1_9403299464</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
+        <expression>$User.Id</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -379,7 +242,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_0534688066</name>
+        <name>formula_2_myRule_1_A1_4450581664</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -390,31 +253,9 @@
                 <stringValue>$User.Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_30_myRule_29_A1_6048261420</name>
+        <name>formula_3_myRule_1_A1_0396067264</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>TODAY() </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_31_myRule_29_A1_8971173833</name>
-        <dataType>Date</dataType>
-        <expression>TODAY()</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>$User.Id </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_3_myRule_1_A1_6083109383</name>
-        <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
+        <expression>$User.Id</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -423,7 +264,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_6_myRule_5_A1_2885787048</name>
+        <name>formula_6_myRule_5_A1_0714678932</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -434,22 +275,22 @@
                 <stringValue>$User.Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_7_myRule_5_A1_0356497585</name>
+        <name>formula_7_myRule_5_A1_9549343326</name>
         <dataType>String</dataType>
-        <expression>{!$User.Id}</expression>
+        <expression>$User.Id</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
                 <stringValue>AND (NOT ($User.ByPassProcessBuilder__c ),
-ISPICKVAL([Case].Origin ,&quot;Téléphone entrant&quot;))</stringValue>
+ISPICKVAL([Case].Origin ,&quot;Téléphone&quot;))</stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_1</name>
         <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
-ISPICKVAL({!myVariable_current.Origin} ,&quot;Téléphone entrant&quot;))</expression>
+        <expression>AND (NOT ($User.ByPassProcessBuilder__c ),
+ISPICKVAL({!myVariable_current.Origin} ,&quot;Téléphone&quot;))</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -461,7 +302,7 @@ ISPICKVAL([Case].Origin ,&quot;E-mail&quot;))</stringValue>
         </processMetadataValues>
         <name>formula_myRule_13</name>
         <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
+        <expression>AND (NOT ($User.ByPassProcessBuilder__c ),
 ISPICKVAL({!myVariable_current.Origin} ,&quot;E-mail&quot;))</expression>
     </formulas>
     <formulas>
@@ -474,7 +315,7 @@ ISPICKVAL([Case].Origin ,&quot;Salle&quot;))</stringValue>
         </processMetadataValues>
         <name>formula_myRule_17</name>
         <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
+        <expression>AND (NOT ($User.ByPassProcessBuilder__c ),
 ISPICKVAL({!myVariable_current.Origin} ,&quot;Salle&quot;))</expression>
     </formulas>
     <formulas>
@@ -482,52 +323,13 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Salle&quot;))</expression>
             <name>originalFormula</name>
             <value>
                 <stringValue>AND (NOT ($User.ByPassProcessBuilder__c ),
-ISPICKVAL([Case].Origin ,&quot;E-mail sortant&quot;))</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_21</name>
-        <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
-ISPICKVAL({!myVariable_current.Origin} ,&quot;E-mail sortant&quot;))</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>AND (NOT ($User.ByPassProcessBuilder__c ),
-ISPICKVAL([Case].Origin ,&quot;Courrier sortant&quot;))</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_25</name>
-        <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
-ISPICKVAL({!myVariable_current.Origin} ,&quot;Courrier sortant&quot;))</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>AND (NOT ($User.ByPassProcessBuilder__c ),
-ISPICKVAL([Case].Origin ,&quot;Téléphone sortant&quot;))</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_29</name>
-        <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
-ISPICKVAL({!myVariable_current.Origin} ,&quot;Téléphone sortant&quot;))</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>AND (NOT ($User.ByPassProcessBuilder__c ),
-ISPICKVAL([Case].Origin ,&quot;Courrier entrant&quot;))</stringValue>
+ISPICKVAL([Case].Origin ,&quot;Courrier&quot;))</stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_5</name>
         <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
-ISPICKVAL({!myVariable_current.Origin} ,&quot;Courrier entrant&quot;))</expression>
+        <expression>AND (NOT ($User.ByPassProcessBuilder__c ),
+ISPICKVAL({!myVariable_current.Origin} ,&quot;Courrier&quot;))</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -539,7 +341,7 @@ ISPICKVAL([Case].Origin ,&quot;Formulairedecontact&quot;))</stringValue>
         </processMetadataValues>
         <name>formula_myRule_9</name>
         <dataType>Boolean</dataType>
-        <expression>AND (NOT ({!$User.ByPassProcessBuilder__c} ),
+        <expression>AND (NOT ($User.ByPassProcessBuilder__c ),
 ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expression>
     </formulas>
     <interviewLabel>CASE_CreationAutomatiqueTacheContactEntrants-6_InterviewLabel</interviewLabel>
@@ -601,7 +403,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_14_myRule_13_A1_8805462501</elementReference>
+                <elementReference>formula_14_myRule_13_A1_1566386609</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -703,7 +505,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_15_myRule_13_A1_9659579355</elementReference>
+                <elementReference>formula_15_myRule_13_A1_4215174285</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -890,7 +692,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_18_myRule_17_A1_2790943804</elementReference>
+                <elementReference>formula_18_myRule_17_A1_2766042647</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -992,7 +794,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_19_myRule_17_A1_6952542947</elementReference>
+                <elementReference>formula_19_myRule_17_A1_6636284567</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1179,7 +981,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_0534688066</elementReference>
+                <elementReference>formula_2_myRule_1_A1_4450581664</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1281,7 +1083,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_6083109383</elementReference>
+                <elementReference>formula_3_myRule_1_A1_0396067264</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1437,951 +1239,6 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
         <object>Task</object>
     </recordCreates>
     <recordCreates>
-        <name>myRule_21_A1</name>
-        <label>Création tache email sortant</label>
-        <locationX>2100</locationX>
-        <locationY>200</locationY>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Due Date Only</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>formula_22_myRule_21_A1_8691397435</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Description</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Description</field>
-            <value>
-                <elementReference>myVariable_current.Description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Origine</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Origine__c</field>
-            <value>
-                <stringValue>Email sortant</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Assigned To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>User</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>formula_23_myRule_21_A1_9810460830</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Priority</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Normale</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Achevée</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Subject</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Subject</field>
-            <value>
-                <elementReference>myVariable_current.Subject</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Related To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Abonnement__c;Account;Asset;AssetRelationship;Campaign;Carte__c;Case;Complexe__c;Contacts__c;Contract;ContractLineItem;Entitlement;Evenement__c;File_Impression__c;Film__c;ListEmail;Opportunity;Order;Product2;Produit__c;Seance__c;ServiceContract;Solution;Zuora__CustomerAccount__c;Zuora__Payment__c;Zuora__SubscriptionProductCharge__c;Zuora__SubscriptionProductFeature__c;Zuora__SubscriptionRatePlanChargeTier__c;Zuora__SubscriptionRatePlan__c;Zuora__Subscription__c;et4ae5__Triggered_Send_Execution__c</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhatId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Name ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Contact;Lead</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhoId</field>
-            <value>
-                <elementReference>myVariable_current.ContactId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordCreates>
-    <recordCreates>
-        <name>myRule_25_A1</name>
-        <label>Création tache courrier sortant</label>
-        <locationX>2500</locationX>
-        <locationY>200</locationY>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Due Date Only</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>formula_27_myRule_25_A1_9403299464</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Description</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Description</field>
-            <value>
-                <elementReference>myVariable_current.Description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Origine</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Origine__c</field>
-            <value>
-                <stringValue>Courrier sortant</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Assigned To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>formula_26_myRule_25_A1_7600381126</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Priority</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Normale</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Achevée</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Subject</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Subject</field>
-            <value>
-                <elementReference>myVariable_current.Subject</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Related To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Abonnement__c;Account;Asset;AssetRelationship;Campaign;Carte__c;Case;Complexe__c;Contacts__c;Contract;ContractLineItem;Entitlement;Evenement__c;File_Impression__c;Film__c;ListEmail;Opportunity;Order;Product2;Produit__c;Seance__c;ServiceContract;Solution;Zuora__CustomerAccount__c;Zuora__Payment__c;Zuora__SubscriptionProductCharge__c;Zuora__SubscriptionProductFeature__c;Zuora__SubscriptionRatePlanChargeTier__c;Zuora__SubscriptionRatePlan__c;Zuora__Subscription__c;et4ae5__Triggered_Send_Execution__c</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhatId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Name ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Contact;Lead</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhoId</field>
-            <value>
-                <elementReference>myVariable_current.ContactId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordCreates>
-    <recordCreates>
-        <name>myRule_29_A1</name>
-        <label>Création tache téléphone sortant</label>
-        <locationX>2900</locationX>
-        <locationY>200</locationY>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Due Date Only</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>ActivityDate</field>
-            <value>
-                <elementReference>formula_31_myRule_29_A1_8971173833</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Description</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Description</field>
-            <value>
-                <elementReference>myVariable_current.Description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Origine</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Origine__c</field>
-            <value>
-                <stringValue>Appel sortant</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Assigned To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>formula_30_myRule_29_A1_6048261420</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Priority</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Normale</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Achevée</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Subject</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue/>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Subject</field>
-            <value>
-                <elementReference>myVariable_current.Subject</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Related To ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Abonnement__c;Account;Asset;AssetRelationship;Campaign;Carte__c;Case;Complexe__c;Contacts__c;Contract;ContractLineItem;Entitlement;Evenement__c;File_Impression__c;Film__c;ListEmail;Opportunity;Order;Product2;Produit__c;Seance__c;ServiceContract;Solution;Zuora__CustomerAccount__c;Zuora__Payment__c;Zuora__SubscriptionProductCharge__c;Zuora__SubscriptionProductFeature__c;Zuora__SubscriptionRatePlanChargeTier__c;Zuora__SubscriptionRatePlan__c;Zuora__Subscription__c;et4ae5__Triggered_Send_Execution__c</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhatId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Name ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Contact;Lead</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>WhoId</field>
-            <value>
-                <elementReference>myVariable_current.ContactId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
-    </recordCreates>
-    <recordCreates>
         <name>myRule_5_A1</name>
         <label>Création Tache Courrier Entrant</label>
         <locationX>500</locationX>
@@ -2413,7 +1270,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_6_myRule_5_A1_2885787048</elementReference>
+                <elementReference>formula_6_myRule_5_A1_0714678932</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2515,7 +1372,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_7_myRule_5_A1_0356497585</elementReference>
+                <elementReference>formula_7_myRule_5_A1_9549343326</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2702,7 +1559,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_10_myRule_9_A1_1380541610</elementReference>
+                <elementReference>formula_10_myRule_9_A1_6566842164</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2804,7 +1661,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_11_myRule_9_A1_4076107950</elementReference>
+                <elementReference>formula_11_myRule_9_A1_9128221270</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2960,7 +1817,7 @@ ISPICKVAL({!myVariable_current.Origin} ,&quot;Formulairedecontact&quot;))</expre
         <object>Task</object>
     </recordCreates>
     <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>

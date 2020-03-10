@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ticket_de_remboursement_BE_traiter</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>Etat_remboursement__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Famille__c</field>
+        <operation>equals</operation>
+        <value>7- Finance</value>
+    </filters>
+    <filters>
+        <field>Motif__c</field>
+        <operation>equals</operation>
+        <value>04- Remboursement</value>
+    </filters>
+    <filters>
+        <field>SousMotif__c</field>
+        <operation>equals</operation>
+        <value>A- Action</value>
+    </filters>
+    <filters>
+        <field>Etat_remboursement__c</field>
+        <operation>equals</operation>
+        <value>en attente,Créée</value>
+    </filters>
+    <filters>
+        <field>Pays__c</field>
+        <operation>equals</operation>
+        <value>Belgique</value>
+    </filters>
+    <filters>
+        <field>Etat_remboursement__c</field>
+        <operation>notEqual</operation>
+        <value>Rembourse,Refusé</value>
+    </filters>
+    <label>Ticket de remboursement BE à traiter</label>
+</ListView>

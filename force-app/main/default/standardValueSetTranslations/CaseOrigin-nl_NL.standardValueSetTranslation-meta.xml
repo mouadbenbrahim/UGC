@@ -17,8 +17,8 @@
         <translation><!-- E-mail entrant --></translation>
     </valueTranslation>
     <valueTranslation>
-        <masterLabel>Email sortant</masterLabel>
-        <translation><!-- Email sortant --></translation>
+        <masterLabel>E-mail sortant</masterLabel>
+        <translation><!-- E-mail sortant --></translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Facebook</masterLabel>
@@ -27,6 +27,10 @@
     <valueTranslation>
         <masterLabel>Formulaire de contact</masterLabel>
         <translation>contactformulier</translation>
+    </valueTranslation>
+    <valueTranslation>
+        <masterLabel>Google</masterLabel>
+        <translation><!-- Google --></translation>
     </valueTranslation>
     <valueTranslation>
         <masterLabel>Interne</masterLabel>

@@ -294,13 +294,13 @@
             <sortOrder>10</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Souscription</actionName>
-            <actionType>CustomButton</actionType>
+            <actionName>Case.Requalifier_le_ticket</actionName>
+            <actionType>QuickAction</actionType>
             <sortOrder>11</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Case.Requalifier_le_ticket</actionName>
-            <actionType>QuickAction</actionType>
+            <actionName>Clone</actionName>
+            <actionType>StandardButton</actionType>
             <sortOrder>12</sortOrder>
         </platformActionListItems>
     </platformActionList>
@@ -404,10 +404,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Carte__c.DemandeClient__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
+        <fields>IsCarte__c</fields>
+        <fields>Subscription__c</fields>
+        <fields>Carte__c</fields>
+        <fields>Statut__c</fields>
         <relatedList>File_Impression__c.Case__c</relatedList>
     </relatedLists>
     <relatedObjects>ContactId</relatedObjects>

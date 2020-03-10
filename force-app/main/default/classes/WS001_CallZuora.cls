@@ -1,3 +1,14 @@
+/**
+ * @File Name          : WS001_CallZuora.cls
+ * @Description        : 
+ * @Author             : mouad
+ * @Group              : 
+ * @Last Modified By   : mouad
+ * @Last Modified On   : 19/09/2019 à 22:25:03
+ * @Modification Log   : 
+ * Ver       Date            Author      		    Modification
+ * 1.0    09/09/2019   mouad     Initial Version
+**/
 public with sharing class WS001_CallZuora {
 
     //public static String oauth_endpoint = 'https://rest.sandbox.eu.zuora.com/oauth/token';    https://rest.sandbox.eu.zuora.com
@@ -11,7 +22,11 @@ public with sharing class WS001_CallZuora {
     public static String ZuoraEntityId_Belgique = Label.ZuoraEntityId_Belgique;
     //String testEnumFR = WS001_CallZuora.getZuoraEntityId(WS001_CallZuora.ZuoraEntityCountry.FRA);
     //String testEnumBE = WS001_CallZuora.getZuoraEntityId(WS001_CallZuora.ZuoraEntityCountry.BEL);
-    
+
+    public interface MappedProperties {
+        Map<String, String> getPropertyMappings();
+    }
+
     public static String access_token {
         get {
             if (access_token == null){
@@ -151,6 +166,9 @@ public with sharing class WS001_CallZuora {
         }
         if (inBody != null ) {req.setBody(inBody);}
 
+        system.debug('##MBEN endpoint >> '+endpoint);
+        system.debug('##MBEN zEntityId >> '+zEntityId);
+        system.debug('##MBEN access_token >> '+access_token);
         system.debug('##MBEN requestValue >> '+inBody);
         //req.setCompressed(true); si active erreur sur le retour JSON.
         req.setTimeout(60000);
@@ -178,6 +196,289 @@ public with sharing class WS001_CallZuora {
         }
         return wsOut;
     }
+
+    public static String sendRequest2(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
+    Type requestType, Type returnType, String version){
+        String bodyOutS;       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS;
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            //reqParser.mapSwap = true;
+            bodyInS = reqParser.serializeWithMapping(bodyIn);
+            req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
+        }    
+        
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+        
+        /*JsonParser parser = Json.createParser(bodyOutS);
+        parser.nextToken();
+        bodyOut = parser.readValueAs(Object);*/
+        
+        //Object bodyOut = (Object)JSON.deserializeStrict(bodyOutS,Object.class);
+        //ZUC_Parser resParser = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+        //bodyOut = resParser.serializeWithMapping(bodyOut);
+
+        return bodyOutS;
+
+            /*
+            bodyInS = (String) JSON.serialize(bodyIn);
+            Object o = requestType.newInstance();
+            System.debug('---------ETAP1 INSTANCE');
+            if (o instanceof MappedProperties) {
+                // Map<String, String> propertyMappings = ((MappedProperties) o).getPropertyMappings();
+                System.debug('---------ETAP2 INSTANCE');
+                Map<String, String> propertyMappings = ((MappedProperties) o).getPropertyMappings();
+                System.debug('-----PM:' + propertyMappings);
+                for (String baseName : propertyMappings.keySet()) {
+                    bodyInS = bodyInS.replaceAll('"' + propertyMappings.get(baseName) + '"\\s*:',
+                        '"' + baseName + '":');
+                }
+                System.debug(bodyInS);
+            } 
+            */           
+            
+        
+
+
+        // system.debug('##MBEN requestValue >> '+bodyIn);
+        //req.setCompressed(true); si active erreur sur le retour JSON.
+        
+        //blob res2 = res.getBodyAsBlob();
+
+        //bodyOut = bodyOut.replace('"currency"', '"currencyTMP"');
+        //responseValue = responseValue.replace('"name"', '"nameTMP"');
+
+
+        //JsonParser parser = Json.createParser(bodyOut);
+        //parser.nextToken();
+        //return parser.readValueAs(returnType);
+        
+
+    }
+
+    public static String sendRequest4(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, String version){
+        String bodyOutS;       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS;
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            bodyInS = reqParser.serializeWithMapping(bodyIn);
+            req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
+        }    
+        
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+        
+        return bodyOutS;
+
+    }
+
+public static Map<String,Object> sendRequest3(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
+     Type respType, Type respErrorType, String version){
+        String bodyOutS;       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS;
+        Map<String,Object> returnMap = new Map<String,Object>();
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            //reqParser.mapSwap = true;
+            bodyInS = reqParser.serializeWithMapping(bodyIn);
+            req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
+        }    
+        
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        Integer httpCode = res.getStatusCode();
+
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+
+        Boolean isErrorClass = false;
+        String respErrorClassName;
+        Object respErrorObject;
+
+     
+
+        if (respErrorType != null){
+            respErrorClassName = respErrorType.getName();
+            respErrorObject = respErrorType.newInstance();
+        }
+        String respClassName = respType.getName();        
+        Object respObject = respType.newInstance();
+
+        
+        try {
+            if(respErrorType != null){
+                respErrorObject = JSON.deserializeStrict(bodyOutS, respErrorType);
+                isErrorClass = true;
+            }
+        }
+        catch(JSONException e){
+            System.debug('exception catche');
+            isErrorClass = false;    
+        }
+
+        returnMap.put('RESP_BODY', bodyOutS);
+
+        if (httpCode != 200){
+            returnMap.put('ERROR_HTTP', bodyOutS); //string
+        }else if (isErrorClass){
+            returnMap.put('ERROR_OBJECT', respErrorObject);
+            //returnMap.put('ERROR_BODY', bodyOutS);
+        }else{
+            ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+            if (respClassName == 'zc_ProxySaveResult' || respClassName == 'zc_ProxySubscribeResult'){ // cas specifique zc_ProxySaveResult class.
+                bodyOutS = '{"results":'+bodyOutS+'}';
+            }
+            String repWS = par.serializeWithMapping2(bodyOutS,respClassName); //rename members
+
+            respObject = JSON.deserialize(repWS, respType);
+            returnMap.put('RESP_OBJECT', respObject);
+            //returnMap.put('RESP_BODY', bodyOutS);                        
+        }
+   
+        return returnMap;
+
+    }
+
+public static Map<String,Object> sendRequest5(String access_token, String endpoint, String zEntityId, String method, Object bodyIn, 
+     Type respType, Type respErrorType, String version){
+        String bodyOutS;       
+        Boolean success = null;
+        String msgError = '';
+        String bodyInS;
+        Map<String,Object> returnMap = new Map<String,Object>();
+
+        Http h = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('callout:ZuoraAPI'+endpoint);
+        req.setMethod(method);
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('Zuora-Entity-Ids', zEntityId);//Belgique
+        req.setHeader('Authorization', 'Bearer '+access_token);
+        if(version != null){
+            req.setHeader('Zuora-Version', version);
+        }
+
+        if (bodyIn != null ) {
+            ZUC_Parser reqParser = new ZUC_Parser(ZUC_Parser.MAP_SWAP);
+            //reqParser.mapSwap = true;
+            bodyInS = reqParser.serializeWithMapping3(bodyIn);
+            req.setBody(bodyInS);
+            system.debug('##MBEN requestValue >> '+bodyInS);
+        }    
+        
+        req.setTimeout(60000);
+        HttpResponse res = null;
+        res = h.send(req);
+        bodyOutS = res.getBody();
+        Integer httpCode = res.getStatusCode();
+
+        
+        system.debug('##MBEN responseValue >> '+bodyOutS);
+
+        Boolean isErrorClass = false;
+        String respErrorClassName;
+        Object respErrorObject;
+
+     
+
+        if (respErrorType != null){
+            respErrorClassName = respErrorType.getName();
+            respErrorObject = respErrorType.newInstance();
+        }
+        String respClassName = respType.getName();        
+        Object respObject = respType.newInstance();
+
+        
+        try {
+            if(respErrorType != null){
+                respErrorObject = JSON.deserializeStrict(bodyOutS, respErrorType);
+                isErrorClass = true;
+            }
+        }
+        catch(JSONException e){
+            System.debug('exception catche');
+            isErrorClass = false;    
+        }
+
+        returnMap.put('RESP_BODY', bodyOutS);
+
+        if (httpCode != 200){
+            returnMap.put('ERROR_HTTP', bodyOutS); //string
+        }else if (isErrorClass){
+            returnMap.put('ERROR_OBJECT', respErrorObject);
+            //returnMap.put('ERROR_BODY', bodyOutS);
+        }else{
+            ZUC_Parser par = new ZUC_Parser(ZUC_Parser.MAP_NO_SWAP);
+            if (respClassName == 'zc_ProxySaveResult' || respClassName == 'zc_ProxySubscribeResult'){ // cas specifique zc_ProxySaveResult class.
+                bodyOutS = '{"results":'+bodyOutS+'}';
+            }
+            String repWS = par.serializeWithMapping2(bodyOutS,respClassName); //rename members
+
+            respObject = JSON.deserialize(repWS, respType);
+            returnMap.put('RESP_OBJECT', respObject);
+            //returnMap.put('RESP_BODY', bodyOutS);                        
+        }
+   
+        return returnMap;
+
+    }
+
 
     public class MyException extends Exception{}
 
